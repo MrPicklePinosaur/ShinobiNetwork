@@ -53,7 +53,7 @@ class BallClientHandler implements Runnable {
             String client_msg = "";
             while(true) {
                 client_msg = instream.readLine(); //read msg from client
-                System.out.println(client_msg);
+                //System.out.println(client_msg);
                 //Interperate client message
                 this.input_unpacker(client_msg);
 
@@ -83,9 +83,9 @@ class BallClientHandler implements Runnable {
     }
     public void input_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
-        String[] split_msg = raw_msg.split("$");
+        String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_USIN)) {
-            entity.handleinput(msg[1]);
+            entity.handleInput(msg[1]);
         } else if (msg[0].equals(Global.MT_CHATMSG)) {
 
         } else if (msg[0].equals(Global.MT_CMD)) {

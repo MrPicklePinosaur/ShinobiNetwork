@@ -1,4 +1,6 @@
-class Global {
+package com.mygdx.game;
+
+public class Global {
 
 	//Message types (MT)
 	public static int MT_USIN = 0;

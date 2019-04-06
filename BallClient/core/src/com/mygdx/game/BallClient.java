@@ -47,7 +47,7 @@ public class BallClient {
 
     public void out_packer(int msg_type,String msg) {
         if (msg_type == Global.MT_USIN) { //if the message we want to send is a user input
-            this.send_msg("USIN$"+msg);
+            this.send_msg("MT_USIN$"+msg);
         } else if (msg_type == Global.MT_CHATMSG) {
 
         } else if (msg_type == Global.MT_CMD) { 

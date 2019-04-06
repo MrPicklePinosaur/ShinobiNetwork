@@ -18,7 +18,6 @@ public class BallClientMain extends ApplicationAdapter {
 	public void create () {
 		client = new BallClient("127.0.0.1",5000);
 		client.start_connection();
-		client.send_msg("HELLO SERVER");
 	}
 
 	@Override
@@ -35,9 +34,9 @@ public class BallClientMain extends ApplicationAdapter {
 	}
 
 	public void handleInput() { //takes in user input and sends to server
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { client.send_msg(Global.MT_USIN,"Key_W"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { client.send_msg(Global.MT_USIN,"Key_S"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { client.send_msg(Global.MT_USIN,"Key_A"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { client.send_msg(Global.MT_USIN,"Key_D"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) { client.out_packer(Global.MT_USIN,"Key_W"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { client.out_packer(Global.MT_USIN,"Key_S"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { client.out_packer(Global.MT_USIN,"Key_A"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { client.out_packer(Global.MT_USIN,"Key_D"); }
 	}
 }

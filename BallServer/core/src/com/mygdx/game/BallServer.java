@@ -52,13 +52,13 @@ class BallClientHandler {
         try {
             outstream = new PrintWriter(client_sock.getOutputStream(),true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
+            this.init_entity();
         } catch(IOException ex) { System.out.println(ex); }
 
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                init_entity();
                 try {
                     String client_msg = "";
                     while(true) {

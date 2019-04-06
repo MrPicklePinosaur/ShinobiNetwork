@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BallClient {
     //heavy lifters
@@ -35,7 +38,8 @@ public class BallClient {
                     String server_msg = "";
                     while (true) {
                         server_msg = instream.readLine();
-                        System.out.println(server_msg);
+                        //System.out.println(server_msg);
+                        in_unpacker(server_msg);
                     }
                 } catch(IOException ex) { System.out.println(ex); }
 
@@ -72,7 +76,13 @@ public class BallClient {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_UPDATE)) {
-            String pos = msg[1]; //TODO: visual 
+            String[] pos = msg[1].split(" ");
+            System.out.println(Arrays.toString(pos));
+            for (String s : pos) {
+
+            }
         }
     }
+
+
 }

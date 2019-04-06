@@ -21,10 +21,10 @@ public class Entity {
     }
 
     public void handleInput(String key) { //takes in user inputs from client and does physics simulations
-        if (key.equals("Key_W")) { this.x += speed; }
-        else if (key.equals("Key_S")) { this.x -= speed; }
-        else if (key.equals("Key_A")) { this.y -= speed; }
-        else if (key.equals("Key_D")) { this.y += speed; }
+        if (key.equals("Key_W")) { this.y += speed; }
+        else if (key.equals("Key_S")) { this.y -= speed; }
+        else if (key.equals("Key_A")) { this.x -= speed; }
+        else if (key.equals("Key_D")) { this.x += speed; }
     }
 
     public static String send_pos() { //packages all entity positions into a string

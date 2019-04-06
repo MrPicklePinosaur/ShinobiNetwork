@@ -19,23 +19,36 @@ public class BallClient {
         this.port = port;
     }
 
-    public void start_connection() { //bascially an init method
-        try {
+    public void start_connection() {
+        try { //init stuff
             client_sock = new Socket(this.ip, this.port);
             outstream = new PrintWriter(client_sock.getOutputStream(), true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch (IOException ex) { System.out.println(ex); }
+
+        //thread that listens for messages from server
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    String server_msg = "";
+                    while (true) {
+                        server_msg = instream.readLine();
+                        System.out.println(server_msg);
+                    }
+                } catch(IOException ex) { System.out.println(ex); }
+
+            }
+        }).start();
+
+
     }
 
-    public void send_msg(String msg) { //send message to server
+    private void send_msg(String msg) { //send message to server
         outstream.println(msg);
     }
 
-    /*
-    public String listen() { //recieves messages from server
-
-    }
-    */
 
     public void close_connection() {
         try {
@@ -55,7 +68,11 @@ public class BallClient {
         }
         
     }
-    public void in_unpacker() {
-
+    public void in_unpacker(String raw_msg) {
+        //Message packet is in the form MSGTYPE$message
+        String[] msg = raw_msg.split("\\$");
+        if (msg[0].equals(Global.MT_UPDATE)) {
+            String pos = msg[1]; //TODO: visual 
+        }
     }
 }

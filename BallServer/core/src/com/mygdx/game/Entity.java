@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
-
+    //TODO: REMOVE ENTITY FROM LIST WHEN CLIENT DCs
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
 
     private int x;
@@ -26,5 +26,18 @@ public class Entity {
         else if (key.equals("Key_A")) { this.y -= speed; }
         else if (key.equals("Key_D")) { this.y += speed; }
     }
+
+    public static String send_pos() { //packages all entity positions into a string
+        String msg = "";
+        for (Entity e : Entity.entity_list) { //for each entity
+            msg += (" "+e.getX()+","+e.getY());
+        }
+
+        if (msg.equals("")==false) { msg = msg.substring(1); } //get rid of extra space
+        return msg;
+    }
+
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
 
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BallServerMain extends ApplicationAdapter {
 
@@ -26,17 +27,24 @@ public class BallServerMain extends ApplicationAdapter {
 			public void run() {
 				try {
 					//keep waiting for new clients to show up
-					while (true) { new BallClientHandler(server.getServerSocket().accept()); }
-				} catch(IOException ex) { System.out.println(ex); }
+					while (true) {
+						BallClientHandler client = new BallClientHandler(server.getServerSocket().accept());
+						client.start_connection();
+					}
+				} catch(IOException ex) {
+					System.out.println(ex);
+				}
 			}
 		}).start(); //auto start thread
-
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_pos()); //periodically send client position of all entities
+
 
 	}
 	

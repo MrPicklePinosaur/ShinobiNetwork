@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.*;
 import java.io.*;
@@ -77,8 +78,13 @@ public class BallClient {
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_UPDATE)) {
             String[] pos = msg[1].split(" ");
-            System.out.println(Arrays.toString(pos));
+            //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
+                String[] coords = s.split(",");
+                Sprite sprite = new Sprite(Global.t); //TODO: MAKE THIS BETTER
+                sprite.setX(Integer.parseInt(coords[0]));
+                sprite.setY(Integer.parseInt(coords[1]));
+                Renderer.add(sprite);
 
             }
         }

@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.HashMap;
+
 public class Global {
 
 	//Message types (MT) - input
@@ -12,5 +14,4 @@ public class Global {
 	public static int MT_CHATMSG = 1;
 	public static int MT_CMD = 2;
 
-	public static Texture t;  //TODO: REMOVE LATER
 }

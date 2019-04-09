@@ -1,11 +1,11 @@
 package com.mygdx.game;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 
 class BallServer {
     //heavy lifters
@@ -38,10 +38,10 @@ class BallClientHandler {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
-    private Entity entity;
 
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
+    private Entity client_entity; //pointer to the client's character
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
@@ -52,9 +52,9 @@ class BallClientHandler {
         try {
             outstream = new PrintWriter(client_sock.getOutputStream(),true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
-            this.init_entity();
         } catch(IOException ex) { System.out.println(ex); }
 
+        this.client_entity = this.init_client();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -92,7 +92,7 @@ class BallClientHandler {
     }
 
     public void output_packer(int msg_type, String msg) {
-        if (msg_type == Global.MT_UPDATE) { //tell client the position of all players
+        if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
             this.send_msg("MT_UPDATE$"+msg);
         }
     }
@@ -101,7 +101,7 @@ class BallClientHandler {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_USIN)) {
-            entity.handleInput(msg[1]);
+            client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(Global.MT_CHATMSG)) {
 
         } else if (msg[0].equals(Global.MT_CMD)) {
@@ -109,9 +109,11 @@ class BallClientHandler {
         }
     }
 
-    public void init_entity() { //reads user stats from data base and creates an entity
-        this.entity = new Entity(0,0);
+    //TODO: this is where we read from database
+    public Entity init_client() { //creates client entity and such
+        return new Entity("cube.png");
     }
+
 }
 
 

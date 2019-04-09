@@ -1,5 +1,10 @@
 package com.mygdx.game;
 
+import java.util.HashSet;
+
+import java.util.*;
+import java.io.*;
+
 public class Global {
 
 	//Message Types (MT) - input
@@ -9,5 +14,13 @@ public class Global {
 
 	//Message Types - output
 	public static int MT_UPDATE = 0;
+
+	//Used for i/o
+	private static int code = -1;
+
+	public static int new_code() { //generates unique entity code
+		Global.code+=1;
+		return code;
+	}
 
 }

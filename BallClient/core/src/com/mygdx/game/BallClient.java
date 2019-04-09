@@ -46,8 +46,6 @@ public class BallClient {
 
             }
         }).start();
-
-
     }
 
     private void send_msg(String msg) { //send message to server
@@ -76,17 +74,15 @@ public class BallClient {
     public void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
+        System.out.println(Arrays.toString(msg));
         if (msg[0].equals(Global.MT_UPDATE)) {
+            /*
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
-                String[] coords = s.split(",");
-                Sprite sprite = new Sprite(Global.t); //TODO: MAKE THIS BETTER
-                sprite.setX(Integer.parseInt(coords[0]));
-                sprite.setY(Integer.parseInt(coords[1]));
-                Renderer.add(sprite);
-
+                Entity.update_entity(s);
             }
+            */
         }
     }
 

@@ -21,7 +21,6 @@ public class BallClientMain extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		Global.t = new Texture("cube.png"); //TODO: REMOVE LATER
 		batch = new SpriteBatch();
 
 		client = new BallClient("127.0.0.1",5000);
@@ -34,7 +33,6 @@ public class BallClientMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		Renderer.drawAll(batch);
 
 		batch.end();
 

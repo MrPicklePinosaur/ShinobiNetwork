@@ -16,6 +16,8 @@ public class BallServerMain extends ApplicationAdapter {
 	@Override
 	public void create () {
 
+		//Misc inits
+
 		//Init server and such
 		server = new BallServer(5000);
 		server.start_server();

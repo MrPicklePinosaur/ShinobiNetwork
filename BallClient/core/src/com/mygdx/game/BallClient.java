@@ -56,10 +56,24 @@ public class BallClient {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    public void send_msg(String msg) { //send message to server
-        outstream.println(msg);
+    //Can be used from anywhere in the main thread to send messages
+    public void send_msg(int msg_type,String msg) { //send message to server
+        String raw_msg = this.out_packer(msg_type,msg);
+        outstream.println(raw_msg);
     }
 
+    private String out_packer(int msg_type,String msg) { //helper method that 'encodes' message
+        String data = null;
+        if (msg_type == Global.MT_USIN) { //if the message we want to send is a user input
+            data = ("MT_USIN$"+msg);
+        } else if (msg_type == Global.MT_CHATMSG) {
+
+        } else if (msg_type == Global.MT_CMD) {
+
+        }
+        assert (data == null);
+        return data;
+    }
 
 
 }

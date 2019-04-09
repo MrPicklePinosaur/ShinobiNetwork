@@ -33,13 +33,4 @@ public class DataManager {
         //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
     }
 
-    //THis can be used from anywhere in the main thread
-    public static void output_packer(BallClientHandler socket,int msg_type, String msg) {
-        String data = null;
-        if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
-            data = ("MT_UPDATE$"+msg);
-        }
-        assert (data == null); //if sm went wrong
-        socket.send_msg(data);
-    }
 }

@@ -62,7 +62,7 @@ class BallClientHandler {
                     while(true) {
                         client_msg = instream.readLine();
                         DataManager.add_msg(client_msg);
-                        //System.out.println(client_msg);
+                        System.out.println(client_msg);
 
                     }
                 } catch(IOException ex) { System.out.println(ex); }
@@ -80,12 +80,25 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    public void send_msg(String msg) { outstream.println(msg); }
 
-    public static void broadcast(String msg) { //sends a message to all connected clients
+    public static void broadcast(int msg_type,String msg) { //sends a message to all connected clients
         for (BallClientHandler c : BallClientHandler.client_list) { //for each client thats connected, send this message
-            c.send_msg(msg);
+            c.send_msg(msg_type,msg);
         }
+    }
+    //THis can be used from anywhere in the main thread
+    public void send_msg(int msg_type,String msg) {
+        String raw_msg = output_packer(msg_type,msg);
+        outstream.println(raw_msg);
+    }
+
+    private String output_packer(int msg_type, String msg) { //helper method that 'encodes' message
+        String data = null;
+        if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
+            data = ("MT_UPDATE$"+msg);
+        }
+        assert (data == null); //if sm went wrong
+        return data;
     }
 
 }

@@ -18,20 +18,6 @@ public class DataManager {
         }
     }
 
-    //Can be used from anywhere in the main thread to send messages
-    public static void out_packer(BallClient socket,int msg_type,String msg) {
-        String data = null;
-        if (msg_type == Global.MT_USIN) { //if the message we want to send is a user input
-            data = ("MT_USIN$"+msg);
-        } else if (msg_type == Global.MT_CHATMSG) {
-
-        } else if (msg_type == Global.MT_CMD) {
-
-        }
-        assert (data == null);
-        socket.send_msg(data);
-    }
-
     public static void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");

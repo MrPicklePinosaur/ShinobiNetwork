@@ -45,9 +45,9 @@ public class BallClientMain extends ApplicationAdapter {
 	}
 
 	public void handleInput() { //takes in user input and sends to server
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { DataManager.out_packer(server_socket,Global.MT_USIN,"Key_W"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { DataManager.out_packer(server_socket,Global.MT_USIN,"Key_S"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { DataManager.out_packer(server_socket,Global.MT_USIN,"Key_A"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { DataManager.out_packer(server_socket,Global.MT_USIN,"Key_D"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) { server_socket.send_msg(Global.MT_USIN,"Key_W"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { server_socket.send_msg(Global.MT_USIN,"Key_S"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { server_socket.send_msg(Global.MT_USIN,"Key_A"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { server_socket.send_msg(Global.MT_USIN,"Key_D"); }
 	}
 }

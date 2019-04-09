@@ -45,8 +45,8 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_pos()); //periodically send client position of all entities
-
+		//periodically send client position of all entities
+		BallClientHandler.broadcast(Entity.send_all());
 
 	}
 	

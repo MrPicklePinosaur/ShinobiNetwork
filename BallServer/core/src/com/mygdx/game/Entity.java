@@ -7,12 +7,12 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
     //TODO: REMOVE ENTITY FROM LIST WHEN CLIENT DCs
-    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>(); //used so we know which piece of data belongs to which entity
+    //used so we know which piece of data belongs to which entity
+    private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
     private int id;
     private String texture_path;
@@ -23,7 +23,7 @@ public class Entity {
         this.id = Global.new_code();
         this.texture_path = texture_path;
         this.sprite = new Sprite(new Texture(this.texture_path));
-        entity_list.add(this);
+        entity_library.put(this.id,this);
     }
 
     public void handleInput(String key) { //takes in user inputs from client and does physics simulations
@@ -35,9 +35,16 @@ public class Entity {
         */
     }
 
+    public static Entity getEntity(int id) {
+        if (Entity.entity_library.containsKey(id)) {
+            return Entity.entity_library.get(id);
+        }
+        return null;
+    }
+
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
-        for (Entity e : Entity.entity_list) { //for each entity
+        for (Entity e : Entity.entity_library.values()) { //for each entity
             msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY());
         }
 

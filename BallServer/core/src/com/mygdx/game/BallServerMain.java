@@ -34,6 +34,8 @@ public class BallServerMain extends ApplicationAdapter {
 						BallClientHandler client = new BallClientHandler(server.getServerSocket().accept());
 						client.start_connection();
 
+						Entity client_entity = new Entity("cube.png");
+						client.init_client_entity(client_entity.getId());
 					}
 				} catch(IOException ex) {
 					System.out.println(ex);

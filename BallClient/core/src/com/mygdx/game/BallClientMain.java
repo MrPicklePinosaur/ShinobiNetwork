@@ -37,7 +37,7 @@ public class BallClientMain extends ApplicationAdapter {
 		batch.end();
 
 		handleInput();
-		//DataManager.step_server();
+		DataManager.step_server();
 	}
 	
 	@Override

@@ -38,13 +38,16 @@ class BallClientHandler {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
+    private BallClientHandler self;
 
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
+    private int client_entity_id; //used so we know which entity belongs to client
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
+        this.self = this;
         client_list.add(this);
     }
 
@@ -62,8 +65,8 @@ class BallClientHandler {
                     String client_msg = "";
                     while(true) {
                         client_msg = instream.readLine(); //also include the entity id in the msg
-                        DataManager.add_msg(client_msg);
-                        System.out.println(client_msg);
+                        DataManager.add_msg(self,client_msg);
+                        System.out.println(self+" "+client_msg);
 
                     }
                 } catch(IOException ex) { System.out.println(ex); }
@@ -101,6 +104,8 @@ class BallClientHandler {
         return data;
     }
 
+    public void init_client_entity(int id) { client_entity_id = id; }
+    public int get_client_entity() { return this.client_entity_id; }
 }
 
 

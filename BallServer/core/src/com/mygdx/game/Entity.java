@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
     //TODO: REMOVE ENTITY FROM LIST WHEN CLIENT DCs
-    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
+    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>(); //used so we know which piece of data belongs to which entity
 
     private int id;
     private String texture_path;

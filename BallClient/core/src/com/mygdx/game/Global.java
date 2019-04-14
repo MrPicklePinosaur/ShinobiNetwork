@@ -14,4 +14,5 @@ public class Global {
 	public static int MT_CHATMSG = 1;
 	public static int MT_CMD = 2;
 
+
 }

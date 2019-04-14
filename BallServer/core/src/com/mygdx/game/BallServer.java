@@ -42,6 +42,7 @@ class BallClientHandler {
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
+
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
         client_list.add(this);
@@ -60,7 +61,7 @@ class BallClientHandler {
                 try {
                     String client_msg = "";
                     while(true) {
-                        client_msg = instream.readLine();
+                        client_msg = instream.readLine(); //also include the entity id in the msg
                         DataManager.add_msg(client_msg);
                         System.out.println(client_msg);
 
@@ -79,7 +80,6 @@ class BallClientHandler {
             //TODO: REMOVE CLIENT FROM MASTER LIST HERE (possibly)
         } catch(IOException ex) { System.out.println(ex); }
     }
-
 
     public static void broadcast(int msg_type,String msg) { //sends a message to all connected clients
         for (BallClientHandler c : BallClientHandler.client_list) { //for each client thats connected, send this message

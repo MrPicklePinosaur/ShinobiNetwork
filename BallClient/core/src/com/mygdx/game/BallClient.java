@@ -39,19 +39,14 @@ public class BallClient {
                     String server_msg = "";
                     while (true) {
                         server_msg = instream.readLine();
-                        //System.out.println(server_msg);
-                        in_unpacker(server_msg);
+                        DataManager.add_msg(server_msg);
+                        System.out.println(server_msg);
                     }
                 } catch(IOException ex) { System.out.println(ex); }
 
             }
         }).start();
     }
-
-    private void send_msg(String msg) { //send message to server
-        outstream.println(msg);
-    }
-
 
     public void close_connection() {
         try {
@@ -61,29 +56,23 @@ public class BallClient {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    public void out_packer(int msg_type,String msg) {
+    //Can be used from anywhere in the main thread to send messages
+    public void send_msg(int msg_type,String msg) { //send message to server
+        String raw_msg = this.out_packer(msg_type,msg);
+        outstream.println(raw_msg);
+    }
+
+    private String out_packer(int msg_type,String msg) { //helper method that 'encodes' message
+        String data = null;
         if (msg_type == Global.MT_USIN) { //if the message we want to send is a user input
-            this.send_msg("MT_USIN$"+msg);
+            data = ("MT_USIN$"+msg);
         } else if (msg_type == Global.MT_CHATMSG) {
 
-        } else if (msg_type == Global.MT_CMD) { 
-            
-        }
-        
-    }
-    public void in_unpacker(String raw_msg) {
-        //Message packet is in the form MSGTYPE$message
-        String[] msg = raw_msg.split("\\$");
-        System.out.println(Arrays.toString(msg));
-        if (msg[0].equals(Global.MT_UPDATE)) {
-
-            String[] pos = msg[1].split(" ");
-            //System.out.println(Arrays.toString(pos));
-            for (String s : pos) {
-                Entity.update_entity(s);
-            }
+        } else if (msg_type == Global.MT_CMD) {
 
         }
+        assert (data == null);
+        return data;
     }
 
 

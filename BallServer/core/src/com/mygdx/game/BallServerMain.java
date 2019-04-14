@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,6 +33,9 @@ public class BallServerMain extends ApplicationAdapter {
 					while (true) {
 						BallClientHandler client = new BallClientHandler(server.getServerSocket().accept());
 						client.start_connection();
+
+						Entity client_entity = new Entity("cube.png");
+						client.init_client_entity(client_entity.getId());
 					}
 				} catch(IOException ex) {
 					System.out.println(ex);
@@ -45,9 +49,10 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_pos()); //periodically send client position of all entities
+		//periodically send client position of all entities
+		BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all());
 
-
+		DataManager.step_server();
 	}
 	
 	@Override

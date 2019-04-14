@@ -38,13 +38,16 @@ class BallClientHandler {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
+    private BallClientHandler self;
 
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
-    private Entity client_entity; //pointer to the client's character
+
+    private int client_entity_id; //used so we know which entity belongs to client
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
+        this.self = this;
         client_list.add(this);
     }
 
@@ -54,7 +57,6 @@ class BallClientHandler {
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch(IOException ex) { System.out.println(ex); }
 
-        this.client_entity = this.init_client();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,11 +64,10 @@ class BallClientHandler {
                 try {
                     String client_msg = "";
                     while(true) {
-                        client_msg = instream.readLine();
+                        client_msg = instream.readLine(); //also include the entity id in the msg
+                        DataManager.add_msg(self,client_msg);
+                        System.out.println(self+" "+client_msg);
 
-                        //System.out.println(client_msg);
-                        //Interperate client message
-                        input_unpacker(client_msg);
                     }
                 } catch(IOException ex) { System.out.println(ex); }
 
@@ -83,37 +84,28 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    private void send_msg(String msg) { outstream.println(msg); }
-
-    public static void broadcast(int msg_type, String msg) { //sends a message to all connected clients
+    public static void broadcast(int msg_type,String msg) { //sends a message to all connected clients
         for (BallClientHandler c : BallClientHandler.client_list) { //for each client thats connected, send this message
-            c.output_packer(msg_type,msg);
+            c.send_msg(msg_type,msg);
         }
     }
+    //THis can be used from anywhere in the main thread
+    public void send_msg(int msg_type,String msg) {
+        String raw_msg = output_packer(msg_type,msg);
+        outstream.println(raw_msg);
+    }
 
-    public void output_packer(int msg_type, String msg) {
+    private String output_packer(int msg_type, String msg) { //helper method that 'encodes' message
+        String data = null;
         if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
-            this.send_msg("MT_UPDATE$"+msg);
+            data = ("MT_UPDATE$"+msg);
         }
+        assert (data == null); //if sm went wrong
+        return data;
     }
 
-    public void input_unpacker(String raw_msg) {
-        //Message packet is in the form MSGTYPE$message
-        String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(Global.MT_USIN)) {
-            client_entity.handleInput(msg[1]);
-        } else if (msg[0].equals(Global.MT_CHATMSG)) {
-
-        } else if (msg[0].equals(Global.MT_CMD)) {
-            
-        }
-    }
-
-    //TODO: this is where we read from database
-    public Entity init_client() { //creates client entity and such
-        return new Entity("cube.png");
-    }
-
+    public void init_client_entity(int id) { client_entity_id = id; }
+    public int get_client_entity() { return this.client_entity_id; }
 }
 
 

@@ -17,14 +17,14 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 
-	BallClient client;
+	BallClient server_socket;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 
-		client = new BallClient("127.0.0.1",5000);
-		client.start_connection();
+		server_socket = new BallClient("127.0.0.1",5000);
+		server_socket.start_connection();
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class BallClientMain extends ApplicationAdapter {
 		batch.end();
 
 		handleInput();
+		DataManager.step_server();
 	}
 	
 	@Override
@@ -45,9 +46,9 @@ public class BallClientMain extends ApplicationAdapter {
 	}
 
 	public void handleInput() { //takes in user input and sends to server
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { client.out_packer(Global.MT_USIN,"Key_W"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { client.out_packer(Global.MT_USIN,"Key_S"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { client.out_packer(Global.MT_USIN,"Key_A"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { client.out_packer(Global.MT_USIN,"Key_D"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) { server_socket.send_msg(Global.MT_USIN,"Key_W"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { server_socket.send_msg(Global.MT_USIN,"Key_S"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { server_socket.send_msg(Global.MT_USIN,"Key_A"); }
+		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { server_socket.send_msg(Global.MT_USIN,"Key_D"); }
 	}
 }

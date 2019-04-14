@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
-    private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>();
+    private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
 
     private Sprite sprite;
 
@@ -42,7 +42,6 @@ public class Entity {
             Entity.entity_library.put(id,new Entity(texture_path));
         }
         entity.set_pos(x,y,0);
-
     }
 
     public static void draw_all(SpriteBatch batch) { //iterate through entity hashmap and draws everything

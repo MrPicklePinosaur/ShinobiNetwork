@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,4 +44,12 @@ public class Entity {
         entity.set_pos(x,y,0);
 
     }
+
+    public static void draw_all(SpriteBatch batch) { //iterate through entity hashmap and draws everything
+        for (Entity e : Entity.entity_library.values()) {
+            e.getSprite().draw(batch);
+        }
+    }
+
+    public Sprite getSprite() { return this.sprite; }
 }

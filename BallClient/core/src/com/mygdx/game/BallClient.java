@@ -76,13 +76,13 @@ public class BallClient {
         String[] msg = raw_msg.split("\\$");
         System.out.println(Arrays.toString(msg));
         if (msg[0].equals(Global.MT_UPDATE)) {
-            /*
+
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
                 Entity.update_entity(s);
             }
-            */
+
         }
     }
 

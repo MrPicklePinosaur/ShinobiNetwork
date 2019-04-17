@@ -14,16 +14,35 @@ public class Entity {
     //used so we know which piece of data belongs to which entity
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
+    private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
+
     private int id;
     private String texture_path;
-    private Sprite sprite;
+    private AbstractSprite sprite;
     private int speed = 2;
 
     public Entity(String texture_path) {
         this.id = Global.new_code();
         this.texture_path = texture_path;
-        this.sprite = new Sprite(new Texture(this.texture_path));
+        assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
+        this.sprite = this.init_entity(Entity.texture_dimensions.get(texture_path));
         entity_library.put(this.id,this);
+    }
+
+    public static void init_textures(String texture_lib_path) { //load all tex
+        try {
+            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
+            while (fileReader.hasNext()) {
+                //data comes in the form "texture_path","widthxheight"
+                String[] data = fileReader.nextLine().split(",");
+                Entity.texture_dimensions.put(data[0],data[1]);
+            }
+        } catch (IOException ex) { System.out.println(ex); }
+    }
+
+    public AbstractSprite init_entity(String dimensions) {
+        String[] dim = dimensions.split("x");
+        return new AbstractSprite(Integer.parseInt(dim[0]),Integer.parseInt(dim[1]));
     }
 
     public void handleInput(String key) { //takes in user inputs from client and does physics simulations
@@ -43,12 +62,12 @@ public class Entity {
     }
 
     public static String send_all() { //packages all entity positions into a string
-        String msg = "";
+        String msg = null;
         for (Entity e : Entity.entity_library.values()) { //for each entity
             msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY());
         }
 
-        if (msg.equals("")==false) { msg = msg.substring(1); } //get rid of extra space
+        if (msg!=null) { msg = msg.substring(1); } //get rid of extra space
         return msg;
     }
 
@@ -61,9 +80,7 @@ public class Entity {
 
     //Setters
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS
-        this.sprite.setX(x);
-        this.sprite.setY(y);
-        this.sprite.setRotation(rotation);
+        this.sprite.init_pos(x,y,rotation);
     }
 
 }

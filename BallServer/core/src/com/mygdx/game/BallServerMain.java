@@ -18,7 +18,7 @@ public class BallServerMain extends ApplicationAdapter {
 	public void create () {
 
 		//Misc inits
-
+		Entity.init_textures("texture_dimensions.txt");
 		//Init server and such
 		server = new BallServer(5000);
 		server.start_server();
@@ -33,9 +33,6 @@ public class BallServerMain extends ApplicationAdapter {
 					while (true) {
 						BallClientHandler client = new BallClientHandler(server.getServerSocket().accept());
 						client.start_connection();
-
-						Entity client_entity = new Entity("cube.png");
-						client.init_client_entity(client_entity.getId());
 					}
 				} catch(IOException ex) {
 					System.out.println(ex);
@@ -50,9 +47,10 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//periodically send client position of all entities
-		BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all());
+		String entity_data = Entity.send_all();
+		System.out.println(entity_data);
+		if (entity_data != null) { BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
 
-		DataManager.step_server();
 	}
 	
 	@Override

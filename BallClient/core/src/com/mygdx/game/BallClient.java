@@ -39,8 +39,11 @@ public class BallClient {
                     String server_msg = "";
                     while (true) {
                         server_msg = instream.readLine();
-                        DataManager.add_msg(server_msg);
+
                         System.out.println(server_msg);
+
+                        //interperate server message
+                        in_unpacker(server_msg);
                     }
                 } catch(IOException ex) { System.out.println(ex); }
 
@@ -73,6 +76,21 @@ public class BallClient {
         }
         assert (data == null);
         return data;
+    }
+
+    public static void in_unpacker(String raw_msg) {
+        //Message packet is in the form MSGTYPE$message
+        String[] msg = raw_msg.split("\\$");
+        if (msg[0].equals(Global.MT_UPDATE)) {
+
+            /*
+            String[] pos = msg[1].split(" ");
+            //System.out.println(Arrays.toString(pos));
+            for (String s : pos) {
+                //Entity.update_entity(s);
+            }
+            */
+        }
     }
 
 

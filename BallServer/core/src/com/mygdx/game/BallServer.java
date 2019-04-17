@@ -38,16 +38,14 @@ class BallClientHandler {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
-    private BallClientHandler self;
 
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
-    private int client_entity_id; //used so we know which entity belongs to client
+    private Entity client_entity; //used so we know which entity belongs to client
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
-        this.self = this;
         client_list.add(this);
     }
 
@@ -57,6 +55,7 @@ class BallClientHandler {
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch(IOException ex) { System.out.println(ex); }
 
+        init_client_entity();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -65,8 +64,10 @@ class BallClientHandler {
                     String client_msg = "";
                     while(true) {
                         client_msg = instream.readLine(); //also include the entity id in the msg
-                        DataManager.add_msg(self,client_msg);
-                        System.out.println(self+" "+client_msg);
+                        System.out.println(client_msg);
+
+                        //interperate client message
+                        input_unpacker(client_msg);
 
                     }
                 } catch(IOException ex) { System.out.println(ex); }
@@ -100,12 +101,29 @@ class BallClientHandler {
         if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
             data = ("MT_UPDATE$"+msg);
         }
-        assert (data == null); //if sm went wrong
+        assert (data == null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;
     }
 
-    public void init_client_entity(int id) { client_entity_id = id; }
-    public int get_client_entity() { return this.client_entity_id; }
+    private static void input_unpacker(String raw_msg) {
+        //Message packet is in the form MSGTYPE$message
+        String[] msg = raw_msg.split("\\$");
+        if (msg[0].equals(Global.MT_USIN)) {
+
+        } else if (msg[0].equals(Global.MT_CHATMSG)) {
+
+        } else if (msg[0].equals(Global.MT_CMD)) {
+
+        }
+        //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
+    }
+
+
+    public void init_client_entity() {
+        this.client_entity = new Entity("cube.png");
+    }
+
+
 }
 
 

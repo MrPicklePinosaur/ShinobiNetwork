@@ -71,11 +71,10 @@ class BallClientHandler {
 
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
-                    System.out.println("CLIENT HAS DISCONNECTED");
                     //first of all, send a message to the client telling them they dced
 
                     //tell entity to stop drawing it
-                    broadcast(Global.MT_KILLENTITY,""+client_entity.getId());
+                    send_msg(Global.MT_KILLENTITY,""+client_entity.getId());
                     //remove client entity from list
                     Entity.removeEntity(client_entity);
 
@@ -110,6 +109,8 @@ class BallClientHandler {
         String data = null;
         if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
             data = ("MT_UPDATE$"+msg);
+        } else if (msg_type == Global.MT_NEWENTITY) { //tell client to create new entity on their side
+            data = ("MT_NEWENTITY$"+msg); //in this case, msg looks like "id","texture_path"
         } else if (msg_type == Global.MT_KILLENTITY) { //tell client to remove client from their render queue
             data = ("MT_KILLENTITY$"+msg); //in this case, msg is the entity id
         }
@@ -133,6 +134,7 @@ class BallClientHandler {
     public void init_client_entity() {
         String texture_path = "cube.png";
         this.client_entity = new Entity(texture_path);
+        this.send_msg(Global.MT_NEWENTITY,client_entity.getId()+","+texture_path);
     }
 
 

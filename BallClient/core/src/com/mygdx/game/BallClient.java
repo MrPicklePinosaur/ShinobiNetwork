@@ -81,7 +81,7 @@ public class BallClient {
         } else if (msg_type == Global.MT_CMD) {
 
         }
-        assert (data == null);
+        assert (data != null): "empty message";
         return data;
     }
 
@@ -94,6 +94,13 @@ public class BallClient {
             for (String s : pos) {
                 Entity.update_entity(s);
             }
+        } else if (msg[0].equals(Global.MT_NEWENTITY)) {
+            //data comes in the form "Id","texture_path"
+            String[] data = msg[1].split(",");
+            Entity.add_entity(Integer.parseInt(data[0]),data[1]);
+        } else if (msg[0].equals(Global.MT_KILLENTITY)) {
+            int id = Integer.parseInt(msg[1]);
+            Entity.kill_entity(id);
         }
     }
 

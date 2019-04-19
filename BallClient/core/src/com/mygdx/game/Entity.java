@@ -20,11 +20,9 @@ public class Entity {
 
     private Sprite sprite;
 
-    public Entity(String texture_path) {
-        this.sprite = new Sprite(new Texture(texture_path));
-    }
-    public Entity(Texture texture) {
-        this.sprite = new Sprite(texture);
+    private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
+        assert (Entity.texture_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
+        this.sprite = new Sprite(Entity.texture_lib.get(texture_path));
     }
 
     public static void init_textures(String texture_lib_path) { //TODO: possibly use async loading later, if there are too many assets
@@ -45,29 +43,27 @@ public class Entity {
         this.sprite.setRotation(rotation);
     }
 
-    public static Entity getEntity(int id) {
-        if (Entity.entity_library.containsKey(id)) {
-            return Entity.entity_library.get(id);
-        }
-        return null;
+    public static void add_entity(int id, String texture_path) {
+        Entity newEntity = new Entity(texture_path);
+        entity_library.put(id,newEntity);
     }
-
     public static void update_entity(String data) { //if entity doesnt exist, we create a new one
-        //format: ID,texture_path,x,y
+        //format: ID,x,y
         String[] parsed = data.split(",");
         int id = Integer.parseInt(parsed[0]);
-        String texture_path = parsed[1];
-        float x = Float.parseFloat(parsed[2]);
-        float y = Float.parseFloat(parsed[3]);
-        float rot = Float.parseFloat(parsed[4]);
+        float x = Float.parseFloat(parsed[1]);
+        float y = Float.parseFloat(parsed[2]);
+        float rot = Float.parseFloat(parsed[3]);
 
-        Entity entity = Entity.getEntity(id);
-        if (entity == null) { //if the entity doesnt exist, create and add it
-            Entity newEntity = new Entity(Entity.texture_lib.get(texture_path));
-            Entity.entity_library.put(id,newEntity);
-            entity = newEntity;
-        }
+        assert (Entity.entity_library.containsKey(id)): "Entity isn't inside master list.";
+        Entity entity = Entity.entity_library.get(id);
+
+        //apply all the updates
         entity.set_pos(x,y,rot);
+    }
+    public static void kill_entity(int id) {
+        assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";
+        Entity.entity_library.remove(id);
     }
 
     public static void draw_all(SpriteBatch batch) { //iterate through entity hashmap and draws everything

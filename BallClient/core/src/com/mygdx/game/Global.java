@@ -8,6 +8,8 @@ public class Global {
 
 	//Message types (MT) - input
 	public static String MT_UPDATE = "MT_UPDATE";
+	public static String MT_NEWENTITY = "MT_NEWENTITY";
+	public static String MT_KILLENTITY = "MT_KILLENTITY";
 
 	//Message types - output
 	public static int MT_USIN = 0;

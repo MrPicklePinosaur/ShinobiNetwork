@@ -76,7 +76,7 @@ public class Entity {
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
-            msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
+            msg += (" "+e.getId()+","+e.getX()+","+e.getY()+","+e.getRotation());
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space

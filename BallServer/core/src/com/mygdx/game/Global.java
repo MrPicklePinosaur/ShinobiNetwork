@@ -14,6 +14,8 @@ public class Global {
 
 	//Message Types - output
 	public static int MT_UPDATE = 0;
+	public static int MT_NEWENTITY = 1;
+	public static int MT_KILLENTITY = 2;
 
 	//Used for i/o
 	private static int code = -1;

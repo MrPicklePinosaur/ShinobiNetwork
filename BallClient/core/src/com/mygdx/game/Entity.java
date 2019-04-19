@@ -36,10 +36,13 @@ public class Entity {
         String texture_path = parsed[1];
         float x = Float.parseFloat(parsed[2]);
         float y = Float.parseFloat(parsed[3]);
+        float rot = Float.parseFloat(parsed[4]);
 
         Entity entity = Entity.getEntity(id);
         if (entity == null) { //if the entity doesnt exist, create add it
-            Entity.entity_library.put(id,new Entity(texture_path));
+            Entity newEntity = new Entity(texture_path);
+            Entity.entity_library.put(id,newEntity);
+            entity = newEntity;
         }
         entity.set_pos(x,y,0);
     }

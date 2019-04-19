@@ -33,7 +33,7 @@ public class BallClientMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		//Entity.draw_all(batch);
+		Entity.draw_all(batch);
 		batch.end();
 
 		handleInput();

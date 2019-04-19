@@ -46,12 +46,11 @@ public class Entity {
     }
 
     public void handleInput(String key) { //takes in user inputs from client and does physics simulations
-        /*
-        if (key.equals("Key_W")) { this.y += speed; }
-        else if (key.equals("Key_S")) { this.y -= speed; }
-        else if (key.equals("Key_A")) { this.x -= speed; }
-        else if (key.equals("Key_D")) { this.x += speed; }
-        */
+        if (key.equals("Key_W")) { this.sprite.init_pos(sprite.getX(),sprite.getY()+speed,0); }
+        else if (key.equals("Key_S")) { this.sprite.init_pos(sprite.getX(),sprite.getY()-speed,0); }
+        else if (key.equals("Key_A")) { this.sprite.init_pos(sprite.getX()-speed,sprite.getY(),0); }
+        else if (key.equals("Key_D")) { this.sprite.init_pos(sprite.getX()+speed,sprite.getY(),0); }
+
     }
 
     public static Entity getEntity(int id) {
@@ -62,12 +61,12 @@ public class Entity {
     }
 
     public static String send_all() { //packages all entity positions into a string
-        String msg = null;
+        String msg = "";
         for (Entity e : Entity.entity_library.values()) { //for each entity
-            msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY());
+            msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
         }
 
-        if (msg!=null) { msg = msg.substring(1); } //get rid of extra space
+        if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
         return msg;
     }
 

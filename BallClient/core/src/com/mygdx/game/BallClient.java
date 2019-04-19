@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -36,14 +37,20 @@ public class BallClient {
             public void run() {
 
                 try {
-                    String server_msg = "";
                     while (true) {
-                        server_msg = instream.readLine();
+                        final String server_msg = instream.readLine();
 
                         System.out.println(server_msg);
 
-                        //interperate server message
-                        in_unpacker(server_msg);
+                        //interperate server message and post to rendering thread
+                        Gdx.app.postRunnable(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                in_unpacker(server_msg);
+                            }
+                        });
+
                     }
                 } catch(IOException ex) { System.out.println(ex); }
 
@@ -82,14 +89,11 @@ public class BallClient {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_UPDATE)) {
-
-            /*
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
-                //Entity.update_entity(s);
+                Entity.update_entity(s);
             }
-            */
         }
     }
 

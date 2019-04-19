@@ -48,8 +48,7 @@ public class BallServerMain extends ApplicationAdapter {
 
 		//periodically send client position of all entities
 		String entity_data = Entity.send_all();
-		System.out.println(entity_data);
-		if (entity_data != null) { BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
+		if (!entity_data.equals("")) { BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
 
 	}
 	

@@ -67,7 +67,7 @@ class BallClientHandler {
                         System.out.println(client_msg);
 
                         //interperate client message
-                        input_unpacker(client_msg);
+                        input_unpacker(client_entity,client_msg);
 
                     }
                 } catch(IOException ex) { System.out.println(ex); }
@@ -101,15 +101,15 @@ class BallClientHandler {
         if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
             data = ("MT_UPDATE$"+msg);
         }
-        assert (data == null): "Empty data packet or invalid message type"; //if sm went wrong
+        assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;
     }
 
-    private static void input_unpacker(String raw_msg) {
+    private static void input_unpacker(Entity client_entity,String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_USIN)) {
-
+            client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(Global.MT_CHATMSG)) {
 
         } else if (msg[0].equals(Global.MT_CMD)) {

@@ -43,20 +43,23 @@ public class Entity {
         this.sprite.setRotation(rotation);
     }
 
-    public static void add_entity(int id, String texture_path) {
-        Entity newEntity = new Entity(texture_path);
-        entity_library.put(id,newEntity);
-    }
     public static void update_entity(String data) { //if entity doesnt exist, we create a new one
-        //format: ID,x,y
+        //format: ID,texture_path,x,y
         String[] parsed = data.split(",");
         int id = Integer.parseInt(parsed[0]);
-        float x = Float.parseFloat(parsed[1]);
-        float y = Float.parseFloat(parsed[2]);
-        float rot = Float.parseFloat(parsed[3]);
+        String texture_path = parsed[1];
+        float x = Float.parseFloat(parsed[2]);
+        float y = Float.parseFloat(parsed[3]);
+        float rot = Float.parseFloat(parsed[4]);
 
-        assert (Entity.entity_library.containsKey(id)): "Entity isn't inside master list.";
-        Entity entity = Entity.entity_library.get(id);
+        Entity entity;
+        if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
+            Entity newEntity = new Entity(texture_path);
+            entity_library.put(id,newEntity);
+            entity = newEntity;
+        } else {
+            entity = Entity.entity_library.get(id);
+        }
 
         //apply all the updates
         entity.set_pos(x,y,rot);

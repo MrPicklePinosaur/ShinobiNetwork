@@ -46,9 +46,13 @@ public class BallClientMain extends ApplicationAdapter {
 	}
 
 	public void handleInput() { //takes in user input and sends to server
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { server_socket.send_msg(Global.MT_USIN,"Key_W"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.S)) { server_socket.send_msg(Global.MT_USIN,"Key_S"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.A)) { server_socket.send_msg(Global.MT_USIN,"Key_A"); }
-		else if (Gdx.input.isKeyPressed(Input.Keys.D)) { server_socket.send_msg(Global.MT_USIN,"Key_D"); }
+		String msg = "";
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) { msg+=(",Key_D"); }
+		if (msg.equals("")) return; //if there isnt any input, don't send a message
+		msg = msg.substring(1); //get rid of extra comma in front
+		server_socket.send_msg(Global.MT_USIN,msg);
 	}
 }

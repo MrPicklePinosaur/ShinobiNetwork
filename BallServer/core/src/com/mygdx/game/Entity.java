@@ -45,12 +45,14 @@ public class Entity {
         return new AbstractSprite(Integer.parseInt(dim[0]),Integer.parseInt(dim[1]));
     }
 
-    public void handleInput(String key) { //takes in user inputs from client and does physics simulations
-        if (key.equals("Key_W")) { this.sprite.init_pos(sprite.getX(),sprite.getY()+speed,0); }
-        else if (key.equals("Key_S")) { this.sprite.init_pos(sprite.getX(),sprite.getY()-speed,0); }
-        else if (key.equals("Key_A")) { this.sprite.init_pos(sprite.getX()-speed,sprite.getY(),0); }
-        else if (key.equals("Key_D")) { this.sprite.init_pos(sprite.getX()+speed,sprite.getY(),0); }
-
+    public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
+        String[] inputs = raw_inputs.split(",");
+        for (String key : inputs) {
+            if (key.equals("Key_W")) { this.sprite.init_pos(sprite.getX(),sprite.getY()+speed,0); }
+            if (key.equals("Key_S")) { this.sprite.init_pos(sprite.getX(),sprite.getY()-speed,0); }
+            if (key.equals("Key_A")) { this.sprite.init_pos(sprite.getX()-speed,sprite.getY(),0); }
+            if (key.equals("Key_D")) { this.sprite.init_pos(sprite.getX()+speed,sprite.getY(),0); }
+        }
     }
 
     public static Entity getEntity(int id) {

@@ -70,7 +70,15 @@ class BallClientHandler {
                         input_unpacker(client_entity,client_msg);
 
                     }
-                } catch(IOException ex) { System.out.println(ex); }
+                } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
+                    //first of all, send a message to the client telling them they dced
+
+                    //remove client entity from list
+                    Entity.removeEntity(client_entity);
+
+                    //tie off some loose ends
+                    close_connection();
+                }
 
             }
         }).start();
@@ -81,7 +89,6 @@ class BallClientHandler {
             instream.close();
             outstream.close();
             client_sock.close();
-            //TODO: REMOVE CLIENT FROM MASTER LIST HERE (possibly)
         } catch(IOException ex) { System.out.println(ex); }
     }
 
@@ -117,7 +124,6 @@ class BallClientHandler {
         }
         //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
     }
-
 
     public void init_client_entity() {
         this.client_entity = new Entity("cube.png");

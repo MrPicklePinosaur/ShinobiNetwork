@@ -35,7 +35,7 @@ public class BallServerMain extends ApplicationAdapter {
 						client.start_connection();
 					}
 				} catch(IOException ex) {
-					System.out.println(ex);
+					System.out.println(ex+" aka, something went wrong when connecting the player.");
 				}
 			}
 		}).start(); //auto start thread
@@ -54,6 +54,6 @@ public class BallServerMain extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-
+		server.close_server();
 	}
 }

@@ -4,16 +4,39 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
+    //TODO: find a way to remove any entities that are no longer needed
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
+    private static HashMap<String,Texture> texture_lib = new HashMap<String,Texture>(); //holds file_path and texture object
 
     private Sprite sprite;
 
     public Entity(String texture_path) {
         this.sprite = new Sprite(new Texture(texture_path));
+    }
+    public Entity(Texture texture) {
+        this.sprite = new Sprite(texture);
+    }
+
+    public static void init_textures(String texture_lib_path) { //TODO: possibly use async loading later, if there are too many assets
+        try {
+            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
+            while (fileReader.hasNext()) {
+                //data is in the form "texture_path"
+                String texture_path = fileReader.nextLine();
+                Texture texture = new Texture(texture_path);
+                Entity.texture_lib.put(texture_path,texture);
+            }
+        } catch(IOException ex) { System.out.println(ex+", something went wrong when loading textures."); }
     }
 
     public void set_pos(float x, float y, float rotation) {
@@ -39,12 +62,12 @@ public class Entity {
         float rot = Float.parseFloat(parsed[4]);
 
         Entity entity = Entity.getEntity(id);
-        if (entity == null) { //if the entity doesnt exist, create add it
-            Entity newEntity = new Entity(texture_path);
+        if (entity == null) { //if the entity doesnt exist, create and add it
+            Entity newEntity = new Entity(Entity.texture_lib.get(texture_path));
             Entity.entity_library.put(id,newEntity);
             entity = newEntity;
         }
-        entity.set_pos(x,y,0);
+        entity.set_pos(x,y,rot);
     }
 
     public static void draw_all(SpriteBatch batch) { //iterate through entity hashmap and draws everything

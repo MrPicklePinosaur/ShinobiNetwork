@@ -21,6 +21,8 @@ public class BallClientMain extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Entity.init_textures("texture_lib.txt");
+
 		batch = new SpriteBatch();
 
 		server_socket = new BallClient("127.0.0.1",5000);

@@ -7,12 +7,16 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
     //TODO: REMOVE ENTITY FROM LIST WHEN CLIENT DCs
     //used so we know which piece of data belongs to which entity
-    private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
+    //private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
+
+    //just a simple list of all the alive entities
+    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
 
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
@@ -26,7 +30,7 @@ public class Entity {
         this.texture_path = texture_path;
         assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
         this.sprite = this.init_entity(Entity.texture_dimensions.get(texture_path));
-        entity_library.put(this.id,this);
+        entity_list.add(this);
     }
 
     public static void init_textures(String texture_lib_path) { //load all tex
@@ -55,16 +59,23 @@ public class Entity {
         }
     }
 
+    /*
     public static Entity getEntity(int id) {
         if (Entity.entity_library.containsKey(id)) {
             return Entity.entity_library.get(id);
         }
         return null;
     }
+    */
+
+    public static void removeEntity(Entity entity) {
+        assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
+        Entity.entity_list.remove(entity);
+    }
 
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
-        for (Entity e : Entity.entity_library.values()) { //for each entity
+        for (Entity e : Entity.entity_list) { //for each entity
             msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
         }
 

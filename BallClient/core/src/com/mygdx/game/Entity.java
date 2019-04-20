@@ -75,5 +75,7 @@ public class Entity {
         }
     }
 
+    public float getX() { return this.sprite.getX(); }
+    public float getY() { return this.sprite.getY(); }
     public Sprite getSprite() { return this.sprite; }
 }

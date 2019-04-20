@@ -38,6 +38,7 @@ class BallClientHandler {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
+    private BallClientHandler self;
 
     //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
@@ -78,6 +79,7 @@ class BallClientHandler {
                     broadcast(Global.MT_KILLENTITY,""+client_entity.getId());
                     //remove client entity from list
                     Entity.removeEntity(client_entity);
+                    removeClient();
 
                     //tie off some loose ends
                     close_connection();
@@ -133,6 +135,10 @@ class BallClientHandler {
     public void init_client_entity() {
         String texture_path = "cube.png";
         this.client_entity = new Entity(texture_path);
+    }
+
+    public void removeClient() {
+        BallClientHandler.client_list.remove(this);
     }
 
 

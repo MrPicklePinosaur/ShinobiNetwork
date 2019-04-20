@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 public class Global {
 
+	public static int PPM = 100;
+
 	//Message types (MT) - input
 	public static String MT_UPDATE = "MT_UPDATE";
 	public static String MT_KILLENTITY = "MT_KILLENTITY";

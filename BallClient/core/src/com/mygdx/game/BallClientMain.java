@@ -16,6 +16,7 @@ public class BallClientMain extends ApplicationAdapter {
 
 	//heavy lifters
 	SpriteBatch batch;
+	Camera camera;
 
 	BallClient server_socket;
 
@@ -24,6 +25,7 @@ public class BallClientMain extends ApplicationAdapter {
 		Entity.init_textures("texture_lib.txt");
 
 		batch = new SpriteBatch();
+		camera = new Camera();
 
 		server_socket = new BallClient("127.0.0.1",5000);
 		server_socket.start_connection();
@@ -40,6 +42,8 @@ public class BallClientMain extends ApplicationAdapter {
 
 		handleInput();
 
+		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity());}
+		camera.updateCam();
 	}
 	
 	@Override

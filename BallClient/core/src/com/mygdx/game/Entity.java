@@ -14,6 +14,8 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
+    private static Entity client_entity; //the entity that this specific client owns
+
     //TODO: find a way to remove any entities that are no longer needed
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
     private static HashMap<String,Texture> texture_lib = new HashMap<String,Texture>(); //holds file_path and texture object
@@ -54,8 +56,11 @@ public class Entity {
 
         Entity entity;
         if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
+            //This block creates and integrates the entity
             Entity newEntity = new Entity(texture_path);
             entity_library.put(id,newEntity);
+            Entity.client_entity = newEntity;
+
             entity = newEntity;
         } else {
             entity = Entity.entity_library.get(id);
@@ -78,4 +83,8 @@ public class Entity {
     public float getX() { return this.sprite.getX(); }
     public float getY() { return this.sprite.getY(); }
     public Sprite getSprite() { return this.sprite; }
+    public static Entity getClientEntity() {
+        //assert (Entity.client_entity != null): "Client_entity has not been initalized";
+        return Entity.client_entity;
+    }
 }

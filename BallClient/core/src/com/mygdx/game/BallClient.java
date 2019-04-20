@@ -13,14 +13,17 @@ public class BallClient {
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
+    private BallClient self;
 
     //vars
     private String ip;
     private int port;
+    private int client_entity_id;
 
     public BallClient(String ip, int port) {
         this.ip = ip;
         this.port = port;
+        this.self = this;
     }
 
     public void start_connection() {
@@ -46,7 +49,7 @@ public class BallClient {
 
                             @Override
                             public void run() {
-                                in_unpacker(server_msg);
+                                in_unpacker(self,server_msg);
                             }
                         });
 
@@ -84,7 +87,7 @@ public class BallClient {
         return data;
     }
 
-    public static void in_unpacker(String raw_msg) {
+    public static void in_unpacker(BallClient client,String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_UPDATE)) {
@@ -96,7 +99,16 @@ public class BallClient {
         } else if (msg[0].equals(Global.MT_KILLENTITY)) {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
+        } else if (msg[0].equals(Global.MT_CONNECTED)) { //the message is the id of the entity of the client
+            String[] data = msg[1].split(","); //data looks like: "id"."texture_path"
+            int id = Integer.parseInt(data[0]);
+            new Entity(id,data[1]);
+            client.client_entity_id = id;
         }
+    }
+
+    public Entity getClientEntity() {
+        return Entity.getEntity(client_entity_id);
     }
 
 }

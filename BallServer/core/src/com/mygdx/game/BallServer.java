@@ -57,6 +57,7 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
 
         init_client_entity();
+        this.send_msg(Global.MT_CONNECTED,client_entity.getId()+"."+client_entity.getTexturePath()); //tells client that they sucessfully joined server
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -114,6 +115,8 @@ class BallClientHandler {
             data = ("MT_UPDATE$"+msg);
         } else if (msg_type == Global.MT_KILLENTITY) { //tell client to remove client from their render queue
             data = ("MT_KILLENTITY$"+msg); //in this case, msg is the entity id
+        } else if (msg_type == Global.MT_CONNECTED) { //tells the client the id of their entity
+            data = ("MT_CONNECTED$"+msg); //data looks like: "id"."texture_path"
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;
@@ -133,8 +136,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String texture_path = "cube.png";
-        this.client_entity = new Entity(texture_path);
+        this.client_entity = new Entity("cube.png");
     }
 
     public void removeClient() {

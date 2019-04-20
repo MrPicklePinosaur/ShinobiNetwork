@@ -20,12 +20,17 @@ public class BallClientMain extends ApplicationAdapter {
 
 	BallClient server_socket;
 
+
+	Sprite background;
+
 	@Override
 	public void create () {
 		Entity.init_textures("texture_lib.txt");
 
 		batch = new SpriteBatch();
 		camera = new Camera();
+
+		background = new Sprite(new Texture("background.png"));
 
 		server_socket = new BallClient("127.0.0.1",5000);
 		server_socket.start_connection();
@@ -37,12 +42,14 @@ public class BallClientMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
+		background.draw(batch);
 		Entity.draw_all(batch);
 		batch.end();
 
 		handleInput();
 
-		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity());}
+		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
+		batch.setProjectionMatrix(camera.getCam().combined);
 		camera.updateCam();
 	}
 	

@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
     private static Entity client_entity; //the entity that this specific client owns
+    private static int client_entity_id = -1;
 
     //TODO: find a way to remove any entities that are no longer needed
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
@@ -60,7 +61,7 @@ public class Entity {
             Entity newEntity = new Entity(texture_path);
             entity_library.put(id,newEntity);
 
-            if (id == BallClient.getClientId()) {
+            if (id == Entity.client_entity_id) {
                 Entity.client_entity = newEntity;
             }
 
@@ -90,4 +91,7 @@ public class Entity {
         //assert (Entity.client_entity != null): "Client_entity has not been initalized";
         return Entity.client_entity;
     }
+
+    public static void assignClientId(int id) { Entity.client_entity_id = id; }
+
 }

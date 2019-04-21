@@ -1,11 +1,20 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.physics.box2d.World;
+
 import java.util.HashSet;
 
 import java.util.*;
 import java.io.*;
 
 public class Global {
+
+	//Important vars
+	public static final int SCREEN_WIDTH = 800;
+	public static final int SCREEN_HEIGHT = 600;
+	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
+	public static World world;
+	public static final int PPM = 100;
 
 	//Message Types (MT) - input
 	public static final String MT_USIN = "MT_USIN";

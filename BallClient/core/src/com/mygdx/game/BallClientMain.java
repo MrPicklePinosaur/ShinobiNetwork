@@ -20,18 +20,22 @@ public class BallClientMain extends ApplicationAdapter {
 
 	BallClient server_socket;
 
-
 	Sprite background;
 
 	@Override
 	public void create () {
+		//Init calls
 		Entity.init_textures("texture_lib.txt");
+		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 
+		//init variables
 		batch = new SpriteBatch();
 		camera = new Camera();
 
+		//init sprites (REMOVE LATER)
 		background = new Sprite(new Texture("background.png"));
 
+		//Init server
 		server_socket = new BallClient("127.0.0.1",5000);
 		server_socket.start_connection();
 	}

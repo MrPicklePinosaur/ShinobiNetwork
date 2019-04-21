@@ -2,6 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import java.util.*;
 import java.io.*;
@@ -23,14 +26,28 @@ public class Entity {
     private int id;
     private String texture_path;
     private AbstractSprite sprite;
+    private Body body;
     private int speed = 2;
 
     public Entity(String texture_path) {
         this.id = Global.new_code();
         this.texture_path = texture_path;
         assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
+
+        //Init sprite
         this.sprite = this.init_entity(Entity.texture_dimensions.get(texture_path));
+        this.sprite.resize(this.sprite.getWidth()/Global.PPM,this.sprite.getHeight()/Global.PPM);
+
         entity_list.add(this);
+    }
+
+    public Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
+        BodyDef bdef = new BodyDef();
+        bdef.type = bodyType;
+        assert (Global.world != null): "world has not been initialized";
+        Body new_body = Global.world.createBody(bdef);
+        new_body.createFixture(fdef);
+        return new_body;
     }
 
     public static void init_textures(String texture_lib_path) { //load all tex
@@ -58,15 +75,6 @@ public class Entity {
             if (key.equals("Key_D")) { this.sprite.init_pos(sprite.getX()+speed,sprite.getY(),0); }
         }
     }
-
-    /*
-    public static Entity getEntity(int id) {
-        if (Entity.entity_library.containsKey(id)) {
-            return Entity.entity_library.get(id);
-        }
-        return null;
-    }
-    */
 
     public static void removeEntity(Entity entity) {
         assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";

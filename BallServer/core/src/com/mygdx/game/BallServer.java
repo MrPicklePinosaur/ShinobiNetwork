@@ -40,7 +40,6 @@ class BallClientHandler {
     private BufferedReader instream;
     private BallClientHandler self;
 
-    //TODO: REMOVE CLIENTS FROM LIST WHEN THEY DC
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
     private Entity client_entity; //used so we know which entity belongs to client

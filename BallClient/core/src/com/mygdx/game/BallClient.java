@@ -18,7 +18,6 @@ public class BallClient {
     private String ip;
     private int port;
     private BallClient self;
-    private static int client_entity_id;
 
     public BallClient(String ip, int port) {
         this.ip = ip;
@@ -46,11 +45,7 @@ public class BallClient {
 
                         //interperate server message and post to rendering thread
                         Gdx.app.postRunnable(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                in_unpacker(server_msg);
-                            }
+                            @Override public void run() { in_unpacker(server_msg); }
                         });
 
                     }
@@ -100,10 +95,7 @@ public class BallClient {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
         } else if (msg[0].equals(Global.MT_ASSIGNENTITY)) {
-            BallClient.assignClientId(Integer.parseInt(msg[1]));
+            Entity.assignClientId(Integer.parseInt(msg[1]));
         }
     }
-
-    public static void assignClientId(int id) { BallClient.client_entity_id = id; }
-    public static int getClientId() { return BallClient.client_entity_id; }
 }

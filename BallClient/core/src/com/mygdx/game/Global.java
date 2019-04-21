@@ -6,6 +6,10 @@ import java.util.HashMap;
 
 public class Global {
 
+	//Important vars
+	public static final int SCREEN_WIDTH = 800;
+	public static final int SCREEN_HEIGHT = 600;
+	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
 	public static int PPM = 100;
 
 	//Message types (MT) - input

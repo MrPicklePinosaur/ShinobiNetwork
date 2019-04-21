@@ -59,7 +59,10 @@ public class Entity {
             //This block creates and integrates the entity
             Entity newEntity = new Entity(texture_path);
             entity_library.put(id,newEntity);
-            Entity.client_entity = newEntity;
+
+            if (id == BallClient.getClientId()) {
+                Entity.client_entity = newEntity;
+            }
 
             entity = newEntity;
         } else {

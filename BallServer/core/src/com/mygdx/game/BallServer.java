@@ -57,6 +57,7 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
 
         init_client_entity();
+        this.send_msg(Global.MT_ASSIGNENTITY,""+this.client_entity.getId());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -114,6 +115,8 @@ class BallClientHandler {
             data = ("MT_UPDATE$"+msg);
         } else if (msg_type == Global.MT_KILLENTITY) { //tell client to remove client from their render queue
             data = ("MT_KILLENTITY$"+msg); //in this case, msg is the entity id
+        } else if (msg_type == Global.MT_ASSIGNENTITY) { //tells client which entity they own when the connect
+            data = ("MT_ASSIGNENTITY$"+msg); //msg is the entity id
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;

@@ -17,11 +17,11 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 	Camera camera;
+
 	BallClient server_socket;
 
-	//vars
+
 	Sprite background;
-	Entity client_entity;
 
 	@Override
 	public void create () {
@@ -34,13 +34,10 @@ public class BallClientMain extends ApplicationAdapter {
 
 		server_socket = new BallClient("127.0.0.1",5000);
 		server_socket.start_connection();
-
-		client_entity = server_socket.getClientEntity();
 	}
 
 	@Override
 	public void render () {
-
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -51,7 +48,7 @@ public class BallClientMain extends ApplicationAdapter {
 
 		handleInput();
 
-		camera.moveCam(client_entity);
+		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
 		batch.setProjectionMatrix(camera.getCam().combined);
 		camera.updateCam();
 	}

@@ -6,6 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,16 +29,26 @@ public class BallServerMain extends ApplicationAdapter {
 	Map current_map;
 	Box2DDebugRenderer debugRenderer;
 	OrthographicCamera cam; //TODO: WE SHOULD NOT BE USING THIS
-	
+	OrthogonalTiledMapRenderer tiledMapRenderer;
+
 	@Override
 	public void create () {
-		//init heavy lifres
-		debugRenderer = new Box2DDebugRenderer();
-		cam = new OrthographicCamera(7000/Global.PPM,7000/Global.PPM);
-
 		//init assets
 		Entity.init_textures("texture_dimensions.txt");
 		Global.world = new World(new Vector2(0,0),true);
+
+		//Load map
+		current_map = new Map("maps/mountain_temple.tmx");
+
+		//init heavy lifres
+		debugRenderer = new Box2DDebugRenderer();
+
+		cam = new OrthographicCamera((float) 400/Global.PPM,(float) 400/Global.PPM);
+		cam.zoom = 5f;
+		cam.update();
+
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getMap(),(float) 1/Global.PPM);
+		tiledMapRenderer.setView(cam);
 
 		//Init server and such
 		server = new BallServer(5000);
@@ -53,8 +71,7 @@ public class BallServerMain extends ApplicationAdapter {
 			}
 		}).start(); //auto start thread
 
-		//Load map
-		current_map = new Map("maps/mountain_temple.tmx");
+
 	}
 
 	@Override
@@ -67,6 +84,7 @@ public class BallServerMain extends ApplicationAdapter {
 		if (!entity_data.equals("")) { BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
 
 		//draw stuff (TESTING ONLY)
+		tiledMapRenderer.render();
 		debugRenderer.render(Global.world,cam.combined);
 
 		//update

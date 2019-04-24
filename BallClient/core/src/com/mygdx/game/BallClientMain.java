@@ -18,7 +18,7 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 	Camera camera;
-	//TiledMapRenderer tiledMapRenderer; EXTREMELY USEFUL LATER
+	//TiledMapRenderer tiledMapRenderer; //EXTREMELY USEFUL LATER
 
 	BallClient server_socket;
 

@@ -30,7 +30,7 @@ public class Map {
 
     public void createBody() { //takes in all of the map's collision data and creates static bodies out of them
         for (MapObject obj : this.collisions) { //get each of the objects on collision layer
-            //for now, assume that all of the objects are rectagles
+            //for now, assume that all of the objects are rectagles TODO: ADD SUPPORT FOR CIRCULAR COLLISIONS
             Rectangle rect = ((RectangleMapObject) obj).getRectangle();
             PolygonShape shape = new PolygonShape();
             shape.setAsBox(rect.getWidth()/Global.PPM/2,rect.getHeight()/Global.PPM/2); //the parameters are half the width and half the height (for some reason)

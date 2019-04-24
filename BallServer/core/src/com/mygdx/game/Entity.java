@@ -41,15 +41,6 @@ public class Entity {
         entity_list.add(this);
     }
 
-    public Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
-        BodyDef bdef = new BodyDef();
-        bdef.type = bodyType;
-        assert (Global.world != null): "world has not been initialized";
-        Body new_body = Global.world.createBody(bdef);
-        new_body.createFixture(fdef);
-        return new_body;
-    }
-
     public static void init_textures(String texture_lib_path) { //load all tex
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));

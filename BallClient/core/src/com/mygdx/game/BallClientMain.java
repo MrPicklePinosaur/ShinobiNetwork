@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 
 import java.util.*;
 import java.io.*;
@@ -17,6 +18,7 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 	Camera camera;
+	//TiledMapRenderer tiledMapRenderer; EXTREMELY USEFUL LATER
 
 	BallClient server_socket;
 

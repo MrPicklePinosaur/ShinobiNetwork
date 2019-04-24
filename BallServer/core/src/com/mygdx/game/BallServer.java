@@ -56,7 +56,7 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
 
         init_client_entity();
-        //new Map("maps/mountain_temple.tmx");
+
         this.send_msg(Global.MT_ASSIGNENTITY,""+this.client_entity.getId());
         new Thread(new Runnable() {
             @Override

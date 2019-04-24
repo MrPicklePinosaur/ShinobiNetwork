@@ -14,7 +14,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BallServerMain extends ApplicationAdapter {
 
+	//heavy lifters
 	BallServer server;
+	Map current_map;
 	
 	@Override
 	public void create () {
@@ -42,6 +44,9 @@ public class BallServerMain extends ApplicationAdapter {
 				}
 			}
 		}).start(); //auto start thread
+
+		//Load map
+		current_map = new Map("maps/mountain_temple.tmx");
 	}
 
 	@Override

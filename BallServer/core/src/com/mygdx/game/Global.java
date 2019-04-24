@@ -18,6 +18,7 @@ public class Global {
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
 	public static World world;
 	public static final int PPM = 100;
+	public static final float deltatime = 1/60f;
 
 	//Message Types (MT) - input
 	public static final String MT_USIN = "MT_USIN";
@@ -37,7 +38,7 @@ public class Global {
 		return code;
 	}
 
-	public Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
+	public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
 		BodyDef bdef = new BodyDef();
 		bdef.type = bodyType;
 		assert (Global.world != null): "world has not been initialized";

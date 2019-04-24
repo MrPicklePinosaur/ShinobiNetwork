@@ -3,9 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import javax.xml.crypto.Data;
@@ -17,10 +19,16 @@ public class BallServerMain extends ApplicationAdapter {
 	//heavy lifters
 	BallServer server;
 	Map current_map;
+	Box2DDebugRenderer debugRenderer;
+	OrthographicCamera cam; //TODO: WE SHOULD NOT BE USING THIS
 	
 	@Override
 	public void create () {
-		//Misc inits
+		//init heavy lifres
+		debugRenderer = new Box2DDebugRenderer();
+		cam = new OrthographicCamera(7000/Global.PPM,7000/Global.PPM);
+
+		//init assets
 		Entity.init_textures("texture_dimensions.txt");
 		Global.world = new World(new Vector2(0,0),true);
 
@@ -58,6 +66,11 @@ public class BallServerMain extends ApplicationAdapter {
 		String entity_data = Entity.send_all();
 		if (!entity_data.equals("")) { BallClientHandler.broadcast(Global.MT_UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
 
+		//draw stuff (TESTING ONLY)
+		debugRenderer.render(Global.world,cam.combined);
+
+		//update
+		Global.world.step(Global.deltatime,6,2); //step physics simulation
 	}
 	
 	@Override

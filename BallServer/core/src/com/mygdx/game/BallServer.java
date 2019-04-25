@@ -42,7 +42,7 @@ class BallClientHandler {
 
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
-    private Entity client_entity; //used so we know which entity belongs to client
+    private Player client_entity; //used so we know which entity belongs to client
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
@@ -122,7 +122,7 @@ class BallClientHandler {
         return data;
     }
 
-    private static void input_unpacker(Entity client_entity,String raw_msg) {
+    private static void input_unpacker(Player client_entity,String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(Global.MT_USIN)) {
@@ -137,7 +137,7 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String texture_path = "cube.png";
-        this.client_entity = new Entity(texture_path);
+        this.client_entity = new Player(texture_path);
     }
 
     public void removeClient() {

@@ -1,5 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+
 public class Player extends Entity {
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
@@ -8,6 +12,24 @@ public class Player extends Entity {
         super(texture_path);
 
         //init player body
+
+        //Players have a circular fixture
+        CircleShape circle = new CircleShape();
+        circle.setRadius((this.sprite.getWidth()/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = circle;
+        this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);
+    }
+
+    public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
+        String[] inputs = raw_inputs.split(",");
+        this.body.setLinearVelocity(0,0); //reset velocity
+        for (String key : inputs) {
+            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
+            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
+            if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
+            if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
+        }
     }
 
 }

@@ -14,7 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
-    //TODO: REMOVE ENTITY FROM LIST WHEN CLIENT DCs
     //used so we know which piece of data belongs to which entity
     //private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
@@ -23,11 +22,11 @@ public class Entity {
 
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
-    private int id;
-    private String texture_path;
-    private AbstractSprite sprite;
-    private Body body;
-    private int speed = 2;
+    protected int id;
+    protected String texture_path;
+    protected AbstractSprite sprite;
+    protected Body body;
+    protected int speed = 2;
 
     public Entity(String texture_path) {
         this.id = Global.new_code();
@@ -60,10 +59,10 @@ public class Entity {
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
         String[] inputs = raw_inputs.split(",");
         for (String key : inputs) {
-            if (key.equals("Key_W")) { this.sprite.init_pos(sprite.getX(),sprite.getY()+speed,0); }
-            if (key.equals("Key_S")) { this.sprite.init_pos(sprite.getX(),sprite.getY()-speed,0); }
-            if (key.equals("Key_A")) { this.sprite.init_pos(sprite.getX()-speed,sprite.getY(),0); }
-            if (key.equals("Key_D")) { this.sprite.init_pos(sprite.getX()+speed,sprite.getY(),0); }
+            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
+            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
+            if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
+            if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
         }
     }
 

@@ -1,1 +1,1 @@
-cube.png,800x800
+cube.png,32x32

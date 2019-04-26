@@ -19,14 +19,14 @@ public class Entity {
 
     //just a simple list of all the alive entities
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
-
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
     protected int id;
     protected String texture_path;
-    protected AbstractSprite sprite;
     protected Body body;
     protected int speed = 2;
+    protected int spriteWidth;
+    protected int spriteHeight;
 
     public Entity(String texture_path) {
         this.id = Global.new_code();
@@ -34,9 +34,9 @@ public class Entity {
         assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
 
         //Init sprite
-        this.sprite = this.init_entity(Entity.texture_dimensions.get(texture_path));
-        this.sprite.resize(this.sprite.getWidth()/Global.PPM,this.sprite.getHeight()/Global.PPM);
-
+        String[] dim = Entity.texture_dimensions.get(texture_path).split("x"); //get the sprite dimensions
+        this.spriteWidth = Integer.parseInt(dim[0]);
+        this.spriteHeight = Integer.parseInt(dim[1]);
         entity_list.add(this);
     }
 
@@ -49,11 +49,6 @@ public class Entity {
                 Entity.texture_dimensions.put(data[0],data[1]);
             }
         } catch (IOException ex) { System.out.println(ex); }
-    }
-
-    public AbstractSprite init_entity(String dimensions) {
-        String[] dim = dimensions.split("x");
-        return new AbstractSprite(Integer.parseInt(dim[0]),Integer.parseInt(dim[1]));
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -82,15 +77,14 @@ public class Entity {
     }
 
     //Getters
-    public float getX() { return this.sprite.getX(); }
-    public float getY() { return this.sprite.getY(); }
-    public float getRotation() { return this.sprite.getRotation(); }
+    public float getX() { return this.body.getPosition().x*Global.PPM; }
+    public float getY() { return this.body.getPosition().y*Global.PPM; }
+    public float getRotation() { return this.body.getTransform().getRotation(); }
     public String getTexturePath() { return this.texture_path; }
     public int getId() { return this.id; }
 
     //Setters
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS
-        this.sprite.init_pos(x,y,rotation);
         this.body.setTransform(x,y,rotation);
     }
 

@@ -15,7 +15,7 @@ public class Player extends Entity {
 
         //Players have a circular fixture
         CircleShape circle = new CircleShape();
-        circle.setRadius((this.sprite.getWidth()/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
+        circle.setRadius((this.spriteWidth/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
         this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);

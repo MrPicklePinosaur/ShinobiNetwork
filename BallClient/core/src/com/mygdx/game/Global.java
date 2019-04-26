@@ -16,6 +16,7 @@ public class Global {
 	public static final String MT_UPDATE = "MT_UPDATE";
 	public static final String MT_KILLENTITY = "MT_KILLENTITY";
 	public static final String MT_ASSIGNENTITY = "MT_ASSIGNENTITY";
+	public static final String MT_LOADMAP = "MT_LOADMAP";
 
 	//Message types - output
 	public static final int MT_USIN = 0;

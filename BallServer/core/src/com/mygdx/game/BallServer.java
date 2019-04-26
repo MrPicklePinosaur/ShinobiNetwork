@@ -117,6 +117,8 @@ class BallClientHandler {
             data = ("MT_KILLENTITY$"+msg); //in this case, msg is the entity id
         } else if (msg_type == Global.MT_ASSIGNENTITY) { //tells client which entity they own when the connect
             data = ("MT_ASSIGNENTITY$"+msg); //msg is the entity id
+        } else if (msg_type == Global.MT_LOADMAP) {
+            data = ("MT_LOADMAP$"+msg); //msg is the filepath of the map image
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;

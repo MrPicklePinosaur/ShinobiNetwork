@@ -19,6 +19,7 @@ public class Global {
 	public static World world;
 	public static final int PPM = 100;
 	public static final float deltatime = 1/60f;
+	public static final float PLAYER_DAMPING = 50; //the amount of friction the player has with the floor
 
 	//Message Types (MT) - input
 	public static final String MT_USIN = "MT_USIN";
@@ -29,6 +30,7 @@ public class Global {
 	public static final int MT_UPDATE = 0;
 	public static final int MT_KILLENTITY = 1;
 	public static final int MT_ASSIGNENTITY = 2;
+	public static final int MT_LOADMAP = 3;
 
 	//Used for i/o
 	private static int code = -1;

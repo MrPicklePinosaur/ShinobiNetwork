@@ -44,7 +44,7 @@ public class BallServerMain extends ApplicationAdapter {
 		debugRenderer = new Box2DDebugRenderer();
 
 		cam = new OrthographicCamera((float) 400/Global.PPM,(float) 400/Global.PPM);
-		cam.zoom = 5f;
+		cam.zoom = 3f;
 		cam.update();
 
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getMap(),(float) 1/Global.PPM);

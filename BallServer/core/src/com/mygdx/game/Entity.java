@@ -91,6 +91,7 @@ public class Entity {
     //Setters
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS
         this.sprite.init_pos(x,y,rotation);
+        this.body.setTransform(x,y,rotation);
     }
 
 }

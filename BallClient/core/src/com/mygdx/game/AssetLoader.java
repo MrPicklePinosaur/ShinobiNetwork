@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class AssetLoader {
-    public static HashMap<String, Animation<TextureRegion>> animation_lib = new HashMap<String, Animation<TextureRegion>>();
+    public static HashMap<String, TextureRegion[]> animation_lib = new HashMap<String, TextureRegion[]>();
 
     public static void loadAnimations(String lib_filepath) { //loads all spreadsheets and converts them into Animation objects
         try { //the lib holds the filepaths of all the spritesheets
@@ -29,15 +29,12 @@ public class AssetLoader {
                         frames[index++] = raw[i][j];
                     }
                 }
-
-                //IMPORTANT: frameDuration is set to zero, so when an entity wants to use it, they need to set their own
-                Animation<TextureRegion> animation = new Animation<TextureRegion>(0, frames);
-                AssetLoader.animation_lib.put(filepath, animation);
+                AssetLoader.animation_lib.put(filepath, frames);
             }
         } catch (IOException ex) { System.out.println(ex); }
     }
 
-    public static Animation<TextureRegion> getAnimation(String file_path) { return AssetLoader.animation_lib.get(file_path); }
+    public static TextureRegion[] getAnimation(String file_path) { return AssetLoader.animation_lib.get(file_path); }
 
 
 }

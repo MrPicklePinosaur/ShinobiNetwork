@@ -26,15 +26,15 @@ public class Entity {
     private float rotation;
 
     private Animation<TextureRegion> animation;
-    private float frameTime; //used for animation
+    private float frameTime = 0.25f; //used for animation
 
     private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
 
         assert (AssetLoader.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
-        this.animation = AssetLoader.getAnimation(texture_path);
+        TextureRegion[] frames = AssetLoader.getAnimation(texture_path);
+        this.animation = new Animation<TextureRegion>(frameTime,frames);
 
         this.x = 0;
-        this.y = 0;
         this.rotation = 0;
         this.frameTime = 1f;
     }

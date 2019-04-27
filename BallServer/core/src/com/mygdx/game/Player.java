@@ -24,10 +24,10 @@ public class Player extends Entity {
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
-            if (key.equals("Key_W")) { this.body.applyLinearImpulse(0,speed,0,0,true); }
-            if (key.equals("Key_S")) { this.body.applyLinearImpulse(0,-speed,0,0,true); }
-            if (key.equals("Key_A")) { this.body.applyLinearImpulse(-speed,0,0,0,true); }
-            if (key.equals("Key_D")) { this.body.applyLinearImpulse(speed,0,0,0,true); }
+            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
+            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
+            if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
+            if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
         }
     }
 

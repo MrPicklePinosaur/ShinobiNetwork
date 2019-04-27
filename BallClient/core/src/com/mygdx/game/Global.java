@@ -23,5 +23,7 @@ public class Global {
 	public static final int MT_CHATMSG = 1;
 	public static final int MT_CMD = 2;
 
+	public static final int SPRITESIZE = 32;
+
 
 }

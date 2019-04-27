@@ -45,6 +45,8 @@ public class BallServerMain extends ApplicationAdapter {
 
 		cam = new OrthographicCamera((float) 400/Global.PPM,(float) 400/Global.PPM);
 		cam.zoom = 3f;
+		cam.position.x = (float)500/Global.PPM;
+		cam.position.y = (float)500/Global.PPM;
 		cam.update();
 
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getMap(),(float) 1/Global.PPM);
@@ -70,7 +72,6 @@ public class BallServerMain extends ApplicationAdapter {
 				}
 			}
 		}).start(); //auto start thread
-
 
 	}
 

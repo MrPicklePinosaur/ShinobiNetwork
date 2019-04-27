@@ -17,17 +17,28 @@ public class Entity {
     private static Entity client_entity; //the entity that this specific client owns
     private static int client_entity_id = -1;
 
-    //TODO: find a way to remove any entities that are no longer needed
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
-    private static HashMap<String,Texture> texture_lib = new HashMap<String,Texture>(); //holds file_path and texture object
+    //private static HashMap<String,Texture> texture_lib = new HashMap<String,Texture>(); //holds file_path and texture object
 
     private Sprite sprite;
+    private float x;
+    private float y;
+    private float rotation;
 
     private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
+        /*
         assert (Entity.texture_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
         this.sprite = new Sprite(Entity.texture_lib.get(texture_path));
+        this.sprite.setCenter(this.sprite.getWidth()/2f,this.sprite.getHeight()/2f);
+        */
+
+        this.x = 0;
+        this.y = 0;
+        this.rotation = 0;
+
     }
 
+    /*
     public static void init_textures(String texture_lib_path) { //TODO: possibly use async loading later, if there are too many assets
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
@@ -39,6 +50,7 @@ public class Entity {
             }
         } catch(IOException ex) { System.out.println(ex+", something went wrong when loading textures."); }
     }
+    */
 
     public void set_pos(float x, float y, float rotation) {
         this.sprite.setX(x);

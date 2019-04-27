@@ -35,7 +35,7 @@ public class BallClientMain extends ApplicationAdapter {
 		camera = new Camera();
 
 		//init sprites (REMOVE LATER)
-		background = new Sprite(new Texture("background.png"));
+		background = new Sprite(new Texture("mountain_temple.png"));
 
 		//Init server
 		server_socket = new BallClient("127.0.0.1",5000);

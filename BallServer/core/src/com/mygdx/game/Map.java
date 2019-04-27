@@ -27,7 +27,6 @@ public class Map {
         this.createBody();
     }
 
-
     public void createBody() { //takes in all of the map's collision data and creates static bodies out of them
         for (MapObject obj : this.collisions) { //get each of the objects on collision layer
             //for now, assume that all of the objects are rectagles TODO: ADD SUPPORT FOR CIRCULAR COLLISIONS
@@ -40,8 +39,6 @@ public class Map {
             new_body.setTransform((rect.getX()+rect.getWidth()/2)/Global.PPM,(rect.getY()+rect.getHeight()/2)/Global.PPM,0);
         }
     }
-
-
 
     public TiledMap getMap() { return this.map; }
 }

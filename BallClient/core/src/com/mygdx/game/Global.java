@@ -2,7 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Global {
 

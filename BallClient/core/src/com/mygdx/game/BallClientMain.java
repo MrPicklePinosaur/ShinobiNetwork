@@ -27,7 +27,7 @@ public class BallClientMain extends ApplicationAdapter {
 	@Override
 	public void create () {
 		//Init calls
-		Entity.init_textures("texture_lib.txt");
+		AssetLoader.loadAnimations("spritesheet_lib.txt");
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 
 		//init variables
@@ -49,10 +49,13 @@ public class BallClientMain extends ApplicationAdapter {
 
 		batch.begin();
 		background.draw(batch);
-		Entity.draw_all(batch);
+		Entity.drawAll(batch);
 		batch.end();
 
+		//update stuff
+		float deltaTime = Gdx.graphics.getDeltaTime();
 		handleInput();
+		Entity.stepFrameAll(deltaTime);
 
 		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
 		batch.setProjectionMatrix(camera.getCam().combined);

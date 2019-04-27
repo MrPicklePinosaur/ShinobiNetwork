@@ -1,8 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,44 +20,29 @@ public class Entity {
     private static int client_entity_id = -1;
 
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
-    //private static HashMap<String,Texture> texture_lib = new HashMap<String,Texture>(); //holds file_path and texture object
 
-    private Sprite sprite;
     private float x;
     private float y;
     private float rotation;
 
+    private Animation<TextureRegion> animation;
+    private float frameTime; //used for animation
+
     private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
-        /*
-        assert (Entity.texture_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
-        this.sprite = new Sprite(Entity.texture_lib.get(texture_path));
-        this.sprite.setCenter(this.sprite.getWidth()/2f,this.sprite.getHeight()/2f);
-        */
+
+        assert (AssetLoader.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
+        this.animation = AssetLoader.getAnimation(texture_path);
 
         this.x = 0;
         this.y = 0;
         this.rotation = 0;
-
+        this.frameTime = 1f;
     }
-
-    /*
-    public static void init_textures(String texture_lib_path) { //TODO: possibly use async loading later, if there are too many assets
-        try {
-            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
-            while (fileReader.hasNext()) {
-                //data is in the form "texture_path"
-                String texture_path = fileReader.nextLine();
-                Texture texture = new Texture(texture_path);
-                Entity.texture_lib.put(texture_path,texture);
-            }
-        } catch(IOException ex) { System.out.println(ex+", something went wrong when loading textures."); }
-    }
-    */
 
     public void set_pos(float x, float y, float rotation) {
-        this.sprite.setX(x);
-        this.sprite.setY(y);
-        this.sprite.setRotation(rotation);
+        this.x = x;
+        this.y = y;
+        this.rotation = rotation;
     }
 
     public static void update_entity(String data) { //if entity doesnt exist, we create a new one
@@ -90,15 +77,23 @@ public class Entity {
         Entity.entity_library.remove(id);
     }
 
-    public static void draw_all(SpriteBatch batch) { //iterate through entity hashmap and draws everything
+    public void stepFrame(float deltaTime) { this.frameTime += deltaTime; } //possibly combine with getFrame
+    public static void stepFrameAll(float deltaTime) {
         for (Entity e : Entity.entity_library.values()) {
-            e.getSprite().draw(batch);
+            e.stepFrame(deltaTime);
         }
     }
 
-    public float getX() { return this.sprite.getX(); }
-    public float getY() { return this.sprite.getY(); }
-    public Sprite getSprite() { return this.sprite; }
+    public TextureRegion getFrame() { return this.animation.getKeyFrame(this.frameTime,true); }
+    public static void drawAll(SpriteBatch batch) {
+        for (Entity e : Entity.entity_library.values()) {
+            TextureRegion tex = e.getFrame();
+            batch.draw(tex,e.getX(),e.getY()); //TODO, add scaling and rotation
+        }
+    }
+
+    public float getX() { return this.x; }
+    public float getY() { return this.y; }
     public static Entity getClientEntity() {
         //assert (Entity.client_entity != null): "Client_entity has not been initalized";
         return Entity.client_entity;

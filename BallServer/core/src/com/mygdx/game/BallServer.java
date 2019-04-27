@@ -138,7 +138,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String texture_path = "cube.png";
+        String texture_path = "ninja_run.png";
         this.client_entity = new Player(texture_path);
         this.client_entity.init_pos((float)100/Global.PPM,(float)100/Global.PPM,0);
     }

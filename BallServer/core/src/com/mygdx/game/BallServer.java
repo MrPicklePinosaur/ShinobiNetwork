@@ -78,8 +78,9 @@ class BallClientHandler {
 
                     //tell entity to stop drawing it
                     broadcast(MT.KILLENTITY,""+client_entity.getId());
-                    //remove client entity from list
-                    Entity.removeEntity(client_entity);
+
+                    AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
+                    Entity.removeEntity(client_entity); //remove client entity from list
                     removeClient();
 
                     //tie off some loose ends

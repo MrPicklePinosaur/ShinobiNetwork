@@ -7,11 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-
-import java.util.*;
-import java.io.*;
-import java.net.*;
 
 public class BallClientMain extends ApplicationAdapter {
 
@@ -27,7 +22,7 @@ public class BallClientMain extends ApplicationAdapter {
 	@Override
 	public void create () {
 		//Init calls
-		AssetLoader.loadAnimations("spritesheet_lib.txt");
+		AssetManager.loadAnimations("spritesheet_lib.txt");
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 
 		//init variables
@@ -54,12 +49,14 @@ public class BallClientMain extends ApplicationAdapter {
 
 		//update stuff
 		float deltaTime = Gdx.graphics.getDeltaTime();
-		handleInput();
+		Global.updateInput();
+		sendKeyboard();
 		Entity.stepFrameAll(deltaTime);
 
 		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
 		batch.setProjectionMatrix(camera.getCam().combined);
 		camera.updateCam();
+
 	}
 	
 	@Override
@@ -67,8 +64,10 @@ public class BallClientMain extends ApplicationAdapter {
 
 	}
 
-	public void handleInput() { //takes in user input and sends to server
+	public void sendKeyboard() { //takes in user input and sends to server
 		String msg = "";
+		//TODO: send mouse position as well
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { msg+=(",MOUSE_LEFT"); } //TODO: possibly do one for key click
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }

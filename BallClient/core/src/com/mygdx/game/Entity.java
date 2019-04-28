@@ -2,11 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import javax.swing.border.EmptyBorder;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -38,8 +36,8 @@ public class Entity {
     }
 
     private static TextureRegion[] createAnimation(String texture_path) {
-        assert (AssetLoader.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
-        Texture spritesheet = AssetLoader.getSpritesheet(texture_path);
+        assert (AssetManager.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
+        Texture spritesheet = AssetManager.getSpritesheet(texture_path);
 
         int NUM_COLS = spritesheet.getWidth() / Global.SPRITESIZE;
         int NUM_ROWS = spritesheet.getHeight() / Global.SPRITESIZE;

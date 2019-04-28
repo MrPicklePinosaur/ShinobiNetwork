@@ -24,6 +24,7 @@ public class Player extends Entity {
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
+            if (key.equals("MOUSE_LEFT")) { } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }

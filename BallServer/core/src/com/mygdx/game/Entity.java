@@ -51,16 +51,6 @@ public class Entity {
         } catch (IOException ex) { System.out.println(ex); }
     }
 
-    public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
-        String[] inputs = raw_inputs.split(",");
-        for (String key : inputs) {
-            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
-            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
-            if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
-            if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
-        }
-    }
-
     public static void removeEntity(Entity entity) {
         assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
         Entity.entity_list.remove(entity);
@@ -80,6 +70,7 @@ public class Entity {
     public float getX() { return this.body.getPosition().x*Global.PPM; }
     public float getY() { return this.body.getPosition().y*Global.PPM; }
     public float getRotation() { return this.body.getTransform().getRotation(); }
+    public Body getBody() { return this.body; }
     public String getTexturePath() { return this.texture_path; }
     public int getId() { return this.id; }
 

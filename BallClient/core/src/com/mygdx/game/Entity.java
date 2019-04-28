@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Affine2;
+import com.badlogic.gdx.math.Matrix3;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,6 +27,10 @@ public class Entity {
     private float y;
     private float rotation;
 
+    private float old_x;
+    private float old_y;
+    private float old_rotation;
+
     private Animation<TextureRegion> animation;
     private float frameTime = 0.25f; //used for animation
 
@@ -34,15 +40,15 @@ public class Entity {
         TextureRegion[] frames = AssetLoader.getAnimation(texture_path);
         this.animation = new Animation<TextureRegion>(frameTime,frames);
 
-        this.x = 0;
-        this.rotation = 0;
+        this.x = 0; this.y = 0; this.rotation = 0;
+        this.old_x = 0; this.old_y = 0; this.old_rotation = 0;
         this.frameTime = 1f;
+
     }
 
-    public void set_pos(float x, float y, float rotation) {
-        this.x = x;
-        this.y = y;
-        this.rotation = rotation;
+    public void update_pos(float new_x, float new_y, float new_rotation) {
+        this.old_x = this.x; this.old_y = this.y; this.old_rotation = this.rotation;
+        this.x = new_x; this.y = new_y; this.rotation = new_rotation;
     }
 
     public static void update_entity(String data) { //if entity doesnt exist, we create a new one
@@ -60,18 +66,15 @@ public class Entity {
             Entity newEntity = new Entity(texture_path);
             entity_library.put(id,newEntity);
 
-            if (id == Entity.client_entity_id) {
-                Entity.client_entity = newEntity;
-            }
-
+            if (id == Entity.client_entity_id) { Entity.client_entity = newEntity; }
             entity = newEntity;
-        } else {
-            entity = Entity.entity_library.get(id);
-        }
+
+        } else { entity = Entity.entity_library.get(id); }
 
         //apply all the updates
-        entity.set_pos(x,y,rot);
+        entity.update_pos(x,y,rot);
     }
+
     public static void kill_entity(int id) {
         assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";
         Entity.entity_library.remove(id);
@@ -85,15 +88,34 @@ public class Entity {
     }
 
     public TextureRegion getFrame() { return this.animation.getKeyFrame(this.frameTime,true); }
+
     public static void drawAll(SpriteBatch batch) {
         for (Entity e : Entity.entity_library.values()) {
             TextureRegion tex = e.getFrame();
-            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
+
+            //TODO: dont generalise for players (only reflection in y-axis)
+            Affine2 trans = Entity.getTransformMatrix(e);
+
+            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,trans); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
         }
+    }
+
+    public static Affine2 getTransformMatrix(Entity e) { //used only for enttiies that flip in y-axis only
+        //Find the direction the entity is travelling based on their old position (we assume all sprites are facing to the right)
+        Affine2 transform = new Affine2(); //defaulted as the identity matrix (if the entity was moving to the right
+        if (e.getOldX()-e.getX() > 0) { //if the player was moving to the left
+            transform.m00 = -1; //now the matrix flips image over y-axis ( [-1,0,0,0,1,0,0,0,1] )
+        }
+        return transform;
+
+
     }
 
     public float getX() { return this.x; }
     public float getY() { return this.y; }
+    public float getOldX() { return this.old_x; }
+    public float getOldY() { return this.old_y; }
+
     public static Entity getClientEntity() {
         //assert (Entity.client_entity != null): "Client_entity has not been initalized";
         return Entity.client_entity;

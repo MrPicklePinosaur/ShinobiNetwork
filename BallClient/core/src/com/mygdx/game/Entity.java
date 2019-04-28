@@ -94,21 +94,10 @@ public class Entity {
             TextureRegion tex = e.getFrame();
 
             //TODO: dont generalise for players (only reflection in y-axis)
-            Affine2 trans = Entity.getTransformMatrix(e);
-
-            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,trans); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
+            if (e.getOldX()-e.getX() > 0 && !tex.isFlipX()) { tex.flip(true,false);} //PROBLEM: THIS AFFECTS THE STORED TEXTUREREGIONS, SO ALL ENTITIES WILL GET FLIPPED
+            else if (e.getOldX()-e.getX() < 0 && tex.isFlipX()) { tex.flip(true,false);}
+            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
         }
-    }
-
-    public static Affine2 getTransformMatrix(Entity e) { //used only for enttiies that flip in y-axis only
-        //Find the direction the entity is travelling based on their old position (we assume all sprites are facing to the right)
-        Affine2 transform = new Affine2(); //defaulted as the identity matrix (if the entity was moving to the right
-        if (e.getOldX()-e.getX() > 0) { //if the player was moving to the left
-            transform.m00 = -1; //now the matrix flips image over y-axis ( [-1,0,0,0,1,0,0,0,1] )
-        }
-        return transform;
-
-
     }
 
     public float getX() { return this.x; }

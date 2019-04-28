@@ -34,7 +34,10 @@ public class AssetLoader {
         } catch (IOException ex) { System.out.println(ex); }
     }
 
-    public static TextureRegion[] getAnimation(String file_path) { return AssetLoader.animation_lib.get(file_path); }
+    public static TextureRegion[] getAnimation(String file_path) {
+        TextureRegion[] ani = AssetLoader.animation_lib.get(file_path);
+        return ani.clone();
+    }
 
 
 }

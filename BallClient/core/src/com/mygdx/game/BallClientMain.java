@@ -76,6 +76,6 @@ public class BallClientMain extends ApplicationAdapter {
 		if (msg.equals("")) return; //if there isnt any input, don't send a message
 		msg = msg.substring(1); //get rid of extra comma in front
 
-		server_socket.send_msg(Global.MT_USIN,msg);
+		server_socket.send_msg(MT.USIN,msg);
 	}
 }

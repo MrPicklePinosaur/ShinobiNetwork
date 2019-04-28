@@ -64,18 +64,18 @@ public class BallClient {
     }
 
     //Can be used from anywhere in the main thread to send messages
-    public void send_msg(int msg_type,String msg) { //send message to server
+    public void send_msg(MT msg_type,String msg) { //send message to server
         String raw_msg = this.out_packer(msg_type,msg);
         outstream.println(raw_msg);
     }
 
-    private String out_packer(int msg_type,String msg) { //helper method that 'encodes' message
+    private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
-        if (msg_type == Global.MT_USIN) { //if the message we want to send is a user input
-            data = ("MT_USIN$"+msg);
-        } else if (msg_type == Global.MT_CHATMSG) {
+        if (msg_type == MT.USIN) { //if the message we want to send is a user input
+            data = (MT.USIN+"$"+msg);
+        } else if (msg_type == MT.CHATMSG) {
 
-        } else if (msg_type == Global.MT_CMD) {
+        } else if (msg_type == MT.CMD) {
 
         }
         assert (data != null): "empty message";
@@ -85,16 +85,16 @@ public class BallClient {
     public static void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(Global.MT_UPDATE)) {
+        if (msg[0].equals(MT.UPDATE.toString())) {
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
                 Entity.update_entity(s);
             }
-        } else if (msg[0].equals(Global.MT_KILLENTITY)) {
+        } else if (msg[0].equals(MT.KILLENTITY.toString())) {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
-        } else if (msg[0].equals(Global.MT_ASSIGNENTITY)) {
+        } else if (msg[0].equals(MT.ASSIGNENTITY.toString())) {
             Entity.assignClientId(Integer.parseInt(msg[1]));
         }
     }

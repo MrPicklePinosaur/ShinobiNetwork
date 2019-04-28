@@ -57,7 +57,7 @@ class BallClientHandler {
 
         init_client_entity();
 
-        this.send_msg(Global.MT_ASSIGNENTITY,""+this.client_entity.getId());
+        this.send_msg(MT.ASSIGNENTITY,""+this.client_entity.getId());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,7 +77,7 @@ class BallClientHandler {
                     //first of all, send a message to the client telling them they dced
 
                     //tell entity to stop drawing it
-                    broadcast(Global.MT_KILLENTITY,""+client_entity.getId());
+                    broadcast(MT.KILLENTITY,""+client_entity.getId());
                     //remove client entity from list
                     Entity.removeEntity(client_entity);
                     removeClient();
@@ -98,27 +98,27 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    public static void broadcast(int msg_type,String msg) { //sends a message to all connected clients
+    public static void broadcast(MT msg_type,String msg) { //sends a message to all connected clients
         for (BallClientHandler c : BallClientHandler.client_list) { //for each client thats connected, send this message
             c.send_msg(msg_type,msg);
         }
     }
     //THis can be used from anywhere in the main thread
-    public void send_msg(int msg_type,String msg) {
+    public void send_msg(MT msg_type,String msg) {
         String raw_msg = output_packer(msg_type,msg);
         outstream.println(raw_msg);
     }
 
-    private String output_packer(int msg_type, String msg) { //helper method that 'encodes' message
+    private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
-        if (msg_type == Global.MT_UPDATE) { //tell client the position of all entites
-            data = ("MT_UPDATE$"+msg);
-        } else if (msg_type == Global.MT_KILLENTITY) { //tell client to remove client from their render queue
-            data = ("MT_KILLENTITY$"+msg); //in this case, msg is the entity id
-        } else if (msg_type == Global.MT_ASSIGNENTITY) { //tells client which entity they own when the connect
-            data = ("MT_ASSIGNENTITY$"+msg); //msg is the entity id
-        } else if (msg_type == Global.MT_LOADMAP) {
-            data = ("MT_LOADMAP$"+msg); //msg is the filepath of the map image
+        if (msg_type == MT.UPDATE) { //tell client the position of all entites
+            data = (MT.UPDATE+"$"+msg);
+        } else if (msg_type == MT.KILLENTITY) { //tell client to remove client from their render queue
+            data = (MT.KILLENTITY+"$"+msg); //in this case, msg is the entity id
+        } else if (msg_type == MT.ASSIGNENTITY) { //tells client which entity they own when the connect
+            data = (MT.ASSIGNENTITY+"$"+msg); //msg is the entity id
+        } else if (msg_type == MT.LOADMAP) {
+            data = (MT.LOADMAP+"$"+msg); //msg is the filepath of the map image
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;
@@ -127,11 +127,11 @@ class BallClientHandler {
     private static void input_unpacker(Player client_entity,String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(Global.MT_USIN)) {
+        if (msg[0].equals(MT.USIN.toString())) {
             client_entity.handleInput(msg[1]);
-        } else if (msg[0].equals(Global.MT_CHATMSG)) {
+        } else if (msg[0].equals(MT.CHATMSG.toString())) {
 
-        } else if (msg[0].equals(Global.MT_CMD)) {
+        } else if (msg[0].equals(MT.CMD.toString())) {
 
         }
         //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE

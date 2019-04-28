@@ -5,16 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.Matrix3;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Scanner;
+import javax.swing.border.EmptyBorder;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -36,14 +28,32 @@ public class Entity {
 
     private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
 
-        assert (AssetLoader.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
-        TextureRegion[] frames = AssetLoader.getAnimation(texture_path);
+        TextureRegion[] frames = Entity.createAnimation(texture_path);
         this.animation = new Animation<TextureRegion>(frameTime,frames);
 
         this.x = 0; this.y = 0; this.rotation = 0;
         this.old_x = 0; this.old_y = 0; this.old_rotation = 0;
         this.frameTime = 1f;
 
+    }
+
+    private static TextureRegion[] createAnimation(String texture_path) {
+        assert (AssetLoader.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
+        Texture spritesheet = AssetLoader.getSpritesheet(texture_path);
+
+        int NUM_COLS = spritesheet.getWidth() / Global.SPRITESIZE;
+        int NUM_ROWS = spritesheet.getHeight() / Global.SPRITESIZE;
+
+        TextureRegion[][] raw = TextureRegion.split(spritesheet, Global.SPRITESIZE, Global.SPRITESIZE);
+        TextureRegion[] frames = new TextureRegion[NUM_COLS * NUM_ROWS];
+        //push all raw data into a 1D array
+        int index = 0;
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                frames[index++] = raw[i][j];
+            }
+        }
+        return frames;
     }
 
     public void update_pos(float new_x, float new_y, float new_rotation) {

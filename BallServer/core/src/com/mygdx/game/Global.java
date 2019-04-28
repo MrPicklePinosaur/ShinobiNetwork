@@ -20,7 +20,7 @@ class Global {
 	public static final int PPM = 100;
 	public static final float deltatime = 1/60f;
 	public static final float PLAYER_DAMPING = 50; //the amount of friction the player has with the floor
-	
+
 	//Used for i/o
 	private static int code = -1;
 

@@ -28,14 +28,14 @@
  <tile id="8">
   <image width="32" height="32" source="../raw_images/animatedTiles/tile_animatedWaterShallow/tile_waterShallow_base.png"/>
   <animation>
-   <frame tileid="0" duration="300"/>
-   <frame tileid="1" duration="300"/>
-   <frame tileid="2" duration="300"/>
-   <frame tileid="3" duration="300"/>
-   <frame tileid="4" duration="300"/>
-   <frame tileid="5" duration="300"/>
-   <frame tileid="6" duration="300"/>
-   <frame tileid="7" duration="300"/>
+   <frame tileid="0" duration="250"/>
+   <frame tileid="1" duration="250"/>
+   <frame tileid="2" duration="250"/>
+   <frame tileid="3" duration="250"/>
+   <frame tileid="4" duration="250"/>
+   <frame tileid="5" duration="250"/>
+   <frame tileid="6" duration="250"/>
+   <frame tileid="7" duration="250"/>
   </animation>
  </tile>
 </tileset>

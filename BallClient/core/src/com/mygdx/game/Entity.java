@@ -88,7 +88,7 @@ public class Entity {
     public static void drawAll(SpriteBatch batch) {
         for (Entity e : Entity.entity_library.values()) {
             TextureRegion tex = e.getFrame();
-            batch.draw(tex,e.getX(),e.getY()); //TODO, add scaling and rotation
+            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
         }
     }
 

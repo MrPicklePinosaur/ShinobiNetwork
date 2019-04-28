@@ -35,9 +35,11 @@ public class BallServerMain extends ApplicationAdapter {
 	public void create () {
 		//init assets
 		Entity.init_textures("texture_dimensions.txt");
+		//Map.loadAll("map_library.txt");
 		Global.world = new World(new Vector2(0,0),true);
 
-		//Load map
+		//choose a map
+		//current_map = Map.getMap("Mountain Temple");
 		current_map = new Map("maps/mountain_temple.tmx");
 
 		//init heavy lifres
@@ -49,7 +51,7 @@ public class BallServerMain extends ApplicationAdapter {
 		cam.position.y = (float)500/Global.PPM;
 		cam.update();
 
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getMap(),(float) 1/Global.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getTiledMap(),(float) 1/Global.PPM);
 		tiledMapRenderer.setView(cam);
 
 		//Init server and such

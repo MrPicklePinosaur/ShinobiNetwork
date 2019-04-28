@@ -13,21 +13,30 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
 public class Map {
-    TiledMap map;
-    MapLayer collision_layer;
-    MapObjects collisions;
-    String file_path;
+    private static HashMap<String,Map> map_list = new HashMap<String, Map>();
+
+    private TiledMap map;
+    private MapLayer collision_layer;
+    private MapObjects collisions;
+    private String file_path;
 
     public Map(String file_path) {
         this.file_path = file_path;
         this.map = new TmxMapLoader().load(file_path);
         this.collision_layer = this.map.getLayers().get("COLLISION");
         this.collisions = this.collision_layer.getObjects();
-        this.createBody();
+        this.loadCollisions();
     }
 
-    public void createBody() { //takes in all of the map's collision data and creates static bodies out of them
+    public void loadCollisions() { //takes in all of the map's collision data and creates static bodies out of them
         for (MapObject obj : this.collisions) { //get each of the objects on collision layer
             //for now, assume that all of the objects are rectagles TODO: ADD SUPPORT FOR CIRCULAR COLLISIONS
             Rectangle rect = ((RectangleMapObject) obj).getRectangle();
@@ -40,5 +49,22 @@ public class Map {
         }
     }
 
-    public TiledMap getMap() { return this.map; }
+    public static void loadAll(String map_lib_path) { //loads all maps
+        try {
+            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(map_lib_path)));
+            while (fileReader.hasNext()) {
+                //data comes in the form: "map_name","file_path"
+                String[] data = fileReader.nextLine().split(",");
+                Map newMap = new Map(data[1]);
+                Map.map_list.put(data[0],newMap);
+            }
+            fileReader.close();
+        } catch(IOException ex) { System.out.println(ex); }
+    }
+
+    public TiledMap getTiledMap() { return this.map; }
+    public static Map getMap(String map_name) {
+        assert (Map.map_list.containsKey(map_name)): "Map is not found or has not been loaded";
+        return Map.map_list.get(map_name);
+    }
 }

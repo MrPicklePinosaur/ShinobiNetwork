@@ -67,6 +67,7 @@ public class BallClientMain extends ApplicationAdapter {
 	public void sendKeyboard() { //takes in user input and sends to server
 		String msg = "";
 		//TODO: send mouse position as well
+		msg+=(",MOUSE_POS-"+Global.m_x+"-"+Global.m_y);
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { msg+=(",MOUSE_LEFT"); } //TODO: possibly do one for key click
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }

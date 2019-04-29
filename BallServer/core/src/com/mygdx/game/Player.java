@@ -6,10 +6,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Player extends Entity {
 
+    float mx;
+    float my;
+
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
 
     public Player(String texture_path) {
         super(texture_path);
+        this.mx = 0;
+        this.my = 0;
 
         //init player body
         CircleShape circle = new CircleShape(); //Players have a circular fixture
@@ -24,7 +29,13 @@ public class Player extends Entity {
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
-            if (key.equals("MOUSE_LEFT")) { } //shoot bullet
+            if (key.contains("MOUSE_POS")) {
+                String[] data = key.split("-");
+                this.mx = Float.parseFloat(data[1]);
+                this.my = Float.parseFloat(data[2]);
+                System.out.println(this.mx+" "+this.my);
+            }
+            if (key.equals("MOUSE_LEFT")) {  } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }

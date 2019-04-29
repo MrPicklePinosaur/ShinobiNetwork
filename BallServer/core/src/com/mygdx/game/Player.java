@@ -4,10 +4,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Player extends Entity {
 
-    float mx;
-    float my;
+    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
+
+    private float mx;
+    private float my;
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
 
@@ -29,18 +34,29 @@ public class Player extends Entity {
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
+            /*
             if (key.contains("MOUSE_POS")) {
                 String[] data = key.split("-");
                 this.mx = Float.parseFloat(data[1]);
                 this.my = Float.parseFloat(data[2]);
                 System.out.println(this.mx+" "+this.my);
             }
-            if (key.equals("MOUSE_LEFT")) {  } //shoot bullet
+            */
+            if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
         }
+    }
+
+    public void newProjectile(String file_path) {
+        this.projectile_list.add(new Projectile(file_path));
+    }
+    public void removeProjectile(Projectile projectile) {
+        //safe removal of projectile
+        this.projectile_list.remove(projectile);
+        AssetManager.flagForPurge(projectile.getBody());
     }
 
 }

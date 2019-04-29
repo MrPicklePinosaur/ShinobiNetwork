@@ -83,6 +83,7 @@ public class Entity {
 
         //apply all the updates
         float rot = MathUtils.atan2(my,mx);
+        System.out.println(rot*MathUtils.radiansToDegrees);
         player.update_pos(x,y,rot);
     }
 

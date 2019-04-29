@@ -13,12 +13,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
-public class Entity {
+public abstract class Entity {
     //used so we know which piece of data belongs to which entity
     //private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
     //just a simple list of all the alive entities
-    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
     protected int id;
@@ -37,7 +36,6 @@ public class Entity {
         String[] dim = Entity.texture_dimensions.get(texture_path).split("x"); //get the sprite dimensions
         this.spriteWidth = Integer.parseInt(dim[0]);
         this.spriteHeight = Integer.parseInt(dim[1]);
-        entity_list.add(this);
     }
 
     public static void init_textures(String texture_lib_path) { //load all tex
@@ -51,20 +49,6 @@ public class Entity {
         } catch (IOException ex) { System.out.println(ex); }
     }
 
-    public static void removeEntity(Entity entity) {
-        assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
-        Entity.entity_list.remove(entity);
-    }
-
-    public static String send_all() { //packages all entity positions into a string
-        String msg = "";
-        for (Entity e : Entity.entity_list) { //for each entity
-            msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
-        }
-
-        if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
-        return msg;
-    }
 
     //Getters
     public float getX() { return this.body.getPosition().x*Global.PPM; }

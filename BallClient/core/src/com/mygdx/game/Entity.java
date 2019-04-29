@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -25,7 +27,6 @@ public class Entity {
     private float frameTime = 0.25f; //used for animation
 
     private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
-
         TextureRegion[] frames = Entity.createAnimation(texture_path);
         this.animation = new Animation<TextureRegion>(frameTime,frames);
 
@@ -59,29 +60,33 @@ public class Entity {
         this.x = new_x; this.y = new_y; this.rotation = new_rotation;
     }
 
-    public static void update_entity(String data) { //if entity doesnt exist, we create a new one
+    public static void update_player(String data) { //if entity doesnt exist, we create a new one
         //format: ID,texture_path,x,y
         String[] parsed = data.split(",");
         int id = Integer.parseInt(parsed[0]);
         String texture_path = parsed[1];
         float x = Float.parseFloat(parsed[2]);
         float y = Float.parseFloat(parsed[3]);
-        float rot = Float.parseFloat(parsed[4]);
+        float mx = Float.parseFloat(parsed[4]);
+        float my = Float.parseFloat(parsed[5]);
 
-        Entity entity;
+        Entity player;
         if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
             //This block creates and integrates the entity
-            Entity newEntity = new Entity(texture_path);
-            entity_library.put(id,newEntity);
+            Entity newPlayer = new Entity(texture_path);
+            entity_library.put(id,newPlayer);
 
-            if (id == Entity.client_entity_id) { Entity.client_entity = newEntity; }
-            entity = newEntity;
+            if (id == Entity.client_entity_id) { Entity.client_entity = newPlayer; }
+            player = newPlayer;
 
-        } else { entity = Entity.entity_library.get(id); }
+        } else { player = Entity.entity_library.get(id); }
 
         //apply all the updates
-        entity.update_pos(x,y,rot);
+        float rot = MathUtils.atan2(my,mx);
+        player.update_pos(x,y,rot);
     }
+
+    //TODO: update_projectiles method
 
     public static void kill_entity(int id) {
         assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";

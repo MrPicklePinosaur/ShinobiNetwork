@@ -85,11 +85,11 @@ public class BallClient {
     public static void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(MT.UPDATE.toString())) {
+        if (msg[0].equals(MT.UPDATEPLAYER.toString())) {
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
-                Entity.update_entity(s);
+                Entity.update_player(s);
             }
         } else if (msg[0].equals(MT.KILLENTITY.toString())) {
             int id = Integer.parseInt(msg[1]);

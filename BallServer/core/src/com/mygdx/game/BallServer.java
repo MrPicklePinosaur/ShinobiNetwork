@@ -80,7 +80,7 @@ class BallClientHandler {
                     broadcast(MT.KILLENTITY,""+client_entity.getId());
 
                     AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                    Entity.removeEntity(client_entity); //remove client entity from list
+                    Player.removeEntity(client_entity); //remove client entity from list
                     removeClient();
 
                     //tie off some loose ends
@@ -112,8 +112,8 @@ class BallClientHandler {
 
     private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
-        if (msg_type == MT.UPDATE) { //tell client the position of all entites
-            data = (MT.UPDATE+"$"+msg);
+        if (msg_type == MT.UPDATEPLAYER) { //tell client the position of all entites
+            data = (MT.UPDATEPLAYER+"$"+msg);
         } else if (msg_type == MT.KILLENTITY) { //tell client to remove client from their render queue
             data = (MT.KILLENTITY+"$"+msg); //in this case, msg is the entity id
         } else if (msg_type == MT.ASSIGNENTITY) { //tells client which entity they own when the connect

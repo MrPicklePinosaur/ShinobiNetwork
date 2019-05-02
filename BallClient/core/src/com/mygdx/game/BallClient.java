@@ -41,7 +41,7 @@ public class BallClient {
                     while (true) {
                         final String server_msg = instream.readLine();
 
-                        //System.out.println(server_msg);
+                        System.out.println(server_msg);
 
                         //interperate server message and post to rendering thread
                         Gdx.app.postRunnable(new Runnable() {

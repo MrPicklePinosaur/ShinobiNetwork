@@ -1,1 +1,2 @@
 ninja_run.png
+katanaSlash.png

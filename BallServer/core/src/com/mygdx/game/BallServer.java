@@ -66,7 +66,7 @@ class BallClientHandler {
                     String client_msg = "";
                     while(true) {
                         client_msg = instream.readLine(); //also include the entity id in the msg
-                        //System.out.println(client_msg);
+                        System.out.println(client_msg);
 
                         //interperate client message
                         input_unpacker(client_entity,client_msg);

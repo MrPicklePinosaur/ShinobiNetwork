@@ -13,13 +13,13 @@ class Projectile extends Entity {
 
         //init body
         PolygonShape rect = new PolygonShape();
-        rect.setAsBox(this.spriteWidth,this.spriteHeight);
+        rect.setAsBox(this.spriteWidth/Global.PPM,this.spriteHeight/Global.PPM);
         FixtureDef fdef = new FixtureDef();
         fdef.shape = rect;
-        this.body = Global.createBody(fdef, BodyDef.BodyType.KinematicBody);
+        this.body = Global.createBody(fdef, BodyDef.BodyType.DynamicBody);
 
         //REMOVE THIS LATER
-        this.body.setLinearVelocity(2,2);
+        this.body.setLinearVelocity(speed,speed);
     }
 
 

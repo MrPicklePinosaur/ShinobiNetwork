@@ -42,7 +42,8 @@ public class Player extends Entity {
                 System.out.println(this.mx+" "+this.my);
             }
             */
-            if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
+            if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png"); }
+            //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
@@ -51,7 +52,9 @@ public class Player extends Entity {
     }
 
     public void newProjectile(String file_path) {
-        this.projectile_list.add(new Projectile(file_path));
+        Projectile p = new Projectile(file_path);
+        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,0);
+        this.projectile_list.add(p);
     }
     public void removeProjectile(Projectile projectile) {
         //safe removal of projectile

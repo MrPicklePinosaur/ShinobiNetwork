@@ -21,6 +21,7 @@ public class Entity {
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
+    protected ET entity_type;
     protected int id;
     protected String texture_path;
     protected Body body;
@@ -59,7 +60,7 @@ public class Entity {
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
-            msg += (" "+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
+            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
@@ -67,6 +68,7 @@ public class Entity {
     }
 
     //Getters
+    public ET getET() { return this.entity_type; }
     public float getX() { return this.body.getPosition().x*Global.PPM; }
     public float getY() { return this.body.getPosition().y*Global.PPM; }
     public float getRotation() { return this.body.getTransform().getRotation(); }

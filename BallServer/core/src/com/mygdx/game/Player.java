@@ -18,6 +18,7 @@ public class Player extends Entity {
 
     public Player(String texture_path) {
         super(texture_path);
+        this.entity_type = ET.PLAYER;
         this.m_angle = 0;
 
         //init player body
@@ -38,7 +39,6 @@ public class Player extends Entity {
             if (key.contains("MOUSE_ANGLE:")) {
                 String[] data = key.split(":");
                 this.m_angle = Float.parseFloat(data[1]);
-                System.out.println(m_angle);
             }
             if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
@@ -51,7 +51,7 @@ public class Player extends Entity {
 
     public void newProjectile(String file_path,float angle) {
         Projectile p = new Projectile(file_path);
-        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,0);
+        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle-MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
         this.projectile_list.add(p);
     }

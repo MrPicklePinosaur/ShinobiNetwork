@@ -37,3 +37,7 @@ enum MT {
 	//Message types (MT) - input
 	UPDATE, KILLENTITY, ASSIGNENTITY, LOADMAP
 }
+
+enum ET {
+	PLAYER, ENENMY, PROJECTILE
+}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,6 +14,7 @@ public class Entity {
 
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
 
+    private String entity_type;
     private float x;
     private float y;
     private float rotation;
@@ -62,11 +64,12 @@ public class Entity {
     public static void update_entity(String data) { //if entity doesnt exist, we create a new one
         //format: ID,texture_path,x,y
         String[] parsed = data.split(",");
-        int id = Integer.parseInt(parsed[0]);
-        String texture_path = parsed[1];
-        float x = Float.parseFloat(parsed[2]);
-        float y = Float.parseFloat(parsed[3]);
-        float rot = Float.parseFloat(parsed[4]);
+        String entity_type = parsed[0];
+        int id = Integer.parseInt(parsed[1]);
+        String texture_path = parsed[2];
+        float x = Float.parseFloat(parsed[3]);
+        float y = Float.parseFloat(parsed[4]);
+        float rot = Float.parseFloat(parsed[5]);
 
         Entity entity;
         if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
@@ -80,6 +83,7 @@ public class Entity {
         } else { entity = Entity.entity_library.get(id); }
 
         //apply all the updates
+        entity.entity_type = entity_type;
         entity.update_pos(x,y,rot);
     }
 
@@ -102,14 +106,23 @@ public class Entity {
             TextureRegion tex = e.getFrame();
 
             //TODO: dont generalise for players (only reflection in y-axis)
-            if (e.getOldX()-e.getX() > 0 && !tex.isFlipX()) { tex.flip(true,false);} //PROBLEM: THIS AFFECTS THE STORED TEXTUREREGIONS, SO ALL ENTITIES WILL GET FLIPPED
-            else if (e.getOldX()-e.getX() < 0 && tex.isFlipX()) { tex.flip(true,false);}
-            batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
+            if (e.getET().equals(ET.PLAYER.toString())) {
+                if (e.getOldX() - e.getX() > 0 && !tex.isFlipX()) { tex.flip(true, false); } //PROBLEM: THIS AFFECTS THE STORED TEXTUREREGIONS, SO ALL ENTITIES WILL GET FLIPPED
+                else if (e.getOldX() - e.getX() < 0 && tex.isFlipX()) { tex.flip(true, false); }
+                batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
+            } else if (e.getET().equals(ET.PROJECTILE.toString())) {
+                batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,1,1,e.getRotation()* MathUtils.radiansToDegrees);
+            }
+
+
+
         }
     }
 
+    public String getET() { return this.entity_type; }
     public float getX() { return this.x; }
     public float getY() { return this.y; }
+    public float getRotation() { return this.rotation; }
     public float getOldX() { return this.old_x; }
     public float getOldY() { return this.old_y; }
 

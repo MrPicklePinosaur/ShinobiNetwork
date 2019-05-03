@@ -12,6 +12,7 @@ class Projectile extends Entity {
 
     public Projectile(String file_path) {
         super(file_path);
+        this.entity_type = ET.PROJECTILE;
         this.speed = 3;
         //init body
         /*

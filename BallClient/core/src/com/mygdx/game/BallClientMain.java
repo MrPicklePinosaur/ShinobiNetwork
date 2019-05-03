@@ -68,6 +68,7 @@ public class BallClientMain extends ApplicationAdapter {
 		String msg = "";
 		//TODO: send mouse position as well
 		//msg+=(",MOUSE_POS-"+Global.m_x+"-"+Global.m_y);
+		msg+=(",MOUSE_ANGLE:"+Global.m_angle);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) { msg+=(",Key_Q"); }
 		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { msg+=(",MOUSE_LEFT"); } //TODO: possibly do one for key click
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }

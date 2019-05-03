@@ -44,6 +44,8 @@ public class Map {
             shape.setAsBox(rect.getWidth()/Global.PPM/2,rect.getHeight()/Global.PPM/2); //the parameters are half the width and half the height (for some reason)
             FixtureDef fdef = new FixtureDef();
             fdef.shape = shape;
+            fdef.filter.categoryBits = Global.BIT_STATIC;
+            fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
             Body new_body = Global.createBody(fdef, BodyDef.BodyType.StaticBody);
             new_body.setTransform((rect.getX()+rect.getWidth()/2)/Global.PPM,(rect.getY()+rect.getHeight()/2)/Global.PPM,0);
         }

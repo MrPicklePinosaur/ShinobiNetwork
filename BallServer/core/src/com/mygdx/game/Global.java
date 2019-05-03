@@ -21,6 +21,12 @@ class Global {
 	public static final float deltatime = 1/60f;
 	public static final float PLAYER_DAMPING = 50; //the amount of friction the player has with the floor
 
+	//Collision filters
+	public static final short BIT_STATIC = 2;
+	public static final short BIT_PLAYER = 4;
+	public static final short BIT_ENEMY = 8;
+	public static final short BIT_PROJECTILE = 16;
+
 	//Used for i/o
 	private static int code = -1;
 

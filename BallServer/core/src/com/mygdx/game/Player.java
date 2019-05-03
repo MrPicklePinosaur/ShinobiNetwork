@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -11,21 +12,21 @@ public class Player extends Entity {
 
     private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
 
-    private float mx;
-    private float my;
+    private float m_angle;
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
 
     public Player(String texture_path) {
         super(texture_path);
-        this.mx = 0;
-        this.my = 0;
+        this.m_angle = 0;
 
         //init player body
         CircleShape circle = new CircleShape(); //Players have a circular fixture
         circle.setRadius((this.spriteWidth/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
+        fdef.filter.categoryBits = Global.BIT_PLAYER;
+        fdef.filter.maskBits = Global.BIT_STATIC;
         this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
     }
@@ -34,15 +35,12 @@ public class Player extends Entity {
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
-            /*
-            if (key.contains("MOUSE_POS")) {
-                String[] data = key.split("-");
-                this.mx = Float.parseFloat(data[1]);
-                this.my = Float.parseFloat(data[2]);
-                System.out.println(this.mx+" "+this.my);
+            if (key.contains("MOUSE_ANGLE:")) {
+                String[] data = key.split(":");
+                this.m_angle = Float.parseFloat(data[1]);
+                System.out.println(m_angle);
             }
-            */
-            if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png"); }
+            if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
@@ -51,9 +49,10 @@ public class Player extends Entity {
         }
     }
 
-    public void newProjectile(String file_path) {
+    public void newProjectile(String file_path,float angle) {
         Projectile p = new Projectile(file_path);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,0);
+        p.setVelocity(angle);
         this.projectile_list.add(p);
     }
     public void removeProjectile(Projectile projectile) {

@@ -25,14 +25,14 @@ class Global {
 	public static void updateInput() {
 		Global.m_x = Gdx.input.getX();
 		Global.m_y = Gdx.input.getY();
-		Global.m_angle = MathUtils.atan2(m_y,m_x);
+		Global.m_angle = -1*MathUtils.atan2(m_y-SCREEN_HEIGHT/2f,m_x-SCREEN_WIDTH/2f);
 	}
 
 }
 
 enum MT {
 	//Message types - output
-	USIN, CHATMSG, CMD,
+	USIN, CHATMSG, CMD, CONNECT,
 
 	//Message types (MT) - input
 	UPDATE, KILLENTITY, ASSIGNENTITY, LOADMAP

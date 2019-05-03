@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -13,13 +14,17 @@ class Projectile extends Entity {
 
         //init body
         PolygonShape rect = new PolygonShape();
-        rect.setAsBox(this.spriteWidth/Global.PPM,this.spriteHeight/Global.PPM);
+        rect.setAsBox((float)this.spriteWidth/Global.PPM,(float)this.spriteHeight/Global.PPM);
         FixtureDef fdef = new FixtureDef();
         fdef.shape = rect;
+        fdef.filter.categoryBits = Global.BIT_PROJECTILE;
+        fdef.filter.maskBits = Global.BIT_STATIC;
         this.body = Global.createBody(fdef, BodyDef.BodyType.DynamicBody);
+    }
 
-        //REMOVE THIS LATER
-        this.body.setLinearVelocity(speed,speed);
+    public void setVelocity(float angle) {
+        this.body.setLinearVelocity(speed* MathUtils.cos(angle),speed*MathUtils.sin(angle));
+
     }
 
 

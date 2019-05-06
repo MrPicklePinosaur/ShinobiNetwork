@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.util.*;
 
 public class Player extends Entity {
 
@@ -29,6 +30,8 @@ public class Player extends Entity {
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
         this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);
+        //this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
+        this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
     }
 
@@ -50,7 +53,7 @@ public class Player extends Entity {
     }
 
     public void newProjectile(String file_path,float angle) {
-        Projectile p = new Projectile(file_path);
+        Projectile p = new Projectile(file_path,this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle-MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
         this.projectile_list.add(p);

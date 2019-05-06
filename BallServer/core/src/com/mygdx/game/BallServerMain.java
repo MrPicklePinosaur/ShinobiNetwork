@@ -29,6 +29,7 @@ public class BallServerMain extends ApplicationAdapter {
 		Entity.init_textures("texture_dimensions.txt");
 		//Map.loadAll("map_library.txt");
 		Global.world = new World(new Vector2(0,0),true);
+		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");

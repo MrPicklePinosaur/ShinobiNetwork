@@ -33,6 +33,8 @@ class Projectile extends Entity {
         this.body = Global.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
         //this.body.setUserData(this);
+
+        circle.dispose();
     }
 
     public void setVelocity(float angle) {

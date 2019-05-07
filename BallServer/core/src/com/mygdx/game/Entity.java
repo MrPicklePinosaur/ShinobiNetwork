@@ -54,6 +54,7 @@ public class Entity {
                 String[] data = fileReader.nextLine().split(",");
                 Entity.texture_dimensions.put(data[0],data[1]);
             }
+            fileReader.close();
         } catch (IOException ex) { System.out.println(ex); }
     }
 
@@ -82,7 +83,8 @@ public class Entity {
     }
     public void removeProjectile(Projectile projectile) {
         //safe removal of projectile
-        assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
+        //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
+        if (!this.projectile_list.contains(projectile)) { return; } //if there is a probelm, ignore it
         this.projectile_list.remove(projectile);
         Entity.removeEntity(projectile);
         AssetManager.flagForPurge(projectile.getBody());

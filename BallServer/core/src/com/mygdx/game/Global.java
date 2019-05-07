@@ -43,6 +43,10 @@ class Global {
 		new_body.createFixture(fdef);
 		return new_body;
 	}
+
+	public static void disposeGlobals() {
+		Global.world.dispose();
+	}
 }
 
 enum MT { //mt stands for messageTyoe

@@ -17,12 +17,12 @@ public class AssetManager {
 
                 AssetManager.animation_lib.put(filepath,spritesheet);
             }
+            fileReader.close();
         } catch (IOException ex) { System.out.println(ex); }
     }
 
     public static Texture getSpritesheet(String file_path) {
         return AssetManager.animation_lib.get(file_path);
-
     }
 
 

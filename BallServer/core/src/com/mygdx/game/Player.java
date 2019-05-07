@@ -31,6 +31,8 @@ public class Player extends Entity {
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
+
+        circle.dispose();
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations

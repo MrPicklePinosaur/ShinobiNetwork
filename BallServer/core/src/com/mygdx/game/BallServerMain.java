@@ -89,5 +89,11 @@ public class BallServerMain extends ApplicationAdapter {
 	}
 	
 	@Override
-	public void dispose () { server.close_server(); }
+	public void dispose () {
+		server.close_server();
+		tiledMapRenderer.dispose();
+		debugRenderer.dispose();
+		Global.disposeGlobals();
+
+	}
 }

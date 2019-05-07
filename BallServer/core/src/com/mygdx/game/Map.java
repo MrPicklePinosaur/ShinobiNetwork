@@ -51,6 +51,8 @@ public class Map {
             new_body.setUserData(new Pair<Class<?>,Map>(Map.class,this));
             //new_body.setUserData(this);
             new_body.setTransform((rect.getX()+rect.getWidth()/2)/Global.PPM,(rect.getY()+rect.getHeight()/2)/Global.PPM,0);
+
+            shape.dispose();
         }
     }
 

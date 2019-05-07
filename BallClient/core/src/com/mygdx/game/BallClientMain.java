@@ -61,6 +61,8 @@ public class BallClientMain extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+		server_socket.close_connection();
+		batch.dispose();
 
 	}
 

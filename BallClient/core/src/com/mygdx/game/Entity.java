@@ -88,7 +88,8 @@ public class Entity {
     }
 
     public static void kill_entity(int id) {
-        assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";
+        //assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";
+        if (!Entity.entity_library.containsKey(id)) { return; } //if the entity we are trying to remove doesnt exist, ignore it
         Entity.entity_library.remove(id);
     }
 

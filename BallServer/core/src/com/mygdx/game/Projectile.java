@@ -9,12 +9,12 @@ import javafx.util.Pair;
 
 class Projectile extends Entity {
 
-    //private Entity owner; //keeps track of who created the projectile
+    private Entity owner; //keeps track of who created the projectile
 
     public Projectile(String file_path,Entity owner) {
         super(file_path);
         this.entity_type = ET.PROJECTILE;
-        //this.owner = owner;
+        this.owner = owner;
         this.speed = 3;
         //init body
         /*
@@ -31,12 +31,16 @@ class Projectile extends Entity {
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
         fdef.filter.maskBits = Global.BIT_STATIC;
         this.body = Global.createBody(fdef, BodyDef.BodyType.DynamicBody);
-        //this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
-        this.body.setUserData(this);
+        this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
+        //this.body.setUserData(this);
     }
 
     public void setVelocity(float angle) {
         this.body.setLinearVelocity(speed* MathUtils.cos(angle),speed*MathUtils.sin(angle));
+    }
+
+    public void removeProjecitle() {
+        this.owner.removeProjectile(this);
     }
 
 

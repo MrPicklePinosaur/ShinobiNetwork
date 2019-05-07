@@ -11,8 +11,6 @@ import javafx.util.*;
 
 public class Player extends Entity {
 
-    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
-
     private float m_angle;
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
@@ -30,8 +28,8 @@ public class Player extends Entity {
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
         this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);
-        //this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
-        this.body.setUserData(this);
+        this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
+        //this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
     }
 
@@ -52,16 +50,5 @@ public class Player extends Entity {
         }
     }
 
-    public void newProjectile(String file_path,float angle) {
-        Projectile p = new Projectile(file_path,this);
-        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle-MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
-        p.setVelocity(angle);
-        this.projectile_list.add(p);
-    }
-    public void removeProjectile(Projectile projectile) {
-        //safe removal of projectile
-        this.projectile_list.remove(projectile);
-        AssetManager.flagForPurge(projectile.getBody());
-    }
 
 }

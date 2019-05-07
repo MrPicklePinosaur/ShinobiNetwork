@@ -48,8 +48,8 @@ public class Map {
             fdef.filter.categoryBits = Global.BIT_STATIC;
             fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
             Body new_body = Global.createBody(fdef, BodyDef.BodyType.StaticBody);
-            //new_body.setUserData(new Pair<Class<?>,Map>(Map.class,this));
-            new_body.setUserData(this);
+            new_body.setUserData(new Pair<Class<?>,Map>(Map.class,this));
+            //new_body.setUserData(this);
             new_body.setTransform((rect.getX()+rect.getWidth()/2)/Global.PPM,(rect.getY()+rect.getHeight()/2)/Global.PPM,0);
         }
     }

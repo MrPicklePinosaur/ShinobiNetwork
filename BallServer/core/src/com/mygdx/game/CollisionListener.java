@@ -10,29 +10,32 @@ public class CollisionListener implements ContactListener {
         Fixture fa = c.getFixtureA();
         Fixture fb = c.getFixtureB();
 
+        assert(fa != null && fb != null): "collision between nulls";
         System.out.println(fa.getBody().getUserData().getClass().getName()+" "+fb.getBody().getUserData().getClass().getName());
 
-         if (CollisionListener.fixtureMatch(fa,fb,Projectile.class,Map.class)) { //if projectile hits a wall
-             Projectile p = (Projectile) findInstance(fa,fb,Projectile.class).getBody().getUserData();
-             //remove prijecitle
+        Pair<Class<?>,Object> type_a = (Pair<Class<?>,Object>) fa.getBody().getUserData();
+        Pair<Class<?>,Object> type_b = (Pair<Class<?>,Object>) fb.getBody().getUserData();
 
-         }
+        if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Projectile.class,Map.class)) {
+            Projectile p = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
+            p.removeProjecitle();
+        }
+
 
     }
 
-
-    public static Boolean fixtureMatch(Fixture fa,Fixture fb,Class<?> cls1,Class<?> cls2) { //checks to see if two fixtures are two certain object types
-        //checks to see if both of the fixtures are instances of the classes provided
-        if (cls1.isInstance(fa.getBody().getUserData()) && cls2.isInstance(fb.getBody().getUserData())) return true;
-        if (cls2.isInstance(fa.getBody().getUserData()) && cls1.isInstance(fb.getBody().getUserData())) return true;
+    public static Boolean fixtureMatch(Class<?> cls_a, Class<?> cls_b, Class<?> cls1, Class<?> cls2) {
+        if (cls_a == cls1 && cls_b == cls2) { return true; }
+        if (cls_b == cls1 && cls_a == cls2) { return true; }
         return false;
     }
 
-    public static Fixture findInstance(Fixture fa,Fixture fb,Class<?> cls) { //finds out which of the two fixtures is the type you want
-        if (cls.isInstance(fa.getBody().getUserData())) return fa;
-        if (cls.isInstance(fb.getBody().getUserData())) return fb;
+    public static Object findFixture(Pair<Class<?>,Object> type_a,Pair<Class<?>,Object> type_b,Class<?> cls) {
+        if (type_a.getKey() == cls) { return type_a.getValue(); }
+        if (type_b.getKey() == cls) { return type_b.getValue(); }
         return null;
     }
+
 
 
     @Override

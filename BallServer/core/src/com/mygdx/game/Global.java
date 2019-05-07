@@ -54,5 +54,5 @@ enum MT { //mt stands for messageTyoe
 }
 
 enum ET { //et sstands for entitiy type
-	PLAYER, ENEMY, PROJECTILE
+	PLAYER, ENEMY, PROJECTILE, STATIC
 }

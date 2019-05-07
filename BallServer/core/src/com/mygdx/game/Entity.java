@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -14,6 +15,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
 public class Entity {
+
+
+    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
+
     //used so we know which piece of data belongs to which entity
     //private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
@@ -55,6 +60,7 @@ public class Entity {
     public static void removeEntity(Entity entity) {
         assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
         Entity.entity_list.remove(entity);
+        BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
     }
 
     public static String send_all() { //packages all entity positions into a string
@@ -65,6 +71,21 @@ public class Entity {
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
         return msg;
+    }
+
+    //Projecitle stuff
+    public void newProjectile(String file_path,float angle) {
+        Projectile p = new Projectile(file_path,this);
+        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
+        p.setVelocity(angle);
+        this.projectile_list.add(p);
+    }
+    public void removeProjectile(Projectile projectile) {
+        //safe removal of projectile
+        assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
+        this.projectile_list.remove(projectile);
+        Entity.removeEntity(projectile);
+        AssetManager.flagForPurge(projectile.getBody());
     }
 
     //Getters

@@ -37,6 +37,10 @@ public class BallServerMain extends ApplicationAdapter {
 		//init assets
 		Entity.init_textures("texture_dimensions.txt");
 		//Map.loadAll("map_library.txt");
+
+		//Connect to database
+		Database.authSDK();
+
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 

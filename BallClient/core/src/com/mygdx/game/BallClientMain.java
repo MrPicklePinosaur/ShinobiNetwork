@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 public class BallClientMain extends ApplicationAdapter {
 
@@ -61,8 +62,8 @@ public class BallClientMain extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		server_socket.close_connection();
 		batch.dispose();
+		//server_socket.close_connection(); //this line causes nullPointer on serverside for some reason
 
 	}
 

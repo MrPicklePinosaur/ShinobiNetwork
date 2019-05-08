@@ -52,5 +52,7 @@ public class Player extends Entity {
         }
     }
 
+    public float getMouseAngle() { return this.m_angle; }
+
 
 }

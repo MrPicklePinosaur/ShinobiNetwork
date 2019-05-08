@@ -106,10 +106,15 @@ public class Entity {
         for (Entity e : Entity.entity_library.values()) {
             TextureRegion tex = e.getFrame();
 
+            float rot = e.getRotation();
+            if (rot < 0) rot += MathUtils.PI2; //get rid of negative angles
+
             //TODO: dont generalise for players (only reflection in y-axis)
             if (e.getET().equals(ET.PLAYER.toString())) {
-                if (e.getOldX() - e.getX() > 0 && !tex.isFlipX()) { tex.flip(true, false); } //PROBLEM: THIS AFFECTS THE STORED TEXTUREREGIONS, SO ALL ENTITIES WILL GET FLIPPED
-                else if (e.getOldX() - e.getX() < 0 && tex.isFlipX()) { tex.flip(true, false); }
+                //if mouse is in 2nd or 3rd quadrant, face left
+                if (MathUtils.PI/2 < rot && rot < MathUtils.PI*3/2 && !tex.isFlipX()) { tex.flip(true, false); }
+                //if mouse is in 4th or 1st quadrant, face right
+                else if ((MathUtils.PI*3/2 < rot || rot < MathUtils.PI/2) && tex.isFlipX()) { tex.flip(true, false); }
                 batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2); //TODO, add scaling and rotation ALSO, DONT ASSUME SPRITESIZE!!!!!
             } else if (e.getET().equals(ET.PROJECTILE.toString())) {
                 batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,1,1,e.getRotation()* MathUtils.radiansToDegrees);

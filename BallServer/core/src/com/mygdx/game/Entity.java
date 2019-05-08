@@ -67,7 +67,13 @@ public class Entity {
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
-            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
+            ET et = e.getET();
+            float rot = e.getRotation();
+            if (et == ET.PLAYER) { //if we are sending a player's data, send their mouse angle instead of rotation
+                Player p = (Player) e;
+                rot = p.getMouseAngle();
+            }
+            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+rot);
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space

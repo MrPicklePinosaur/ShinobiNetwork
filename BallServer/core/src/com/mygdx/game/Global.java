@@ -44,15 +44,6 @@ class Global {
 		return code;
 	}
 
-	public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
-		BodyDef bdef = new BodyDef();
-		bdef.type = bodyType;
-		assert (Global.world != null): "world has not been initialized";
-		Body new_body = Global.world.createBody(bdef);
-		new_body.createFixture(fdef);
-		return new_body;
-	}
-
 	public static void disposeGlobals() {
 		Global.world.dispose();
 	}

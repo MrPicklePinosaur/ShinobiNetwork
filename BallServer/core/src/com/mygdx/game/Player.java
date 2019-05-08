@@ -36,7 +36,7 @@ public class Player extends Entity {
         fdef.shape = circle;
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
-        this.body = Global.createBody(fdef,BodyDef.BodyType.DynamicBody);
+        this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);

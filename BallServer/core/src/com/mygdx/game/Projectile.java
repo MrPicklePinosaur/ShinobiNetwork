@@ -39,7 +39,7 @@ class Projectile extends Entity {
 
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
         fdef.filter.maskBits = Global.BIT_STATIC;
-        this.body = Global.createBody(fdef, BodyDef.BodyType.DynamicBody);
+        this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
         //this.body.setUserData(this);
 

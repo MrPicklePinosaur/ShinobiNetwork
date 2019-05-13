@@ -17,6 +17,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 class BallServer {
+
     //heavy lifters
     private ServerSocket server_sock;
 
@@ -140,9 +141,10 @@ class BallClientHandler {
         if (msg[0].equals(MT.USIN.toString())) {
             client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(MT.CHATMSG.toString())) {
-
+            Game.new_chat_msg(raw_msg);
         } else if (msg[0].equals(MT.CMD.toString())) {
-
+            String[] cmd_msg = raw_msg.split(" ");
+            execute_command(cmd_msg);
         }
         //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
     }
@@ -153,6 +155,11 @@ class BallClientHandler {
         this.client_entity.init_pos((float)100/Global.PPM,(float)100/Global.PPM,0);
     }
 
+    public static void execute_command(String[] command) {
+        //a command consists of the command name,followed by what you want to do with the command
+        if (command.length != 2) { return; }
+
+    }
     public void removeClient() {
         BallClientHandler.client_list.remove(this);
     }

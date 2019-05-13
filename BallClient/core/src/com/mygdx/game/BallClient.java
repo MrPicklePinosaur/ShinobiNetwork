@@ -78,6 +78,15 @@ public class BallClient {
         outstream.println(raw_msg);
     }
 
+    public void send_chat_msg(String msg) {
+        assert (msg != null && !msg.equals("")): "empty message";
+        if (msg.charAt(0) == '/') { //if the message begains with a slash, it is a command
+            send_msg(MT.CMD,msg.substring(1)); //remove the /
+        } else {
+            send_msg(MT.CHATMSG,msg);
+        }
+    }
+
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
         if (msg_type == MT.USIN) { //if the message we want to send is a user input
@@ -107,4 +116,5 @@ public class BallClient {
             Entity.assignClientId(Integer.parseInt(msg[1]));
         }
     }
+
 }

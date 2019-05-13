@@ -39,7 +39,7 @@ public class BallServerMain extends ApplicationAdapter {
 		//Map.loadAll("map_library.txt");
 
 		//Connect to database
-		Database.authSDK();
+		//Database db = new Database();
 
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());

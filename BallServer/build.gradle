@@ -58,8 +58,18 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        //compile "com.google.firebase:firebase-admin:$firebaseVersion"
+        compile 'com.google.firebase:firebase-admin:6.8.1'
+        
+        /*
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+        testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.26'
+        compile group: 'io.netty', name: 'netty-all', version: '4.1.36.Final'
+        compile "com.google.firebase:firebase-admin:$firebaseVersion"
+        compile group: 'com.google.firebase', name: 'firebase-core', version: '16.0.9'
         compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.8.1'
+        compile group: 'com.google.firebase', name: 'firebase-firestore', version: '19.0.0'
+        */
+
     }
 }
 

@@ -114,6 +114,8 @@ public class BallClient {
             Entity.kill_entity(id);
         } else if (msg[0].equals(MT.ASSIGNENTITY.toString())) {
             Entity.assignClientId(Integer.parseInt(msg[1]));
+        } else if (msg[0].equals(MT.SENDMSG.toString())) {
+            //INSERT CHAT LOG STUFF HERE
         }
     }
 

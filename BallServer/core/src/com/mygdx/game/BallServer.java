@@ -130,6 +130,8 @@ class BallClientHandler {
             data = (MT.ASSIGNENTITY+"$"+msg); //msg is the entity id
         } else if (msg_type == MT.LOADMAP) {
             data = (MT.LOADMAP+"$"+msg); //msg is the filepath of the map image
+        } else if (msg_type == MT.SENDCHAT) {
+            data = (MT.SENDCHAT+"$"+msg); //msg is a list of all the chat messages
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;
@@ -141,7 +143,7 @@ class BallClientHandler {
         if (msg[0].equals(MT.USIN.toString())) {
             client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(MT.CHATMSG.toString())) {
-            Game.new_chat_msg(raw_msg);
+            Global.game.new_chat_msg(raw_msg);
         } else if (msg[0].equals(MT.CMD.toString())) {
             String[] cmd_msg = raw_msg.split(" ");
             execute_command(cmd_msg);

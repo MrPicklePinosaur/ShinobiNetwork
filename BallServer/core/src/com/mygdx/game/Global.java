@@ -26,6 +26,7 @@ class Global {
 	public static final int SCREEN_HEIGHT = 600;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
 	public static World world;
+	public static Game game;
 	public static final int PPM = 100;
 	public static final float deltatime = 1/60f;
 	public static final float PLAYER_DAMPING = 50; //the amount of friction the player has with the floor
@@ -51,7 +52,7 @@ class Global {
 
 enum MT { //mt stands for messageTyoe
 	//Message Types - output
-	UPDATE, KILLENTITY,ASSIGNENTITY, LOADMAP,
+	UPDATE, KILLENTITY,ASSIGNENTITY, LOADMAP, SENDCHAT,
 
 	//Message Types (MT) - input
 	USIN, CHATMSG, CMD
@@ -63,4 +64,8 @@ enum ET { //et sstands for entitiy type
 
 enum COMMANDS {
 	TELEPORT
+}
+
+enum TEAMTAG {
+
 }

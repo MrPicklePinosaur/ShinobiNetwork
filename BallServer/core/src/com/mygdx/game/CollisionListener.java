@@ -12,6 +12,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.*;
 import javafx.util.Pair;
 
+import java.awt.*;
+
 public class CollisionListener implements ContactListener {
 
     @Override
@@ -20,14 +22,26 @@ public class CollisionListener implements ContactListener {
         Fixture fb = c.getFixtureB();
 
         assert(fa != null && fb != null): "collision between nulls";
-        System.out.println(fa.getBody().getUserData().getClass().getName()+" "+fb.getBody().getUserData().getClass().getName());
+        //System.out.println(fa.getBody().getUserData().getClass().getName()+" "+fb.getBody().getUserData().getClass().getName());
 
         Pair<Class<?>,Object> type_a = (Pair<Class<?>,Object>) fa.getBody().getUserData();
         Pair<Class<?>,Object> type_b = (Pair<Class<?>,Object>) fb.getBody().getUserData();
 
         if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Projectile.class,Map.class)) {
-            Projectile p = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
-            p.removeProjecitle();
+            Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
+            b.removeProjecitle();
+        }
+
+        else if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Player.class,Projectile.class)) {
+            Player p = (Player) CollisionListener.findFixture(type_a,type_b,Player.class);
+            Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
+
+            Player owner = (Player) b.getOwner();
+            if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
+                //deal damage
+                System.out.println("HIT");
+                b.removeProjecitle();
+            }
         }
 
 

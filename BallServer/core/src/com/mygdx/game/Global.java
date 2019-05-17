@@ -67,5 +67,5 @@ enum COMMANDS {
 }
 
 enum TEAMTAG {
-
+	RED, BLUE, SOLO
 }

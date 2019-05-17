@@ -38,7 +38,7 @@ class Projectile extends Entity {
         fdef.shape = circle;
 
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
-        fdef.filter.maskBits = Global.BIT_STATIC;
+        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
         this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
         //this.body.setUserData(this);
@@ -53,7 +53,7 @@ class Projectile extends Entity {
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
     }
-
+    public Entity getOwner() { return this.owner; }
 
 
 }

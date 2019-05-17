@@ -21,12 +21,14 @@ import javafx.util.*;
 public class Player extends Entity {
 
     private float m_angle;
+    private TEAMTAG teamtag;
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
 
-    public Player(String texture_path) {
+    public Player(String texture_path,TEAMTAG teamtag) {
         super(texture_path);
         this.entity_type = ET.PLAYER;
+        this.teamtag = teamtag;
         this.m_angle = 0;
 
         //init player body
@@ -35,7 +37,7 @@ public class Player extends Entity {
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
         fdef.filter.categoryBits = Global.BIT_PLAYER;
-        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
+        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
@@ -62,6 +64,7 @@ public class Player extends Entity {
     }
 
     public float getMouseAngle() { return this.m_angle; }
+    public TEAMTAG getTeamtag() { return this.teamtag; }
 
 
 }

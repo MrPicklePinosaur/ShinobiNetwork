@@ -9,15 +9,20 @@
 
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class AssetManager { //mainly just a bunch of helper methods
     private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
-
 
     //helper methods for bodies
     public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
@@ -38,6 +43,14 @@ public class AssetManager { //mainly just a bunch of helper methods
             b = null;
         }
         AssetManager.kill_list.clear();
+    }
+
+    public static void load_from_json(String filepath) {
+        JsonReader json = new JsonReader();
+        JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
+        System.out.println(raw_json.get("ninja"));
+
+
     }
 
 }

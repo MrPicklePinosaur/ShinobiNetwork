@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 //very basic rn, add box2d integration later
-public class Entity {
+public abstract class Entity {
 
 
     private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
@@ -105,6 +105,8 @@ public class Entity {
         AssetManager.flagForPurge(projectile.getBody());
     }
 
+    //public abstract void import_from_json();
+
     //Getters
     public ET getET() { return this.entity_type; }
     public float getX() { return this.body.getPosition().x*Global.PPM; }
@@ -118,5 +120,7 @@ public class Entity {
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS
         this.body.setTransform(x,y,rotation);
     }
+
+    private abstract class Stats{ }
 
 }

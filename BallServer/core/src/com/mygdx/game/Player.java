@@ -66,5 +66,13 @@ public class Player extends Entity {
     public float getMouseAngle() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
+    static class Stats {
+        public int hp;
+        public int speed;
 
+        public Stats(int hp, int speed) {
+            this.hp = hp;
+            this.speed = speed;
+        }
+    }
 }

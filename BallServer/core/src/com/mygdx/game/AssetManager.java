@@ -45,12 +45,10 @@ public class AssetManager { //mainly just a bunch of helper methods
         AssetManager.kill_list.clear();
     }
 
-    public static void load_from_json(String filepath) {
+    public static JsonValue load_json(String filepath) {
         JsonReader json = new JsonReader();
         JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
-        System.out.println(raw_json.get("ninja"));
-
-
+        return raw_json;
     }
 
 }

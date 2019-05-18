@@ -15,6 +15,7 @@ import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.JsonValue;
 
 class BallServer {
 
@@ -155,6 +156,7 @@ class BallClientHandler {
         String texture_path = "ninja_run.png";
         this.client_entity = new Player(texture_path,TEAMTAG.SOLO);
         this.client_entity.init_pos((float)100/Global.PPM,(float)100/Global.PPM,0);
+        AssetManager.load_json("json/base_player_stats.json");
     }
 
     public static void execute_command(String[] command) {

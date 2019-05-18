@@ -50,11 +50,6 @@ class Projectile extends Entity {
         this.body.setLinearVelocity(speed* MathUtils.cos(angle),speed*MathUtils.sin(angle));
     }
 
-    /*
-    @Override
-    public void import_from_json() { }
-    */
-
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
     }

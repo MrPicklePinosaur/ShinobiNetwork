@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.*;
 import java.io.*;
@@ -35,6 +36,7 @@ public abstract class Entity {
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
+    protected Stats stats;
     protected ET entity_type;
     protected int id;
     protected String texture_path;
@@ -105,7 +107,6 @@ public abstract class Entity {
         AssetManager.flagForPurge(projectile.getBody());
     }
 
-    //public abstract void import_from_json();
 
     //Getters
     public ET getET() { return this.entity_type; }
@@ -121,6 +122,8 @@ public abstract class Entity {
         this.body.setTransform(x,y,rotation);
     }
 
-    private abstract class Stats{ }
+    public abstract void stats_from_json(String filepath, JsonValue data);
+
+    abstract class Stats{ }
 
 }

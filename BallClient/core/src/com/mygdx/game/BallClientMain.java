@@ -73,7 +73,7 @@ public class BallClientMain extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		//server_socket.close_connection(); //this line causes nullPointer on serverside for some reason
-
+        Gdx.app.exit();
 	}
 
 	public void sendKeyboard() { //takes in user input and sends to server

@@ -22,11 +22,11 @@ class Projectile extends Entity {
     private Entity owner; //keeps track of who created the projectile
     private ProjectileStats stats;
 
-    public Projectile(String file_path,Entity owner) {
+    public Projectile(String file_path,String json_stat_data,Entity owner) {
         super(file_path);
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
-        this.speed = 3;
+
         //init body
         /*
         PolygonShape rect = new PolygonShape();
@@ -46,10 +46,12 @@ class Projectile extends Entity {
         //this.body.setUserData(this);
 
         circle.dispose();
+
+        this.stats_from_json(json_stat_data);
     }
 
     public void setVelocity(float angle) {
-        this.body.setLinearVelocity(speed* MathUtils.cos(angle),speed*MathUtils.sin(angle));
+        this.body.setLinearVelocity(this.getSpeed()* MathUtils.cos(angle),this.getSpeed()*MathUtils.sin(angle));
     }
 
     public void removeProjecitle() {

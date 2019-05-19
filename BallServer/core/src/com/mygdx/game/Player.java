@@ -29,7 +29,7 @@ public class Player extends Entity {
 
     //TODO: LIST OF PROJECTILES THE PLAYER OWNS
 
-    public Player(String texture_path,TEAMTAG teamtag) {
+    public Player(String texture_path,String json_stat_data,TEAMTAG teamtag) {
         super(texture_path);
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
@@ -48,6 +48,8 @@ public class Player extends Entity {
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
 
         circle.dispose();
+
+        this.stats_from_json(json_stat_data);
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -60,10 +62,10 @@ public class Player extends Entity {
             }
             if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
-            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,speed); }
-            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-speed); }
-            if (key.equals("Key_A")) { this.body.setLinearVelocity(-speed,this.body.getLinearVelocity().y); }
-            if (key.equals("Key_D")) { this.body.setLinearVelocity(speed,this.body.getLinearVelocity().y); }
+            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.getSpeed()); }
+            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.getSpeed()); }
+            if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.getSpeed(),this.body.getLinearVelocity().y); }
+            if (key.equals("Key_D")) { this.body.setLinearVelocity(this.getSpeed(),this.body.getLinearVelocity().y); }
         }
     }
 

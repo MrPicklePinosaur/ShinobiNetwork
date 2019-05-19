@@ -154,10 +154,8 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String texture_path = "ninja_run.png";
-        this.client_entity = new Player(texture_path,TEAMTAG.SOLO);
+        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
         this.client_entity.init_pos((float)100/Global.PPM,(float)100/Global.PPM,0);
-        this.client_entity.stats_from_json(AssetManager.getPlayerJsonData("ninja"));
-        System.out.println(this.client_entity.getHp());
     }
 
     public static void execute_command(String[] command) {

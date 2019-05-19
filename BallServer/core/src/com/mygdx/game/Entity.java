@@ -35,7 +35,6 @@ public abstract class Entity {
     protected int id;
     protected String texture_path;
     protected Body body;
-    protected int speed = 2;
     protected int spriteWidth;
     protected int spriteHeight;
 
@@ -87,10 +86,9 @@ public abstract class Entity {
 
     //Projecitle stuff
     public void newProjectile(String file_path,float angle) {
-        Projectile p = new Projectile(file_path,this);
+        Projectile p = new Projectile(file_path,AssetManager.getProjectileJsonData("slash"),this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
-        p.stats_from_json(AssetManager.getProjectileJsonData("slash"));
         this.projectile_list.add(p);
     }
     public void removeProjectile(Projectile projectile) {

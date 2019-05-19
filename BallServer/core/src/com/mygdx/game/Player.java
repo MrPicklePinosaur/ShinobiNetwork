@@ -23,7 +23,7 @@ import javafx.util.*;
 
 public class Player extends Entity {
 
-    private Player.Stats stats;
+    private PlayerStats stats;
     private float m_angle;
     private TEAMTAG teamtag;
 
@@ -70,26 +70,31 @@ public class Player extends Entity {
     public float getMouseAngle() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
-    public String getName() { return this.stats.name; }
-    public int getHp() { return this.stats.hp; }
-    public int getSpeed() { return this.stats.speed; }
+    public String getName() { return this.stats.getName(); }
+    public int getHp() { return this.stats.getHp(); }
+    public int getSpeed() { return this.stats.getSpeed(); }
 
     @Override
     public void stats_from_json(String json_data) {
         Json json = new Json();
-        this.stats = json.fromJson(Player.Stats.class,json_data);
+        this.stats = json.fromJson(PlayerStats.class,json_data);
     }
 
-    class Stats {
-        private String name;
-        private int hp;
-        private int speed;
+}
 
-        public Stats(String name,int hp, int speed) {
-            this.name = name;
-            this.hp = hp;
-            this.speed = speed;
-        }
+class PlayerStats {
+    private String name;
+    private int hp;
+    private int speed;
 
+    public PlayerStats(String name,int hp, int speed) {
+        this.name = name;
+        this.hp = hp;
+        this.speed = speed;
     }
+
+    //Kinda bad how we have two setters, bu oh well
+    public String getName() { return this.name; }
+    public int getHp() { return this.hp; }
+    public int getSpeed() { return this.speed; }
 }

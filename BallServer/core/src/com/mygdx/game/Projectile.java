@@ -20,7 +20,7 @@ import javafx.util.Pair;
 class Projectile extends Entity {
 
     private Entity owner; //keeps track of who created the projectile
-    private Projectile.Stats stats;
+    private ProjectileStats stats;
 
     public Projectile(String file_path,Entity owner) {
         super(file_path);
@@ -57,27 +57,30 @@ class Projectile extends Entity {
     }
     public Entity getOwner() { return this.owner; }
 
-    public String getName() { return this.stats.name; }
-    public int getDmg() { return this.stats.dmg; }
-    public int getSpeed() { return this.stats.speed; }
+    public String getName() { return this.stats.getName(); }
+    public int getDmg() { return this.stats.getDmg(); }
+    public int getSpeed() { return this.stats.getSpeed(); }
 
     @Override
     public void stats_from_json(String json_data) {
         Json json = new Json();
-        this.stats = json.fromJson(Projectile.Stats.class,json_data);
+        this.stats = json.fromJson(ProjectileStats.class,json_data);
     }
 
-    class Stats {
-        private String name;
-        private int dmg;
-        private int speed;
+}
 
-        public Stats(String name, int dmg, int speed) {
-            this.name = name;
-            this.dmg = dmg;
-            this.speed = speed;
-        }
+class ProjectileStats {
+    private String name;
+    private int dmg;
+    private int speed;
+
+    public ProjectileStats(String name,int dmg, int speed) {
+        this.name = name;
+        this.dmg = dmg;
+        this.speed = speed;
     }
 
-
+    public String getName() { return this.name; }
+    public int getDmg() { return this.dmg; }
+    public int getSpeed() { return this.speed; }
 }

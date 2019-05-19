@@ -2,12 +2,12 @@
 
 	{
 		"name": "ninja",
-		"health": 100,
+		"hp": 100,
 		"speed" : 2
 	},
 	{
 		"name": "warrior",
-		"health": 150,
+		"hp": 150,
 		"speed": 1
 	}
 

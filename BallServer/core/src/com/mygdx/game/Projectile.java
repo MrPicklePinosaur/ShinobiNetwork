@@ -74,6 +74,7 @@ class ProjectileStats {
     private int dmg;
     private int speed;
 
+    public ProjectileStats() { }
     public ProjectileStats(String name,int dmg, int speed) {
         this.name = name;
         this.dmg = dmg;

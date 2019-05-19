@@ -87,6 +87,7 @@ class PlayerStats {
     private int hp;
     private int speed;
 
+    public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
     public PlayerStats(String name,int hp, int speed) {
         this.name = name;
         this.hp = hp;

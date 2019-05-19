@@ -90,6 +90,7 @@ public abstract class Entity {
         Projectile p = new Projectile(file_path,this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
+        p.stats_from_json(AssetManager.getProjectileJsonData("slash"));
         this.projectile_list.add(p);
     }
     public void removeProjectile(Projectile projectile) {

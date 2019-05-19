@@ -57,6 +57,7 @@ class Projectile extends Entity {
     }
     public Entity getOwner() { return this.owner; }
 
+    public String getName() { return this.stats.name; }
     public int getDmg() { return this.stats.dmg; }
     public int getSpeed() { return this.stats.speed; }
 
@@ -67,10 +68,12 @@ class Projectile extends Entity {
     }
 
     class Stats {
+        private String name;
         private int dmg;
         private int speed;
 
-        public Stats(int dmg, int speed) {
+        public Stats(String name, int dmg, int speed) {
+            this.name = name;
             this.dmg = dmg;
             this.speed = speed;
         }

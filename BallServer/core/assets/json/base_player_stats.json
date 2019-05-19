@@ -1,10 +1,14 @@
-{
-	"ninja": {
+[
+
+	{
+		"name": "ninja",
 		"health": 100,
 		"speed" : 2
 	},
-	"warrior": {
+	{
+		"name": "warrior",
 		"health": 150,
 		"speed": 1
 	}
-}
+
+]

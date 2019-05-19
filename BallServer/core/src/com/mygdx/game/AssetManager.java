@@ -26,8 +26,8 @@ public class AssetManager { //mainly just a bunch of helper methods
     private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
 
     //json libraries
-    private static HashMap<String,JsonValue> player_stats = new HashMap<String, JsonValue>();
-    private static HashMap<String,JsonValue> projectile_stats = new HashMap<String, JsonValue>();
+    private static HashMap<String,String> player_stats = new HashMap<String, String>();
+    private static HashMap<String,String> projectile_stats = new HashMap<String, String>();
 
     //helper methods for bodies
     public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
@@ -50,10 +50,28 @@ public class AssetManager { //mainly just a bunch of helper methods
         AssetManager.kill_list.clear();
     }
 
-    public static JsonValue load_json(String filepath) {
+    public static void load_all_json() {
+        AssetManager.load_json(AssetManager.player_stats,"json/base_player_stats.json");
+    }
+
+    private static void load_json(HashMap<String,String> lib,String filepath) { //takes in a library and populates it with the json of the file at filepath
         JsonReader json = new JsonReader();
         JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
-        return raw_json;
+
+        JsonValue cur = raw_json.child;
+        while (true) {
+            //System.out.println(cur.name+"\n"+cur);
+            //System.out.println(cur.getString("name")+"\n"+cur.toString());
+            lib.put(cur.getString("name"),cur.toString());
+            if (cur.next == null) { break; }
+            cur = cur.next;
+
+        }
+    }
+
+    public static String getPlayerJsonData(String key) {
+        assert(AssetManager.player_stats.containsKey(key)): "Player stats not found!";
+        return AssetManager.player_stats.get(key);
     }
 
 }

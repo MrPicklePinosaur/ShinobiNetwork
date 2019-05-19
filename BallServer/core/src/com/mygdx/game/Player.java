@@ -70,6 +70,7 @@ public class Player extends Entity {
     public float getMouseAngle() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
+    public String getName() { return this.stats.name; }
     public int getHp() { return this.stats.hp; }
     public int getSpeed() { return this.stats.speed; }
 
@@ -80,10 +81,12 @@ public class Player extends Entity {
     }
 
     class Stats {
+        private String name;
         private int hp;
         private int speed;
 
-        public Stats(int hp, int speed) {
+        public Stats(String name,int hp, int speed) {
+            this.name = name;
             this.hp = hp;
             this.speed = speed;
         }

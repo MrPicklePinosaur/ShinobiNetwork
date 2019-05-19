@@ -119,7 +119,7 @@ public abstract class Entity {
     public abstract void stats_from_json(String json_data);
 
     abstract class Stats {
-        
+
     }
 
 }

@@ -14,11 +14,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Json;
 import javafx.util.Pair;
 
 class Projectile extends Entity {
 
     private Entity owner; //keeps track of who created the projectile
+    private Projectile.Stats stats;
 
     public Projectile(String file_path,Entity owner) {
         super(file_path);
@@ -54,6 +56,25 @@ class Projectile extends Entity {
         this.owner.removeProjectile(this);
     }
     public Entity getOwner() { return this.owner; }
+
+    public int getDmg() { return this.stats.dmg; }
+    public int getSpeed() { return this.stats.speed; }
+
+    @Override
+    public void stats_from_json(String json_data) {
+        Json json = new Json();
+        this.stats = json.fromJson(Projectile.Stats.class,json_data);
+    }
+
+    class Stats {
+        private int dmg;
+        private int speed;
+
+        public Stats(int dmg, int speed) {
+            this.dmg = dmg;
+            this.speed = speed;
+        }
+    }
 
 
 }

@@ -17,12 +17,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import javafx.util.*;
 
 public class Player extends Entity {
 
-    private Stats stats;
+    private Player.Stats stats;
     private float m_angle;
     private TEAMTAG teamtag;
 
@@ -73,8 +74,9 @@ public class Player extends Entity {
     public int getSpeed() { return this.stats.speed; }
 
     @Override
-    public void stats_from_json(String filepath, JsonValue json) {
-        this.stats = ;
+    public void stats_from_json(String json_data) {
+        Json json = new Json();
+        this.stats = json.fromJson(Player.Stats.class,json_data);
     }
 
     class Stats {

@@ -19,10 +19,15 @@ import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class AssetManager { //mainly just a bunch of helper methods
     private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
+
+    //json libraries
+    private static HashMap<String,JsonValue> player_stats = new HashMap<String, JsonValue>();
+    private static HashMap<String,JsonValue> projectile_stats = new HashMap<String, JsonValue>();
 
     //helper methods for bodies
     public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body

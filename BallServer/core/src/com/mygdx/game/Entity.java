@@ -23,20 +23,14 @@ import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-//very basic rn, add box2d integration later
 public abstract class Entity {
 
-
     private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
-
-    //used so we know which piece of data belongs to which entity
-    //private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer, Entity>();
 
     //just a simple list of all the alive entities
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
-    protected Stats stats;
     protected ET entity_type;
     protected int id;
     protected String texture_path;
@@ -122,8 +116,10 @@ public abstract class Entity {
         this.body.setTransform(x,y,rotation);
     }
 
-    public abstract void stats_from_json(String filepath, JsonValue data);
+    public abstract void stats_from_json(String json_data);
 
-    abstract class Stats{ }
+    abstract class Stats {
+        
+    }
 
 }

@@ -37,6 +37,7 @@ public class BallServerMain extends ApplicationAdapter {
 		//init assets
 		Entity.init_textures("texture_dimensions.txt");
 		//Map.loadAll("map_library.txt");
+		System.out.println(AssetManager.load_json("json/base_player_stats.json"));
 
 		//Connect to database
 		Database.connect("database.db");

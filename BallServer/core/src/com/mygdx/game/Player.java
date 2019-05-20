@@ -23,11 +23,12 @@ import javafx.util.*;
 
 public class Player extends Entity {
 
-    private PlayerStats stats;
+    public PlayerStats stats;
     private float m_angle;
     private TEAMTAG teamtag;
 
-    //TODO: LIST OF PROJECTILES THE PLAYER OWNS
+    //stats
+    private int health;
 
     public Player(String texture_path,String json_stat_data,TEAMTAG teamtag) {
         super(texture_path);
@@ -49,7 +50,7 @@ public class Player extends Entity {
 
         circle.dispose();
 
-        this.stats_from_json(json_stat_data);
+        this.init_stats(json_stat_data);
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -62,24 +63,31 @@ public class Player extends Entity {
             }
             if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
-            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.getSpeed()); }
-            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.getSpeed()); }
-            if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.getSpeed(),this.body.getLinearVelocity().y); }
-            if (key.equals("Key_D")) { this.body.setLinearVelocity(this.getSpeed(),this.body.getLinearVelocity().y); }
+            if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
+            if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
+            if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
+            if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
         }
     }
 
     public float getMouseAngle() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
-    public String getName() { return this.stats.getName(); }
-    public int getHp() { return this.stats.getHp(); }
-    public int getSpeed() { return this.stats.getSpeed(); }
+    public int getCurrentHp() { return this.health; }
+    public void modHp(int deltaHp) {
+        this.health += deltaHp;
+        this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
+        if (this.health <= 0) { System.out.println("Grats, you have been dedded"); } //TODO: death handling
+    }
 
     @Override
-    public void stats_from_json(String json_data) {
+    public void init_stats(String json_data) {
         Json json = new Json();
         this.stats = json.fromJson(PlayerStats.class,json_data);
+
+        //insert code that modifies base stats based on items equiped
+
+        this.health = this.stats.getHp(); //player starts at max health
     }
 
 }
@@ -96,7 +104,7 @@ class PlayerStats {
         this.speed = speed;
     }
 
-    //Kinda bad how we have two setters, bu oh well
+    //Getters
     public String getName() { return this.name; }
     public int getHp() { return this.hp; }
     public int getSpeed() { return this.speed; }

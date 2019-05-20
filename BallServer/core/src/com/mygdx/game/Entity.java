@@ -115,6 +115,6 @@ public abstract class Entity {
         this.body.setTransform(x,y,rotation);
     }
 
-    public abstract void stats_from_json(String json_data);
+    public abstract void init_stats(String json_data);
 
 }

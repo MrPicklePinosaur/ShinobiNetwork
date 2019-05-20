@@ -115,6 +115,6 @@ public class BallServerMain extends ApplicationAdapter {
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();
 		Global.disposeGlobals();
-
+		Gdx.app.exit();
 	}
 }

@@ -20,7 +20,7 @@ import javafx.util.Pair;
 class Projectile extends Entity {
 
     private Entity owner; //keeps track of who created the projectile
-    private ProjectileStats stats;
+    public ProjectileStats stats;
 
     public Projectile(String file_path,String json_stat_data,Entity owner) {
         super(file_path);
@@ -41,17 +41,18 @@ class Projectile extends Entity {
 
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
+        fdef.isSensor = true;
         this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
         //this.body.setUserData(this);
 
         circle.dispose();
 
-        this.stats_from_json(json_stat_data);
+        this.init_stats(json_stat_data);
     }
 
     public void setVelocity(float angle) {
-        this.body.setLinearVelocity(this.getSpeed()* MathUtils.cos(angle),this.getSpeed()*MathUtils.sin(angle));
+        this.body.setLinearVelocity(this.stats.getSpeed()* MathUtils.cos(angle),this.stats.getSpeed()*MathUtils.sin(angle));
     }
 
     public void removeProjecitle() {
@@ -59,12 +60,8 @@ class Projectile extends Entity {
     }
     public Entity getOwner() { return this.owner; }
 
-    public String getName() { return this.stats.getName(); }
-    public int getDmg() { return this.stats.getDmg(); }
-    public int getSpeed() { return this.stats.getSpeed(); }
-
     @Override
-    public void stats_from_json(String json_data) {
+    public void init_stats(String json_data) {
         Json json = new Json();
         this.stats = json.fromJson(ProjectileStats.class,json_data);
     }
@@ -83,6 +80,7 @@ class ProjectileStats {
         this.speed = speed;
     }
 
+    //Getters
     public String getName() { return this.name; }
     public int getDmg() { return this.dmg; }
     public int getSpeed() { return this.speed; }

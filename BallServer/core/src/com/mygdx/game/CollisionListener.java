@@ -27,6 +27,7 @@ public class CollisionListener implements ContactListener {
         Pair<Class<?>,Object> type_a = (Pair<Class<?>,Object>) fa.getBody().getUserData();
         Pair<Class<?>,Object> type_b = (Pair<Class<?>,Object>) fb.getBody().getUserData();
 
+        //System.out.println(type_a.getKey()+" "+type_b.getKey());
         if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Projectile.class,Map.class)) {
             Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
             b.removeProjecitle();
@@ -40,6 +41,7 @@ public class CollisionListener implements ContactListener {
             if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
                 //deal damage
                 System.out.println("HIT");
+                p.modHp(-1*b.stats.getDmg());
                 b.removeProjecitle();
             }
         }

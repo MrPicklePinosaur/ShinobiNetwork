@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.1" name="mountain temple" tilewidth="32" tileheight="32" tilecount="24" columns="0">
+<tileset version="1.2" tiledversion="1.2.1" name="mountain temple" tilewidth="32" tileheight="32" tilecount="28" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../raw_images/tile_mossTile4.png"/>
@@ -72,5 +72,17 @@
  </tile>
  <tile id="23">
   <image width="32" height="32" source="../raw_images/tile_COLLIDER.png"/>
+ </tile>
+ <tile id="24">
+  <image width="32" height="32" source="../raw_images/spawn_pad_red.png"/>
+ </tile>
+ <tile id="25">
+  <image width="32" height="32" source="../raw_images/spawn_pad_blue.png"/>
+ </tile>
+ <tile id="26">
+  <image width="32" height="32" source="../raw_images/BLACK.png"/>
+ </tile>
+ <tile id="27">
+  <image width="32" height="32" source="../raw_images/spawn_pad_solo.png"/>
  </tile>
 </tileset>

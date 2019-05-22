@@ -27,9 +27,9 @@ class Global {
 
 	public static final int SPRITESIZE = 32;
 
-	public static float m_x;
-	public static float m_y;
-	public static float m_angle;
+	public static float m_x = 0;
+	public static float m_y = 0;
+	public static float m_angle = 0;
 
 	public static void updateInput() {
 		Global.m_x = Gdx.input.getX();

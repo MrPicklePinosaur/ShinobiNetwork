@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -26,9 +27,7 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Map {
     private static HashMap<String,Map> map_list = new HashMap<String, Map>();
@@ -38,12 +37,24 @@ public class Map {
     private MapObjects collisions;
     private String file_path;
 
+    //Map landmarks
+    private ArrayList<Vector2> red_spawn = new ArrayList<Vector2>();
+    private ArrayList<Vector2> blue_spawn = new ArrayList<Vector2>();
+    private ArrayList<Vector2> solo_spawn = new ArrayList<Vector2>();
+
     public Map(String file_path) {
         this.file_path = file_path;
         this.map = new TmxMapLoader().load(file_path);
         this.collision_layer = this.map.getLayers().get("COLLISION");
         this.collisions = this.collision_layer.getObjects();
+
+        //load map objects
         this.loadCollisions();
+        this.load_spawn_points(this.red_spawn,this.map.getLayers().get("red_spawn").getObjects());
+        this.load_spawn_points(this.blue_spawn,this.map.getLayers().get("blue_spawn").getObjects());
+        this.load_spawn_points(this.solo_spawn,this.map.getLayers().get("solo_spawn").getObjects());
+
+        //System.out.println(Arrays.toString(this.red_spawn.toArray()));
     }
 
     public void loadCollisions() { //takes in all of the map's collision data and creates static bodies out of them
@@ -65,6 +76,14 @@ public class Map {
         }
     }
 
+    public void load_spawn_points(ArrayList<Vector2> target, MapObjects layer) {
+        for (MapObject obj : layer) { //spawn points are saved as point objects on the TiledMap
+            Rectangle rect = ((RectangleMapObject) obj).getRectangle(); //points are saved as rectangle with h = 0 and w =0
+            //System.out.println(rect);
+            target.add(new Vector2(rect.x,rect.y));
+        }
+    }
+
     public static void loadAll(String map_lib_path) { //loads all maps
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(map_lib_path)));
@@ -76,6 +95,19 @@ public class Map {
             }
             fileReader.close();
         } catch(IOException ex) { System.out.println(ex); }
+    }
+
+    public Vector2 get_spawn_point(TEAMTAG teamtag) {
+        ArrayList<Vector2> spawn_list = new ArrayList<Vector2>();
+        //Decide which spawn list to choose from
+        if (teamtag == TEAMTAG.RED) { spawn_list = this.red_spawn; }
+        else if (teamtag == TEAMTAG.BLUE) { spawn_list = this.blue_spawn; }
+        else if (teamtag == TEAMTAG.SOLO) { spawn_list = this.solo_spawn; }
+
+        assert (spawn_list.size() > 0): "No spawn points to choose from";
+
+        Random rnd = new Random();
+        return spawn_list.get(rnd.nextInt(spawn_list.size())); //pick random spawn point
     }
 
     public TiledMap getTiledMap() { return this.map; }

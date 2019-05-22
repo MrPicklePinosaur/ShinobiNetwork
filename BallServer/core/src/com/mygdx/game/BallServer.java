@@ -15,6 +15,7 @@ import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 
 class BallServer {
@@ -154,8 +155,9 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String texture_path = "ninja_run.png";
-        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
-        this.client_entity.init_pos((float)100/Global.PPM,(float)100/Global.PPM,0);
+        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.RED);
+        Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
+        this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
     }
 
     public static void execute_command(String[] command) {

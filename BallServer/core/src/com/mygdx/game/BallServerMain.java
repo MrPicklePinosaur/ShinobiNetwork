@@ -13,6 +13,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.utils.JsonValue;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,7 +31,6 @@ public class BallServerMain extends ApplicationAdapter {
 
 	//heavy lifters
 	BallServer server;
-	Map current_map;
 	Box2DDebugRenderer debugRenderer;
 	OrthographicCamera cam; //TODO: WE SHOULD NOT BE USING THIS
 	OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -54,7 +55,8 @@ public class BallServerMain extends ApplicationAdapter {
 
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");
-		current_map = new Map("maps/mountain_temple.tmx");
+		Global.map = new Map("maps/mountain_temple.tmx");
+
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
@@ -65,7 +67,7 @@ public class BallServerMain extends ApplicationAdapter {
 		cam.position.y = (float)500/Global.PPM;
 		cam.update();
 
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(current_map.getTiledMap(),(float) 1/Global.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(Global.map.getTiledMap(),(float) 1/Global.PPM);
 		tiledMapRenderer.setView(cam);
 
 		//Init server and such

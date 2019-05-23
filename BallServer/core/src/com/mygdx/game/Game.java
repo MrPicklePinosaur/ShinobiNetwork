@@ -38,4 +38,6 @@ public class Game {
         return leaderboard;
     }
 
+    public LinkedList<Player> getPlayerList() { return this.player_list; }
+
 }

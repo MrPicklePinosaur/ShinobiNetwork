@@ -21,6 +21,8 @@ import java.io.*;
 
 class Global {
 
+	public static Random rnd = new Random();
+
 	//Important vars
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;

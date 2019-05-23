@@ -86,6 +86,8 @@ class BallClientHandler {
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
                     System.out.println("CLIENT HAS DISCONNECTED");
+                    Global.game.new_chat_msg("CLIENT HAS DISCONNECTED");
+
                     //first of all, send a message to the client telling them they dced
 
                     //tell entity to stop drawing it
@@ -155,7 +157,7 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String texture_path = "ninja_run.png";
-        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.RED);
+        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
     }

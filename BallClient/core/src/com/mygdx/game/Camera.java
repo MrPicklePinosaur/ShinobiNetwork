@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Camera {
     private OrthographicCamera cam;
+    private static final float max_cam_dist = 20;
 
     public Camera() {
         this.cam = new OrthographicCamera(400,400);
@@ -23,10 +24,13 @@ public class Camera {
         float x = target.getX();
         float y = target.getY();
 
-        this.cam.position.x = MathUtils.clamp(this.cam.position.x,x,x);
-        this.cam.position.y = MathUtils.clamp(this.cam.position.y,y,y);
+        this.cam.position.x = x;
+        this.cam.position.y = y;
+        //this.cam.position.x = MathUtils.clamp(this.cam.position.x,x-Camera.max_cam_dist,x+Camera.max_cam_dist);
+        //this.cam.position.y = MathUtils.clamp(this.cam.position.y,y-Camera.max_cam_dist,y+Camera.max_cam_dist);
 
         this.updateCam();
+        System.out.println(this.cam.position.x+" "+this.cam.position.y);
     }
 
     public void updateCam() { this.cam.update(); }

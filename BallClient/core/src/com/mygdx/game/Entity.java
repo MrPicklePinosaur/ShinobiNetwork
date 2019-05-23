@@ -86,10 +86,11 @@ public class Entity {
             Entity newEntity = new Entity(texture_path);
             entity_library.put(id,newEntity);
 
-            if (id == Entity.client_entity_id) { Entity.client_entity = newEntity; }
             entity = newEntity;
 
         } else { entity = Entity.entity_library.get(id); }
+
+        if (id == Entity.client_entity_id) { Entity.client_entity = entity; }
 
         //apply all the updates
         entity.entity_type = entity_type;
@@ -110,6 +111,7 @@ public class Entity {
     }
 
     public TextureRegion getFrame() { return this.animation.getKeyFrame(this.frameTime,true); }
+    //public TextureRegion getIdleFrame() { return this.animation.getKeyFrame(0,true); } // for now, we just assume the first frame of the animation is the idle frame}
 
     public static void drawAll(SpriteBatch batch) {
         for (Entity e : Entity.entity_library.values()) {

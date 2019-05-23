@@ -22,7 +22,7 @@ public class Game {
         this.update_chat(); //when a new message is added, update all clients
     }
     public void wipe_chat() { this.chat_log.clear(); }
-    public void update_chat() {
+    private void update_chat() {
         if (this.chat_log.size() == 0) { return; } //if there is nothing to send
         String chat = "";
         for (String s : this.chat_log) { chat+=(","+s); }

@@ -61,10 +61,10 @@ public class BallServerMain extends ApplicationAdapter {
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
 
-		cam = new OrthographicCamera((float) 400/Global.PPM,(float) 400/Global.PPM);
-		cam.zoom = 3f;
-		cam.position.x = (float)500/Global.PPM;
-		cam.position.y = (float)500/Global.PPM;
+		cam = new OrthographicCamera((float) 1400/Global.PPM,(float) 1400/Global.PPM);
+		cam.zoom = 1.2f;
+		cam.position.x = (float)1500/Global.PPM;
+		cam.position.y = (float)1500/Global.PPM;
 		cam.update();
 
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(Global.map.getTiledMap(),(float) 1/Global.PPM);

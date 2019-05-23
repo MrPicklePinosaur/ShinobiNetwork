@@ -10,6 +10,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import javafx.util.*;
+import sun.security.action.GetLongAction;
 
 public class Player extends Entity {
 
@@ -77,7 +79,14 @@ public class Player extends Entity {
     public void modHp(int deltaHp) {
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
-        if (this.health <= 0) { System.out.println("Grats, you have been dedded"); } //TODO: death handling
+        if (this.health <= 0) {
+            System.out.println("Grats, you have been dedded");
+            /* currently crashes as we are trying to modify the body during physics step
+            Vector2 spawn_point = Global.map.get_spawn_point(this.teamtag);
+            this.init_pos(spawn_point.x/ Global.PPM,spawn_point.y/Global.PPM,0);
+            this.reset_stats();
+            */
+        } //TODO: death handling
     }
 
     @Override
@@ -88,6 +97,10 @@ public class Player extends Entity {
         //insert code that modifies base stats based on items equiped
 
         this.health = this.stats.getHp(); //player starts at max health
+    }
+
+    public void reset_stats() {
+        this.health = this.stats.getHp();
     }
 
 }

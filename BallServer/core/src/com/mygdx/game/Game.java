@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -28,6 +30,12 @@ public class Game {
         for (String s : this.chat_log) { chat+=(","+s); }
         chat = toString().substring(1);
         BallClientHandler.broadcast(MT.SENDCHAT,chat);
+    }
+
+    public ArrayList<Vector3> getLeaderBoard() {
+        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
+        return leaderboard;
     }
 
 }

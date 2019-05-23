@@ -11,6 +11,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -31,6 +32,9 @@ public class Player extends Entity {
 
     //stats
     private int health;
+    private int kills;
+    private int deaths;
+    private int dmg_dealt;
 
     public Player(String texture_path,String json_stat_data,TEAMTAG teamtag) {
         super(texture_path);
@@ -96,13 +100,26 @@ public class Player extends Entity {
 
         //insert code that modifies base stats based on items equiped
 
-        this.health = this.stats.getHp(); //player starts at max health
     }
 
-    public void reset_stats() {
+    public void reset_game_stats() {
         this.health = this.stats.getHp();
+        this.kills = 0;
+        this.deaths = 0;
+        this.dmg_dealt = 0;
     }
 
+    //stat setters
+    public void addKill() { this.kills++; }
+    public void addDeath() { this.deaths++; }
+    public void addDmgDealt(int dmg_dealt) { this.dmg_dealt+= dmg_dealt; }
+
+    //stat getters
+    //possibly remove all the individual getters
+    public int getKills() { return this.kills; }
+    public int getDeaths() { return this.deaths; }
+    public int getDmgDealt() { return this.dmg_dealt; }
+    public Vector3 getGameStats() { return new Vector3(this.kills,this.deaths,this.dmg_dealt); }
 }
 
 class PlayerStats {

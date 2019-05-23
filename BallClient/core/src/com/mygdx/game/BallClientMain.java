@@ -43,6 +43,7 @@ public class BallClientMain extends ApplicationAdapter {
 		background = new Sprite(new Texture("mountain_temple.png"));
 
 		//Init server
+
 		server_socket = new BallClient("127.0.0.1",5000);
 		server_socket.start_connection();
 	}

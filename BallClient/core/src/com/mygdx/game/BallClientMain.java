@@ -23,9 +23,8 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 	Camera camera;
+	InputHandler input_handler;
 	//TiledMapRenderer tiledMapRenderer; //EXTREMELY USEFUL LATER
-
-	BallClient server_socket;
 
 	Sprite background;
 
@@ -38,14 +37,16 @@ public class BallClientMain extends ApplicationAdapter {
 		//init variables
 		batch = new SpriteBatch();
 		camera = new Camera();
+		input_handler = new InputHandler();
+		Gdx.input.setInputProcessor(input_handler);
 
 		//init sprites (REMOVE LATER)
 		background = new Sprite(new Texture("mountain_temple.png"));
 
 		//Init server
 
-		server_socket = new BallClient("127.0.0.1",5000);
-		server_socket.start_connection();
+		Global.server_socket = new BallClient("127.0.0.1",5000);
+		Global.server_socket.start_connection();
 	}
 
 	@Override
@@ -61,7 +62,8 @@ public class BallClientMain extends ApplicationAdapter {
 		//update stuff
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		Global.updateInput();
-		sendKeyboard();
+		input_handler.sendMouse();
+		input_handler.handleInput();
 		Entity.stepFrameAll(deltaTime);
 
 		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
@@ -77,20 +79,5 @@ public class BallClientMain extends ApplicationAdapter {
         Gdx.app.exit();
 	}
 
-	public void sendKeyboard() { //takes in user input and sends to server
-		String msg = "";
-		//TODO: send mouse position as well
-		//msg+=(",MOUSE_POS-"+Global.m_x+"-"+Global.m_y);
-		msg+=(",MOUSE_ANGLE:"+Global.m_angle);
-		if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) { msg+=(",Key_Q"); }
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { msg+=(",MOUSE_LEFT"); } //TODO: possibly do one for key click
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) { msg+=(",Key_D"); }
-		if (msg.equals("")) return; //if there isnt any input, don't send a message
-		msg = msg.substring(1); //get rid of extra comma in front
 
-		server_socket.send_msg(MT.USIN,msg);
-	}
 }

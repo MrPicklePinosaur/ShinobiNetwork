@@ -20,6 +20,7 @@ import java.util.Random;
 class Global {
 
 	//Important vars
+	public static BallClient server_socket;
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;

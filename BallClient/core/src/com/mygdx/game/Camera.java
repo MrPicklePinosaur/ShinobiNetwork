@@ -45,7 +45,7 @@ public class Camera {
         }
 
         this.updateCam();
-        System.out.println(this.cam.position.x+" "+this.cam.position.y);
+
     }
 
     public void toggleCameraLock() { this.isLocked = !this.isLocked; }

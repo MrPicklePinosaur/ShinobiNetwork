@@ -67,8 +67,8 @@ public class Player extends Entity {
                 String[] data = key.split(":");
                 this.m_angle = Float.parseFloat(data[1]);
             }
-            if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
-            //if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png"); } //shoot bullet
+            //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
+            if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png",this.m_angle); } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }

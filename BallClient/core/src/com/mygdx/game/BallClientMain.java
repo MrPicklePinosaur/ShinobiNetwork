@@ -46,6 +46,8 @@ public class BallClientMain extends ApplicationAdapter {
 
 		Global.server_socket = new BallClient("127.0.0.1",5000);
 
+		Thread.currentThread().setName("Main");
+
 		if (Global.server_socket.start_connection() == false) {
 			 //client goes back to main screen
 			Gdx.app.exit(); //for now the game just closes

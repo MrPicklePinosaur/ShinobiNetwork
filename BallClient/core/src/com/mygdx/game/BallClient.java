@@ -46,6 +46,7 @@ public class BallClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Thread.currentThread().setName("ServerHandler");
 
                 try {
                     while (true) {
@@ -91,12 +92,13 @@ public class BallClient {
 
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
-        if (msg_type == MT.USIN) { //if the message we want to send is a user input
-            data = (MT.USIN+"$"+msg);
-        } else if (msg_type == MT.CHATMSG) {
-
-        } else if (msg_type == MT.CMD) {
-
+        switch(msg_type) {
+            case USIN: //if the message we want to send is a user input
+                data = (MT.USIN+"$"+msg); break;
+            case CHATMSG:
+                break;
+            case CMD:
+                break;
         }
         assert (data != null): "empty message";
         return data;

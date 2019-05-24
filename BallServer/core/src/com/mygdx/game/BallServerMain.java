@@ -74,11 +74,13 @@ public class BallServerMain extends ApplicationAdapter {
 		server = new BallServer(5000);
 		server.start_server();
 
+		Thread.currentThread().setName("Main");
+
 		//Thread that listens for connecting users
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
+				Thread.currentThread().setName("AwaitClient");
 				try {
 					//keep waiting for new clients to show up
 					while (true) {

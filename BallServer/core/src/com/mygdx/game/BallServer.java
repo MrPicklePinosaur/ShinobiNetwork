@@ -72,6 +72,7 @@ class BallClientHandler {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Thread.currentThread().setName("ClientHandler");
 
                 try {
                     String client_msg = "";
@@ -128,18 +129,19 @@ class BallClientHandler {
 
     private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
-        if (msg_type == MT.UPDATE) { //tell client the position of all entites
-            data = (MT.UPDATE+"$"+msg);
-        } else if (msg_type == MT.KILLENTITY) { //tell client to remove client from their render queue
-            data = (MT.KILLENTITY+"$"+msg); //in this case, msg is the entity id
-        } else if (msg_type == MT.LOADMAP) {
-            data = (MT.LOADMAP+"$"+msg); //msg is the filepath of the map image
-        } else if (msg_type == MT.SENDCHAT) {
-            data = (MT.SENDCHAT+"$"+msg); //msg is a list of all the chat messages
-        } else if (msg_type == MT.BINDCAM) {
-            data = (MT.BINDCAM+"$"+msg); //amsg is an x and y value of where the camera should be at
+        switch(msg_type) {
+            case UPDATE: //tell client the position of all entites
+                data = (MT.UPDATE+"$"+msg); break;
+            case KILLENTITY: //tell client to remove client from their render queue
+                data = (MT.KILLENTITY+"$"+msg); break; //in this case, msg is the entity id
+            case LOADMAP:
+                data = (MT.LOADMAP+"$"+msg); break; //msg is the filepath of the map image
+            case SENDCHAT:
+                data = (MT.SENDCHAT+"$"+msg); break; //msg is a list of all the chat messages
+            case BINDCAM:
+                data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
         }
-        assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
+        assert (data != null): "empty message";
         return data;
     }
 

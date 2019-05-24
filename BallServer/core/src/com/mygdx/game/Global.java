@@ -55,7 +55,7 @@ class Global {
 
 enum MT { //mt stands for messageTyoe
 	//Message Types - output
-	UPDATE, KILLENTITY,ASSIGNENTITY, LOADMAP, SENDCHAT,
+	UPDATE, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM,
 
 	//Message Types (MT) - input
 	USIN, CHATMSG, CMD

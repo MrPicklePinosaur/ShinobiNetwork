@@ -19,6 +19,8 @@ import java.util.Random;
 
 class Global {
 
+	public static Camera camera;
+
 	//Important vars
 	public static BallClient server_socket;
 	public static final int SCREEN_WIDTH = 800;
@@ -45,7 +47,7 @@ enum MT {
 	USIN, CHATMSG, CMD, CONNECT,
 
 	//Message types (MT) - input
-	UPDATE, KILLENTITY, ASSIGNENTITY, LOADMAP, SENDMSG
+	UPDATE, KILLENTITY, LOADMAP, SENDMSG, BINDCAM
 }
 
 enum ET {

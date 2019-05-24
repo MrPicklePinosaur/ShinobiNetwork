@@ -22,7 +22,6 @@ public class BallClientMain extends ApplicationAdapter {
 
 	//heavy lifters
 	SpriteBatch batch;
-	Camera camera;
 	InputHandler input_handler;
 	//TiledMapRenderer tiledMapRenderer; //EXTREMELY USEFUL LATER
 
@@ -36,7 +35,7 @@ public class BallClientMain extends ApplicationAdapter {
 
 		//init variables
 		batch = new SpriteBatch();
-		camera = new Camera();
+		Global.camera = new Camera();
 		input_handler = new InputHandler();
 		Gdx.input.setInputProcessor(input_handler);
 
@@ -70,9 +69,9 @@ public class BallClientMain extends ApplicationAdapter {
 		input_handler.handleInput();
 		Entity.stepFrameAll(deltaTime);
 
-		if (Entity.getClientEntity() != null) { camera.moveCam(Entity.getClientEntity()); }
-		batch.setProjectionMatrix(camera.getCam().combined);
-		camera.updateCam();
+		Global.camera.moveCam();
+		batch.setProjectionMatrix(Global.camera.getCam().combined);
+		Global.camera.updateCam();
 
 	}
 	

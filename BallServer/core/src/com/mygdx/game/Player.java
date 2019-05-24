@@ -80,6 +80,7 @@ public class Player extends Entity {
     public float getMouseAngle() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
+    //STATS STUFF
     public int getCurrentHp() { return this.health; }
     public void modHp(int deltaHp) {
         this.health += deltaHp;
@@ -104,7 +105,6 @@ public class Player extends Entity {
 
     public void reset_game_stats() { //used after player dies / respawns
         this.health = this.stats.getHp();
-
     }
 
     public void reset_performance_stats() { //used when the game resets

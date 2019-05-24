@@ -12,6 +12,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Camera {
@@ -21,13 +22,17 @@ public class Camera {
     private OrthographicCamera cam;
     private Boolean isLocked = true;
 
+    private float cam_bind_x;
+    private float cam_bind_y;
+
     public Camera() {
         this.cam = new OrthographicCamera(400,400);
+        this.cam_bind_x = 0; this.cam_bind_y = 0;
     }
 
-    public void moveCam(Entity target) { //make camera follow a target entity
-        float x = target.getX();
-        float y = target.getY();
+    public void moveCam() { //make camera follow a target entity
+        float x = this.cam_bind_x;
+        float y = this.cam_bind_y;
 
         if (this.isLocked == false) {
             //shift camera in direction of mouse
@@ -50,6 +55,10 @@ public class Camera {
 
     public void toggleCameraLock() { this.isLocked = !this.isLocked; }
     public void updateCam() { this.cam.update(); }
+    public void bindPos (Vector2 pos) {
+        this.cam_bind_x = pos.x;
+        this.cam_bind_y = pos.y;
+    }
     public OrthographicCamera getCam() { return this.cam; }
 
 }

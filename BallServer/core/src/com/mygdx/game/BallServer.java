@@ -69,7 +69,6 @@ class BallClientHandler {
 
         init_client_entity();
 
-        this.send_msg(MT.ASSIGNENTITY,""+this.client_entity.getId());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,6 +81,8 @@ class BallClientHandler {
 
                         //interperate client message
                         input_unpacker(client_entity,client_msg);
+
+                        send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); //TODO: prob a bad idea to put this here
 
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
@@ -131,12 +132,12 @@ class BallClientHandler {
             data = (MT.UPDATE+"$"+msg);
         } else if (msg_type == MT.KILLENTITY) { //tell client to remove client from their render queue
             data = (MT.KILLENTITY+"$"+msg); //in this case, msg is the entity id
-        } else if (msg_type == MT.ASSIGNENTITY) { //tells client which entity they own when the connect
-            data = (MT.ASSIGNENTITY+"$"+msg); //msg is the entity id
         } else if (msg_type == MT.LOADMAP) {
             data = (MT.LOADMAP+"$"+msg); //msg is the filepath of the map image
         } else if (msg_type == MT.SENDCHAT) {
             data = (MT.SENDCHAT+"$"+msg); //msg is a list of all the chat messages
+        } else if (msg_type == MT.BINDCAM) {
+            data = (MT.BINDCAM+"$"+msg); //amsg is an x and y value of where the camera should be at
         }
         assert (data != null): "Empty data packet or invalid message type"; //if sm went wrong
         return data;

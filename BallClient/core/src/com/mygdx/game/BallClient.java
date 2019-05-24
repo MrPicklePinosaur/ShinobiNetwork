@@ -10,10 +10,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 
-import java.util.*;
 import java.io.*;
 import java.net.*;
 
@@ -116,10 +114,11 @@ public class BallClient {
         } else if (msg[0].equals(MT.KILLENTITY.toString())) {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
-        } else if (msg[0].equals(MT.ASSIGNENTITY.toString())) {
-            Entity.assignClientId(Integer.parseInt(msg[1]));
         } else if (msg[0].equals(MT.SENDMSG.toString())) {
             //INSERT CHAT LOG STUFF HERE
+        } else if (msg[0].equals(MT.BINDCAM.toString())) {
+            String[] pos = msg[1].split(",");
+            Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
         }
     }
 

@@ -18,8 +18,6 @@ import com.badlogic.gdx.math.MathUtils;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
-    private static Entity client_entity; //the entity that this specific client owns
-    private static int client_entity_id = -1;
 
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
 
@@ -90,8 +88,6 @@ public class Entity {
 
         } else { entity = Entity.entity_library.get(id); }
 
-        if (id == Entity.client_entity_id) { Entity.client_entity = entity; }
-
         //apply all the updates
         entity.entity_type = entity_type;
         entity.update_pos(x,y,rot);
@@ -140,12 +136,4 @@ public class Entity {
     public float getRotation() { return this.rotation; }
     public float getOldX() { return this.old_x; }
     public float getOldY() { return this.old_y; }
-
-    public static Entity getClientEntity() {
-        //assert (Entity.client_entity != null): "Client_entity has not been initalized";
-        return Entity.client_entity;
-    }
-
-    public static void assignClientId(int id) { Entity.client_entity_id = id; }
-
 }

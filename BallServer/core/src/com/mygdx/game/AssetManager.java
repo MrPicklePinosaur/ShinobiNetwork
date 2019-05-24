@@ -10,6 +10,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -24,6 +26,7 @@ import java.util.LinkedList;
 
 public class AssetManager { //mainly just a bunch of helper methods
     private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
+    private static HashMap<Entity, Vector3> move_list = new HashMap<Entity, Vector3>(); //list of bodies to be safely moved
 
     //json libraries
     private static HashMap<String,String> player_stats = new HashMap<String, String>();
@@ -48,6 +51,16 @@ public class AssetManager { //mainly just a bunch of helper methods
             b = null;
         }
         AssetManager.kill_list.clear();
+    }
+
+    public static void flagForMove(Entity e,Vector3 v) { AssetManager.move_list.put(e,v); }
+    public static void moveBodies() { //moves all bodies safely
+        for (Entity e : AssetManager.move_list.keySet()) {
+            assert(e != null): "Body you are trying to move is null";
+            Vector3 v = AssetManager.move_list.get(e);
+            e.init_pos(v.x,v.y,v.z);
+        }
+        AssetManager.move_list.clear();
     }
 
     public static void load_all_json() {

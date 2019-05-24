@@ -41,8 +41,9 @@ public class CollisionListener implements ContactListener {
             if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
                 //deal damage
                 System.out.println("HIT");
-                p.modHp(-1*b.stats.getDmg());
                 b.removeProjecitle();
+                p.modHp(-1*b.stats.getDmg());
+
             }
         }
 

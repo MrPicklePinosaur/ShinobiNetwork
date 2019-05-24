@@ -22,6 +22,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import javafx.util.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sun.security.action.GetLongAction;
 
 public class Player extends Entity {
@@ -57,7 +58,6 @@ public class Player extends Entity {
         circle.dispose();
 
         this.init_stats(json_stat_data);
-        this.reset_performance_stats();
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -88,9 +88,11 @@ public class Player extends Entity {
         if (this.health <= 0) {
             System.out.println("Grats, you have been dedded");
             // currently crashes as we are trying to modify the body during physics step
+
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
-            this.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
+            AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
             this.reset_game_stats();
+
         } //TODO: death handling
     }
 
@@ -103,15 +105,16 @@ public class Player extends Entity {
         this.reset_game_stats();
     }
 
-    public void reset_game_stats() { //used after player dies / respawns
+    public void reset_game_stats() {
         this.health = this.stats.getHp();
     }
-
+    /*
     public void reset_performance_stats() { //used when the game resets
         this.kills = 0;
         this.deaths = 0;
         this.dmg_dealt = 0;
     }
+    */
 
     //stat setters
     public void addKill() { this.kills++; }

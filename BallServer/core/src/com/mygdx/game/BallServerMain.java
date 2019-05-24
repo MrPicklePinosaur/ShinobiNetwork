@@ -111,6 +111,7 @@ public class BallServerMain extends ApplicationAdapter {
 		//update
 		Global.world.step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
+		AssetManager.moveBodies();
 
 	}
 	

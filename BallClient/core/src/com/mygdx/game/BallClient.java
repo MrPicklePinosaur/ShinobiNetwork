@@ -34,12 +34,15 @@ public class BallClient {
         this.self = this;
     }
 
-    public void start_connection() {
+    public Boolean start_connection() {
         try { //init stuff
             client_sock = new Socket(this.ip, this.port);
             outstream = new PrintWriter(client_sock.getOutputStream(), true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
-        } catch (IOException ex) { System.out.println(ex); }
+        } catch (IOException ex) {
+            System.out.println(ex);
+            return false;
+        }
 
         //thread that listens for messages from server
         new Thread(new Runnable() {
@@ -62,6 +65,7 @@ public class BallClient {
 
             }
         }).start();
+        return true;
     }
 
     public void close_connection() {

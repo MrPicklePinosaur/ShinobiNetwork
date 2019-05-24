@@ -57,6 +57,7 @@ public class Player extends Entity {
         circle.dispose();
 
         this.init_stats(json_stat_data);
+        this.reset_performance_stats();
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -85,25 +86,28 @@ public class Player extends Entity {
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
         if (this.health <= 0) {
             System.out.println("Grats, you have been dedded");
-            /* currently crashes as we are trying to modify the body during physics step
-            Vector2 spawn_point = Global.map.get_spawn_point(this.teamtag);
-            this.init_pos(spawn_point.x/ Global.PPM,spawn_point.y/Global.PPM,0);
-            this.reset_stats();
-            */
+            // currently crashes as we are trying to modify the body during physics step
+            Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
+            this.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
+            this.reset_game_stats();
         } //TODO: death handling
     }
 
     @Override
-    public void init_stats(String json_data) {
+    public void init_stats(String json_data) { //should be called once, or when player respawns
         Json json = new Json();
         this.stats = json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
+        this.reset_game_stats();
+    }
+
+    public void reset_game_stats() { //used after player dies / respawns
+        this.health = this.stats.getHp();
 
     }
 
-    public void reset_game_stats() {
-        this.health = this.stats.getHp();
+    public void reset_performance_stats() { //used when the game resets
         this.kills = 0;
         this.deaths = 0;
         this.dmg_dealt = 0;

@@ -96,6 +96,7 @@ class BallClientHandler {
                     AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
                     Entity.removeEntity(client_entity); //remove client entity from list
                     removeClient();
+                    Global.game.removePlayer(client_entity);
 
                     //tie off some loose ends
                     close_connection();
@@ -158,8 +159,9 @@ class BallClientHandler {
     public void init_client_entity() {
         String texture_path = "ninja_run.png";
         this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
-        Vector2 spawn_point = Global.map.get_spawn_point(Global.game.getPlayerList(),this.client_entity.getTeamtag());
+        Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
+        Global.game.addPlayer(this.client_entity);
     }
 
     public static void execute_command(String[] command) {

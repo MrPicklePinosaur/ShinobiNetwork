@@ -39,5 +39,10 @@ public class Game {
     }
 
     public LinkedList<Player> getPlayerList() { return this.player_list; }
+    public void addPlayer(Player p) { this.player_list.add(p); }
+    public void removePlayer(Player p) {
+        assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";
+        this.player_list.remove(p);
+    }
 
 }

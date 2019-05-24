@@ -72,3 +72,7 @@ enum COMMANDS {
 enum TEAMTAG {
 	RED, BLUE, SOLO
 }
+
+enum GAMETYPE {
+	TDR, FFA
+}

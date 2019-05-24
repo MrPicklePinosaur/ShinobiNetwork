@@ -20,10 +20,7 @@ public class InputHandler extends InputAdapter {
 
     public void handleInput() { //takes in user input and sends to server
         String msg = "";
-        //TODO: send mouse position as well
-        //msg+=(",MOUSE_ANGLE:"+Global.m_angle);
-        //if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) { msg+=(",Key_Q"); }
-        //if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { msg+=(",MOUSE_LEFT"); } //TODO: possibly do one for key click
+
         if (Gdx.input.isKeyPressed(Input.Keys.W)) { msg+=(",Key_W"); }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }

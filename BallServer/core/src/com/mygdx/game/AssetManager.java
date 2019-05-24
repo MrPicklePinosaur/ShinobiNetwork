@@ -58,7 +58,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         for (Entity e : AssetManager.move_list.keySet()) {
             assert(e != null): "Body you are trying to move is null";
             Vector3 v = AssetManager.move_list.get(e);
-            e.init_pos(v.x,v.y,v.z);
+            e.init_pos(v.x/Global.PPM,v.y/Global.PPM,v.z);
         }
         AssetManager.move_list.clear();
     }

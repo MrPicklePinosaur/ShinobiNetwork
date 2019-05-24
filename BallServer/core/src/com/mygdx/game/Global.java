@@ -23,13 +23,15 @@ class Global {
 
 	public static Random rnd = new Random();
 
+	public static World world;
+	public static Game game;
+	public static Map map;
+
 	//Important vars
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
-	public static World world;
-	public static Game game;
-	public static Map map;
+
 	public static final int PPM = 100;
 	public static final float deltatime = 1/60f;
 	public static final float PLAYER_DAMPING = 50; //the amount of friction the player has with the floor

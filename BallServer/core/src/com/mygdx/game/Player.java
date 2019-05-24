@@ -82,18 +82,16 @@ public class Player extends Entity {
 
     //STATS STUFF
     public int getCurrentHp() { return this.health; }
-    public void modHp(int deltaHp) {
+    public Boolean modHp(int deltaHp) { //returns wether or not the player was killed
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
         if (this.health <= 0) {
-            System.out.println("Grats, you have been dedded");
-            // currently crashes as we are trying to modify the body during physics step
-
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
             this.reset_game_stats();
-
-        } //TODO: death handling
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -105,9 +103,7 @@ public class Player extends Entity {
         this.reset_game_stats();
     }
 
-    public void reset_game_stats() {
-        this.health = this.stats.getHp();
-    }
+    public void reset_game_stats() { this.health = this.stats.getHp(); }
     /*
     public void reset_performance_stats() { //used when the game resets
         this.kills = 0;

@@ -22,8 +22,8 @@ class Projectile extends Entity {
     private Entity owner; //keeps track of who created the projectile
     public ProjectileStats stats;
 
-    public Projectile(Game game,String file_path,String json_stat_data,Entity owner) {
-        super(game,file_path);
+    public Projectile(String file_path,String json_stat_data,Entity owner) {
+        super(file_path);
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
 
@@ -42,7 +42,7 @@ class Projectile extends Entity {
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
         fdef.isSensor = true;
-        this.body = this.game.getAssetManager().createBody(fdef, BodyDef.BodyType.DynamicBody);
+        this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
         //this.body.setUserData(this);
 

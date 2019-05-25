@@ -47,7 +47,6 @@ class BallServer {
 
 class BallClientHandler {
     //heavy lifters
-    private Game game;
     private Socket client_sock;
     private PrintWriter outstream;
     private BufferedReader instream;
@@ -57,7 +56,7 @@ class BallClientHandler {
 
     private Player client_entity; //used so we know which entity belongs to client
 
-    public BallClientHandler(Game game,Socket client_sock) {
+    public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
         client_list.add(this);
     }
@@ -89,7 +88,7 @@ class BallClientHandler {
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
                     System.out.println("CLIENT HAS DISCONNECTED");
-                    game.new_chat_msg("CLIENT HAS DISCONNECTED");
+                    Global.game.new_chat_msg("CLIENT HAS DISCONNECTED");
 
                     //first of all, send a message to the client telling them they dced
 
@@ -97,9 +96,9 @@ class BallClientHandler {
                     broadcast(MT.KILLENTITY,""+client_entity.getId());
 
                     AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                    game.removeEntity(client_entity); //remove client entity from list
+                    Entity.removeEntity(client_entity); //remove client entity from list
                     removeClient();
-                    game.removePlayer(client_entity);
+                    Global.game.removePlayer(client_entity);
 
                     //tie off some loose ends
                     close_connection();
@@ -162,10 +161,10 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String texture_path = "ninja_run.png";
-        this.client_entity = new Player(game,texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
-        Vector2 spawn_point = game.getMap().get_spawn_point(game,this.client_entity.getTeamtag());
+        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),TEAMTAG.SOLO);
+        Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
-        game.addPlayer(this.client_entity);
+        Global.game.addPlayer(this.client_entity);
     }
 
     public static void execute_command(String[] command) {

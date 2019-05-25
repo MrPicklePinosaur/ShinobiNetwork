@@ -33,17 +33,17 @@ public class AssetManager { //mainly just a bunch of helper methods
 
     private LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
     private HashMap<Entity, Vector3> move_list = new HashMap<Entity, Vector3>(); //list of bodies to be safely moved
-    private World world;
+    private Game game;
 
-    public AssetManager(World world) {
-        this.world = world;
+    public AssetManager(Game game) {
+        this.game = game;
     }
     //helper methods for bodies
     public Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
         BodyDef bdef = new BodyDef();
         bdef.type = bodyType;
-        assert (this.world != null): "world has not been initialized";
-        Body new_body = this.world.createBody(bdef);
+        assert (this.game.world != null): "world has not been initialized";
+        Body new_body = this.game.world.createBody(bdef);
         new_body.createFixture(fdef);
         return new_body;
     }
@@ -52,7 +52,7 @@ public class AssetManager { //mainly just a bunch of helper methods
     public void sweepBodies() { //removes all bodies safely
         for (Body b : this.kill_list) {
             assert(b != null): "Body you are trying to purge is null";
-            this.world.destroyBody(b);
+            this.game.world.destroyBody(b);
             b.setUserData(null);
             b = null;
         }

@@ -21,10 +21,10 @@ public class Game {
 
     public Game(Map map) {
         this.world = new World(new Vector2(0,0),true);
-        this.world.setContactListener(new CollisionListener(this.world));
+        this.world.setContactListener(new CollisionListener());
 
         this.map = map;
-        this.assetmanager = new AssetManager(this.world);
+        this.assetmanager = new AssetManager(this);
 
         this.chat_log = new CopyOnWriteArrayList<String>();
         this.player_list = new LinkedList<Player>();

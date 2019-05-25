@@ -30,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BallServerMain extends ApplicationAdapter {
 
 	//heavy lifters
+	Game game;
 	BallServer server;
 	Box2DDebugRenderer debugRenderer;
 	OrthographicCamera cam; //TODO: WE SHOULD NOT BE USING THIS
@@ -49,14 +50,11 @@ public class BallServerMain extends ApplicationAdapter {
 		//Connect to database
 		//Database.connect("database.db");
 
-		Global.game = new Game();
-		Global.world = new World(new Vector2(0,0),true);
-		Global.world.setContactListener(new CollisionListener());
-
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");
-		Global.map = new Map("maps/mountain_temple.tmx");
+		Map map = new Map("maps/mountain_temple.tmx");
 
+		game = new Game(map);
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
@@ -67,7 +65,7 @@ public class BallServerMain extends ApplicationAdapter {
 		cam.position.y = (float)1500/Global.PPM;
 		cam.update();
 
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(Global.map.getTiledMap(),(float) 1/Global.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(game.map.getTiledMap(),(float) 1/Global.PPM);
 		tiledMapRenderer.setView(cam);
 
 		//Init server and such
@@ -106,10 +104,10 @@ public class BallServerMain extends ApplicationAdapter {
 
 		//draw stuff (TESTING ONLY)
 		tiledMapRenderer.render();
-		debugRenderer.render(Global.world,cam.combined);
+		debugRenderer.render(game.world,cam.combined);
 
 		//update
-		Global.world.step(Global.deltatime,6,2); //step physics simulation
+		game.world.step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
 		AssetManager.moveBodies();
 
@@ -120,7 +118,7 @@ public class BallServerMain extends ApplicationAdapter {
 		server.close_server();
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();
-		Global.disposeGlobals();
+		game.dispose();
 		Gdx.app.exit();
 	}
 }

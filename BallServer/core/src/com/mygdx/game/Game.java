@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -14,7 +15,17 @@ public class Game {
     private CopyOnWriteArrayList<String> chat_log;
     private LinkedList<Player> player_list;
 
-    public Game() {
+    World world;
+    Map map;
+    AssetManager assetmanager;
+
+    public Game(Map map) {
+        this.world = new World(new Vector2(0,0),true);
+        this.world.setContactListener(new CollisionListener(this.world));
+
+        this.map = map;
+        this.assetmanager = new AssetManager(this.world);
+
         this.chat_log = new CopyOnWriteArrayList<String>();
         this.player_list = new LinkedList<Player>();
     }
@@ -44,5 +55,12 @@ public class Game {
         assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";
         this.player_list.remove(p);
     }
+
+    public void dispose() {
+        this.world.dispose();
+    }
+
+    public World getWorld() { return this.world; }
+    public Map getMap() { return this.map; }
 
 }

@@ -16,6 +16,10 @@ import java.awt.*;
 
 public class CollisionListener implements ContactListener {
 
+    private World world;
+    public CollisionListener(World world) {
+        this.world = world;
+    }
     @Override
     public void beginContact(Contact c) {
         Fixture fa = c.getFixtureA();

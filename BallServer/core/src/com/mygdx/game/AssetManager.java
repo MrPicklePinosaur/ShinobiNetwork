@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -25,42 +26,47 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class AssetManager { //mainly just a bunch of helper methods
-    private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
-    private static HashMap<Entity, Vector3> move_list = new HashMap<Entity, Vector3>(); //list of bodies to be safely moved
 
     //json libraries
     private static HashMap<String,String> player_stats = new HashMap<String, String>();
     private static HashMap<String,String> projectile_stats = new HashMap<String, String>();
 
+    private LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
+    private HashMap<Entity, Vector3> move_list = new HashMap<Entity, Vector3>(); //list of bodies to be safely moved
+    private World world;
+
+    public AssetManager(World world) {
+        this.world = world;
+    }
     //helper methods for bodies
-    public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
+    public Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
         BodyDef bdef = new BodyDef();
         bdef.type = bodyType;
-        assert (Global.world != null): "world has not been initialized";
-        Body new_body = Global.world.createBody(bdef);
+        assert (this.world != null): "world has not been initialized";
+        Body new_body = this.world.createBody(bdef);
         new_body.createFixture(fdef);
         return new_body;
     }
 
-    public static void flagForPurge(Body body) { AssetManager.kill_list.add(body); }
-    public static void sweepBodies() { //removes all bodies safely
-        for (Body b : AssetManager.kill_list) {
+    public void flagForPurge(Body body) { this.kill_list.add(body); }
+    public void sweepBodies() { //removes all bodies safely
+        for (Body b : this.kill_list) {
             assert(b != null): "Body you are trying to purge is null";
-            Global.world.destroyBody(b);
+            this.world.destroyBody(b);
             b.setUserData(null);
             b = null;
         }
-        AssetManager.kill_list.clear();
+        this.kill_list.clear();
     }
 
-    public static void flagForMove(Entity e,Vector3 v) { AssetManager.move_list.put(e,v); }
-    public static void moveBodies() { //moves all bodies safely
-        for (Entity e : AssetManager.move_list.keySet()) {
+    public void flagForMove(Entity e,Vector3 v) { this.move_list.put(e,v); }
+    public void moveBodies() { //moves all bodies safely
+        for (Entity e : this.move_list.keySet()) {
             assert(e != null): "Body you are trying to move is null";
-            Vector3 v = AssetManager.move_list.get(e);
+            Vector3 v = this.move_list.get(e);
             e.init_pos(v.x/Global.PPM,v.y/Global.PPM,v.z);
         }
-        AssetManager.move_list.clear();
+        this.move_list.clear();
     }
 
     public static void load_all_json() {

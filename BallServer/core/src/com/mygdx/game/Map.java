@@ -98,7 +98,7 @@ public class Map {
         } catch(IOException ex) { System.out.println(ex); }
     }
 
-    public Vector2 get_spawn_point(TEAMTAG teamtag) {
+    public Vector2 get_spawn_point(LinkedList<Player> player_list,TEAMTAG teamtag) {
         ArrayList<Vector2> spawn_list = new ArrayList<Vector2>();
         //Decide which spawn list to choose from
         if (teamtag == TEAMTAG.RED) { spawn_list = this.red_spawn; }
@@ -113,7 +113,7 @@ public class Map {
         float best_dist = Float.NEGATIVE_INFINITY;
         for (Vector2 v : spawn_list) {
             float dist = 0;
-            for (Player p : Global.game.getPlayerList()) { dist += Math.hypot(v.x-p.getX(),v.y-p.getY()); }
+            for (Player p : player_list) { dist += Math.hypot(v.x-p.getX(),v.y-p.getY()); }
 
             if (dist > best_dist) {
                 best_dist = dist;

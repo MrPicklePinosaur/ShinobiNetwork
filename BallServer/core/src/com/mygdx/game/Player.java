@@ -37,8 +37,8 @@ public class Player extends Entity {
     private int deaths;
     private int dmg_dealt;
 
-    public Player(String texture_path,String json_stat_data,TEAMTAG teamtag) {
-        super(texture_path);
+    public Player(Game game,String texture_path,String json_stat_data,TEAMTAG teamtag) {
+        super(game,texture_path);
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
         this.m_angle = 0;
@@ -50,7 +50,7 @@ public class Player extends Entity {
         fdef.shape = circle;
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
-        this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
+        this.body = this.game.getAssetManager().createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
@@ -86,8 +86,8 @@ public class Player extends Entity {
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
         if (this.health <= 0) {
-            Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
-            AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
+            Vector2 spawn_point = this.game.getMap().get_spawn_point(this.game.getPlayerList(),this.getTeamtag());
+            this.game.getAssetManager().flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
             this.reset_game_stats();
             return true;
         }

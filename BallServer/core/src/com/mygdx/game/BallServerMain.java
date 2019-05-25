@@ -30,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BallServerMain extends ApplicationAdapter {
 
 	//heavy lifters
+	Game game;
 	BallServer server;
 	Box2DDebugRenderer debugRenderer;
 	OrthographicCamera cam; //TODO: WE SHOULD NOT BE USING THIS
@@ -48,15 +49,13 @@ public class BallServerMain extends ApplicationAdapter {
 
 		//Connect to database
 		//Database.connect("database.db");
-
-		Global.game = new Game();
-		Global.world = new World(new Vector2(0,0),true);
-		Global.world.setContactListener(new CollisionListener());
-
+		World world = new World(new Vector2(0,0),true);
+		world.setContactListener(new CollisionListener());
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");
-		Global.map = new Map("maps/mountain_temple.tmx");
+		Map map = new Map("maps/mountain_temple.tmx");
 
+		game = new Game(world,map);
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
@@ -67,7 +66,7 @@ public class BallServerMain extends ApplicationAdapter {
 		cam.position.y = (float)1500/Global.PPM;
 		cam.update();
 
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(Global.map.getTiledMap(),(float) 1/Global.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(game.getMap().getTiledMap(),(float) 1/Global.PPM);
 		tiledMapRenderer.setView(cam);
 
 		//Init server and such
@@ -101,15 +100,15 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//periodically send client position of all entities
-		String entity_data = Entity.send_all();
-		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
+		String entity_data = game.send_all();
+		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATE,game.send_all()); } //broadcast only if there is something to broadcast
 
 		//draw stuff (TESTING ONLY)
 		tiledMapRenderer.render();
-		debugRenderer.render(Global.world,cam.combined);
+		debugRenderer.render(game.getWorld(),cam.combined);
 
 		//update
-		Global.world.step(Global.deltatime,6,2); //step physics simulation
+		game.getWorld().step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
 		AssetManager.moveBodies();
 
@@ -120,7 +119,6 @@ public class BallServerMain extends ApplicationAdapter {
 		server.close_server();
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();
-		Global.disposeGlobals();
 		Gdx.app.exit();
 	}
 }

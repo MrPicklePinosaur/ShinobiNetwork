@@ -25,12 +25,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Entity {
 
-    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
-
-    //just a simple list of all the alive entities
-    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
     private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
+    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
+
+    protected Game game;
     protected ET entity_type;
     protected int id;
     protected String texture_path;
@@ -38,7 +37,8 @@ public abstract class Entity {
     protected int spriteWidth;
     protected int spriteHeight;
 
-    public Entity(String texture_path) {
+    public Entity(Game game,String texture_path) {
+        this.game = game;
         this.id = Global.new_code();
         this.texture_path = texture_path;
         assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
@@ -47,7 +47,7 @@ public abstract class Entity {
         String[] dim = Entity.texture_dimensions.get(texture_path).split("x"); //get the sprite dimensions
         this.spriteWidth = Integer.parseInt(dim[0]);
         this.spriteHeight = Integer.parseInt(dim[1]);
-        entity_list.add(this);
+        game.addEntity(this);
     }
 
     public static void init_textures(String texture_lib_path) { //load all tex
@@ -62,31 +62,9 @@ public abstract class Entity {
         } catch (IOException ex) { System.out.println(ex); }
     }
 
-    public static void removeEntity(Entity entity) {
-        assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
-        Entity.entity_list.remove(entity);
-        BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
-    }
-
-    public static String send_all() { //packages all entity positions into a string
-        String msg = "";
-        for (Entity e : Entity.entity_list) { //for each entity
-            ET et = e.getET();
-            float rot = e.getRotation();
-            if (et == ET.PLAYER) { //if we are sending a player's data, send their mouse angle instead of rotation
-                Player p = (Player) e;
-                rot = p.getMouseAngle();
-            }
-            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+rot);
-        }
-
-        if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
-        return msg;
-    }
-
     //Projecitle stuff
     public void newProjectile(String file_path,float angle) {
-        Projectile p = new Projectile(file_path,AssetManager.getProjectileJsonData("slash"),this);
+        Projectile p = new Projectile(this.game,file_path,AssetManager.getProjectileJsonData("slash"),this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
         this.projectile_list.add(p);
@@ -96,8 +74,8 @@ public abstract class Entity {
         //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
         if (!this.projectile_list.contains(projectile)) { return; } //if there is a probelm, ignore it
         this.projectile_list.remove(projectile);
-        Entity.removeEntity(projectile);
-        AssetManager.flagForPurge(projectile.getBody());
+        this.game.removeEntity(projectile);
+        this.game.getAssetManager().flagForPurge(projectile.getBody());
     }
 
 

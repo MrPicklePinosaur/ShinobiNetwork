@@ -84,7 +84,8 @@ public class Player extends Entity {
         }
     }
 
-    public float getMouseAngle() { return this.m_angle; }
+    //public float getMouseAngle() { return this.m_angle; }
+    @Override public float getRotation() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
 
     //STATS STUFF

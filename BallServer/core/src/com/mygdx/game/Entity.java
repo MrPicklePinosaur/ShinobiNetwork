@@ -73,10 +73,7 @@ public abstract class Entity {
         for (Entity e : Entity.entity_list) { //for each entity
             ET et = e.getET();
             float rot = e.getRotation();
-            if (et == ET.PLAYER) { //if we are sending a player's data, send their mouse angle instead of rotation
-                Player p = (Player) e;
-                rot = p.getMouseAngle();
-            }
+
             msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+rot);
         }
 

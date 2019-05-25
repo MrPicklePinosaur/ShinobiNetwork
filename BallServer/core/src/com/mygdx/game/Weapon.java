@@ -22,20 +22,9 @@ public class Weapon extends Entity {
         this.stats = Global.json.fromJson(WeaponStats.class, json_data);
     }
 
-    @Override
-    public float getX() {
-        return this.owner.getX();
-    }
-
-    @Override
-    public float getY() {
-        return this.owner.getY();
-    }
-
-    @Override
-    public float getRotation() {
-        return this.owner.getRotation();
-    }
+    @Override public float getX() { return this.owner.getX(); }
+    @Override public float getY() { return this.owner.getY(); }
+    @Override public float getRotation() { return this.owner.getRotation(); }
 }
 
 class WeaponStats {

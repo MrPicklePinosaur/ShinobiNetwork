@@ -30,6 +30,7 @@ public class Player extends Entity {
     public PlayerStats stats;
     private float m_angle;
     private TEAMTAG teamtag;
+    private Weapon weapon;
 
     //stats
     private int health;
@@ -94,10 +95,8 @@ public class Player extends Entity {
         return false;
     }
 
-    @Override
-    public void init_stats(String json_data) { //should be called once, or when player respawns
-        Json json = new Json();
-        this.stats = json.fromJson(PlayerStats.class,json_data);
+    @Override public void init_stats(String json_data) { //should be called once, or when player respawns
+        this.stats = Global.json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();

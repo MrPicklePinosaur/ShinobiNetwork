@@ -60,10 +60,8 @@ class Projectile extends Entity {
     }
     public Entity getOwner() { return this.owner; }
 
-    @Override
-    public void init_stats(String json_data) {
-        Json json = new Json();
-        this.stats = json.fromJson(ProjectileStats.class,json_data);
+    @Override public void init_stats(String json_data) {
+        this.stats = Global.json.fromJson(ProjectileStats.class,json_data);
     }
 
 }

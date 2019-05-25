@@ -1,2 +1,3 @@
 ninja_run.png,32x32
 katanaSlash.png,32x32
+kazemonji_weapon.png,32x32

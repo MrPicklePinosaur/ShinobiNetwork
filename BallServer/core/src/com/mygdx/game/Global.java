@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.HashSet;
 
@@ -22,6 +23,7 @@ import java.io.*;
 class Global {
 
 	public static Random rnd = new Random();
+	public static Json json = new Json();
 
 	public static World world;
 	public static Game game;
@@ -64,7 +66,7 @@ enum MT { //mt stands for messageTyoe
 }
 
 enum ET { //et sstands for entitiy type
-	PLAYER, ENEMY, PROJECTILE, STATIC
+	PLAYER, ENEMY, PROJECTILE, STATIC, WEAPON
 }
 
 enum COMMANDS {

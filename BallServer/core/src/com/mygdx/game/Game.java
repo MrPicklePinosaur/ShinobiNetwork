@@ -10,9 +10,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game {
 
-    //private World world;
     private CopyOnWriteArrayList<String> chat_log;
     private LinkedList<Player> player_list;
+    private GAMETYPE gametype;
 
     public Game() {
         this.chat_log = new CopyOnWriteArrayList<String>();

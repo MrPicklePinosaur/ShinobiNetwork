@@ -59,6 +59,9 @@ public class Player extends Entity {
         circle.dispose();
 
         this.init_stats(json_stat_data);
+
+        this.weapon = new Weapon("kazemonji_weapon.png",AssetManager.getWeaponJsonData("Kazemonji"),this);
+
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -70,7 +73,10 @@ public class Player extends Entity {
                 this.m_angle = Float.parseFloat(data[1]);
             }
             //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
-            if (key.equals("MOUSE_LEFT")) { this.newProjectile("katanaSlash.png",this.m_angle); } //shoot bullet
+            if (key.equals("MOUSE_LEFT")) {
+                String projectile_path = this.weapon.stats.getProjectilePath();
+                this.newProjectile(projectile_path,this.m_angle);
+            } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }

@@ -1,7 +1,7 @@
 [
 	{
 		"name": "Kazemonji",
-		"projectile": "slash",
+		"projectile_path": "katanaSlash.png",
 		"fire_rate": 12
 	}
 ]

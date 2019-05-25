@@ -66,7 +66,7 @@ public class AssetManager { //mainly just a bunch of helper methods
 
     public static void load_all_json() {
         AssetManager.load_json(AssetManager.player_stats,"json/base_player_stats.json");
-        AssetManager.load_json(AssetManager.player_stats,"json/base_weapon_stats.json");
+        AssetManager.load_json(AssetManager.weapon_stats,"json/base_weapon_stats.json");
         AssetManager.load_json(AssetManager.projectile_stats,"json/base_projectile_stats.json");
     }
 

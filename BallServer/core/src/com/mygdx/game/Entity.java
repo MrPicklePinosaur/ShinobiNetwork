@@ -91,7 +91,7 @@ public abstract class Entity {
         p.setVelocity(angle);
         this.projectile_list.add(p);
     }
-    public void removeProjectile(AssetManager assetManager,Projectile projectile) {
+    public void removeProjectile(Projectile projectile) {
         //safe removal of projectile
         //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
         if (!this.projectile_list.contains(projectile)) { return; } //if there is a probelm, ignore it

@@ -23,6 +23,10 @@ class Global {
 
 	public static Random rnd = new Random();
 
+	public static World world;
+	public static Game game;
+	public static Map map;
+
 	//Important vars
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
@@ -46,6 +50,9 @@ class Global {
 		return code;
 	}
 
+	public static void disposeGlobals() {
+		Global.world.dispose();
+	}
 }
 
 enum MT { //mt stands for messageTyoe

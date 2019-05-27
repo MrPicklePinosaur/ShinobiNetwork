@@ -127,23 +127,12 @@ public class Entity {
                 batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,1,1,e.getRotation()* MathUtils.radiansToDegrees);
             } else if (e.getET().equals(ET.WEAPON.toString())) {
                 //if mouse is in 2nd or 3rd quadrant, face left
-                if (MathUtils.PI/2 < rot && rot < MathUtils.PI*3/2 && !tex.isFlipX()) { tex.flip(true, false); }
+                if (MathUtils.PI/2 < rot && rot < MathUtils.PI*3/2 && !tex.isFlipX()) { tex.flip(true, true); }
                 //if mouse is in 4th or 1st quadrant, face right
-                else if ((MathUtils.PI*3/2 < rot || rot < MathUtils.PI/2) && tex.isFlipX()) {
-                    tex.flip(true, false);
-                    if (MathUtils.PI/2 < rot && rot < MathUtils.PI) { //2nd quadrant
-                        rot = MathUtils.PI - rot;
-                    } else if (MathUtils.PI < rot && rot < MathUtils.PI*3/2) { //3rd quadrant
-                        rot = MathUtils.PI/2 + rot;
-                    } else { System.out.println("weird angle"); }
-                }
-
-
-
+                else if ((MathUtils.PI*3/2 < rot || rot < MathUtils.PI/2) && tex.isFlipX()) { tex.flip(true, true); }
 
                 batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,1,1,e.getRotation()* MathUtils.radiansToDegrees);
             }
-
         }
     }
 

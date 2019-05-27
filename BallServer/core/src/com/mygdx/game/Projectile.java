@@ -68,18 +68,15 @@ class Projectile extends Entity {
 
 class ProjectileStats {
     private String name;
-    private int dmg;
     private int speed;
 
     public ProjectileStats() { }
-    public ProjectileStats(String name,int dmg, int speed) {
+    public ProjectileStats(String name,int speed) {
         this.name = name;
-        this.dmg = dmg;
         this.speed = speed;
     }
 
     //Getters
     public String getName() { return this.name; }
-    public int getDmg() { return this.dmg; }
     public int getSpeed() { return this.speed; }
 }

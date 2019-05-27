@@ -44,11 +44,11 @@ public class CollisionListener implements ContactListener {
                                         //TODO: possibly make piercing bullets
 
                 //deal damage
-                if (p.modHp(-1*b.stats.getDmg())) { //if the bullet killed the player
+                if (p.modHp(-1*owner.getWeapon().stats.getDamage())) { //if the bullet killed the player
                     owner.addKill();
                     p.addDeath();
                 }
-                owner.addDmgDealt(b.stats.getDmg());
+                owner.addDmgDealt(owner.getWeapon().stats.getDamage());
 
             }
         }

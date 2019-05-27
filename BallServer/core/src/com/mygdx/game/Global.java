@@ -78,5 +78,9 @@ enum TEAMTAG {
 }
 
 enum GAMETYPE {
-	TDR, FFA
+	TDM, FFA
+}
+
+enum FIREPATTERN { //bullet pattern
+	STRAIGHT, WAVE
 }

@@ -21,11 +21,13 @@ class Projectile extends Entity {
 
     private Entity owner; //keeps track of who created the projectile
     public ProjectileStats stats;
+    private FIREPATTERN fire_pattern;
 
-    public Projectile(String file_path,String json_stat_data,Entity owner) {
+    public Projectile(String file_path,String json_stat_data,Entity owner,String fire_pattern) {
         super(file_path);
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
+        this.fire_pattern = FIREPATTERN.valueOf(fire_pattern.toUpperCase());
 
         //init body
         /*

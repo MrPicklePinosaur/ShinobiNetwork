@@ -75,7 +75,7 @@ public class Player extends Entity {
             //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             if (key.equals("MOUSE_LEFT")) {
                 String projectile_path = this.weapon.stats.getProjectilePath();
-                this.newProjectile(projectile_path,this.m_angle);
+                this.newProjectile(projectile_path,this.m_angle,this.weapon.stats.getFirePattern());
             } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }

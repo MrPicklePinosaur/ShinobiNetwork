@@ -32,18 +32,21 @@ class WeaponStats {
     private String projectile_path;
     private int damage;
     private float fire_rate;
+    private String fire_pattern;
 
     public WeaponStats() { }
-    public WeaponStats(String name,String projectile_path,int damage,float fire_rate) {
+    public WeaponStats(String name,String projectile_path,int damage,float fire_rate,String fire_pattern) {
         this.name = name;
         this.projectile_path = projectile_path;
         this.damage = damage;
         this.fire_rate = fire_rate;
+        this.fire_pattern = fire_pattern;
     }
 
     public String getName() { return this.name; }
     public String getProjectilePath() { return this.projectile_path; }
     public int getDamage() { return this.damage; }
     public float getFireRate() { return this.fire_rate; }
+    public String getFirePattern() { return this.fire_pattern; }
 }
 

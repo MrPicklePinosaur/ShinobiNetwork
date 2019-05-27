@@ -97,6 +97,9 @@ class BallClientHandler {
 
                     AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
                     Entity.removeEntity(client_entity); //remove client entity from list
+
+                    Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+
                     removeClient();
                     Global.game.removePlayer(client_entity);
 

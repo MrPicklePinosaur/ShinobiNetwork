@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -21,7 +22,9 @@ import java.util.Random;
 class Global {
 
 	public static Camera camera;
-	public static ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+	//Scene 2d
+	public static Stage stage;
 
 	//Important vars
 	public static BallClient server_socket;

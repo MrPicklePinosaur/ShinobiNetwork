@@ -35,9 +35,8 @@ public class ChatLog extends ApplicationAdapter {
         newTable.setDebug(false);
         Global.stage.addActor(newTable);
         this.table = newTable; //this table is the UI table, so be careful when clearing children
-        table.setDebug(true); // This is optional, but enables debug lines for tables.
+
         // Add widgets to the table here.
-        
         chatLabel = new Label("Chat: ", skin);
         chatLabel.setAlignment(Align.right);
         chatLogLabel = new Label("", skin);
@@ -55,7 +54,7 @@ public class ChatLog extends ApplicationAdapter {
             @Override
             public void keyTyped(TextField textField, char c) {
                 if (textField.getText().trim().length() > 0 && c == '\r') {   //if enter key is pressed and the msgbox isnt just whitespace
-                    updateChatLog(name + ": " + textField.getText());
+                    send_msg(name + ": " + textField.getText()); //EITHER: have client provide name, or have server provide name
                     textField.setText("");
                 }
             }
@@ -63,8 +62,16 @@ public class ChatLog extends ApplicationAdapter {
         textfield.setActor(chatText);
     }
 
-    public void updateChatLog(String newChatMsg) {
-        //Dealing with new chat message sent
+    public void drawLog(ShapeRenderer shapeRenderer) {
+        shapeRenderer.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
+    }
+
+    public void send_msg(String msg) {
+        Global.server_socket.send_chat_msg(msg);
+    }
+
+    public void recieve_message(String newChatMsg) {
+        //Dealing with new chat message that was recieved
         if (this.playerMSGs.size() > 14) {
             this.playerMSGs.removeFirst();
             this.playerMSGs.add(newChatMsg);
@@ -72,6 +79,10 @@ public class ChatLog extends ApplicationAdapter {
             this.playerMSGs.add(newChatMsg);
         }
 
+        refreshTable();
+    }
+
+    public void refreshTable() {
         //Updating table
         table.clearChildren();
         for (String msg : this.playerMSGs) {
@@ -90,9 +101,5 @@ public class ChatLog extends ApplicationAdapter {
         table.add(new Label("Chat: ", skin)).right();
         table.add(chatText);
         table.bottom().right().padBottom(10f).padRight(10f);
-    }
-
-    public void drawLog(ShapeRenderer shapeRenderer) {
-        shapeRenderer.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
     }
 }

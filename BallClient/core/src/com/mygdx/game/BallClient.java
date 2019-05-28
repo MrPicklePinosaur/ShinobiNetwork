@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BallClient {
     //heavy lifters
@@ -52,7 +54,7 @@ public class BallClient {
                     while (true) {
                         final String server_msg = instream.readLine();
 
-                       System.out.println(server_msg);
+                       //System.out.println(server_msg);
 
                         //interperate server message and post to rendering thread
                         Gdx.app.postRunnable(new Runnable() {
@@ -96,9 +98,9 @@ public class BallClient {
             case USIN: //if the message we want to send is a user input
                 data = (MT.USIN+"$"+msg); break;
             case CHATMSG:
-                break;
+                data = (MT.CHATMSG+"$"+msg); break;
             case CMD:
-                break;
+                data = (MT.CMD+"$"+msg); break;
         }
         assert (data != null): "empty message";
         return data;
@@ -116,8 +118,10 @@ public class BallClient {
         } else if (msg[0].equals(MT.KILLENTITY.toString())) {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
-        } else if (msg[0].equals(MT.SENDMSG.toString())) {
+        } else if (msg[0].equals(MT.SENDCHAT.toString())) {
             //INSERT CHAT LOG STUFF HERE
+            System.out.println(Arrays.toString(msg));
+            Global.chatlog.recieve_message(msg[1]);
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
             Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));

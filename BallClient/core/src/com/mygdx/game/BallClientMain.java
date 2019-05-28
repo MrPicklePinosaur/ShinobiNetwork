@@ -12,6 +12,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,13 +27,13 @@ public class BallClientMain extends ApplicationAdapter {
 	//heavy lifters
 	SpriteBatch batch;
 	ShapeRenderer shapeRenderer;
+	InputMultiplexer inputMultiplexer;
 	InputHandler input_handler;
 	//TiledMapRenderer tiledMapRenderer; //EXTREMELY USEFUL LATER
 
 	Sprite background;
 
 	//UI stuff
-	ChatLog chatlog;
 
 	@Override
 	public void create () {
@@ -42,15 +43,20 @@ public class BallClientMain extends ApplicationAdapter {
 
 		//init ui stuff
 		Global.stage = new Stage();
-		chatlog = new ChatLog();
+		Global.chatlog = new ChatLog();
 
 		//init variables
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
 		//shapeRenderer.setProjectionMatrix(Global.camera.getCam().combined);
 		Global.camera = new Camera();
+
+		//input
+		InputMultiplexer inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(Global.stage);
 		input_handler = new InputHandler();
-		Gdx.input.setInputProcessor(input_handler);
+		inputMultiplexer.addProcessor(input_handler);
+		Gdx.input.setInputProcessor(inputMultiplexer);
 
 		//init sprites (REMOVE LATER)
 		background = new Sprite(new Texture("mountain_temple.png"));
@@ -79,9 +85,12 @@ public class BallClientMain extends ApplicationAdapter {
 		Entity.drawAll(batch);
 		batch.end();
 
-		//draw
+		//draw UI
+		Global.stage.act(Gdx.graphics.getDeltaTime());
+		Global.stage.draw();
+
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		chatlog.drawLog(shapeRenderer);
+		Global.chatlog.drawLog(shapeRenderer);
 		shapeRenderer.end();
 
 		//update stuff

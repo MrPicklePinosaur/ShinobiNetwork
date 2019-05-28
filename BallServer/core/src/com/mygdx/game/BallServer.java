@@ -140,7 +140,7 @@ class BallClientHandler {
             case LOADMAP:
                 data = (MT.LOADMAP+"$"+msg); break; //msg is the filepath of the map image
             case SENDCHAT:
-                data = (MT.SENDCHAT+"$"+msg); break; //msg is a list of all the chat messages
+                data = (MT.SENDCHAT+"$"+msg); break; //msg is the new chat meassage
             case BINDCAM:
                 data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
         }
@@ -154,7 +154,7 @@ class BallClientHandler {
         if (msg[0].equals(MT.USIN.toString())) {
             client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(MT.CHATMSG.toString())) {
-            Global.game.new_chat_msg(raw_msg);
+            Global.game.new_chat_msg(msg[1]);
         } else if (msg[0].equals(MT.CMD.toString())) {
             String[] cmd_msg = raw_msg.split(" ");
             execute_command(cmd_msg);

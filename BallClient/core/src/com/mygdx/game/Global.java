@@ -25,6 +25,7 @@ class Global {
 
 	//Scene 2d
 	public static Stage stage;
+	public static ChatLog chatlog;
 
 	//Important vars
 	public static BallClient server_socket;
@@ -49,10 +50,10 @@ class Global {
 
 enum MT {
 	//Message types - output
-	USIN, CHATMSG, CMD, CONNECT,
+	USIN, CHATMSG, CMD,
 
 	//Message types (MT) - input
-	UPDATE, KILLENTITY, LOADMAP, SENDMSG, BINDCAM
+	UPDATE, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM
 }
 
 enum ET {

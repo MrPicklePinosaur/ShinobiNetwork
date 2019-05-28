@@ -23,16 +23,10 @@ public class Game {
 
     public void new_chat_msg(String msg) {
         chat_log.add(msg);
-        this.update_chat(); //when a new message is added, update all clients
+        if (msg.equals("") || msg == null) { return; }
+        BallClientHandler.broadcast(MT.SENDCHAT,msg);
     }
     public void wipe_chat() { this.chat_log.clear(); }
-    private void update_chat() {
-        if (this.chat_log.size() == 0) { return; } //if there is nothing to send
-        String chat = "";
-        for (String s : this.chat_log) { chat+=(","+s); }
-        chat = toString().substring(1);
-        BallClientHandler.broadcast(MT.SENDCHAT,chat);
-    }
 
     public ArrayList<Vector3> getLeaderBoard() {
         ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();

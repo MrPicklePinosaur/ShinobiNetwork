@@ -60,4 +60,11 @@ public class Game {
         return null;
     }
 
+    /*
+    public String getTextColour(TEAMTAG teamtag) {
+        String text_colour;
+
+    }
+    */
+
 }

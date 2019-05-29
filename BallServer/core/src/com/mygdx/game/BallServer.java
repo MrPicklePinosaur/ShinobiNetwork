@@ -141,7 +141,7 @@ class BallClientHandler {
             case LOADMAP:
                 data = (MT.LOADMAP+"$"+msg); break; //msg is the filepath of the map image
             case SENDCHAT:
-                data = (MT.SENDCHAT+"$"+msg); break; //msg is the new chat meassage
+                data = (MT.SENDCHAT+"$"+msg); break;
             case BINDCAM:
                 data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
         }
@@ -175,7 +175,6 @@ class BallClientHandler {
 
     public void execute_command(String[] command) {
         //a command consists of the command name,followed by what you want to do with the command
-        System.out.println(Arrays.toString(command));
         //if (command.length != 2) { return; }
         if ((command[0].toUpperCase()).equals(COMMANDS.TELEPORT.toString()) && command.length == 3) { //command consists of command name, x and y
             float x = this.client_entity.getX(); float y = this.client_entity.getY();

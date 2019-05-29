@@ -84,3 +84,7 @@ enum GAMETYPE {
 enum FIREPATTERN { //bullet pattern
 	STRAIGHT, WAVE
 }
+
+enum CHATCOLOUR {
+	RED, BLUE, GREY, YELLOW
+}

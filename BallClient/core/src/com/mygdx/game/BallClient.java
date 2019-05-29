@@ -85,6 +85,7 @@ public class BallClient {
 
     public void send_chat_msg(String msg) {
         assert (msg != null && !msg.equals("")): "empty message";
+        System.out.println(msg.charAt(0));
         if (msg.charAt(0) == '/') { //if the message begains with a slash, it is a command
             send_msg(MT.CMD,msg.substring(1)); //remove the /
         } else {
@@ -120,7 +121,6 @@ public class BallClient {
             Entity.kill_entity(id);
         } else if (msg[0].equals(MT.SENDCHAT.toString())) {
             //INSERT CHAT LOG STUFF HERE
-            System.out.println(Arrays.toString(msg));
             Global.chatlog.recieve_message(msg[1]);
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");

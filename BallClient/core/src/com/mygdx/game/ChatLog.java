@@ -54,7 +54,7 @@ public class ChatLog extends ApplicationAdapter {
             @Override
             public void keyTyped(TextField textField, char c) {
                 if (textField.getText().trim().length() > 0 && c == '\r') {   //if enter key is pressed and the msgbox isnt just whitespace
-                    send_msg(name + ": " + textField.getText()); //EITHER: have client provide name, or have server provide name
+                    send_msg(textField.getText());
                     textField.setText("");
                 }
             }

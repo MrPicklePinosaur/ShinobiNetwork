@@ -24,6 +24,7 @@ public class Game {
     public void new_chat_msg(String msg) {
         chat_log.add(msg);
         if (msg.equals("") || msg == null) { return; }
+        msg = "USER: " + msg;
         BallClientHandler.broadcast(MT.SENDCHAT,msg);
     }
     public void wipe_chat() { this.chat_log.clear(); }

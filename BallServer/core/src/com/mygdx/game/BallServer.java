@@ -16,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.JsonValue;
 
 class BallServer {
@@ -81,7 +82,7 @@ class BallClientHandler {
                         //System.out.println(client_msg);
 
                         //interperate client message
-                        input_unpacker(client_entity,client_msg);
+                        input_unpacker(client_msg);
 
                         send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); //TODO: prob a bad idea to put this here
 
@@ -148,15 +149,15 @@ class BallClientHandler {
         return data;
     }
 
-    private static void input_unpacker(Player client_entity,String raw_msg) {
+    private void input_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(MT.USIN.toString())) {
-            client_entity.handleInput(msg[1]);
+            this.client_entity.handleInput(msg[1]);
         } else if (msg[0].equals(MT.CHATMSG.toString())) {
             Global.game.new_chat_msg(msg[1]);
         } else if (msg[0].equals(MT.CMD.toString())) {
-            String[] cmd_msg = raw_msg.split(" ");
+            String[] cmd_msg = msg[1].split(" ");
             execute_command(cmd_msg);
         }
         //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
@@ -172,9 +173,26 @@ class BallClientHandler {
         Global.game.addPlayer(this.client_entity);
     }
 
-    public static void execute_command(String[] command) {
+    public void execute_command(String[] command) {
         //a command consists of the command name,followed by what you want to do with the command
-        if (command.length != 2) { return; }
+        System.out.println(Arrays.toString(command));
+        //if (command.length != 2) { return; }
+        if ((command[0].toUpperCase()).equals(COMMANDS.TELEPORT.toString()) && command.length == 3) { //command consists of command name, x and y
+            float x = this.client_entity.getX(); float y = this.client_entity.getY();
+            try {
+                x = Float.parseFloat(command[1]);
+                y = Float.parseFloat(command[2]);
+            } catch (NumberFormatException ex) {
+                this.send_msg(MT.SENDCHAT,"[INVALID PARAMETERS FOR TELEPORT]"); return;
+            }
+            AssetManager.flagForMove(this.client_entity, new Vector3(x, y, this.client_entity.getRotation()));
+        } else if ((command[0].toUpperCase()).equals(COMMANDS.HELP.toString())) {
+            this.send_msg(MT.SENDCHAT, "[List of commands - help, teleport]");
+        } else if ((command[0].toUpperCase()).equals(COMMANDS.SPEEDY.toString())) {
+            this.client_entity.stats.setSpeed(client_entity.stats.getSpeed()*2);
+        } else {
+            this.send_msg(MT.SENDCHAT,"[INVALID COMMAND, for a comprehensive list of commands, try /help]");
+        }
 
     }
     public void removeClient() {

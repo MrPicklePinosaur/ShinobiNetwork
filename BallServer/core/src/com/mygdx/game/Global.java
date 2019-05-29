@@ -70,7 +70,7 @@ enum ET { //et sstands for entitiy type
 }
 
 enum COMMANDS {
-	TELEPORT
+	TELEPORT, HELP, SPEEDY
 }
 
 enum TEAMTAG {

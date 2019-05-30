@@ -3,6 +3,7 @@
 		"name": "Kazemonji",
 		"projectile_path": "katanaSlash.png",
 		"damage": 10,
+		"bullet_speed": 3,
 		"fire_rate": 12,
 		"fire_pattern": "straight"
 	}

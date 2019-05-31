@@ -140,14 +140,14 @@ class PlayerStats {
     private String name;
     private int hp;
     private int speed;
-    public AbilityStats ability_stats;
+    private String ability;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
-    public PlayerStats(String name,int hp, int speed,String ability_json) {
+    public PlayerStats(String name,int hp, int speed,String ability) {
         this.name = name;
         this.hp = hp;
         this.speed = speed;
-        this.ability_stats = Global.json.fromJson(AbilityStats.class,ability_json);
+        this.ability = ability;
     }
 
     //Getters
@@ -158,18 +158,3 @@ class PlayerStats {
     public void setSpeed(int speed) { this.speed = speed; }
 }
 
-class AbilityStats {
-    private String name;
-    private float duration;
-    private float cooldown;
-
-    public AbilityStats(String name,float duration,float cooldown) {
-        this.name = name;
-        this.duration = duration;
-        this.cooldown = cooldown;
-    }
-
-    public String getName() { return this.name; }
-    public float getDuration() { return this.duration; }
-    public float getCooldown() { return this.cooldown; }
-}

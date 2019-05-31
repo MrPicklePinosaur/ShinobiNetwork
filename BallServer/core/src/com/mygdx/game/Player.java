@@ -111,7 +111,6 @@ public class Player extends Entity {
         this.stats = Global.json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
-        this.ability = new Ability(this,0.25f);
         this.reset_game_stats();
     }
 
@@ -141,21 +140,36 @@ class PlayerStats {
     private String name;
     private int hp;
     private int speed;
-    private String ability;
+    public AbilityStats ability_stats;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
-    public PlayerStats(String name,int hp, int speed,String ability) {
+    public PlayerStats(String name,int hp, int speed,String ability_json) {
         this.name = name;
         this.hp = hp;
         this.speed = speed;
-        this.ability = ability;
+        this.ability_stats = Global.json.fromJson(AbilityStats.class,ability_json);
     }
 
     //Getters
     public String getName() { return this.name; }
     public int getHp() { return this.hp; }
     public int getSpeed() { return this.speed; }
-    public String getAbility() { return this.ability; }
 
     public void setSpeed(int speed) { this.speed = speed; }
+}
+
+class AbilityStats {
+    private String name;
+    private float duration;
+    private float cooldown;
+
+    public AbilityStats(String name,float duration,float cooldown) {
+        this.name = name;
+        this.duration = duration;
+        this.cooldown = cooldown;
+    }
+
+    public String getName() { return this.name; }
+    public float getDuration() { return this.duration; }
+    public float getCooldown() { return this.cooldown; }
 }

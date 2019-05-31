@@ -4,13 +4,21 @@
 		"name": "ninja",
 		"hp": 100,
 		"speed" : 2,
-		"ability": "dash"
+		"ability": [{
+			"name": "slash",
+			"duration": 0.25,
+			"cooldown": 1.5
+		}]
 	},
 	{
 		"name": "warrior",
 		"hp": 150,
 		"speed": 1,
-		"ability": "warcry"
+		"ability": [{
+			"name": "warcry",
+			"duration": 2,
+			"cooldown": 5
+		}]
 	}
 
 ]

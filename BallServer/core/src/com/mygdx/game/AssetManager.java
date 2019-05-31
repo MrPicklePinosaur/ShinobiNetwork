@@ -32,6 +32,7 @@ public class AssetManager { //mainly just a bunch of helper methods
     private static HashMap<String,String> player_stats = new HashMap<String, String>();
     private static HashMap<String,String> weapon_stats = new HashMap<String, String>();
     private static HashMap<String,String> projectile_stats = new HashMap<String, String>();
+    private static HashMap<String,HashMap<String,String>> ability_stats = new HashMap<String, HashMap<String, String>>();
 
     //helper methods for bodies
     public static Body createBody(FixtureDef fdef, BodyDef.BodyType bodyType) { //takes in a fixture and creates a body
@@ -68,6 +69,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         AssetManager.load_json(AssetManager.player_stats,"json/base_player_stats.json");
         AssetManager.load_json(AssetManager.weapon_stats,"json/base_weapon_stats.json");
         AssetManager.load_json(AssetManager.projectile_stats,"json/base_projectile_stats.json");
+        AssetManager.load_ability_json(AssetManager.ability_stats,"json/ability_stats.json");
     }
 
     private static void load_json(HashMap<String,String> lib,String filepath) { //takes in a library and populates it with the json of the file at filepath
@@ -81,7 +83,28 @@ public class AssetManager { //mainly just a bunch of helper methods
             lib.put(cur.getString("name"),cur.toString());
             if (cur.next == null) { break; }
             cur = cur.next;
+        }
+    }
+    private static void load_ability_json(HashMap<String,HashMap<String,String>> lib,String filepath) {
+        JsonReader json = new JsonReader();
+        JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
 
+        JsonValue abl_type = raw_json.child.child;
+        while (true) { //iterate through ability types
+
+            HashMap<String,String> abls = new HashMap<String, String>(); //stores all abilities of one type
+
+            JsonValue abl = abl_type.child;
+            while (true) { //iterate through abilities
+                abls.put(abl.getString("name"),abl.toString());
+
+                if (abl.next == null) { break; }
+                abl = abl.next;
+            }
+
+            lib.put(abl_type.name,abls);
+            if (abl_type.next == null) { break; }
+            abl_type = abl_type.next;
         }
     }
 
@@ -96,6 +119,11 @@ public class AssetManager { //mainly just a bunch of helper methods
     public static String getProjectileJsonData(String key) {
         assert(AssetManager.projectile_stats.containsKey(key)): "Projectile stats not found!";
         return AssetManager.projectile_stats.get(key);
+    }
+    public static String getAbilityJsonData(String abl_type,String abl_name) {
+        assert(AssetManager.ability_stats.containsKey(abl_type)): "Invalid ability type";
+        assert(AssetManager.ability_stats.get(abl_type).containsKey(abl_name)): "Invalid ability";
+        return AssetManager.ability_stats.get(abl_type).get(abl_name);
     }
 
 }

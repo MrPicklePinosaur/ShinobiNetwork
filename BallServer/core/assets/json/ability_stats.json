@@ -1,7 +1,26 @@
-[
+[{
 
-	{
-		
-	}
+	"swiftstrike": [
+		{
+			"name": "basic",
+			"max_duration": 0.25,
+			"max_cooldown": 1.5,
+			"dash_speed": 20,
+		},
+		{
+			"name": "thunder",
+			"max_duration": 0.20,
+			"max_cooldown": 1,
+			"dash_speed": 30,
+		}
+	],
 
-]
+	"warcry": [
+		{
+			"name": "basic",
+			"max_duration": 0.25,
+			"max_cooldown": 1.5,
+		}
+	]
+	
+}]

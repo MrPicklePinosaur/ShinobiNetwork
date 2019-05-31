@@ -4,7 +4,7 @@
 		"name": "ninja",
 		"hp": 100,
 		"speed" : 2,
-		"ability": "slash"
+		"ability": "swiftstrike"
 	},
 	{
 		"name": "warrior",

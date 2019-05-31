@@ -88,3 +88,7 @@ enum FIREPATTERN { //bullet pattern
 enum CHATCOLOUR {
 	RED, BLUE, GREY, YELLOW
 }
+
+enum ABILITYTYPE {
+	DASH, WARCRY
+}

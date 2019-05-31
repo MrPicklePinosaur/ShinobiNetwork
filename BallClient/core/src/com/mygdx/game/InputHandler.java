@@ -25,6 +25,7 @@ public class InputHandler extends InputAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) { msg+=(",Key_S"); }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) { msg+=(",Key_D"); }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { msg+=(",Key_SPACE"); }
         if (msg.equals("")) return; //if there isnt any input, don't send a message
         msg = msg.substring(1); //get rid of extra comma in front
 

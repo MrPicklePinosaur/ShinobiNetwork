@@ -28,6 +28,7 @@ import sun.security.action.GetLongAction;
 public class Player extends Entity {
 
     public PlayerStats stats;
+    private Ability ability;
     private float m_angle;
     private TEAMTAG teamtag;
     private Weapon weapon;
@@ -107,6 +108,7 @@ public class Player extends Entity {
         this.stats = Global.json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
+        this.ability = new Ability(this,100);
         this.reset_game_stats();
     }
 
@@ -136,18 +138,21 @@ class PlayerStats {
     private String name;
     private int hp;
     private int speed;
+    private String ability;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
-    public PlayerStats(String name,int hp, int speed) {
+    public PlayerStats(String name,int hp, int speed,String ability) {
         this.name = name;
         this.hp = hp;
         this.speed = speed;
+        this.ability = ability;
     }
 
     //Getters
     public String getName() { return this.name; }
     public int getHp() { return this.hp; }
     public int getSpeed() { return this.speed; }
+    public String getAbility() { return this.ability; }
 
     public void setSpeed(int speed) { this.speed = speed; }
 }

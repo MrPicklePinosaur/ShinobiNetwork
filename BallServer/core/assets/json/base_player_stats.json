@@ -3,12 +3,14 @@
 	{
 		"name": "ninja",
 		"hp": 100,
-		"speed" : 2
+		"speed" : 2,
+		"ability": "dash"
 	},
 	{
 		"name": "warrior",
 		"hp": 150,
-		"speed": 1
+		"speed": 1,
+		"ability": "warcry"
 	}
 
 ]

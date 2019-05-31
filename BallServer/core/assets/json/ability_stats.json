@@ -8,10 +8,10 @@
 			"dash_speed": 20,
 		},
 		{
-			"name": "thunder",
-			"max_duration": 0.20,
+			"name": "flash",
+			"max_duration": 0.05,
 			"max_cooldown": 1,
-			"dash_speed": 30,
+			"dash_speed": 35,
 		}
 	],
 

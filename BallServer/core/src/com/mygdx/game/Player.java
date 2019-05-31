@@ -83,7 +83,7 @@ public class Player extends Entity {
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
-            if (key.equals("Key_SPACE")) { this.ability.activate(); }
+            if (key.equals("Key_SPACE")) { this.ability.begin(); }
         }
     }
 
@@ -112,6 +112,7 @@ public class Player extends Entity {
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
     }
 
     public void reset_game_stats() { this.health = this.stats.getHp(); }
@@ -140,20 +141,21 @@ class PlayerStats {
     private String name;
     private int hp;
     private int speed;
-    private String ability;
+    private String abl_type;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
-    public PlayerStats(String name,int hp, int speed,String ability) {
+    public PlayerStats(String name,int hp, int speed,String abl_type) {
         this.name = name;
         this.hp = hp;
         this.speed = speed;
-        this.ability = ability;
+        this.abl_type = abl_type;
     }
 
     //Getters
     public String getName() { return this.name; }
     public int getHp() { return this.hp; }
     public int getSpeed() { return this.speed; }
+    public String getAblType() { return this.abl_type; }
 
     public void setSpeed(int speed) { this.speed = speed; }
 }

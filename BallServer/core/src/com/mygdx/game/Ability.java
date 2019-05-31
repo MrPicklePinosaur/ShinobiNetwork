@@ -16,6 +16,7 @@ public abstract class Ability {
     protected float duration_left;
     protected float cooldown_left;
 
+    public Ability() { }
     public Ability(String name,float max_duration,float max_cooldown) {
         this.name = name;
         this.max_duration = max_duration;
@@ -32,6 +33,7 @@ public abstract class Ability {
     public abstract void deactivate(); //what to do when ability is deactivated
 
     public void begin() {
+        assert (this.player != null): "Player hasn't been binded yet!!";
         //you cant activate ability if its already activated or under cool down
         if (Ability.cooldown_abilities.contains(this) || Ability.active_abilities.contains(this)) { return; }
 
@@ -74,6 +76,17 @@ public abstract class Ability {
         Ability.active_abilities.remove(this);
         Ability.cooldown_abilities.add(this);
     }
+
+    public static Ability createAbility(Player player, String abl_type,String abl_name) {
+        Ability newAbility = null;
+        if (abl_type.equals("swiftstrike")) {
+            newAbility = Global.json.fromJson(SwiftstrikeAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
+        }
+
+        assert (newAbility != null): "Failed to create ability";
+        newAbility.bind_player(player);
+        return newAbility;
+    }
 }
 
 
@@ -82,6 +95,7 @@ class SwiftstrikeAbility extends Ability {
     private float dash_speed;
     private String projectile_path;
 
+    public SwiftstrikeAbility() { }
     public SwiftstrikeAbility(String name, float max_duration, float max_cooldown, float dash_speed) {
         super(name,max_duration,max_cooldown);
         this.dash_speed = dash_speed;

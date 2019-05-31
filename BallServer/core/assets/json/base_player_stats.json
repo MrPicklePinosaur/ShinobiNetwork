@@ -4,13 +4,13 @@
 		"name": "ninja",
 		"hp": 100,
 		"speed" : 2,
-		"ability": "swiftstrike"
+		"abl_type": "swiftstrike"
 	},
 	{
 		"name": "warrior",
 		"hp": 150,
 		"speed": 1,
-		"ability": "warcry"
+		"abl_type": "warcry"
 	}
 
 ]

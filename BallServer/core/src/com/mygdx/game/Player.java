@@ -52,6 +52,7 @@ public class Player extends Entity {
         fdef.shape = circle;
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+        fdef.friction = 0;
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
@@ -82,6 +83,7 @@ public class Player extends Entity {
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
+            if (key.equals("Key_SPACE")) { this.ability.activate(); }
         }
     }
 
@@ -89,6 +91,7 @@ public class Player extends Entity {
     @Override public float getRotation() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
+    public float getMouseAngle() { return this.m_angle; }
 
     //STATS STUFF
     public int getCurrentHp() { return this.health; }
@@ -108,7 +111,7 @@ public class Player extends Entity {
         this.stats = Global.json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
-        this.ability = new Ability(this,100);
+        this.ability = new Ability(this,0.25f);
         this.reset_game_stats();
     }
 

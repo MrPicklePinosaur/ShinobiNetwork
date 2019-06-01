@@ -1,18 +1,8 @@
 [
 	{
 		"name": "kazemonji",
-		"projectile_path": "katanaSlash",
-		"damage": 10,
-		"bullet_speed": 3,
+		"projectile": "katanaSlash",
 		"fire_rate": 12,
 		"fire_pattern": "straight"
 	},
-	{
-		"name": "Basic Waki",
-		"projectile_path": "katanaSlash",
-		"damage": 10,
-		"bullet_speed": 5,
-		"fire_rate": 12,
-		"fire_pattern": "straight"
-	}
 ]

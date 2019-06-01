@@ -19,16 +19,15 @@ import javafx.util.Pair;
 
 class Projectile extends Entity {
 
+    public ProjectileStats stats;
     private Entity owner; //keeps track of who created the projectile
-    private FIREPATTERN fire_pattern;
-    private int speed;
 
-    public Projectile(String name,Entity owner,String fire_pattern,int speed) {
+    public Projectile(String name,String json_stat_data,Entity owner) {
         super(name);
+        this.stats = Global.json.fromJson(ProjectileStats.class,json_stat_data);
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
-        this.fire_pattern = FIREPATTERN.valueOf(fire_pattern.toUpperCase());
-        this.speed = speed;
+
 
         //init body
         /*
@@ -54,10 +53,12 @@ class Projectile extends Entity {
     }
 
     public void setVelocity(float angle) {
-        this.body.setLinearVelocity(this.speed* MathUtils.cos(angle),this.speed*MathUtils.sin(angle));
+        this.body.setLinearVelocity(this.stats.getBulletSpeed()* MathUtils.cos(angle),this.stats.getBulletSpeed()*MathUtils.sin(angle));
     }
 
-    @Override public void init_stats(String json_data) { }
+    @Override public void init_stats(String json_data) {
+        this.stats = Global.json.fromJson(ProjectileStats.class, json_data);
+    }
 
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
@@ -65,4 +66,19 @@ class Projectile extends Entity {
     public Entity getOwner() { return this.owner; }
 
 
+}
+
+class ProjectileStats {
+
+    String name;
+    int damage;
+    float bullet_speed;
+    String travel_pattern;
+
+    public ProjectileStats() { }
+
+    public String getName() { return this.name; }
+    public int getDamage() { return this.damage; }
+    public float getBulletSpeed() { return this.bullet_speed; }
+    public String getTravelPattern() { return this.travel_pattern; }
 }

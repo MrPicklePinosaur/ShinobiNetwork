@@ -58,10 +58,7 @@ public abstract class Entity {
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
-            ET et = e.getET();
-            float rot = e.getRotation();
-
-            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+rot);
+            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
@@ -69,8 +66,16 @@ public abstract class Entity {
     }
 
     //Projecitle stuff
-    public void newProjectile(String file_path,float angle,String firepattern,int speed) {
-        Projectile p = new Projectile(file_path,this,firepattern,speed);
+    public void shoot(String name,float angle,String fire_pattern) {
+        if (fire_pattern.equals("straight")) { this.newProjectile(name,angle); }
+        if (fire_pattern.equals("triple")) {
+            for (int i = -1; i < 2; i++) {
+                this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians);
+            }
+        }
+    }
+    public void newProjectile(String name,float angle) {
+        Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
         this.projectile_list.add(p);

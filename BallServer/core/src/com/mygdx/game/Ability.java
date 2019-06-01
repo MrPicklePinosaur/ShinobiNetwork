@@ -80,7 +80,7 @@ public abstract class Ability {
     public static Ability createAbility(Player player, String abl_type,String abl_name) {
         Ability newAbility = null;
         if (abl_type.equals("swiftstrike")) {
-            System.out.println(AssetManager.getAbilityJsonData(abl_type,abl_name));
+            //System.out.println(AssetManager.getAbilityJsonData(abl_type,abl_name));
             newAbility = Global.json.fromJson(SwiftstrikeAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
         }
 
@@ -95,30 +95,48 @@ class SwiftstrikeAbility extends Ability {
 
     private float dash_speed;
     private String projectile_path;
-    private String slash_weapon;
+    private String slash_projectile;
+    private String slash_pattern;
 
     public SwiftstrikeAbility() { }
 
     @Override public void activate() { }
 
     @Override public void update() { //do a speed boost
-        int impX = (int)(this.dash_speed*MathUtils.cos(this.player.getMouseAngle()));
-        int impY = (int)(this.dash_speed*MathUtils.sin(this.player.getMouseAngle()));
-        this.player.getBody().applyLinearImpulse(impX,impY,0,0,true);
+        if (this.name.equals("basic")) {
+            int impX = (int) (this.dash_speed * MathUtils.cos(this.player.getMouseAngle()));
+            int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getMouseAngle()));
+            this.player.getBody().applyLinearImpulse(impX, impY, 0, 0, true);
+        }
     }
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
-
+        if (this.name.equals("basic")) {
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern);
+        }
     }
 
 }
 
 class WarcryAbility extends Ability {
     private float radius;
+    private String active_effect;
+    private String affected_entites;
 
     public WarcryAbility() { }
 
-    @Override public void activate() { }
+    @Override public void activate() {
+        for (Player p : Global.game.getPlayerList()) {
+            if (Math.hypot(p.getX()-this.player.getX(),p.getY()-this.player.getY()) > this.radius) { continue; }
+
+            if (this.affected_entites.equals("team") && this.player.getTeamtag() != p.getTeamtag()) { continue; }
+            else if (this.affected_entites.equals("enemies") && this.player.getTeamtag() == p.getTeamtag()) { continue; }
+            else if (this.affected_entites.equals("all")) { } //place holder just to show that the option is here
+
+            //apply effects
+
+        }
+    }
 
     @Override public void update() { //all players within a certain radius get a buff/debuff
 

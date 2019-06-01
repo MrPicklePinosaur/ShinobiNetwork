@@ -29,18 +29,14 @@ public class Weapon extends Entity {
 
 class WeaponStats {
     private String name;
-    private String projectile_path;
-    private int damage;
-    private int bullet_speed;
+    private String projectile;
     private float fire_rate;
     private String fire_pattern;
 
     public WeaponStats() { }
 
     public String getName() { return this.name; }
-    public String getProjectilePath() { return this.projectile_path; }
-    public int getDamage() { return this.damage; }
-    public int getBulletSpeed() { return this.bullet_speed; }
+    public String getProjectileName() { return this.projectile; }
     public float getFireRate() { return this.fire_rate; }
     public String getFirePattern() { return this.fire_pattern; }
 }

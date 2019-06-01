@@ -6,14 +6,16 @@
 			"max_duration": 0.25,
 			"max_cooldown": 1.5,
 			"dash_speed": 20,
-			"slash_weapon": "Basic Waki"
+			"slash_projectile": "katanaSlash",
+			"slash_pattern": "triple"
 		},
 		{
 			"name": "flash",
 			"max_duration": 0.05,
 			"max_cooldown": 1,
 			"dash_speed": 35,
-			"slash_weapon": "Basic Waki"
+			"slash_projectile": "katanaSlash",
+			"slash_pattern": "triple"
 		}
 	],
 
@@ -22,7 +24,9 @@
 			"name": "basic",
 			"max_duration": 0,
 			"max_cooldown": 5,
-			"radius": 6
+			"radius": 6,
+			"affected_entites": "team",
+			"active_effect": "berzerk"
 		}
 	]
 	

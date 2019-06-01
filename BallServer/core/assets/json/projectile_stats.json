@@ -1,0 +1,10 @@
+[
+
+	{
+		"name": "katanaSlash",
+		"damage": 10,
+		"bullet_speed": 3,
+		"travel_pattern": "straight"
+	}
+
+]

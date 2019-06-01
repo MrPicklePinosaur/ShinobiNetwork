@@ -1,4 +1,6 @@
 ninja.png
+warrior.png
 katanaSlash.png
 kazemonji.png
 empty.png
+royal_warhammer.png

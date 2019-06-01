@@ -18,7 +18,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import javafx.util.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Player extends Entity {
+    private HashMap<String,ActiveEffect> activeEffects_list = new HashMap<String, ActiveEffect>();
 
     public PlayerStats stats;
     private Ability ability;
@@ -54,7 +58,8 @@ public class Player extends Entity {
 
         this.init_stats(json_stat_data);
 
-        this.weapon = new Weapon("kazemonji",AssetManager.getWeaponJsonData("kazemonji"),this);
+        String weapon_name = "royal_warhammer";
+        this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
     }
 
@@ -85,6 +90,11 @@ public class Player extends Entity {
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
     public float getMouseAngle() { return this.m_angle; }
+    public HashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public void removeEffect(String effect) {
+        assert (this.activeEffects_list.containsKey(effect)): "Unable to remove effect";
+        this.activeEffects_list.remove(effect);
+    }
 
     //STATS STUFF
     public int getCurrentHp() { return this.health; }
@@ -100,12 +110,19 @@ public class Player extends Entity {
         return false;
     }
 
+    public void applyActiveEffect(String effect_name,float duration) {
+        if (!this.activeEffects_list.containsKey(effect_name)) { //if the effect isnt already active, add it
+            this.activeEffects_list.put(effect_name,new ActiveEffect(this,effect_name,duration));
+        }
+        this.activeEffects_list.get(effect_name).resetDurationTimer(); //if the effect is already active, simply reset the timer
+    }
+
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
         this.stats = Global.json.fromJson(PlayerStats.class,json_data);
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"helm of hades");
     }
 
     public void reset_game_stats() { this.health = this.stats.getHp(); }

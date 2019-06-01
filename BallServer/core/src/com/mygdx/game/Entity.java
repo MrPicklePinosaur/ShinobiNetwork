@@ -9,18 +9,10 @@
 
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.*;
-import java.io.*;
-import java.net.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Entity {
@@ -58,7 +50,9 @@ public abstract class Entity {
     public static String send_all() { //packages all entity positions into a string
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
-            msg += (" "+e.getET().toString()+","+e.getId()+","+e.getTexturePath()+","+e.getX()+","+e.getY()+","+e.getRotation());
+            try { //possibly a bad idea to slap a try-catch here
+                msg += (" " + e.getET().toString() + "," + e.getId() + "," + e.getTexturePath() + "," + e.getX() + "," + e.getY() + "," + e.getRotation());
+            } catch (NullPointerException ex) { System.out.println(ex); }
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space

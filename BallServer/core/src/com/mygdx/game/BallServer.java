@@ -164,10 +164,10 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String texture_path = "ninja";
+        String player_class = "warrior";
         TEAMTAG team = Global.game.chooseTeam();
 
-        this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),team);
+        this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),team);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);

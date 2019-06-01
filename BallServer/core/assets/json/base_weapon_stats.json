@@ -5,4 +5,10 @@
 		"fire_rate": 12,
 		"fire_pattern": "straight"
 	},
+	{
+		"name": "royal_warhammer",
+		"projectile": "katanaSlash",
+		"fire_rate": 12,
+		"fire_pattern": "straight"
+	},
 ]

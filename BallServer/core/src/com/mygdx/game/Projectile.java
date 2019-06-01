@@ -22,6 +22,9 @@ class Projectile extends Entity {
     public ProjectileStats stats;
     private Entity owner; //keeps track of who created the projectile
 
+    private float spawnX;
+    private float spawnY;
+
     public Projectile(String name,String json_stat_data,Entity owner) {
         super(name);
         this.stats = Global.json.fromJson(ProjectileStats.class,json_stat_data);
@@ -49,7 +52,12 @@ class Projectile extends Entity {
         //this.body.setUserData(this);
 
         circle.dispose();
+    }
 
+    @Override public void init_pos(float x, float y, float rotation) {
+        super.init_pos(x,y,rotation);
+        this.spawnX = x;
+        this.spawnY = y;
     }
 
     public void setVelocity(float angle) {
@@ -73,6 +81,7 @@ class ProjectileStats {
     String name;
     int damage;
     float bullet_speed;
+    float max_dist;
     String travel_pattern;
 
     public ProjectileStats() { }
@@ -80,5 +89,6 @@ class ProjectileStats {
     public String getName() { return this.name; }
     public int getDamage() { return this.damage; }
     public float getBulletSpeed() { return this.bullet_speed; }
+    public float getMaxDist() { return this.max_dist; }
     public String getTravelPattern() { return this.travel_pattern; }
 }

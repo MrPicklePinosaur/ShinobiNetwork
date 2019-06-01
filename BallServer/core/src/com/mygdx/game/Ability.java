@@ -37,9 +37,9 @@ public abstract class Ability {
         //you cant activate ability if its already activated or under cool down
         if (Ability.cooldown_abilities.contains(this) || Ability.active_abilities.contains(this)) { return; }
 
-        this.activate();
-
         Ability.active_abilities.add(this);
+
+        this.activate();
     }
 
     public static void updateAll(float deltaTime) {
@@ -82,6 +82,8 @@ public abstract class Ability {
         if (abl_type.equals("swiftstrike")) {
             //System.out.println(AssetManager.getAbilityJsonData(abl_type,abl_name));
             newAbility = Global.json.fromJson(SwiftstrikeAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
+        } else if (abl_type.equals("warcry")) {
+            newAbility = Global.json.fromJson(WarcryAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
         }
 
         assert (newAbility != null): "Failed to create ability";
@@ -132,8 +134,12 @@ class WarcryAbility extends Ability {
             if (this.affected_entites.equals("team") && this.player.getTeamtag() != p.getTeamtag()) { continue; }
             else if (this.affected_entites.equals("enemies") && this.player.getTeamtag() == p.getTeamtag()) { continue; }
             else if (this.affected_entites.equals("all")) { } //place holder just to show that the option is here
+            else if (this.affected_entites.equals("self") && !player.equals(p)) { continue; }
 
             //apply effects
+            if (this.active_effect.equals("burning")) {
+                p.applyActiveEffect(active_effect,max_duration);
+            }
 
         }
     }

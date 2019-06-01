@@ -3,7 +3,8 @@
 	{
 		"name": "katanaSlash",
 		"damage": 10,
-		"bullet_speed": 3,
+		"bullet_speed": 4,
+		"max_dist": 5,
 		"travel_pattern": "straight"
 	}
 

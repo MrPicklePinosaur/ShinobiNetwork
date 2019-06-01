@@ -4,7 +4,7 @@
 		"name": "ninja",
 		"hp": 100,
 		"speed" : 2,
-		"abl_type": "swiftstrike"
+		"abl_type": "swiftstrike",
 	},
 	{
 		"name": "warrior",

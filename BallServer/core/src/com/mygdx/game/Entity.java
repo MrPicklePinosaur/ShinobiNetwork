@@ -32,34 +32,22 @@ public abstract class Entity {
 
     protected ET entity_type;
     protected int id;
+    protected String name;
     protected String texture_path;
     protected Body body;
     protected int spriteWidth;
     protected int spriteHeight;
 
-    public Entity(String texture_path) {
+    public Entity(String name) {
         this.id = Global.new_code();
-        this.texture_path = texture_path;
+        this.name = name;
+        this.texture_path = this.name+".png";
 
         //Init sprite
         this.spriteWidth = Global.SPRITESIZE;
         this.spriteHeight = Global.SPRITESIZE;
         entity_list.add(this);
     }
-
-    /*
-    public static void init_textures(String texture_lib_path) { //load all tex
-        try {
-            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
-            while (fileReader.hasNext()) {
-                //data comes in the form "texture_path","widthxheight"
-                String[] data = fileReader.nextLine().split(",");
-                Entity.texture_dimensions.put(data[0],data[1]);
-            }
-            fileReader.close();
-        } catch (IOException ex) { System.out.println(ex); }
-    }
-    */
 
     public static void removeEntity(Entity entity) {
         assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";

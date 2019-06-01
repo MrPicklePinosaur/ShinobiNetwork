@@ -23,8 +23,8 @@ class Projectile extends Entity {
     private FIREPATTERN fire_pattern;
     private int speed;
 
-    public Projectile(String file_path,Entity owner,String fire_pattern,int speed) {
-        super(file_path);
+    public Projectile(String name,Entity owner,String fire_pattern,int speed) {
+        super(name);
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
         this.fire_pattern = FIREPATTERN.valueOf(fire_pattern.toUpperCase());

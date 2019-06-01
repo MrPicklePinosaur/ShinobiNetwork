@@ -45,7 +45,7 @@ public class Entity {
     }
 
     private static TextureRegion[] createAnimation(String texture_path) {
-        assert (AssetManager.animation_lib.containsKey(texture_path)): "Texture hasn't been loaded yet.";
+        assert (AssetManager.animation_lib.containsKey(texture_path)): "Texture ("+texture_path+") hasn't been loaded yet.";
         Texture spritesheet = AssetManager.getSpritesheet(texture_path);
 
         int NUM_COLS = spritesheet.getWidth() / Global.SPRITESIZE;

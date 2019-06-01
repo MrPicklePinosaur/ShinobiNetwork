@@ -32,8 +32,8 @@ public class Player extends Entity {
     private int deaths;
     private int dmg_dealt;
 
-    public Player(String texture_path,String json_stat_data,TEAMTAG teamtag) {
-        super(texture_path);
+    public Player(String name,String json_stat_data,TEAMTAG teamtag) {
+        super(name);
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
         this.m_angle = 0;
@@ -54,7 +54,7 @@ public class Player extends Entity {
 
         this.init_stats(json_stat_data);
 
-        this.weapon = new Weapon("kazemonji_weapon.png",AssetManager.getWeaponJsonData("Kazemonji"),this);
+        this.weapon = new Weapon("kazemonji",AssetManager.getWeaponJsonData("kazemonji"),this);
 
     }
 
@@ -136,12 +136,6 @@ class PlayerStats {
     private String abl_type;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
-    public PlayerStats(String name,int hp, int speed,String abl_type) {
-        this.name = name;
-        this.hp = hp;
-        this.speed = speed;
-        this.abl_type = abl_type;
-    }
 
     //Getters
     public String getName() { return this.name; }

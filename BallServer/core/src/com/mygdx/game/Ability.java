@@ -95,14 +95,9 @@ class SwiftstrikeAbility extends Ability {
 
     private float dash_speed;
     private String projectile_path;
-    private Weapon slash_weapon;
+    private String slash_weapon;
 
     public SwiftstrikeAbility() { }
-    public SwiftstrikeAbility(String name, float max_duration, float max_cooldown, float dash_speed) {
-        super(name,max_duration,max_cooldown);
-        this.dash_speed = dash_speed;
-        //this.slash_weapon = new Weapon("empty.png",AssetManager.getWeaponJsonData(slash_weapon),this.player);
-    }
 
     @Override public void activate() { }
 
@@ -113,6 +108,23 @@ class SwiftstrikeAbility extends Ability {
     }
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
+
+    }
+
+}
+
+class WarcryAbility extends Ability {
+    private float radius;
+
+    public WarcryAbility() { }
+
+    @Override public void activate() { }
+
+    @Override public void update() { //all players within a certain radius get a buff/debuff
+
+    }
+
+    @Override public void deactivate() {
 
     }
 

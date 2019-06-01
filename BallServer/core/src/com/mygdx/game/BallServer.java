@@ -164,7 +164,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String texture_path = "ninja_run.png";
+        String texture_path = "ninja";
         TEAMTAG team = Global.game.chooseTeam();
 
         this.client_entity = new Player(texture_path,AssetManager.getPlayerJsonData("ninja"),team);

@@ -7,8 +7,8 @@ public class Weapon extends Entity {
     private Entity owner;
     public WeaponStats stats;
 
-    public Weapon(String texture_path, String json_stat_data, Entity owner) {
-        super(texture_path);
+    public Weapon(String name, String json_stat_data, Entity owner) {
+        super(name);
         this.owner = owner;
 
         this.entity_type = ET.WEAPON;
@@ -36,14 +36,6 @@ class WeaponStats {
     private String fire_pattern;
 
     public WeaponStats() { }
-    public WeaponStats(String name,String projectile_path,int damage,int bullet_speed,float fire_rate,String fire_pattern) {
-        this.name = name;
-        this.projectile_path = projectile_path;
-        this.damage = damage;
-        this.bullet_speed = bullet_speed;
-        this.fire_rate = fire_rate;
-        this.fire_pattern = fire_pattern;
-    }
 
     public String getName() { return this.name; }
     public String getProjectilePath() { return this.projectile_path; }

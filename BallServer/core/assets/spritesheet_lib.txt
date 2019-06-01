@@ -1,4 +1,0 @@
-ninja_run.png
-katanaSlash.png
-kazemonji_weapon.png
-empty.png

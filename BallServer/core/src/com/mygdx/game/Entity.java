@@ -29,7 +29,6 @@ public abstract class Entity {
 
     //just a simple list of all the alive entities
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
-    private static HashMap<String,String> texture_dimensions = new HashMap<String, String>();
 
     protected ET entity_type;
     protected int id;
@@ -41,15 +40,14 @@ public abstract class Entity {
     public Entity(String texture_path) {
         this.id = Global.new_code();
         this.texture_path = texture_path;
-        assert (Entity.texture_dimensions.containsKey(texture_path)): "Texture has not been initialized";
 
         //Init sprite
-        String[] dim = Entity.texture_dimensions.get(texture_path).split("x"); //get the sprite dimensions
-        this.spriteWidth = Integer.parseInt(dim[0]);
-        this.spriteHeight = Integer.parseInt(dim[1]);
+        this.spriteWidth = Global.SPRITESIZE;
+        this.spriteHeight = Global.SPRITESIZE;
         entity_list.add(this);
     }
 
+    /*
     public static void init_textures(String texture_lib_path) { //load all tex
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(texture_lib_path)));
@@ -61,6 +59,7 @@ public abstract class Entity {
             fileReader.close();
         } catch (IOException ex) { System.out.println(ex); }
     }
+    */
 
     public static void removeEntity(Entity entity) {
         assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";

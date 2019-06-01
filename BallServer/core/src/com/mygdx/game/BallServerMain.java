@@ -31,7 +31,7 @@ public class BallServerMain extends ApplicationAdapter {
 	@Override
 	public void create () {
 		//init assets
-		Entity.init_textures("texture_dimensions.txt");
+		//Entity.init_textures("texture_dimensions.txt");
 		AssetManager.load_all_json();
 		//Map.loadAll("map_library.txt");
 

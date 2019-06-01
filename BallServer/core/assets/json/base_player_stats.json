@@ -11,6 +11,12 @@
 		"hp": 150,
 		"speed": 1,
 		"abl_type": "warcry"
+	},
+	{
+		"name": "archer",
+		"hp": 80,
+		"speed": 2,
+		"abl_type": "quiver"
 	}
 
 ]

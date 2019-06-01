@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.mygdx.game.TEAMTAG.SOLO;
-
 public class Game {
 
     private CopyOnWriteArrayList<String> chat_log;
@@ -43,8 +41,9 @@ public class Game {
     }
 
     public TEAMTAG chooseTeam() {
+        TEAMTAG team = null;
         if (this.gametype == GAMETYPE.FFA) {
-            return SOLO;
+            team = TEAMTAG.SOLO;
         } else if (this.gametype == GAMETYPE.TDM) { //team deathmatch
             //find how many players are on each team and try to keep the teams balanced
             int red_count = 0;
@@ -55,9 +54,11 @@ public class Game {
                 else if (p.getTeamtag() == TEAMTAG.BLUE) { blue_count++; }
             }
 
-            return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
+            team = red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
         }
-        return null;
+
+        assert (team != null): "Error choosing team";
+        return team;
     }
 
     /*

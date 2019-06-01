@@ -16,14 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import javafx.util.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import sun.security.action.GetLongAction;
 
 public class Player extends Entity {
 
@@ -52,7 +45,6 @@ public class Player extends Entity {
         fdef.shape = circle;
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
-        fdef.friction = 0;
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         //this.body.setUserData(this);
@@ -77,7 +69,7 @@ public class Player extends Entity {
             //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             if (key.equals("MOUSE_LEFT")) {
                 String projectile_path = this.weapon.stats.getProjectilePath();
-                this.newProjectile(projectile_path,this.m_angle,this.weapon.stats.getFirePattern());
+                this.newProjectile(projectile_path,this.m_angle,this.weapon.stats.getFirePattern(),this.weapon.stats.getBulletSpeed());
             } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }

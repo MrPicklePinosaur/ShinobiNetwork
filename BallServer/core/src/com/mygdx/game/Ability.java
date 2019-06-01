@@ -80,6 +80,7 @@ public abstract class Ability {
     public static Ability createAbility(Player player, String abl_type,String abl_name) {
         Ability newAbility = null;
         if (abl_type.equals("swiftstrike")) {
+            System.out.println(AssetManager.getAbilityJsonData(abl_type,abl_name));
             newAbility = Global.json.fromJson(SwiftstrikeAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
         }
 
@@ -94,12 +95,13 @@ class SwiftstrikeAbility extends Ability {
 
     private float dash_speed;
     private String projectile_path;
+    private Weapon slash_weapon;
 
     public SwiftstrikeAbility() { }
     public SwiftstrikeAbility(String name, float max_duration, float max_cooldown, float dash_speed) {
         super(name,max_duration,max_cooldown);
         this.dash_speed = dash_speed;
-        //this.projectile_path = projectile_path;
+        //this.slash_weapon = new Weapon("empty.png",AssetManager.getWeaponJsonData(slash_weapon),this.player);
     }
 
     @Override public void activate() { }
@@ -113,4 +115,5 @@ class SwiftstrikeAbility extends Ability {
     @Override public void deactivate() { //at the end of the dash, do a slash attack
 
     }
+
 }

@@ -48,7 +48,7 @@ class WeaponStats {
     public String getName() { return this.name; }
     public String getProjectilePath() { return this.projectile_path; }
     public int getDamage() { return this.damage; }
-    public int getBullet_speed() { return this.bullet_speed; }
+    public int getBulletSpeed() { return this.bullet_speed; }
     public float getFireRate() { return this.fire_rate; }
     public String getFirePattern() { return this.fire_pattern; }
 }

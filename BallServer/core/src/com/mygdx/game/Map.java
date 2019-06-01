@@ -34,32 +34,31 @@ public class Map {
     private static HashMap<String,Map> map_list = new HashMap<String, Map>();
 
     private TiledMap map;
-    private MapLayer collision_layer;
-    private MapObjects collisions;
     private String file_path;
 
     //Map landmarks
     private ArrayList<Vector2> red_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> blue_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> solo_spawn = new ArrayList<Vector2>();
+    private ArrayList<Rectangle> map_objectives = new ArrayList<Rectangle>();
 
     public Map(String file_path) {
         this.file_path = file_path;
         this.map = new TmxMapLoader().load(file_path);
-        this.collision_layer = this.map.getLayers().get("COLLISION");
-        this.collisions = this.collision_layer.getObjects();
 
         //load map objects
         this.loadCollisions();
         this.load_spawn_points(this.red_spawn,this.map.getLayers().get("red_spawn").getObjects());
         this.load_spawn_points(this.blue_spawn,this.map.getLayers().get("blue_spawn").getObjects());
         this.load_spawn_points(this.solo_spawn,this.map.getLayers().get("solo_spawn").getObjects());
+        this.load_map_objectives(this.map_objectives);
 
         //System.out.println(Arrays.toString(this.red_spawn.toArray()));
     }
 
     public void loadCollisions() { //takes in all of the map's collision data and creates static bodies out of them
-        for (MapObject obj : this.collisions) { //get each of the objects on collision layer
+        MapObjects collisions = this.map.getLayers().get("COLLISION").getObjects();
+        for (MapObject obj : collisions) { //get each of the objects on collision layer
             //for now, assume that all of the objects are rectagles TODO: ADD SUPPORT FOR CIRCULAR COLLISIONS
             Rectangle rect = ((RectangleMapObject) obj).getRectangle();
             PolygonShape shape = new PolygonShape();
@@ -82,6 +81,13 @@ public class Map {
             Rectangle rect = ((RectangleMapObject) obj).getRectangle(); //points are saved as rectangle with h = 0 and w =0
             //System.out.println(rect);
             target.add(new Vector2(rect.x,rect.y));
+        }
+    }
+    public void load_map_objectives(ArrayList<Rectangle> target) {
+        MapObjects objectives = this.map.getLayers().get("objectives").getObjects();
+        for (MapObject obj : objectives) {
+            Rectangle rect = ((RectangleMapObject) obj).getRectangle();
+            target.add(rect);
         }
     }
 

@@ -31,7 +31,6 @@ public class AssetManager { //mainly just a bunch of helper methods
     //json libraries
     private static HashMap<String,String> player_stats = new HashMap<String, String>();
     private static HashMap<String,String> weapon_stats = new HashMap<String, String>();
-    private static HashMap<String,String> projectile_stats = new HashMap<String, String>();
     private static HashMap<String,HashMap<String,String>> ability_stats = new HashMap<String, HashMap<String, String>>();
 
     //helper methods for bodies
@@ -68,7 +67,6 @@ public class AssetManager { //mainly just a bunch of helper methods
     public static void load_all_json() {
         AssetManager.load_json(AssetManager.player_stats,"json/base_player_stats.json");
         AssetManager.load_json(AssetManager.weapon_stats,"json/base_weapon_stats.json");
-        AssetManager.load_json(AssetManager.projectile_stats,"json/base_projectile_stats.json");
         AssetManager.load_ability_json(AssetManager.ability_stats,"json/ability_stats.json");
     }
 
@@ -115,10 +113,6 @@ public class AssetManager { //mainly just a bunch of helper methods
     public static String getWeaponJsonData(String key) {
         assert(AssetManager.weapon_stats.containsKey(key)): "Weapon stats not found!";
         return AssetManager.weapon_stats.get(key);
-    }
-    public static String getProjectileJsonData(String key) {
-        assert(AssetManager.projectile_stats.containsKey(key)): "Projectile stats not found!";
-        return AssetManager.projectile_stats.get(key);
     }
     public static String getAbilityJsonData(String abl_type,String abl_name) {
         assert(AssetManager.ability_stats.containsKey(abl_type)): "Invalid ability type";

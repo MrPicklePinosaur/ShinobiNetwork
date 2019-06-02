@@ -13,8 +13,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Json;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -77,7 +75,6 @@ class Projectile extends Entity {
             //p.getProjectileList().removeIf(b -> (Math.hypot(b.getX()-b.spawnX,b.getY()-b.spawnY)>=b.stats.getMaxDist()));
             for (Projectile b : p.getProjectileList()) {
                 //if the max distance is execeeded
-                //System.out.println(Math.hypot(b.spawnX-b.getX()/Global.PPM,b.spawnY-b.getY()/Global.PPM));
                 if (Math.hypot(b.spawnX-b.getX()/Global.PPM,b.spawnY-b.getY()/Global.PPM)>=b.stats.getMaxDist()) { remove_list.add(b); }
             }
             for (Projectile b : remove_list) {

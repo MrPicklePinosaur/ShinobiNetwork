@@ -62,10 +62,12 @@ public abstract class Entity {
     //Projecitle stuff
     public void shoot(String name,float angle,String fire_pattern) {
         if (fire_pattern.equals("straight")) { this.newProjectile(name,angle); }
-        if (fire_pattern.equals("triple")) {
-            for (int i = -1; i < 2; i++) {
-                this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians);
-            }
+        else if (fire_pattern.equals("triple")) {
+            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians); }
+        }
+        else if (fire_pattern.equals("double")) {
+            this.newProjectile(name,angle-7*MathUtils.degreesToRadians);
+            this.newProjectile(name,angle+7*MathUtils.degreesToRadians);
         }
     }
     public void newProjectile(String name,float angle) {

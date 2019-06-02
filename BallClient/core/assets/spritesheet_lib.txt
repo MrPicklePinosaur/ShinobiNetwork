@@ -1,6 +1,9 @@
 ninja.png
 warrior.png
+archer.png
 katanaSlash.png
 kazemonji.png
 empty.png
 royal_warhammer.png
+doom_bow.png
+black_arrow.png

@@ -6,6 +6,13 @@
 		"bullet_speed": 4,
 		"max_dist": 1.5,
 		"travel_pattern": "straight"
+	},
+	{
+		"name": "black_arrow",
+		"damage": 20,
+		"bullet_speed": 10,
+		"max_dist": 4,
+		"travel_pattern": "straight"
 	}
 
 ]

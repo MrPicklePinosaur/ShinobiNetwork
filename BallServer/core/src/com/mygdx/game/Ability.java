@@ -88,6 +88,8 @@ public abstract class Ability {
             newAbility = Global.json.fromJson(SwiftstrikeAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
         } else if (abl_type.equals("warcry")) {
             newAbility = Global.json.fromJson(WarcryAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
+        } else if (abl_type.equals("quiver")) {
+            newAbility = Global.json.fromJson(QuiverAbility.class, AssetManager.getAbilityJsonData(abl_type, abl_name));
         }
 
         assert (newAbility != null): "Failed to create ability";
@@ -162,4 +164,21 @@ class WarcryAbility extends Ability {
 
     }
 
+}
+
+class QuiverAbility extends Ability{
+
+    public QuiverAbility() { }
+
+    @Override public void activate() {
+
+    }
+
+    @Override public void update() { //all players within a certain radius get a buff/debuff
+
+    }
+
+    @Override public void deactivate() {
+
+    }
 }

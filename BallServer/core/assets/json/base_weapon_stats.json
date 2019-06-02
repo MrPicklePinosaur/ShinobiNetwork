@@ -11,4 +11,10 @@
 		"fire_rate": 12,
 		"fire_pattern": "straight"
 	},
+	{
+		"name": "doom_bow",
+		"projectile": "black_arrow",
+		"fire_rate": 5,
+		"fire_pattern": "straight"
+	}
 ]

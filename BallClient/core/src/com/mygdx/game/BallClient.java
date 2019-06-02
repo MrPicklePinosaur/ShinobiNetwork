@@ -120,8 +120,8 @@ public class BallClient {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
         } else if (msg[0].equals(MT.SENDCHAT.toString())) {
-            //INSERT CHAT LOG STUFF HERE
-            Global.chatlog.recieve_message(msg[1]);
+            String[] chat = msg[1].split(",");
+            Global.chatlog.recieve_message(chat[0],chat[1]);
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
             Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));

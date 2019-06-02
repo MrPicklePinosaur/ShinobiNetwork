@@ -23,7 +23,9 @@ public class Game {
         chat_log.add(msg);
         if (msg.equals("") || msg == null) { return; }
         msg = "USER: " + msg;
-        BallClientHandler.broadcast(MT.SENDCHAT,msg);
+
+        String text_colour = "grey";
+        BallClientHandler.broadcast(MT.SENDCHAT,text_colour+","+msg);
     }
     public void wipe_chat() { this.chat_log.clear(); }
 

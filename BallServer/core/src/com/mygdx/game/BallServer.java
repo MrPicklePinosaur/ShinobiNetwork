@@ -141,7 +141,7 @@ class BallClientHandler {
             case LOADMAP:
                 data = (MT.LOADMAP+"$"+msg); break; //msg is the filepath of the map image
             case SENDCHAT:
-                data = (MT.SENDCHAT+"$"+msg); break;
+                data = (MT.SENDCHAT+"$"+msg); break; //msg is text_colour,msg
             case BINDCAM:
                 data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
         }

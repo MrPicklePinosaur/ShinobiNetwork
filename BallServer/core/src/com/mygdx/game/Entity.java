@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Entity {
 
-    private ArrayList<Projectile> projectile_list = new ArrayList<Projectile>();
+    private CopyOnWriteArrayList<Projectile> projectile_list = new CopyOnWriteArrayList<Projectile>();
 
     //just a simple list of all the alive entities
     private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
@@ -92,6 +92,7 @@ public abstract class Entity {
     public Body getBody() { return this.body; }
     public String getTexturePath() { return this.texture_path; }
     public int getId() { return this.id; }
+    public CopyOnWriteArrayList<Projectile> getProjectileList() { return projectile_list; }
 
     //Setters
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS

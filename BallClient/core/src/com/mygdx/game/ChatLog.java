@@ -67,10 +67,11 @@ public class ChatLog extends ApplicationAdapter {
     }
 
     public void send_msg(String msg) {
+        msg = msg.replace(',',' '); //remove all commas
         Global.server_socket.send_chat_msg(msg);
     }
 
-    public void recieve_message(String newChatMsg) {
+    public void recieve_message(String colour,String newChatMsg) {
         //Dealing with new chat message that was recieved
         if (this.playerMSGs.size() > 14) {
             this.playerMSGs.removeFirst();

@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Json;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
+
 class Projectile extends Entity {
 
     public ProjectileStats stats;
@@ -68,11 +70,29 @@ class Projectile extends Entity {
         this.stats = Global.json.fromJson(ProjectileStats.class, json_data);
     }
 
+    public static void updateAll() {
+
+        for (Player p : Global.game.getPlayerList()) {
+            ArrayList<Projectile> remove_list = new ArrayList<Projectile>();
+            //p.getProjectileList().removeIf(b -> (Math.hypot(b.getX()-b.spawnX,b.getY()-b.spawnY)>=b.stats.getMaxDist()));
+            for (Projectile b : p.getProjectileList()) {
+                //if the max distance is execeeded
+                //System.out.println(Math.hypot(b.spawnX-b.getX()/Global.PPM,b.spawnY-b.getY()/Global.PPM));
+                if (Math.hypot(b.spawnX-b.getX()/Global.PPM,b.spawnY-b.getY()/Global.PPM)>=b.stats.getMaxDist()) { remove_list.add(b); }
+            }
+            for (Projectile b : remove_list) {
+                b.removeProjecitle();
+            }
+        }
+    }
+
+
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
     }
     public Entity getOwner() { return this.owner; }
-
+    public float getSpawnX() { return this.spawnX; }
+    public float getSpawnY() { return this.spawnY; }
 
 }
 

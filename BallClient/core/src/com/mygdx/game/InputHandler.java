@@ -9,10 +9,17 @@ import java.net.Socket;
 
 public class InputHandler extends InputAdapter {
 
-    @Override
-    public boolean touchDown(int x, int y, int pointer, int button) {
+    @Override public boolean touchDown(int x, int y, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            Global.server_socket.send_msg(MT.USIN,"MOUSE_LEFT");
+            Global.server_socket.send_msg(MT.USIN,"MOUSE_LEFT_DOWN");
+            return true;
+        }
+        return false;
+    }
+
+    @Override public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT) {
+            Global.server_socket.send_msg(MT.USIN,"MOUSE_LEFT_UP");
             return true;
         }
         return false;

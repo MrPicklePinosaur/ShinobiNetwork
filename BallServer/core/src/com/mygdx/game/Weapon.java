@@ -31,7 +31,8 @@ class WeaponStats {
     private String name;
     private String weapon_type;
     private String projectile;
-    private float fire_rate;
+    private String fire_type;
+    private float fire_rate; //fire rate is the cooldown time between two concecutive attacks
     private String fire_pattern;
 
     public WeaponStats() { }
@@ -39,6 +40,7 @@ class WeaponStats {
     public String getName() { return this.name; }
     public String getWeaponType() { return this.weapon_type; }
     public String getProjectileName() { return this.projectile; }
+    public String getFireType() { return this.fire_type; }
     public float getFireRate() { return this.fire_rate; }
     public String getFirePattern() { return this.fire_pattern; }
 }

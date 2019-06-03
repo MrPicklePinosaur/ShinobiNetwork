@@ -30,6 +30,8 @@ public class Player extends Entity {
     private TEAMTAG teamtag;
     private Weapon weapon;
 
+    private float hold_time;
+
     //stats
     private int health;
     private int kills;
@@ -51,9 +53,7 @@ public class Player extends Entity {
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
-        //this.body.setUserData(this);
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
-
         circle.dispose();
 
         this.init_stats(json_stat_data);
@@ -61,6 +61,7 @@ public class Player extends Entity {
         String weapon_name = "doom_bow";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
+        this.hold_time = 0;
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -72,10 +73,9 @@ public class Player extends Entity {
                 this.m_angle = Float.parseFloat(data[1]);
             }
             //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
-            if (key.equals("MOUSE_LEFT")) {
+            if (key.equals("MOUSE_LEFT_DOWN")) {
                 String projectile_name = this.weapon.stats.getProjectileName();
                 this.shoot(projectile_name,this.m_angle,this.weapon.stats.getFirePattern());
-                this.newProjectile(projectile_name,this.m_angle);
             } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
@@ -126,13 +126,12 @@ public class Player extends Entity {
     }
 
     public void reset_game_stats() { this.health = this.stats.getHp(); }
-    /*
+
     public void reset_performance_stats() { //used when the game resets
         this.kills = 0;
         this.deaths = 0;
         this.dmg_dealt = 0;
     }
-    */
 
     //stat setters
     public void addKill() { this.kills++; }

@@ -70,7 +70,7 @@ public abstract class Entity {
             this.newProjectile(name,angle+7*MathUtils.degreesToRadians);
         }
     }
-    public void newProjectile(String name,float angle) {
+    private void newProjectile(String name,float angle) {
         Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);

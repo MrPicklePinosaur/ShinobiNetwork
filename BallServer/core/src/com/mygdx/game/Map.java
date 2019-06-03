@@ -131,6 +131,7 @@ public class Map {
         return best_spawn;
     }
 
+    public ArrayList<Rectangle> getObjectives() { return this.map_objectives; }
     public TiledMap getTiledMap() { return this.map; }
     public static Map getMap(String map_name) {
         assert (Map.map_list.containsKey(map_name)): "Map is not found or has not been loaded";

@@ -37,7 +37,7 @@ public class BallServerMain extends ApplicationAdapter {
 		//Connect to database
 		//Database.connect("database.db");
 
-		Global.game = new TDMGame();
+		Global.game = new KOTHGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 
@@ -100,6 +100,7 @@ public class BallServerMain extends ApplicationAdapter {
 		Ability.updateAll(Global.deltatime);
 		ActiveEffect.updateAll(Global.deltatime);
 		Projectile.updateAll();
+		Global.game.checkObjective();
 		Global.world.step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
 		AssetManager.moveBodies();

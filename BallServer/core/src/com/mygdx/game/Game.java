@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public abstract class Game {
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
+    public abstract void checkObjective();
     /*
     public String getTextColour(TEAMTAG teamtag) {
         String text_colour;
@@ -95,22 +97,39 @@ class TDMGame extends Game { //team death match
         return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
     }
 
+    @Override public void checkObjective() { }
+
 }
 
 class KOTHGame extends Game { //king of the hill
 
-    private static int POINTS_TO_WIN = 100;
-    private static int POINTS_UPON_KILL = 5;
+    private static float POINTS_TO_WIN = 100;
+    private static float POINTS_PER_TICK = 0.05f;
+    private static float POINTS_UPON_KILL = 5;
 
-    private int red_points = 0;
-    private int blue_points = 0;
+    private float red_points = 0;
+    private float blue_points = 0;
 
     public KOTHGame() {
 
     }
 
-    public void checkObjective() {
+    @Override public void checkObjective() {
+        for (Player p : this.player_list) {
+            for (Rectangle r : Global.map.getObjectives()) {
+                if (r.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
 
+                    if (p.getTeamtag() == TEAMTAG.RED) {
+                        red_points+=POINTS_PER_TICK;
+                        this.checkWin();
+                    } else if (p.getTeamtag() == TEAMTAG.BLUE) {
+                        blue_points+=POINTS_PER_TICK;
+                        this.checkWin();
+                    }
+
+                }
+            }
+        }
     }
 
     @Override public void addKill(Player player) {
@@ -135,7 +154,7 @@ class KOTHGame extends Game { //king of the hill
         }
     }
 
-    @Override public ArrayList<Vector3> getLeaderBoard() {
+    @Override public ArrayList<Vector3> getLeaderBoard() { //TODO: when sending team points, round to nearest whole number
         ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
         for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
         return leaderboard;
@@ -180,5 +199,7 @@ class FFAGame extends Game { //free for all
     @Override public TEAMTAG chooseTeam() {
         return TEAMTAG.SOLO;
     }
+
+    @Override public void checkObjective() { }
 
 }

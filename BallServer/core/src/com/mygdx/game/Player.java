@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends Entity {
+    private static ArrayList<Player> shoot_cooldown_list = new ArrayList<Player>();
     private HashMap<String,ActiveEffect> activeEffects_list = new HashMap<String, ActiveEffect>();
 
     public PlayerStats stats;
@@ -30,7 +31,7 @@ public class Player extends Entity {
     private TEAMTAG teamtag;
     private Weapon weapon;
 
-    private float hold_time;
+    private float shoot_cooldown;
 
     //stats
     private int health;
@@ -61,7 +62,7 @@ public class Player extends Entity {
         String weapon_name = "doom_bow";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
-        this.hold_time = 0;
+        this.shoot_cooldown = 0;
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -74,8 +75,10 @@ public class Player extends Entity {
             }
             //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
             if (key.equals("MOUSE_LEFT_DOWN")) {
-                String projectile_name = this.weapon.stats.getProjectileName();
-                this.shoot(projectile_name,this.m_angle,this.weapon.stats.getFirePattern());
+                if (Player.shoot_cooldown_list.contains(this)) { break; } //if the player is currently under shoot cooldwon ,dont shoot
+                this.shoot(this.weapon.stats.getProjectileName(),this.m_angle,this.weapon.stats.getFirePattern());
+                this.resetShootCoolDown();
+                Player.shoot_cooldown_list.add(this);
             } //shoot bullet
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
@@ -85,12 +88,29 @@ public class Player extends Entity {
         }
     }
 
+    public static void updateAll(float deltaTime) {
+        ArrayList<Player> removal_list = new ArrayList<Player>();
+        for (Player p : Player.shoot_cooldown_list) {
+            p.shoot_cooldown-=deltaTime;
+            if (p.shoot_cooldown <= 0) { removal_list.add(p); }
+        }
+        for (Player p : removal_list) {
+            assert (Player.shoot_cooldown_list.contains(p)): "Player is not under cooldown and therefore cannot be removed";
+            Player.shoot_cooldown_list.remove(p);
+        }
+    }
+    public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }
+
+
     //public float getMouseAngle() { return this.m_angle; }
     @Override public float getRotation() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
     public float getMouseAngle() { return this.m_angle; }
     public HashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public float getShootCoolDown() { return this.shoot_cooldown; }
+
+
     public void removeEffect(String effect) {
         assert (this.activeEffects_list.containsKey(effect)): "Unable to remove effect";
         this.activeEffects_list.remove(effect);

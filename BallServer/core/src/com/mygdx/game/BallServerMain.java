@@ -99,6 +99,7 @@ public class BallServerMain extends ApplicationAdapter {
 		//update
 		Ability.updateAll(Global.deltatime);
 		ActiveEffect.updateAll(Global.deltatime);
+		Player.updateAll(Global.deltatime);
 		Projectile.updateAll();
 		Global.game.checkObjective();
 		Global.world.step(Global.deltatime,6,2); //step physics simulation

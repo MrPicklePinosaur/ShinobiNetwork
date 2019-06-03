@@ -4,7 +4,7 @@
 		"weapon_type": "katana",
 		"projectile": "katanaSlash",
 		"fire_type": "manual",
-		"fire_rate": 12,
+		"fire_rate": 0.25,
 		"fire_pattern": "straight"
 	},
 	{
@@ -12,7 +12,7 @@
 		"weapon_type": "hammer",
 		"projectile": "katanaSlash",
 		"fire_type": "manual",
-		"fire_rate": 12,
+		"fire_rate": 0.5,
 		"fire_pattern": "straight"
 	},
 	{
@@ -20,7 +20,7 @@
 		"weapon_type": "bow",
 		"projectile": "black_arrow",
 		"fire_type": "manual",
-		"fire_rate": 5,
+		"fire_rate": 1,
 		"fire_pattern": "straight"
 	}
 ]

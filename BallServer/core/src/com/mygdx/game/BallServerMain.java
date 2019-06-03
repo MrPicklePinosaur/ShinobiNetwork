@@ -33,15 +33,11 @@ public class BallServerMain extends ApplicationAdapter {
 		//init assets
 		AssetManager.load_all_json();
 		//Map.loadAll("map_library.txt");
-
-		//Player p = new Player("ninja_run.png",TEAMTAG.BLUE);
-		//System.out.println(test.get("ninja"));
-		//p.stats_from_json(test.get("ninja"));
-
+		
 		//Connect to database
 		//Database.connect("database.db");
 
-		Global.game = new Game(GAMETYPE.TDM);
+		Global.game = new FFAGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 

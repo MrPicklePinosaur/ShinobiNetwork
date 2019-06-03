@@ -6,15 +6,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game {
+public abstract class Game {
 
-    private CopyOnWriteArrayList<String> chat_log;
-    private LinkedList<Player> player_list;
-    private GAMETYPE gametype;
+    protected CopyOnWriteArrayList<String> chat_log;
+    protected LinkedList<Player> player_list;
 
-    public Game(GAMETYPE gametype) {
-        this.gametype = gametype;
-
+    public Game() {
         this.chat_log = new CopyOnWriteArrayList<String>();
         this.player_list = new LinkedList<Player>();
     }
@@ -29,11 +26,7 @@ public class Game {
     }
     public void wipe_chat() { this.chat_log.clear(); }
 
-    public ArrayList<Vector3> getLeaderBoard() {
-        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
-        return leaderboard;
-    }
+    public abstract ArrayList<Vector3> getLeaderBoard();
 
     public LinkedList<Player> getPlayerList() { return this.player_list; }
     public void addPlayer(Player p) { this.player_list.add(p); }
@@ -42,26 +35,7 @@ public class Game {
         this.player_list.remove(p);
     }
 
-    public TEAMTAG chooseTeam() {
-        TEAMTAG team = null;
-        if (this.gametype == GAMETYPE.FFA) {
-            team = TEAMTAG.SOLO;
-        } else if (this.gametype == GAMETYPE.TDM) { //team deathmatch
-            //find how many players are on each team and try to keep the teams balanced
-            int red_count = 0;
-            int blue_count = 0;
-
-            for (Player p : this.player_list) {
-                if (p.getTeamtag() == TEAMTAG.RED) { red_count++; }
-                else if (p.getTeamtag() == TEAMTAG.BLUE) { blue_count++; }
-            }
-
-            team = red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
-        }
-
-        assert (team != null): "Error choosing team";
-        return team;
-    }
+    public abstract TEAMTAG chooseTeam();
 
     /*
     public String getTextColour(TEAMTAG teamtag) {
@@ -69,5 +43,49 @@ public class Game {
 
     }
     */
+
+}
+
+class TDMGame extends Game {
+
+    public TDMGame() {
+
+    }
+
+    @Override public ArrayList<Vector3> getLeaderBoard() {
+        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
+        return leaderboard;
+    }
+
+    @Override public TEAMTAG chooseTeam() {
+        //find how many players are on each team and try to keep the teams balanced
+        int red_count = 0;
+        int blue_count = 0;
+
+        for (Player p : this.player_list) {
+            if (p.getTeamtag() == TEAMTAG.RED) { red_count++; }
+            else if (p.getTeamtag() == TEAMTAG.BLUE) { blue_count++; }
+        }
+
+        return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
+    }
+}
+
+class FFAGame extends Game {
+
+    public FFAGame() {
+
+    }
+
+    @Override public ArrayList<Vector3> getLeaderBoard() {
+        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
+        return leaderboard;
+    }
+
+    @Override public TEAMTAG chooseTeam() {
+        return TEAMTAG.SOLO;
+    }
 
 }

@@ -26,8 +26,6 @@ public abstract class Game {
     }
     public void wipe_chat() { this.chat_log.clear(); }
 
-    public abstract ArrayList<Vector3> getLeaderBoard();
-
     public LinkedList<Player> getPlayerList() { return this.player_list; }
     public void addPlayer(Player p) { this.player_list.add(p); }
     public void removePlayer(Player p) {
@@ -35,8 +33,9 @@ public abstract class Game {
         this.player_list.remove(p);
     }
 
+    public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
-
+    public abstract void addKill(Player player);
     /*
     public String getTextColour(TEAMTAG teamtag) {
         String text_colour;
@@ -46,10 +45,94 @@ public abstract class Game {
 
 }
 
-class TDMGame extends Game {
+class TDMGame extends Game { //team death match
+
+    private static int MAX_LIVES = 20;
+    private int red_lives = MAX_LIVES;
+    private int blue_lives = MAX_LIVES;
 
     public TDMGame() {
 
+    }
+
+    @Override public void addKill(Player player) { //called when someone dies
+        if (player.getTeamtag() == TEAMTAG.RED) { //if the player that got the kill is a member of red, take a life off of blue
+            blue_lives--;
+            this.new_chat_msg("A member of the BLUE TEAM has been slain!!!");
+            this.checkWin();
+        }
+        else if (player.getTeamtag() == TEAMTAG.BLUE) {
+            red_lives--;
+            this.new_chat_msg("A member of the RED TEAM has been slain!!!");
+            this.checkWin();
+        }
+     }
+
+     public void checkWin() {
+         if (blue_lives <= 0) { //BLUE LOSES!
+             this.new_chat_msg("The RED TEAM emerges VICTORIOUS");
+         } else if (red_lives <= 0) { //RED LOSES!
+             this.new_chat_msg("The BLUE TEAM emerges VICTORIOUS");
+         }
+     }
+
+    @Override public ArrayList<Vector3> getLeaderBoard() {
+        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
+        return leaderboard;
+    }
+
+    @Override public TEAMTAG chooseTeam() {
+        //find how many players are on each team and try to keep the teams balanced
+        int red_count = 0;
+        int blue_count = 0;
+
+        for (Player p : this.player_list) {
+            if (p.getTeamtag() == TEAMTAG.RED) { red_count++; }
+            else if (p.getTeamtag() == TEAMTAG.BLUE) { blue_count++; }
+        }
+
+        return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
+    }
+
+}
+
+class KOTHGame extends Game { //king of the hill
+
+    private static int POINTS_TO_WIN = 100;
+    private static int POINTS_UPON_KILL = 5;
+
+    private int red_points = 0;
+    private int blue_points = 0;
+
+    public KOTHGame() {
+
+    }
+
+    public void checkObjective() {
+
+    }
+
+    @Override public void addKill(Player player) {
+        if (player.getTeamtag() == TEAMTAG.RED) { //if the player that got the kill is a member of red, red gets bonus points
+            red_points+=POINTS_UPON_KILL;
+            this.new_chat_msg("A member of the BLUE TEAM has been slain!!!");
+            this.checkWin();
+        }
+        else if (player.getTeamtag() == TEAMTAG.BLUE) {
+            blue_points+=POINTS_UPON_KILL;
+            this.new_chat_msg("A member of the RED TEAM has been slain!!!");
+            this.checkWin();
+        }
+    }
+
+    public void checkWin() {
+        if (red_points >= POINTS_TO_WIN) {
+            this.new_chat_msg("The RED TEAM emerges VICTORIOUS");
+            //TODO: win handling
+        } else if (blue_points >= POINTS_TO_WIN) {
+            this.new_chat_msg("The BLUE TEAM emerges VICTORIOUS");
+        }
     }
 
     @Override public ArrayList<Vector3> getLeaderBoard() {
@@ -70,12 +153,22 @@ class TDMGame extends Game {
 
         return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
     }
+
 }
 
-class FFAGame extends Game {
+class FFAGame extends Game { //free for all
+
+    private static int KILLS_TO_WIN = 7;
 
     public FFAGame() {
 
+    }
+
+    @Override public void addKill(Player player) {
+        this.new_chat_msg("USER has obtained a KILL!");
+        if (player.getKills() >= KILLS_TO_WIN) { //Player wins
+            this.new_chat_msg("USER has emerged VICTORIOUS");
+        }
     }
 
     @Override public ArrayList<Vector3> getLeaderBoard() {

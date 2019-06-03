@@ -12,8 +12,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.*;
 import javafx.util.Pair;
 
-import java.awt.*;
-
 public class CollisionListener implements ContactListener {
 
     @Override
@@ -45,6 +43,7 @@ public class CollisionListener implements ContactListener {
 
                 //deal damage
                 if (p.modHp(-1*b.stats.getDamage())) { //if the bullet killed the player
+                    Global.game.addKill(owner);
                     owner.addKill();
                     p.addDeath();
                 }

@@ -164,7 +164,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String player_class = "ninja";
+        String player_class = "warrior";
         TEAMTAG team = Global.game.chooseTeam();
 
         this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),team);

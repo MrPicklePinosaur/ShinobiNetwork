@@ -18,7 +18,9 @@ public class ActiveEffect {
     }
 
     public void begin() {
-
+        if (this.name.equals("speedy")) {
+            player.stats.setSpeed(player.stats.getSpeed()*2);
+        }
     }
 
     public static void updateAll(float deltaTime) {
@@ -31,7 +33,11 @@ public class ActiveEffect {
     }
 
     public void update() {
-        System.out.println("ouch that burns "+duration_left);
+        if (this.name.equals("burning")) {
+            System.out.println("ouch that burns "+duration_left);
+            this.player.modHp(-1);
+        }
+
     }
 
     public void tickEffectDuration(float deltaTime) {
@@ -43,6 +49,9 @@ public class ActiveEffect {
     }
 
     public void end() {
+        if (this.name.equals("speedy")) {
+            player.stats.setSpeed(player.stats.getSpeed()/2);
+        }
         this.player.removeEffect(this.name);
     }
 

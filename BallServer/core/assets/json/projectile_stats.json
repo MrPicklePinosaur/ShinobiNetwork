@@ -10,7 +10,7 @@
 	{
 		"name": "black_arrow",
 		"damage": 20,
-		"bullet_speed": 10,
+		"bullet_speed": 5,
 		"max_dist": 4,
 		"travel_pattern": "straight"
 	}

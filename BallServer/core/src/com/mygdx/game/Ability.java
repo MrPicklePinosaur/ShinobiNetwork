@@ -120,13 +120,13 @@ class SwiftstrikeAbility extends Ability {
         if (this.name.equals("basic")) {
         }
         else if (this.name.equals("whirlwind") && this.ticker%2 == 0) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern);
+            this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
         }
     }
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
         if (this.name.equals("basic")) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern);
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
         }
     }
 
@@ -151,6 +151,8 @@ class WarcryAbility extends Ability {
             //apply effects
             if (this.active_effect.equals("burning")) {
                 p.applyActiveEffect(active_effect,max_duration);
+            } else if (this.active_effect.equals("speedy")) {
+                p.applyActiveEffect(this.active_effect,max_duration);
             }
 
         }

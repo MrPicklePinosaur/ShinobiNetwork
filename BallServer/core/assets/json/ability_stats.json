@@ -44,6 +44,15 @@
 			"affected_entites": "enemies",
 			"active_effect": "burning"
 		},
+		{
+			"name": "bunny helm",
+			"max_duration": 2,
+			"max_cooldown": 3,
+			"radius": 0,
+			"affected_entites": "self",
+			"active_effect": "speedy"
+		},
+
 	],
 
 	"quiver": [

@@ -3,7 +3,7 @@
 	{
 		"name": "ninja",
 		"hp": 100,
-		"speed" : 3,
+		"speed" : 3.5,
 		"abl_type": "swiftstrike",
 	},
 	{
@@ -14,9 +14,15 @@
 	},
 	{
 		"name": "archer",
-		"hp": 80,
-		"speed": 2,
+		"hp": 100,
+		"speed": 2.5,
 		"abl_type": "quiver"
+	},
+	{
+		"name": "wizard",
+		"hp": 80,
+		"speed": 2.5,
+		"abl_type": "spell"
 	}
 
 ]

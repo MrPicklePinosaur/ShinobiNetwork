@@ -60,18 +60,21 @@ public abstract class Entity {
     }
 
     //Projecitle stuff
-    public void shoot(String name,float angle,String fire_pattern) {
-        if (fire_pattern.equals("straight")) { this.newProjectile(name,angle); }
+    public void shoot(String name,float angle,String fire_pattern,float dmg_mult,float speed_mult) {
+        if (fire_pattern.equals("straight")) { this.newProjectile(name,angle, dmg_mult,speed_mult); }
         else if (fire_pattern.equals("triple")) {
-            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians); }
+            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
         }
         else if (fire_pattern.equals("double")) {
-            this.newProjectile(name,angle-7*MathUtils.degreesToRadians);
-            this.newProjectile(name,angle+7*MathUtils.degreesToRadians);
+            this.newProjectile(name, angle - 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
+            this.newProjectile(name, angle + 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
         }
     }
-    private void newProjectile(String name,float angle) {
+
+    private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
         Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
+        p.stats.setDamage(p.stats.getDamage()*dmg_mult);
+        p.stats.setSpeed(p.stats.getBulletSpeed()*speed_mult);
         p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setVelocity(angle);
         this.projectile_list.add(p);

@@ -95,17 +95,20 @@ class Projectile extends Entity {
 
 class ProjectileStats {
 
-    String name;
-    int damage;
-    float bullet_speed;
-    float max_dist;
-    String travel_pattern;
+    private String name;
+    private float damage;
+    private float bullet_speed;
+    private float max_dist;
+    private String travel_pattern;
 
     public ProjectileStats() { }
 
     public String getName() { return this.name; }
-    public int getDamage() { return this.damage; }
+    public float getDamage() { return this.damage; }
     public float getBulletSpeed() { return this.bullet_speed; }
     public float getMaxDist() { return this.max_dist; }
     public String getTravelPattern() { return this.travel_pattern; }
+
+    public void setDamage(float dmg) { this.damage = dmg; }
+    public void setSpeed(float speed) { this.bullet_speed = speed; }
 }

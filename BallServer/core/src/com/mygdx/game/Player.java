@@ -59,7 +59,7 @@ public class Player extends Entity {
 
         this.init_stats(json_stat_data);
 
-        String weapon_name = "doom_bow";
+        String weapon_name = "kazemonji";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
         this.shoot_cooldown = 0;
@@ -142,7 +142,7 @@ public class Player extends Entity {
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"whirlwind");
     }
 
     public void reset_game_stats() { this.health = this.stats.getHp(); }

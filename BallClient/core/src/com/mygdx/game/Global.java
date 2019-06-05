@@ -34,7 +34,8 @@ class Global {
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
 	public static int PPM = 100;
 
-	public static final int SPRITESIZE = 32;
+	public static final int SPRITESIZE = 40;
+	public static final float WEAPONSCALE = 0.8f;
 
 	public static float m_x = 0;
 	public static float m_y = 0;

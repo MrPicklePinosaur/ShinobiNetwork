@@ -110,7 +110,6 @@ class Projectile extends Entity {
         if (name.equals("nihiru_slice")) {
             Player owner = (Player) this.owner;
             owner.setDmgMult(owner.getDmgMult()*1.1f);
-            System.out.println(owner.getDmgMult());
         }
     }
 

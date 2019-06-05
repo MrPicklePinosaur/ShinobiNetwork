@@ -1,0 +1,13 @@
+ninja.png
+warrior.png
+archer.png
+wizard.png
+kazemonji.png
+kazemonji_slice.png
+nihiru.png
+nihiru_slice.png
+royal_warhammer.png
+doom_bow.png
+black_arrow.png
+katanaSlash.png
+empty.png

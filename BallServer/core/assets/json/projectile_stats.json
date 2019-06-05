@@ -1,10 +1,18 @@
 [
 
 	{
-		"name": "katanaSlash",
+		"name": "kazemonji_slice",
 		"damage": 10,
 		"bullet_speed": 4,
 		"max_dist": 1.5,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "brimstone_slice",
+		"damage": 15,
+		"bullet_speed": 4,
+		"max_dist": 1,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},

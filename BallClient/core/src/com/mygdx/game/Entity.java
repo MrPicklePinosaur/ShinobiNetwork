@@ -130,8 +130,7 @@ public class Entity {
                 if (MathUtils.PI/2 < rot && rot < MathUtils.PI*3/2 && !tex.isFlipY()) { tex.flip(false, true); }
                 //if mouse is in 4th or 1st quadrant, face right
                 else if ((MathUtils.PI*3/2 < rot || rot < MathUtils.PI/2) && tex.isFlipY()) { tex.flip(false, true); }
-
-                batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,1,1,e.getRotation()* MathUtils.radiansToDegrees);
+                batch.draw(tex,e.getX()-Global.SPRITESIZE/2,e.getY()-Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE/2,Global.SPRITESIZE,Global.SPRITESIZE,Global.WEAPONSCALE,Global.WEAPONSCALE,e.getRotation()* MathUtils.radiansToDegrees);
             }
         }
     }

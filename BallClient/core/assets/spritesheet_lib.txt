@@ -1,12 +1,5 @@
 ninja.png
-warrior.png
-archer.png
-katanaSlash.png
 kazemonji.png
-empty.png
-royal_warhammer.png
-doom_bow.png
-black_arrow.png
-wizard.png
-nihiru.png
-nihiru_slice.png
+kazemonji_slice.png
+brimstone_edge.png
+brimstone_slice.png

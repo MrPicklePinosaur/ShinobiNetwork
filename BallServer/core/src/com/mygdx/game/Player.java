@@ -63,7 +63,7 @@ public class Player extends Entity {
         circle.dispose();
 
         //init other vars
-        String weapon_name = "nihiru";
+        String weapon_name = "brimstone_edge";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
         this.init_stats(json_stat_data);

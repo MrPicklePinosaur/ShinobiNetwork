@@ -30,6 +30,7 @@ public class Launcher extends ApplicationAdapter {
     private Stage stage;
     private Table table;
     private HealthTracker ht;
+    SqliteDB db;
     @Override
     public void create () {
         stage = new Stage();
@@ -41,6 +42,16 @@ public class Launcher extends ApplicationAdapter {
         cl = new ChatLog(table);
         minimap = new Texture("MiniMap.png");
         ht = new HealthTracker();
+
+        String username = "Daniel Liu";
+        String classname = "Scout";
+        int level = 50;
+        String query1 = "INSERT INTO players (username,class,level) VALUES ('u','c',1)";
+        //String query1 = "INSERT INTO players (username,class,level) VALUES ('"+username+"', '"+classname+"', "+level+")";
+        db = new SqliteDB();
+        db.addPlayer("Shrey M","p1");//query1);
+        db.getPlayers();
+        db.closeConnection();
     }
 
     @Override

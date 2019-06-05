@@ -55,6 +55,7 @@ public class ChatLog extends ApplicationAdapter {
         });
         textfield.setActor(chatText);
         sr = new ShapeRenderer();
+
     }
 
     public void updateChatLog(String newChatMsg) {

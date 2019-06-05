@@ -39,6 +39,9 @@ public class Player extends Entity {
 
     //stats
     private float health;
+    private float speed;
+
+    //performance stats
     private int kills;
     private int deaths;
     private float dmg_dealt;
@@ -61,14 +64,35 @@ public class Player extends Entity {
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
         circle.dispose();
 
-        this.init_stats(json_stat_data);
-
+        //init other vars
         String weapon_name = "doom_bow";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
+        this.init_stats(json_stat_data);
+
+    }
+
+    @Override public void init_stats(String json_data) { //should be called once, or when player respawns
+        this.stats = Global.json.fromJson(PlayerStats.class,json_data);
+
+        //insert code that modifies base stats based on items equiped
+        this.reset_game_stats();
+        this.reset_performance_stats();
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
+    }
+
+    public void reset_game_stats() {
+        this.health = this.stats.getHp();
+        this.speed = this.stats.getSpeed();
         this.resetShootCoolDown();
         this.resetHoldCount();
         this.resetDmgMult();
+    }
+
+    public void reset_performance_stats() { //used when the game resets
+        this.kills = 0;
+        this.deaths = 0;
+        this.dmg_dealt = 0;
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -101,6 +125,7 @@ public class Player extends Entity {
                 //shoot projectile only when mouse is released
                 if (Player.shoot_cooldown_list.contains(this)) { break; } //if the player is currently under shoot cooldwon ,dont shoot
 
+                //multiply the damage multiplier the player already has and the multiplier gained from charging
                 this.shoot(this.weapon.stats.getProjectileName(), this.m_angle, this.weapon.stats.getFirePattern(), this.dmg_mult*charge_dmg_mult,charge_speed_mult);
 
                 this.resetShootCoolDown();
@@ -127,6 +152,15 @@ public class Player extends Entity {
         return 1;
     }
 
+    public void applyActiveEffect(String effect_name,float duration) {
+        if (!this.activeEffects_list.containsKey(effect_name)) { //if the effect isnt already active, add it
+            ActiveEffect effect = new ActiveEffect(this,effect_name,duration);
+            this.activeEffects_list.put(effect_name,effect);
+            effect.begin();
+        }
+        this.activeEffects_list.get(effect_name).resetDurationTimer(); //if the effect is already active, simply reset the timer
+    }
+
     public static void updateAll(float deltaTime) {
         //SHOOT COOLDOWN
         ArrayList<Player> removal_list = new ArrayList<Player>();
@@ -144,13 +178,17 @@ public class Player extends Entity {
 
     }
 
+    //getters
     @Override public float getRotation() { return this.m_angle; }
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
     public float getMouseAngle() { return this.m_angle; }
     public HashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public float getSpeed() { return this.speed; }
 
+    //setters
     public void setDmgMult(float dmg_mult) { this.dmg_mult = dmg_dealt; }
+    public void setSpeed(float speed) { this.speed = speed; }
     public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }
     public void resetHoldCount() { this.hold_count = 0; }
     public void resetDmgMult() { this.dmg_mult = 1; }
@@ -173,31 +211,6 @@ public class Player extends Entity {
         return false;
     }
 
-    public void applyActiveEffect(String effect_name,float duration) {
-        if (!this.activeEffects_list.containsKey(effect_name)) { //if the effect isnt already active, add it
-            ActiveEffect effect = new ActiveEffect(this,effect_name,duration);
-            this.activeEffects_list.put(effect_name,effect);
-            effect.begin();
-        }
-        this.activeEffects_list.get(effect_name).resetDurationTimer(); //if the effect is already active, simply reset the timer
-    }
-
-    @Override public void init_stats(String json_data) { //should be called once, or when player respawns
-        this.stats = Global.json.fromJson(PlayerStats.class,json_data);
-
-        //insert code that modifies base stats based on items equiped
-        this.reset_game_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
-    }
-
-    public void reset_game_stats() { this.health = this.stats.getHp(); }
-
-    public void reset_performance_stats() { //used when the game resets
-        this.kills = 0;
-        this.deaths = 0;
-        this.dmg_dealt = 0;
-    }
-
     //stat setters
     public void addKill() { this.kills++; }
     public void addDeath() { this.deaths++; }
@@ -214,7 +227,7 @@ public class Player extends Entity {
 class PlayerStats {
     private String name;
     private int hp;
-    private int speed;
+    private float speed;
     private String abl_type;
 
     public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
@@ -222,9 +235,7 @@ class PlayerStats {
     //Getters
     public String getName() { return this.name; }
     public int getHp() { return this.hp; }
-    public int getSpeed() { return this.speed; }
+    public float getSpeed() { return this.speed; }
     public String getAblType() { return this.abl_type; }
-
-    public void setSpeed(int speed) { this.speed = speed; }
 }
 

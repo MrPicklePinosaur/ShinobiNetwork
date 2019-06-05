@@ -25,6 +25,8 @@ class Projectile extends Entity {
     private float spawnX;
     private float spawnY;
 
+    private float damage;
+    private float speed;
     private int totalPenetrations;
 
     public Projectile(String name,String json_stat_data,Entity owner) {
@@ -55,6 +57,8 @@ class Projectile extends Entity {
 
         circle.dispose();
 
+        this.damage = this.stats.getDamage();
+        this.speed = this.stats.getBulletSpeed();
         this.totalPenetrations = this.stats.getPenetraion();
     }
 
@@ -109,8 +113,11 @@ class Projectile extends Entity {
         this.owner.removeProjectile(this);
     }
     public Entity getOwner() { return this.owner; }
+    public float getDamage() { return this.damage; }
+    public float getSpeed() { return this.speed; }
 
-
+    public void setDamage(float dmg) { this.damage = dmg; }
+    public void setSpeed(float speed) { this.speed = speed; }
 }
 
 class ProjectileStats {
@@ -131,6 +138,4 @@ class ProjectileStats {
     public int getPenetraion() { return this.penetration; }
     public String getTravelPattern() { return this.travel_pattern; }
 
-    public void setDamage(float dmg) { this.damage = dmg; }
-    public void setSpeed(float speed) { this.bullet_speed = speed; }
 }

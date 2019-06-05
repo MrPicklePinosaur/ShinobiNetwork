@@ -188,7 +188,7 @@ class BallClientHandler {
         } else if ((command[0].toUpperCase()).equals(COMMANDS.HELP.toString())) {
             this.send_msg(MT.SENDCHAT, "[List of commands - help, teleport]");
         } else if ((command[0].toUpperCase()).equals(COMMANDS.SPEEDY.toString())) {
-            this.client_entity.stats.setSpeed(client_entity.stats.getSpeed()*2);
+            this.client_entity.setSpeed(client_entity.getSpeed()*2);
         } else {
             this.send_msg(MT.SENDCHAT,"[INVALID COMMAND, for a comprehensive list of commands, try /help]");
         }

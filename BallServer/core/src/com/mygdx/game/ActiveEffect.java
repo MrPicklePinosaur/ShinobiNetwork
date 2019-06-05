@@ -19,7 +19,7 @@ public class ActiveEffect {
 
     public void begin() {
         if (this.name.equals("speedy")) {
-            player.stats.setSpeed(player.stats.getSpeed()*2);
+            player.setSpeed(player.getSpeed()*2);
         }
     }
 
@@ -50,7 +50,7 @@ public class ActiveEffect {
 
     public void end() {
         if (this.name.equals("speedy")) {
-            player.stats.setSpeed(player.stats.getSpeed()/2);
+            player.setSpeed(player.stats.getSpeed());
         }
         this.player.removeEffect(this.name);
     }

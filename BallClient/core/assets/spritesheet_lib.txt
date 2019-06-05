@@ -8,3 +8,5 @@ royal_warhammer.png
 doom_bow.png
 black_arrow.png
 wizard.png
+nihiru.png
+nihiru_slice.png

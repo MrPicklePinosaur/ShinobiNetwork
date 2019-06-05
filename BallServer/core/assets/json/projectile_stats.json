@@ -24,5 +24,13 @@
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
+	{
+		"name": "nihiru_slice",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 ]

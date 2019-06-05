@@ -93,7 +93,7 @@ class Projectile extends Entity {
 
     public void checkPenetration() { //called when bullet hits a target, checks to see if bullet should pass through or die
         this.totalPenetrations--;
-        if (this.totalPenetrations < 0) { //then the bullet should die
+        if (this.totalPenetrations <= 0) { //then the bullet should die
             this.removeProjecitle();
         }
     }
@@ -105,7 +105,13 @@ class Projectile extends Entity {
     }
 
     public void kill_effect() { //if a bullet has a unique effect when it kills a target, put it here
+        String name = this.stats.getName();
 
+        if (name.equals("nihiru_slice")) {
+            Player owner = (Player) this.owner;
+            owner.setDmgMult(owner.getDmgMult()*1.1f);
+            System.out.println(owner.getDmgMult());
+        }
     }
 
 

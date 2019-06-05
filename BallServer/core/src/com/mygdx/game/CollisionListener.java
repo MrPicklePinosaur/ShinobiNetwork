@@ -41,9 +41,9 @@ public class CollisionListener implements ContactListener {
                 b.checkPenetration(); //check to see if bullet should die
 
                 //deal damage
-                float damage = b.stats.getDamage();
+                float damage = b.getDamage();
                 b.hit_effect(damage); //apply special effects, if there are any
-                owner.addDmgDealt(b.stats.getDamage());
+                owner.addDmgDealt(b.getDamage());
 
                 if (p.modHp(-1*damage)) { //if the bullet killed the player
                     b.kill_effect(); //apply special effects, if there are any

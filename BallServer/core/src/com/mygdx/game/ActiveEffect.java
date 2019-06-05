@@ -55,6 +55,7 @@ public class ActiveEffect {
         this.player.removeEffect(this.name);
     }
 
+    public float getDurationLeft() { return this.duration_left; }
     public void resetDurationTimer() {
         this.duration_left = this.max_duration;
     }

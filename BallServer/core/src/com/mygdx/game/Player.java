@@ -65,7 +65,7 @@ public class Player extends Entity {
         circle.dispose();
 
         //init other vars
-        String weapon_name = "doom_bow";
+        String weapon_name = "nihiru";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
         this.init_stats(json_stat_data);
@@ -153,12 +153,15 @@ public class Player extends Entity {
     }
 
     public void applyActiveEffect(String effect_name,float duration) {
-        if (!this.activeEffects_list.containsKey(effect_name)) { //if the effect isnt already active, add it
+        //if the effect is already active and the duration left is less than the new duration, reset the time
+        if (this.activeEffects_list.containsKey(effect_name) && this.activeEffects_list.get(effect_name).getDurationLeft() < duration) {
+            this.activeEffects_list.get(effect_name).resetDurationTimer(); //if the effect is already active, simply reset the timer
+        } else if (!this.activeEffects_list.containsKey(effect_name)) { //if the effect isnt already active, add it
             ActiveEffect effect = new ActiveEffect(this,effect_name,duration);
             this.activeEffects_list.put(effect_name,effect);
             effect.begin();
         }
-        this.activeEffects_list.get(effect_name).resetDurationTimer(); //if the effect is already active, simply reset the timer
+
     }
 
     public static void updateAll(float deltaTime) {
@@ -184,11 +187,11 @@ public class Player extends Entity {
     public Weapon getWeapon() { return this.weapon; }
     public float getMouseAngle() { return this.m_angle; }
     public HashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public float getDmgMult() { return this.dmg_mult; }
+    public float getCurrentHp() { return this.health; }
     public float getSpeed() { return this.speed; }
 
     //setters
-    public void setDmgMult(float dmg_mult) { this.dmg_mult = dmg_dealt; }
-    public void setSpeed(float speed) { this.speed = speed; }
     public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }
     public void resetHoldCount() { this.hold_count = 0; }
     public void resetDmgMult() { this.dmg_mult = 1; }
@@ -196,9 +199,8 @@ public class Player extends Entity {
         assert (this.activeEffects_list.containsKey(effect)): "Unable to remove effect";
         this.activeEffects_list.remove(effect);
     }
-
-    //STATS STUFF
-    public float getCurrentHp() { return this.health; }
+    public void setDmgMult(float dmg_mult) { this.dmg_mult = dmg_mult; }
+    public void setSpeed(float speed) { this.speed = speed; }
     public Boolean modHp(float deltaHp) { //returns wether or not the player was killed
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
@@ -230,7 +232,7 @@ class PlayerStats {
     private float speed;
     private String abl_type;
 
-    public PlayerStats() { } //not sure why you need a no arg constructor, but you need one
+    public PlayerStats() { }
 
     //Getters
     public String getName() { return this.name; }

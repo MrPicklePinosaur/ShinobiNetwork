@@ -90,7 +90,9 @@ public class BallServerMain extends ApplicationAdapter {
 
 		//periodically send client position of all entities
 		String entity_data = Entity.send_all();
-		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATE,Entity.send_all()); } //broadcast only if there is something to broadcast
+		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATEENTITY,Entity.send_all()); } //broadcast only if there is something to broadcast
+		String particle_data = Particle.send_particles();
+		if (!particle_data.equals("")) { }
 
 		//draw stuff (TESTING ONLY)
 		tiledMapRenderer.render();

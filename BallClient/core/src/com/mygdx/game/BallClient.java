@@ -14,8 +14,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BallClient {
     //heavy lifters
@@ -110,7 +108,7 @@ public class BallClient {
     public static void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(MT.UPDATE.toString())) {
+        if (msg[0].equals(MT.UPDATEENTITY.toString())) {
             String[] pos = msg[1].split(" ");
             //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
@@ -125,7 +123,13 @@ public class BallClient {
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
             Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
-            Particle.createParticle("run_dust",new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
+        } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
+            String[] particle_list = msg[1].split(" ");
+            for (String particle : particle_list) {
+                String[] data = particle.split(","); //data comes in the form: name,x,y
+                Particle.createParticle(data[0],new Vector2(Float.parseFloat(data[1]),Float.parseFloat(data[2])));
+            }
+
         }
     }
 

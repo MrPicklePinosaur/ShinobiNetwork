@@ -57,8 +57,13 @@ public class Particle {
     }
 
     public static void draw_all(SpriteBatch batch, float deltaTime) {
+        ArrayList<ParticleEffect> complete_list = new ArrayList<ParticleEffect>();
         for (ParticleEffect p : Particle.particle_list) {
             p.draw(batch,deltaTime);
+            if (p.isComplete()) { complete_list.add(p); } //if the particle effect has no more use
+        }
+        for (ParticleEffect p : complete_list) { //remove all particles that arent doing anything
+            Particle.particle_list.remove(p);
         }
     }
 }

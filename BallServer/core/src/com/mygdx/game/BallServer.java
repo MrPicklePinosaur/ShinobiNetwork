@@ -9,15 +9,12 @@
 
 package com.mygdx.game;
 
-import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.JsonValue;
 
 class BallServer {
 
@@ -134,8 +131,8 @@ class BallClientHandler {
     private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
         switch(msg_type) {
-            case UPDATE: //tell client the position of all entites
-                data = (MT.UPDATE+"$"+msg); break;
+            case UPDATEENTITY: //tell client the position of all entites
+                data = (MT.UPDATEENTITY +"$"+msg); break;
             case KILLENTITY: //tell client to remove client from their render queue
                 data = (MT.KILLENTITY+"$"+msg); break; //in this case, msg is the entity id
             case LOADMAP:
@@ -144,6 +141,8 @@ class BallClientHandler {
                 data = (MT.SENDCHAT+"$"+msg); break; //msg is text_colour,msg
             case BINDCAM:
                 data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
+            case UPDATEPARTICLE:
+                data = (MT.UPDATEPARTICLE+"$"+msg); break;
         }
         assert (data != null): "empty message";
         return data;
@@ -160,7 +159,7 @@ class BallClientHandler {
             String[] cmd_msg = msg[1].split(" ");
             execute_command(cmd_msg);
         }
-        //TODO: ADD GENERIC UPDATE ENTITY MESSAGE TYPE
+        //TODO: ADD GENERIC UPDATEENTITY ENTITY MESSAGE TYPE
     }
 
     public void init_client_entity() {

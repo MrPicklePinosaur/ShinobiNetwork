@@ -17,8 +17,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import javafx.util.*;
-
-import javax.annotation.processing.SupportedSourceVersion;
 import java.util.ArrayList;
 import java.util.HashMap;
 

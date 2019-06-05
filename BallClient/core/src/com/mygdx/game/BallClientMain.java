@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class BallClientMain extends ApplicationAdapter {
@@ -41,9 +42,7 @@ public class BallClientMain extends ApplicationAdapter {
 		AssetManager.loadAnimations("spritesheet_lib.txt");
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 
-		//ParticleHandler.load_particles();
-		//ParticleHandler.createParticle("run_dust");
-
+		Particle.load_particles("particle_lib.txt");
 
 		//init ui stuff
 		Global.stage = new Stage();
@@ -87,7 +86,7 @@ public class BallClientMain extends ApplicationAdapter {
 		batch.begin();
 		background.draw(batch);
 		Entity.drawAll(batch);
-		//ParticleHandler.draw_all(batch,Gdx.graphics.getDeltaTime());
+		Particle.draw_all(batch,Gdx.graphics.getDeltaTime());
 		batch.end();
 
 		//draw UI

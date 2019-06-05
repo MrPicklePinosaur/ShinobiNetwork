@@ -125,6 +125,7 @@ public class BallClient {
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
             Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
+            Particle.createParticle("run_dust",new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
         }
     }
 

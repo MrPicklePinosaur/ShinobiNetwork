@@ -25,6 +25,8 @@ class Projectile extends Entity {
     private float spawnX;
     private float spawnY;
 
+    private int totalPenetrations;
+
     public Projectile(String name,String json_stat_data,Entity owner) {
         super(name);
         this.stats = Global.json.fromJson(ProjectileStats.class,json_stat_data);
@@ -52,6 +54,8 @@ class Projectile extends Entity {
         //this.body.setUserData(this);
 
         circle.dispose();
+
+        this.totalPenetrations = this.stats.getPenetraion();
     }
 
     @Override public void init_pos(float x, float y, float rotation) {
@@ -83,13 +87,29 @@ class Projectile extends Entity {
         }
     }
 
+    public void checkPenetration() { //called when bullet hits a target, checks to see if bullet should pass through or die
+        this.totalPenetrations--;
+        if (this.totalPenetrations < 0) { //then the bullet should die
+            this.removeProjecitle();
+        }
+    }
+
+    public void hit_effect(float damage) { //if a bullet has a unique effect when it hits a target, put it here
+        String name = this.stats.getName();
+
+
+    }
+
+    public void kill_effect() { //if a bullet has a unique effect when it kills a target, put it here
+
+    }
+
 
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
     }
     public Entity getOwner() { return this.owner; }
-    public float getSpawnX() { return this.spawnX; }
-    public float getSpawnY() { return this.spawnY; }
+
 
 }
 
@@ -99,6 +119,7 @@ class ProjectileStats {
     private float damage;
     private float bullet_speed;
     private float max_dist;
+    private int penetration;
     private String travel_pattern;
 
     public ProjectileStats() { }
@@ -107,6 +128,7 @@ class ProjectileStats {
     public float getDamage() { return this.damage; }
     public float getBulletSpeed() { return this.bullet_speed; }
     public float getMaxDist() { return this.max_dist; }
+    public int getPenetraion() { return this.penetration; }
     public String getTravelPattern() { return this.travel_pattern; }
 
     public void setDamage(float dmg) { this.damage = dmg; }

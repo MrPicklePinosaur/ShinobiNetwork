@@ -38,17 +38,21 @@ public class CollisionListener implements ContactListener {
             Player owner = (Player) b.getOwner();
             if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
 
-                b.removeProjecitle(); //remove the projectile that did the damange
-                                        //TODO: possibly make piercing bullets
+                b.checkPenetration(); //check to see if bullet should die
 
                 //deal damage
-                if (p.modHp(-1*b.stats.getDamage())) { //if the bullet killed the player
+                float damage = b.stats.getDamage();
+                b.hit_effect(damage); //apply special effects, if there are any
+                owner.addDmgDealt(b.stats.getDamage());
+
+                if (p.modHp(-1*damage)) { //if the bullet killed the player
+                    b.kill_effect(); //apply special effects, if there are any
+
+                    //update stats
                     Global.game.addKill(owner);
                     owner.addKill();
                     p.addDeath();
                 }
-                owner.addDmgDealt(b.stats.getDamage());
-
             }
         }
 

@@ -93,10 +93,10 @@ public class Player extends Entity {
 
                 //used for charged weapons
                 float time_held = this.hold_count;
-                System.out.println(time_held);
+
                 float charge_dmg_mult = this.findDmgMult(this.weapon.stats.getTimeToCharge(),time_held);
                 float charge_speed_mult = this.findSpeedMult(this.weapon.stats.getTimeToCharge(),time_held);
-                System.out.println(charge_speed_mult);
+
 
                 //shoot projectile only when mouse is released
                 if (Player.shoot_cooldown_list.contains(this)) { break; } //if the player is currently under shoot cooldwon ,dont shoot
@@ -187,7 +187,7 @@ public class Player extends Entity {
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"bunny helm");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
     }
 
     public void reset_game_stats() { this.health = this.stats.getHp(); }

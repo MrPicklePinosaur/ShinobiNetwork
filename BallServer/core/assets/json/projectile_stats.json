@@ -5,6 +5,7 @@
 		"damage": 10,
 		"bullet_speed": 4,
 		"max_dist": 1.5,
+		"penetration": 1,
 		"travel_pattern": "straight"
 	},
 	{
@@ -12,7 +13,16 @@
 		"damage": 20,
 		"bullet_speed": 5,
 		"max_dist": 4,
+		"penetration": 2,
 		"travel_pattern": "straight"
-	}
+	},
+	{
+		"name": "fire_ball",
+		"damage": 20,
+		"bullet_speed": 5,
+		"max_dist": 4,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 ]

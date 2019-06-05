@@ -90,6 +90,8 @@ public abstract class Ability {
             newAbility = Global.json.fromJson(WarcryAbility.class,AssetManager.getAbilityJsonData(abl_type,abl_name));
         } else if (abl_type.equals("quiver")) {
             newAbility = Global.json.fromJson(QuiverAbility.class, AssetManager.getAbilityJsonData(abl_type, abl_name));
+        } else if (abl_type.equals("spell")) {
+            newAbility = Global.json.fromJson(SpellAbility.class, AssetManager.getAbilityJsonData(abl_type, abl_name));
         }
 
         assert (newAbility != null): "Failed to create ability";
@@ -177,6 +179,26 @@ class QuiverAbility extends Ability{
     }
 
     @Override public void update() { //all players within a certain radius get a buff/debuff
+
+    }
+
+    @Override public void deactivate() {
+
+    }
+}
+
+class SpellAbility extends Ability{
+
+    String spell_projectile;
+    String spell_pattern;
+
+    public SpellAbility() { }
+
+    @Override public void activate() {
+
+    }
+
+    @Override public void update() {
 
     }
 

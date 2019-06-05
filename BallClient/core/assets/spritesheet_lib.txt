@@ -7,3 +7,4 @@ empty.png
 royal_warhammer.png
 doom_bow.png
 black_arrow.png
+wizard.png

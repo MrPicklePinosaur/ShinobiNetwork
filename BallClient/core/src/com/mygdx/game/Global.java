@@ -53,8 +53,12 @@ enum MT {
 	//Message types - output
 	USIN, CHATMSG, CMD,
 
+	CHECKCREDS,
+
 	//Message types (MT) - input
 	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
+
+	CREDSACCEPTED, CREDSDENIED
 }
 
 enum ET {

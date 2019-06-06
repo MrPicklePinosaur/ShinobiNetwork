@@ -100,6 +100,8 @@ public class BallClient {
                 data = (MT.CHATMSG+"$"+msg); break;
             case CMD:
                 data = (MT.CMD+"$"+msg); break;
+            case CHECKCREDS: //message is in the format: username, password
+                data = (MT.CHECKCREDS+"$"+msg); break;
         }
         assert (data != null): "empty message";
         return data;
@@ -131,6 +133,10 @@ public class BallClient {
                 new Particle(entity,data[1],(int)Float.parseFloat(data[2]));
                 //Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
+
+        } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
+
+        } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
 
         }
     }

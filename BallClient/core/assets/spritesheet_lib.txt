@@ -1,4 +1,5 @@
 ninja.png
+wizard.png
 kazemonji.png
 kazemonji_slice.png
 brimstone_edge.png

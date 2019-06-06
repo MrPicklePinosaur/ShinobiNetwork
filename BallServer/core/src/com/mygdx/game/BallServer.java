@@ -143,6 +143,10 @@ class BallClientHandler {
                 data = (MT.BINDCAM+"$"+msg); break; //amsg is an x and y value of where the camera should be at
             case UPDATEPARTICLE:
                 data = (MT.UPDATEPARTICLE+"$"+msg); break;
+            case CREDSACCEPTED:
+                data = MT.CREDSACCEPTED+"$"; break; //there is no msg
+            case CREDSDENIED:
+                data = MT.CREDSDENIED+"$"; break; //there is no msg
         }
         assert (data != null): "empty message";
         return data;
@@ -158,6 +162,8 @@ class BallClientHandler {
         } else if (msg[0].equals(MT.CMD.toString())) {
             String[] cmd_msg = msg[1].split(" ");
             execute_command(cmd_msg);
+        } else if (msg[0].equals(MT.CHECKCREDS.toString())) {
+            String[] cred = msg[1].split(",");
         }
         //TODO: ADD GENERIC UPDATEENTITY ENTITY MESSAGE TYPE
     }

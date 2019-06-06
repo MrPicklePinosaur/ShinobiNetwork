@@ -62,8 +62,12 @@ enum MT { //mt stands for messageTyoe
 	//Message Types - output
 	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
 
+	CREDSACCEPTED, CREDSDENIED,
+
 	//Message Types (MT) - input
-	USIN, CHATMSG, CMD
+	USIN, CHATMSG, CMD,
+
+	CHECKCREDS
 }
 
 enum ET { //et sstands for entitiy type
@@ -76,10 +80,6 @@ enum COMMANDS {
 
 enum TEAMTAG {
 	RED, BLUE, SOLO
-}
-
-enum GAMETYPE {
-	TDM, FFA
 }
 
 enum FIREPATTERN { //bullet pattern

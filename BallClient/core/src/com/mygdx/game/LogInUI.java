@@ -1,3 +1,5 @@
+//shrey mahey
+
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
@@ -10,17 +12,17 @@ import com.badlogic.gdx.utils.Align;
 import java.util.LinkedList;
 
 //This class will handle the visual component to the log in system
-//it will have sign up and log in options, and will use SqliteDB
+//it will have sign up and log in options, and will use Database
 //to give the user feedback on if they registered/signed in properly
 public class LogInUI {
     private Table table;
-    static Skin skin;
-    static TextureAtlas atlas;
-    static Label logInTitle;
-    static Label registerTitle;
-    static Label logInU;
-    static Label logInP;
-    static TextField chatText;
+    private Skin skin;
+    private TextureAtlas atlas;
+    private Label logInTitle;
+    private Label registerTitle;
+    private Label logInU;
+    private Label logInP;
+    private TextField chatText;
 
     public LogInUI(){
         atlas = new TextureAtlas("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.atlas");
@@ -49,6 +51,7 @@ public class LogInUI {
         textfield.setActor(chatText);
 
     }
+    
     public static void userNameTaken(){
         System.out.println("Username taken!");
     }

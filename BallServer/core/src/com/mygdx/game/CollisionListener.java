@@ -9,6 +9,7 @@
 
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import javafx.util.Pair;
 
@@ -32,27 +33,33 @@ public class CollisionListener implements ContactListener {
         }
 
         else if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Player.class,Projectile.class)) {
-            Player p = (Player) CollisionListener.findFixture(type_a,type_b,Player.class);
-            Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
+            final Player p = (Player) CollisionListener.findFixture(type_a,type_b,Player.class);
+            final Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
 
-            Player owner = (Player) b.getOwner();
+            final Player owner = (Player) b.getOwner();
             if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
 
-                b.checkPenetration(); //check to see if bullet should die
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        b.checkPenetration(); //check to see if bullet should die
 
-                //deal damage
-                float damage = b.getDamage();
-                b.hit_effect(p,damage); //apply special effects, if there are any
-                owner.addDmgDealt(b.getDamage());
+                        //deal damage
+                        float damage = b.getDamage();
+                        b.hit_effect(p,damage); //apply special effects, if there are any
+                        owner.addDmgDealt(b.getDamage());
 
-                if (p.modHp(-1*damage)) { //if the bullet killed the player
-                    b.kill_effect(p); //apply special effects, if there are any
+                        if (p.modHp(-1*damage)) { //if the bullet killed the player
+                            b.kill_effect(p); //apply special effects, if there are any
 
-                    //update stats
-                    Global.game.addKill(owner);
-                    owner.addKill();
-                    p.addDeath();
-                }
+                            //update stats
+                            Global.game.addKill(owner);
+                            owner.addKill();
+                            p.addDeath();
+                        }
+                    }
+                });
+
             }
         }
 

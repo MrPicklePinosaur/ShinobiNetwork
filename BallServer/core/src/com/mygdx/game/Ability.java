@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
 
@@ -112,14 +113,22 @@ class SwiftstrikeAbility extends Ability {
 
     public SwiftstrikeAbility() { }
 
-    @Override public void activate() { }
+    @Override public void activate() {
+        if (this.name.equals("cherryblossom_twinblades")) {
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+            for (int i = 0; i < 4; i ++) {
+                this.player.shoot(slash_projectile,this.player.getMouseAngle()+90*i*MathUtils.degreesToRadians,"double",1,1);
+            }
+
+        }
+    }
 
     @Override public void update() { //do a speed boost
         int impX = (int) (this.dash_speed * MathUtils.cos(this.player.getMouseAngle()));
         int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getMouseAngle()));
         this.player.getBody().applyLinearImpulse(impX, impY, 0, 0, true);
 
-        if (this.name.equals("whirlwind") && this.ticker%2 == 0) {
+        if (this.name.equals("whirlwind_sheath") && this.ticker%2 == 0) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
         }
     }
@@ -129,6 +138,23 @@ class SwiftstrikeAbility extends Ability {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
         } else if (this.name.equals("shadowstep_dagger")) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+        } else if (this.name.equals("tsuinejji")) {
+            float slash_dist = 0.5f*Global.PPM;
+            float a = player.getRotation();
+
+            //left slashes
+            float ice_pos_x = player.getX()+slash_dist*MathUtils.cos(a+45*MathUtils.degreesToRadians);
+            float ice_pos_y = player.getY()+slash_dist*MathUtils.cos(a-45*MathUtils.degreesToRadians);
+            float ice_angle = a-12*MathUtils.degreesToRadians;
+            //right slashes
+            float fire_pos_x = player.getX()+slash_dist*MathUtils.cos(a+45*MathUtils.degreesToRadians);
+            float fire_pos_y = player.getY()+slash_dist*MathUtils.cos(a-45*MathUtils.degreesToRadians);
+            float fire_angle = a+12*MathUtils.degreesToRadians;
+
+            this.player.newProjectile("tsuinejji_ice_slash",ice_angle,1,1,new Vector2(ice_pos_x,ice_pos_y));
+            this.player.newProjectile("tsuinejji_fire_slash",fire_angle,1,1,new Vector2(fire_pos_x,fire_pos_y));
+
+
         }
     }
 

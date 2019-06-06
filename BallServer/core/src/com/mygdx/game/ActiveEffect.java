@@ -20,6 +20,9 @@ public class ActiveEffect {
     public void begin() {
         if (this.name.equals("speedy")) {
             player.setSpeed(player.getSpeed()*2);
+        } else if (this.name.equals("burning")) {
+            new Particle("burning",player.getX(),player.getY(),(int)max_duration);
+            System.out.println("burning tiem");
         }
     }
 
@@ -34,8 +37,7 @@ public class ActiveEffect {
 
     public void update() {
         if (this.name.equals("burning")) {
-            System.out.println("ouch that burns "+duration_left);
-            this.player.modHp(-1);
+            this.player.modHp(-0.01f);
         }
 
     }

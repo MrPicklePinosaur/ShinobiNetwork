@@ -105,8 +105,9 @@ class Projectile extends Entity {
         if (name.equals("brimstone_slice")) { //7% chanceto inflict burning for 3 seconds
             int chance = Global.rnd.nextInt(100);
             if (chance < 7) {
-                target.applyActiveEffect("burning",3);
+                //target.applyActiveEffect("burning",3);
             }
+            target.applyActiveEffect("burning",3);
         } else if (name.equals("jade_slice")) { //upon hitting a target, the fire rate increaes
 
         }

@@ -10,17 +10,17 @@
 			"slash_pattern": "triple"
 		},
 		{
-			"name": "cherryblossom_twinblade",
+			"name": "cherryblossom_twinblades",
 			"max_duration": 0,
-			"max_cooldown": 4,
+			"max_cooldown": 2,
 			"dash_speed": 0,
 			"slash_projectile": "cherryblossom_slash",
-			"slash_pattern": "triple"
+			"slash_pattern": "ring"
 		},
 		{
 			"name": "tsuinejji",
 			"max_duration": 0,
-			"max_cooldown": 4,
+			"max_cooldown": 1,
 			"dash_speed": 0,
 			"slash_projectile": "tsuinejji_ice_slash",
 			"slash_pattern": "triple"
@@ -40,6 +40,14 @@
 			"dash_speed": 60,
 			"slash_projectile": "shadowstep_slash",
 			"slash_pattern": "penta"
+		},
+		{
+			"name": "whirlwind_sheath",
+			"max_duration": 0.3,
+			"max_cooldown": 4,
+			"dash_speed": 18,
+			"slash_projectile": "whirlwind_slash",
+			"slash_pattern": "double"
 		},
 
 

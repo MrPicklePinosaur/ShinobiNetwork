@@ -38,8 +38,8 @@
 	{
 		"name": "cherryblossom_slash",
 		"damage": 7,
-		"bullet_speed": 3.8,
-		"max_dist": 1.6,
+		"bullet_speed": 2.2,
+		"max_dist": 2,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
@@ -72,6 +72,14 @@
 		"damage": 12,
 		"bullet_speed": 2,
 		"max_dist": 1,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "whirlwind_slash",
+		"damage": 5,
+		"bullet_speed": 3.5,
+		"max_dist": 1.5,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},

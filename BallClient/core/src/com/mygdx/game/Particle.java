@@ -47,10 +47,11 @@ public class Particle {
         } catch(FileNotFoundException ex) { System.out.println(ex); }
     }
 
-    public static ParticleEffect createParticle(String particle_name, Vector2 pos) {
+    public static ParticleEffect createParticle(String name,float x,float y,int duration) {
         ParticleEffect new_particle = new ParticleEffect();
-        new_particle.load(Particle.behavior_lib.get(particle_name),Particle.particle_atlas);
-        new_particle.setPosition(pos.x,pos.y);
+        new_particle.load(Particle.behavior_lib.get(name),Particle.particle_atlas);
+        new_particle.setPosition(x,y);
+        new_particle.setDuration(duration);
         new_particle.start();
         Particle.particle_list.add(new_particle);
         return new_particle;

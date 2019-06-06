@@ -126,8 +126,9 @@ public class BallClient {
         } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {
-                String[] data = particle.split(","); //data comes in the form: name,x,y
-                Particle.createParticle(data[0],new Vector2(Float.parseFloat(data[1]),Float.parseFloat(data[2])));
+                String[] data = particle.split(","); //data comes in the form: name,x,y,duration
+                System.out.println("burn particle");
+                Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
 
         }

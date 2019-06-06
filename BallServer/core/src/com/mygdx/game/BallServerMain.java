@@ -89,10 +89,8 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//periodically send client position of all entities
-		String entity_data = Entity.send_all();
-		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATEENTITY,Entity.send_all()); } //broadcast only if there is something to broadcast
-		String particle_data = Particle.send_particles();
-		if (!particle_data.equals("")) { }
+		Entity.send_all();
+		Particle.send_particles();
 
 		//draw stuff (TESTING ONLY)
 		tiledMapRenderer.render();

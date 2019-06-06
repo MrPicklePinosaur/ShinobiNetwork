@@ -48,7 +48,8 @@ public abstract class Entity {
         BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
     }
 
-    public static String send_all() { //packages all entity positions into a string
+    public static void send_all() { //packages all entity positions into a string
+        if (Entity.entity_list.size() == 0) { return; }
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
             try { //possibly a bad idea to slap a try-catch here
@@ -57,7 +58,7 @@ public abstract class Entity {
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
-        return msg;
+        BallClientHandler.broadcast(MT.UPDATEENTITY,msg);
     }
 
     //Projecitle stuff
@@ -84,7 +85,7 @@ public abstract class Entity {
         }
     }
 
-    private void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
+    public void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
         Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
         p.init_pos(spawn_pos.x/Global.PPM,spawn_pos.y/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setDamage(p.getDamage()*dmg_mult);

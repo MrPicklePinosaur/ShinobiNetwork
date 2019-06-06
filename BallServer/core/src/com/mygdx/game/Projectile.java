@@ -98,18 +98,29 @@ class Projectile extends Entity {
         }
     }
 
-    public void hit_effect(float damage) { //if a bullet has a unique effect when it hits a target, put it here
+    public void hit_effect(Player target,float damage) { //if a bullet has a unique effect when it hits a target, put it here
         String name = this.stats.getName();
+        Player owner = (Player) this.owner;
 
+        if (name.equals("brimstone_slice")) { //7% chanceto inflict burning for 3 seconds
+            int chance = Global.rnd.nextInt(100);
+            if (chance < 7) {
+                target.applyActiveEffect("burning",3);
+            }
+        } else if (name.equals("jade_slice")) { //upon hitting a target, the fire rate increaes
+
+        }
 
     }
 
-    public void kill_effect() { //if a bullet has a unique effect when it kills a target, put it here
+    public void kill_effect(Player target) { //if a bullet has a unique effect when it kills a target, put it here
         String name = this.stats.getName();
+        Player owner = (Player) this.owner;
 
         if (name.equals("nihiru_slice")) {
-            Player owner = (Player) this.owner;
             owner.setDmgMult(owner.getDmgMult()*1.1f);
+        } else if (name.equals("jade_slice")) {
+            owner.shoot("jade_slice",owner.getMouseAngle(),"ring",owner.getDmgMult(),1);
         }
     }
 

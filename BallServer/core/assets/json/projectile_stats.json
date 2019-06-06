@@ -6,7 +6,7 @@
 		"damage": 10,
 		"bullet_speed": 4,
 		"max_dist": 1.5,
-		"penetration": 1,
+		"penetration": 2,
 		"travel_pattern": "straight"
 	},
 	{
@@ -19,9 +19,9 @@
 	},
 	{
 		"name": "jade_slice",
-		"damage": 8,
-		"bullet_speed": 4,
-		"max_dist": 1,
+		"damage": 12,
+		"bullet_speed": 4.2,
+		"max_dist": 1.5,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},

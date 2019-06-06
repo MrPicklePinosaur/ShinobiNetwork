@@ -10,6 +10,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.*;
@@ -68,17 +69,34 @@ public abstract class Entity {
         else if (fire_pattern.equals("double")) {
             this.newProjectile(name, angle - 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
             this.newProjectile(name, angle + 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
+        } else if (fire_pattern.equals("ring")) {
+
+            float radius = 0.5f*Global.PPM; //hard coded radius for now
+            for (int i = 0; i < 12; i++) {
+                float direct = angle-30*i*MathUtils.degreesToRadians;
+                float x = this.getX()+radius*MathUtils.cos(direct);
+                float y = this.getY()+radius*MathUtils.sin(direct);
+                Vector2 spawn_pos = new Vector2(x,y);
+                this.newProjectile(name,direct-90*MathUtils.degreesToRadians,dmg_mult,speed_mult,spawn_pos);
+            }
+
         }
     }
 
-    private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
+    private void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
         Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
+        p.init_pos(spawn_pos.x/Global.PPM,spawn_pos.y/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setDamage(p.getDamage()*dmg_mult);
         p.setSpeed(p.getSpeed()*speed_mult);
-        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
+
         p.setVelocity(angle);
         this.projectile_list.add(p);
     }
+    private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
+        this.newProjectile(name,angle,dmg_mult,speed_mult,new Vector2(this.getX(),this.getY()));
+    }
+
+
     public void removeProjectile(Projectile projectile) {
         //safe removal of projectile
         //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";

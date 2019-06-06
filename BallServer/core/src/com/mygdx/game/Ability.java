@@ -119,15 +119,13 @@ class SwiftstrikeAbility extends Ability {
         int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getMouseAngle()));
         this.player.getBody().applyLinearImpulse(impX, impY, 0, 0, true);
 
-        if (this.name.equals("basic")) {
-        }
-        else if (this.name.equals("whirlwind") && this.ticker%2 == 0) {
+        if (this.name.equals("whirlwind") && this.ticker%2 == 0) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
         }
     }
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
-        if (this.name.equals("basic")) {
+        if (this.name.equals("simple_wakizashi")) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
         }
     }

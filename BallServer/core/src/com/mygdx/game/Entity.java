@@ -63,12 +63,13 @@ public abstract class Entity {
     //Projecitle stuff
     public void shoot(String name,float angle,String fire_pattern,float dmg_mult,float speed_mult) {
         if (fire_pattern.equals("straight")) { this.newProjectile(name,angle, dmg_mult,speed_mult); }
-        else if (fire_pattern.equals("triple")) {
-            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
-        }
         else if (fire_pattern.equals("double")) {
             this.newProjectile(name, angle - 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
             this.newProjectile(name, angle + 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
+        } else if (fire_pattern.equals("triple")) {
+            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
+        } else if (fire_pattern.equals("penta")) {
+            for (int i = -2; i < 5; i++) { this.newProjectile(name,angle+8*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
         } else if (fire_pattern.equals("ring")) {
 
             float radius = 0.5f*Global.PPM; //hard coded radius for now

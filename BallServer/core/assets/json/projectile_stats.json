@@ -69,9 +69,9 @@
 	},
 	{
 		"name": "shadowstep_slash",
-		"damage": 7,
-		"bullet_speed": 3.8,
-		"max_dist": 1.6,
+		"damage": 12,
+		"bullet_speed": 2,
+		"max_dist": 1,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},

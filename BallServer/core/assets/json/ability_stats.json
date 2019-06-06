@@ -35,11 +35,11 @@
 		},
 		{
 			"name": "shadowstep_dagger",
-			"max_duration": 0,
+			"max_duration": 0.05,
 			"max_cooldown": 4,
-			"dash_speed": 0,
-			"slash_projectile": "bloodsucker_slash",
-			"slash_pattern": "triple"
+			"dash_speed": 60,
+			"slash_projectile": "shadowstep_slash",
+			"slash_pattern": "penta"
 		},
 
 

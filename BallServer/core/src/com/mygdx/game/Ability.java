@@ -127,6 +127,8 @@ class SwiftstrikeAbility extends Ability {
     @Override public void deactivate() { //at the end of the dash, do a slash attack
         if (this.name.equals("simple_wakizashi")) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+        } else if (this.name.equals("shadowstep_dagger")) {
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
         }
     }
 

@@ -45,7 +45,7 @@
 	},
 	{
 		"name": "tsuinejji_ice_slash",
-		"damage": 7,
+		"damage": 4,
 		"bullet_speed": 3.8,
 		"max_dist": 1.6,
 		"penetration": 1,
@@ -53,7 +53,7 @@
 	},
 	{
 		"name": "tsuinejji_fire_slash",
-		"damage": 7,
+		"damage": 4,
 		"bullet_speed": 3.8,
 		"max_dist": 1.6,
 		"penetration": 1,

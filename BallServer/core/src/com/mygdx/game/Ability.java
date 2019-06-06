@@ -140,21 +140,21 @@ class SwiftstrikeAbility extends Ability {
         } else if (this.name.equals("shadowstep_dagger")) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
         } else if (this.name.equals("tsuinejji")) {
-            float slash_dist = 0.5f*Global.PPM;
+            float dist1 = 0.3f*Global.PPM;
+            float dist2 = 0.4f*Global.PPM;
+            float shoot_angle = 20*MathUtils.degreesToRadians;
             float a = player.getRotation();
 
             //left slashes
-            float ice_pos_x = player.getX()+slash_dist*MathUtils.cos(a+45*MathUtils.degreesToRadians);
-            float ice_pos_y = player.getY()+slash_dist*MathUtils.cos(a-45*MathUtils.degreesToRadians);
-            float ice_angle = a-12*MathUtils.degreesToRadians;
-            //right slashes
-            float fire_pos_x = player.getX()+slash_dist*MathUtils.cos(a+45*MathUtils.degreesToRadians);
-            float fire_pos_y = player.getY()+slash_dist*MathUtils.cos(a-45*MathUtils.degreesToRadians);
-            float fire_angle = a+12*MathUtils.degreesToRadians;
+            Vector2 ice_pos1 = new Vector2(player.getX()+dist1*MathUtils.cos(a+MathUtils.PI/2),player.getY()+dist1*MathUtils.sin(a+MathUtils.PI/2));
+            Vector2 ice_pos2 = new Vector2(player.getX()+dist2*MathUtils.cos(a+MathUtils.PI/2),player.getY()+dist2*MathUtils.sin(a+MathUtils.PI/2));
+            Vector2 fire_pos1 = new Vector2(player.getX()+dist1*MathUtils.cos(a-MathUtils.PI/2),player.getY()+dist1*MathUtils.sin(a-MathUtils.PI/2));
+            Vector2 fire_pos2 = new Vector2(player.getX()+dist2*MathUtils.cos(a-MathUtils.PI/2),player.getY()+dist2*MathUtils.sin(a-MathUtils.PI/2));
 
-            this.player.newProjectile("tsuinejji_ice_slash",ice_angle,1,1,new Vector2(ice_pos_x,ice_pos_y));
-            this.player.newProjectile("tsuinejji_fire_slash",fire_angle,1,1,new Vector2(fire_pos_x,fire_pos_y));
-
+            this.player.newProjectile("tsuinejji_ice_slash",a-shoot_angle,1,1,ice_pos1);
+            this.player.newProjectile("tsuinejji_ice_slash",a-shoot_angle,1,1,ice_pos2);
+            this.player.newProjectile("tsuinejji_fire_slash",a+shoot_angle,1,1,fire_pos1);
+            this.player.newProjectile("tsuinejji_fire_slash",a+shoot_angle,1,1,fire_pos2);
 
         }
     }

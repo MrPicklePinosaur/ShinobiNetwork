@@ -20,7 +20,7 @@
 		{
 			"name": "tsuinejji",
 			"max_duration": 0,
-			"max_cooldown": 1,
+			"max_cooldown": 2,
 			"dash_speed": 0,
 			"slash_projectile": "tsuinejji_ice_slash",
 			"slash_pattern": "triple"

@@ -3,3 +3,12 @@ kazemonji.png
 kazemonji_slice.png
 brimstone_edge.png
 brimstone_slice.png
+jade_katana.png
+jade_slice.png
+nihiru.png
+nihiru_slice.png
+cherryblossom_slash.png
+tsuinejji_ice_slash.png
+tsuinejji_fire_slash.png
+bloodsucker_slash.png
+shadowstep_slash.png

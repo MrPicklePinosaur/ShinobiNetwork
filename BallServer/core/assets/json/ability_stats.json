@@ -2,13 +2,48 @@
 
 	"swiftstrike": [
 		{
-			"name": "basic",
+			"name": "simple_wakizashi",
 			"max_duration": 0.15,
 			"max_cooldown": 1.5,
 			"dash_speed": 20,
 			"slash_projectile": "kazemonji_slice",
 			"slash_pattern": "triple"
 		},
+		{
+			"name": "cherryblossom_twinblade",
+			"max_duration": 0,
+			"max_cooldown": 4,
+			"dash_speed": 0,
+			"slash_projectile": "cherryblossom_slash",
+			"slash_pattern": "triple"
+		},
+		{
+			"name": "tsuinejji",
+			"max_duration": 0,
+			"max_cooldown": 4,
+			"dash_speed": 0,
+			"slash_projectile": "tsuinejji_ice_slash",
+			"slash_pattern": "triple"
+		},
+		{
+			"name": "bloodsucker_talon",
+			"max_duration": 0,
+			"max_cooldown": 4,
+			"dash_speed": 0,
+			"slash_projectile": "bloodsucker_slash",
+			"slash_pattern": "triple"
+		},
+		{
+			"name": "shadowstep_dagger",
+			"max_duration": 0,
+			"max_cooldown": 4,
+			"dash_speed": 0,
+			"slash_projectile": "bloodsucker_slash",
+			"slash_pattern": "triple"
+		},
+
+
+
 		{
 			"name": "flash",
 			"max_duration": 0.05,

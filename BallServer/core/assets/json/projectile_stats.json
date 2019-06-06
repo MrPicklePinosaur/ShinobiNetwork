@@ -1,5 +1,6 @@
 [
 
+	//katanas
 	{
 		"name": "kazemonji_slice",
 		"damage": 10,
@@ -11,11 +12,73 @@
 	{
 		"name": "brimstone_slice",
 		"damage": 15,
+		"bullet_speed": 3.2,
+		"max_dist": 1,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "jade_slice",
+		"damage": 8,
 		"bullet_speed": 4,
 		"max_dist": 1,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
+	{
+		"name": "nihiru_slice",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+
+	//wakizashis
+	{
+		"name": "cherryblossom_slash",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "tsuinejji_ice_slash",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "tsuinejji_fire_slash",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "bloodsucker_slash",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "shadowstep_slash",
+		"damage": 7,
+		"bullet_speed": 3.8,
+		"max_dist": 1.6,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+
+
+
+
 	{
 		"name": "black_arrow",
 		"damage": 20,
@@ -32,13 +95,6 @@
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
-	{
-		"name": "nihiru_slice",
-		"damage": 7,
-		"bullet_speed": 3.8,
-		"max_dist": 1.6,
-		"penetration": 1,
-		"travel_pattern": "straight"
-	},
+
 
 ]

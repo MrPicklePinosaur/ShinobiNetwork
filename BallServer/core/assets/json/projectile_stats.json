@@ -11,7 +11,7 @@
 	},
 	{
 		"name": "brimstone_slice",
-		"damage": 15,
+		"damage": 12,
 		"bullet_speed": 3.2,
 		"max_dist": 1,
 		"penetration": 1,

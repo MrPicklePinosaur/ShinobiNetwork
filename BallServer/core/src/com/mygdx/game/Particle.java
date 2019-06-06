@@ -10,15 +10,15 @@ public class Particle {
 
     private static ArrayList<Particle> particle_list = new ArrayList<Particle>();
 
+    private Entity entity;
     private String name;
     private float x;
     private float y;
     private int duration;
 
-    public Particle(String name,float x,float y,int duration) {
+    public Particle(Entity entity,String name,int duration) {
+        this.entity = entity;
         this.name = name;
-        this.x = x;
-        this.y = y;
         this.duration = duration;
 
         Particle.particle_list.add(this);
@@ -29,7 +29,7 @@ public class Particle {
         if (Particle.particle_list.size() == 0) { return; }
         String msg = "";
         for (Particle p : Particle.particle_list) {
-            msg += (" "+p.name+","+p.x+","+p.y+","+p.duration);
+            msg += (" "+p.entity.getId()+","+p.name+","+p.duration);
         }
         Particle.particle_list.clear();
 

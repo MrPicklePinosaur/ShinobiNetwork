@@ -21,8 +21,7 @@ public class ActiveEffect {
         if (this.name.equals("speedy")) {
             player.setSpeed(player.getSpeed()*2);
         } else if (this.name.equals("burning")) {
-            new Particle("burning",player.getX(),player.getY(),(int)max_duration);
-            System.out.println("burning tiem");
+            new Particle(player,"burning",(int)max_duration);
         }
     }
 

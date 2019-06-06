@@ -127,8 +127,9 @@ public class BallClient {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {
                 String[] data = particle.split(","); //data comes in the form: name,x,y,duration
-                System.out.println("burn particle");
-                Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
+                Entity entity = Entity.getEntity(Integer.parseInt(data[0]));
+                new Particle(entity,data[1],(int)Float.parseFloat(data[2]));
+                //Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
 
         }

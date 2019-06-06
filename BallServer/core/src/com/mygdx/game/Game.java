@@ -10,11 +10,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class Game {
 
     protected CopyOnWriteArrayList<String> chat_log;
-    protected LinkedList<Player> player_list;
+    protected CopyOnWriteArrayList<Player> player_list;
 
     public Game() {
         this.chat_log = new CopyOnWriteArrayList<String>();
-        this.player_list = new LinkedList<Player>();
+        this.player_list = new CopyOnWriteArrayList<Player>();
     }
 
     public void new_chat_msg(String msg) {
@@ -27,7 +27,7 @@ public abstract class Game {
     }
     public void wipe_chat() { this.chat_log.clear(); }
 
-    public LinkedList<Player> getPlayerList() { return this.player_list; }
+    public CopyOnWriteArrayList<Player> getPlayerList() { return this.player_list; }
     public void addPlayer(Player p) { this.player_list.add(p); }
     public void removePlayer(Player p) {
         assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";

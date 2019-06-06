@@ -4,10 +4,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Ability {
-    protected static LinkedList<Ability> active_abilities = new LinkedList<Ability>(); //list of abilities current being used
-    protected static LinkedList<Ability> cooldown_abilities = new LinkedList<Ability>(); //list of abbilities currently under cooldown
+    protected static CopyOnWriteArrayList<Ability> active_abilities = new CopyOnWriteArrayList<Ability>(); //list of abilities current being used
+    protected static CopyOnWriteArrayList<Ability> cooldown_abilities = new CopyOnWriteArrayList<Ability>(); //list of abbilities currently under cooldown
 
     protected String name;
     protected float max_duration;

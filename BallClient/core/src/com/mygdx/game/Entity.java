@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
+import java.util.EmptyStackException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -135,6 +136,13 @@ public class Entity {
         }
     }
 
+    public static Entity getEntity(int id) {
+        assert (Entity.entity_library.containsKey(id)): "Entity not found";
+        return Entity.entity_library.get(id);
+    }
+    public static Boolean isAlive(int id) {
+        return Entity.entity_library.containsKey(id) ? true : false;
+    }
     public String getET() { return this.entity_type; }
     public float getX() { return this.x; }
     public float getY() { return this.y; }

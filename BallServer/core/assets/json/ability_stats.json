@@ -108,11 +108,11 @@
 
 	"spell": [
 		{
-			"name": "basic",
-			"max_duration": 0,
-			"max_cooldown": 5,
-			"spell_projectile": "",
-			"spell_pattern": "straight"
+			"name": "flamethrower_scroll",
+			"max_duration": 3,
+			"max_cooldown": 4,
+			"spell_projectile": "flamethrower_bolt",
+			"spell_pattern": "double"
 		}
 	]
 	

@@ -115,6 +115,12 @@ class Projectile extends Entity {
             if (chance < 50) { target.applyActiveEffect("frostbite", 2); }
         }
 
+        else if (name.equals("flamethrower_bolt")) {
+            int chance = Global.rnd.nextInt(100);
+            if (chance < 40) { target.applyActiveEffect("burning",1); }
+        }
+
+
     }
 
     public void kill_effect(Player target) { //if a bullet has a unique effect when it kills a target, put it here

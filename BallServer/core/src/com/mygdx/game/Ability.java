@@ -226,7 +226,14 @@ class SpellAbility extends Ability{
     }
 
     @Override public void update() {
-
+        if (this.name.equals("flamethrower_scroll") && this.ticker%4 == 0) {
+            float dist = 0.15f*Global.PPM;
+            for (int i = 0; i < 2; i++) {
+                float angle = player.getMouseAngle() + (-12 + Global.rnd.nextInt(24)) * MathUtils.degreesToRadians;
+                Vector2 pos = new Vector2(player.getX() + dist * MathUtils.cos(angle), player.getY() + dist * MathUtils.sin(angle));
+                player.newProjectile(spell_projectile, angle, 1, 1, pos);
+            }
+        }
     }
 
     @Override public void deactivate() {

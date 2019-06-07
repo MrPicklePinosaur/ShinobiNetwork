@@ -35,7 +35,10 @@ public class BallServerMain extends ApplicationAdapter {
 		//Map.loadAll("map_library.txt");
 
 		//Connect to database
-		//Database.connect("database.db");
+		Global.db = new Database();
+		Global.db.addPlayer("Shrey M","p1");//query1);
+		Global.db.getPlayers();
+		Global.db.closeConnection();
 
 		Global.game = new KOTHGame();
 		Global.world = new World(new Vector2(0,0),true);

@@ -51,7 +51,7 @@ public class LogInUI {
         textfield.setActor(chatText);
 
     }
-    
+
     public static void userNameTaken(){
         System.out.println("Username taken!");
     }

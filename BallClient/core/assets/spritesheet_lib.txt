@@ -14,3 +14,4 @@ tsuinejji_fire_slash.png
 bloodsucker_slash.png
 shadowstep_slash.png
 whirlwind_slash.png
+flamethrower_bolt.png

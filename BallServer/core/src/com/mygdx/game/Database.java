@@ -16,7 +16,7 @@ public class Database {
         try{
             Class.forName("org.sqlite.JDBC");
             System.out.println(System.getProperty("user.dir"));
-            c = DriverManager.getConnection("jdbc:sqlite:../../../playersDB.db");  //if malfunctioning, check working folder location -- this file SHOULD be checking in root folder, not assets
+            c = DriverManager.getConnection("jdbc:sqlite:../../assets/playersDB.db");  //if malfunctioning, check working folder location -- this file SHOULD be checking in root folder, not assets
             //connection url is currently relative, but must be tracked if the database, this file, or any related directory in between is moved/changed
             System.out.println("Connected to DB.");
 

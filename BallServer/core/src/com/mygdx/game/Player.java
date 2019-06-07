@@ -69,7 +69,6 @@ public class Player extends Entity {
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
         this.init_stats(json_stat_data);
-
     }
 
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
@@ -78,7 +77,7 @@ public class Player extends Entity {
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
         this.reset_performance_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"tsuinejji");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"flamethrower_scroll");
     }
 
     public void reset_game_stats() {

@@ -28,6 +28,7 @@ class Global {
 	public static World world;
 	public static Game game;
 	public static Map map;
+	public static Database db;
 
 	//Important vars
 	public static final int SCREEN_WIDTH = 800;

@@ -84,6 +84,15 @@
 		"travel_pattern": "straight"
 	},
 
+	//spell bolts
+	{
+		"name": "flamethrower_bolt",
+		"damage": 2,
+		"bullet_speed": 2,
+		"max_dist": 1.5,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 
 

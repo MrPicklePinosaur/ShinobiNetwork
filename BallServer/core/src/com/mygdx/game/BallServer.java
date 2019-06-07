@@ -49,6 +49,7 @@ class BallClientHandler {
     private PrintWriter outstream;
     private BufferedReader instream;
     private BallClientHandler self;
+    private Client client_data;
 
     private static CopyOnWriteArrayList<BallClientHandler> client_list = new CopyOnWriteArrayList<BallClientHandler>(); //list of all clients
 
@@ -164,6 +165,13 @@ class BallClientHandler {
             execute_command(cmd_msg);
         } else if (msg[0].equals(MT.CHECKCREDS.toString())) {
             String[] cred = msg[1].split(",");
+            if (Global.db.checkCredentials(cred[0],cred[1])) {
+                send_msg(MT.CREDSACCEPTED,"");
+
+                Client client = Client.init_client(Global.db.getData(cred[0]));
+
+            } //if the creds work
+            else { send_msg(MT.CREDSDENIED,""); } //if they dont
         }
         //TODO: ADD GENERIC UPDATEENTITY ENTITY MESSAGE TYPE
     }
@@ -199,11 +207,8 @@ class BallClientHandler {
         }
 
     }
-    public void removeClient() {
-        BallClientHandler.client_list.remove(this);
-    }
 
-
+    public void removeClient() { BallClientHandler.client_list.remove(this); }
 }
 
 

@@ -65,15 +65,15 @@ public class BallClientMain extends ApplicationAdapter {
 		background = new Sprite(new Texture("mountain_temple.png"));
 
 		//Init server
-
 		Global.server_socket = new BallClient("127.0.0.1",5000);
-
 		Thread.currentThread().setName("Main");
-
 		if (Global.server_socket.start_connection() == false) {
 			 //client goes back to main screen
 			Gdx.app.exit(); //for now the game just closes
 		}
+
+		Global.server_socket.send_msg(MT.CHECKCREDS,"daniel,password");
+
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 	}

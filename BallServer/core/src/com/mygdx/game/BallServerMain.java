@@ -35,19 +35,15 @@ public class BallServerMain extends ApplicationAdapter {
 		//Map.loadAll("map_library.txt");
 
 		//Connect to database
-
 		Global.db = new Database();
-		//Global.db.addPlayer("Shrey M","p1");//query1);
-		//Global.db.getData();
 
-		Global.game = new KOTHGame();
+		Global.game = new TDMGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");
 		Global.map = new Map("maps/mountain_temple.tmx");
-
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();

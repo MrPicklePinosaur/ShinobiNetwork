@@ -135,9 +135,9 @@ public class BallClient {
             }
 
         } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
-
+            System.out.println("CREDS ACCEPTED");
         } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
-
+            System.out.println("CREDS DENIED");
         }
     }
 

@@ -19,9 +19,7 @@ public class Weapon extends Entity {
 
 
     @Override
-    public void init_stats(String json_data) {
-        this.stats = Global.json.fromJson(WeaponStats.class, json_data);
-    }
+    public void init_stats(String json_data) { this.stats = Global.json.fromJson(WeaponStats.class, json_data); }
 
     @Override public float getX() { return this.owner.getX(); }
     @Override public float getY() { return this.owner.getY(); }

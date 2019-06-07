@@ -35,10 +35,10 @@ public class BallServerMain extends ApplicationAdapter {
 		//Map.loadAll("map_library.txt");
 
 		//Connect to database
+
 		Global.db = new Database();
-		Global.db.addPlayer("Shrey M","p1");//query1);
-		Global.db.getPlayers();
-		Global.db.closeConnection();
+		//Global.db.addPlayer("Shrey M","p1");//query1);
+		//Global.db.getData();
 
 		Global.game = new KOTHGame();
 		Global.world = new World(new Vector2(0,0),true);
@@ -117,6 +117,7 @@ public class BallServerMain extends ApplicationAdapter {
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();
 		Global.disposeGlobals();
+		Global.db.closeConnection();
 		Gdx.app.exit();
 	}
 }

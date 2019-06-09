@@ -82,7 +82,7 @@ class BallClientHandler {
                         //interperate client message
                         input_unpacker(client_msg);
 
-                        send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); //TODO: prob a bad idea to put this here
+                        if (isGameInProgress()) { send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); } //TODO: prob a bad idea to put this here
 
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
@@ -134,7 +134,7 @@ class BallClientHandler {
 
         switch(msg_type) {
             case CREDSACCEPTED:
-                data = MT.CREDSACCEPTED+"$"; break; //there is no msg
+                data = MT.CREDSACCEPTED+"$"+msg; break; //there is no msg
             case CREDSDENIED:
                 data = MT.CREDSDENIED+"$"; break; //there is no msg
         }

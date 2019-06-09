@@ -10,22 +10,16 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Json;
-
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Random;
 
 class Global {
 
 	public static Json json = new Json();
 
 	public static Camera camera;
-	public static Client user_data;
+	public static UserData user_data;
 
 	//Scene 2d
 	public static Stage stage;

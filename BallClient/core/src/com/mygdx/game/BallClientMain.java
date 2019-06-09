@@ -82,32 +82,32 @@ public class BallClientMain extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		if (Global.server_socket.isGameInProgress()) {
+			batch.begin();
+			background.draw(batch);
+			Entity.drawAll(batch);
+			Particle.draw_all(batch, Gdx.graphics.getDeltaTime());
+			batch.end();
 
-		batch.begin();
-		background.draw(batch);
-		Entity.drawAll(batch);
-		Particle.draw_all(batch,Gdx.graphics.getDeltaTime());
-		batch.end();
+			//draw UI
+			Global.stage.act(Gdx.graphics.getDeltaTime());
+			Global.stage.draw();
 
-		//draw UI
-		Global.stage.act(Gdx.graphics.getDeltaTime());
-		Global.stage.draw();
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			Global.chatlog.drawLog(shapeRenderer);
+			shapeRenderer.end();
 
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		Global.chatlog.drawLog(shapeRenderer);
-		shapeRenderer.end();
+			//update stuff
+			float deltaTime = Gdx.graphics.getDeltaTime();
+			Global.updateInput();
+			input_handler.sendMouse();
+			input_handler.handleInput();
+			Entity.stepFrameAll(deltaTime);
 
-		//update stuff
-		float deltaTime = Gdx.graphics.getDeltaTime();
-		Global.updateInput();
-		input_handler.sendMouse();
-		input_handler.handleInput();
-		Entity.stepFrameAll(deltaTime);
-
-		Global.camera.moveCam();
-		batch.setProjectionMatrix(Global.camera.getCam().combined);
-		Global.camera.updateCam();
-
+			Global.camera.moveCam();
+			batch.setProjectionMatrix(Global.camera.getCam().combined);
+			Global.camera.updateCam();
+		}
 	}
 	
 	@Override

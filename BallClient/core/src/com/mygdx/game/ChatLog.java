@@ -49,7 +49,6 @@ public class ChatLog extends ApplicationAdapter {
         chatLogLabel.setWrap(true); //you still need to setWrap to true each time the label is changed
         table.bottom().right().padBottom(10f).padRight(10f);
 
-        //String name = Global.user_data.getUsername();
         chatText.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
@@ -68,6 +67,7 @@ public class ChatLog extends ApplicationAdapter {
 
     public void send_msg(String msg) {
         msg = msg.replace(',',' '); //remove all commas
+        msg = Global.user_data.getUsername()+": "+msg;
         Global.server_socket.send_chat_msg(msg);
     }
 

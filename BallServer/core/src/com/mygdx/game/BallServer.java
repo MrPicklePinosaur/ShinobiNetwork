@@ -134,7 +134,7 @@ class BallClientHandler {
 
         switch(msg_type) {
             case CREDSACCEPTED:
-                data = MT.CREDSACCEPTED+"$"+msg; break; //there is no msg
+                data = MT.CREDSACCEPTED+"$"+msg;  System.out.println(data);break; //there is no msg
             case CREDSDENIED:
                 data = MT.CREDSDENIED+"$"; break; //there is no msg
         }
@@ -174,10 +174,8 @@ class BallClientHandler {
             String[] cred = msg[1].split(",");
             if (Global.db.checkCredentials(cred[0],cred[1])) {
 
-                String json_data = Global.db.getData(cred[0]);
+                String json_data = Global.db.getData(cred[0]).replaceAll("\\s",""); //get rid of all white space in json
                 send_msg(MT.CREDSACCEPTED,json_data); //if the creds are accepted, send the data to client
-
-                //Client client = Client.init_client(Global.db.getData(cred[0]));
 
             } //if the creds work
             else { send_msg(MT.CREDSDENIED,""); } //if they dont

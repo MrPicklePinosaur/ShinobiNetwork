@@ -24,6 +24,7 @@ public class BallClientMain extends Game {
 
 	GameScreen game_screen;
 	MainmenuScreen mainmenu_screen;
+	InventoryScreen inventory_screen;
 
 	@Override
 	public void create () {
@@ -47,6 +48,7 @@ public class BallClientMain extends Game {
 
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
+		this.inventory_screen = new InventoryScreen();
 
 		this.setScreen(this.mainmenu_screen);
 

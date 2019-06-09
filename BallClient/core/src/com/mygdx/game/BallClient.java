@@ -25,6 +25,7 @@ public class BallClient {
     private String ip;
     private int port;
     private BallClient self;
+    private boolean game_in_progress = false;
 
     public BallClient(String ip, int port) {
         this.ip = ip;
@@ -93,15 +94,21 @@ public class BallClient {
 
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
+
         switch(msg_type) {
-            case USIN: //if the message we want to send is a user input
-                data = (MT.USIN+"$"+msg); break;
-            case CHATMSG:
-                data = (MT.CHATMSG+"$"+msg); break;
-            case CMD:
-                data = (MT.CMD+"$"+msg); break;
             case CHECKCREDS: //message is in the format: username, password
-                data = (MT.CHECKCREDS+"$"+msg); break;
+                data = (MT.CHECKCREDS + "$" + msg);break;
+        }
+
+        if (this.game_in_progress == true) {
+            switch (msg_type) {
+                case USIN: //if the message we want to send is a user input
+                    data = (MT.USIN + "$" + msg);break;
+                case CHATMSG:
+                    data = (MT.CHATMSG + "$" + msg);break;
+                case CMD:
+                    data = (MT.CMD + "$" + msg);break;
+            }
         }
         assert (data != null): "empty message";
         return data;
@@ -136,9 +143,14 @@ public class BallClient {
 
         } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
             System.out.println("CREDS ACCEPTED");
+
+            Global.user_data = Client.init_client(msg[1]);
+
         } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
             System.out.println("CREDS DENIED");
         }
     }
+
+    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
 
 }

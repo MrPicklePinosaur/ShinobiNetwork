@@ -74,7 +74,6 @@ public class BallClientMain extends ApplicationAdapter {
 
 		Global.server_socket.send_msg(MT.CHECKCREDS,"daniel,password");
 
-
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 	}
 
@@ -82,6 +81,7 @@ public class BallClientMain extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
 		batch.begin();
 		background.draw(batch);

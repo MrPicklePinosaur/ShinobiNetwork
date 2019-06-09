@@ -15,14 +15,12 @@ public class Database {
         //trying to connect to DB
         try{
             Class.forName("org.sqlite.JDBC");
-            System.out.println(System.getProperty("user.dir"));
+            //System.out.println(System.getProperty("user.dir"));
             c = DriverManager.getConnection("jdbc:sqlite:playersDB.db");  //if malfunctioning, check working folder location -- this file SHOULD be checking in root folder, not assets
             //connection url is currently relative, but must be tracked if the database, this file, or any related directory in between is moved/changed
             System.out.println("Successfully connected to DB.");
 
-        }catch (Exception e){
-            System.out.println("Database constructor error: "+e);
-        }
+        } catch (Exception ex){ System.out.println("Database constructor error: "+ex); }
         loadAllData();
     }
 
@@ -39,14 +37,12 @@ public class Database {
                     this.password_list.put(username,password);
                     this.data_list.put(username,data);
                 }
-            }catch(Exception e){
-                System.out.println("getData method error: "+e);
-            }
+            } catch(Exception ex){ System.out.println("getData method error: "+ex); }
     }
 
     public void closeConnection() {
         try { c.close(); }
-        catch (Exception e) { System.out.println("closeConnection method error: " + e); }
+        catch (Exception ex) { System.out.println("closeConnection method error: " + ex); }
     }
 
     public boolean checkCredentials(String username,String password){
@@ -76,7 +72,7 @@ public class Database {
                 String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"','"+json+"')";
                 stmt.executeUpdate(playerInfo);
             }
-        } catch (SQLException ex) { System.out.println(ex); }
+        } catch (SQLException ex) { System.out.println("writeTODB error: "+ex); }
     }
 
 

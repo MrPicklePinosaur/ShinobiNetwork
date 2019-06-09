@@ -20,7 +20,6 @@ public abstract class Game {
     public void new_chat_msg(String msg) {
         chat_log.add(msg);
         if (msg.equals("") || msg == null) { return; }
-        msg = "USER: " + msg;
 
         String text_colour = "grey";
         BallClientHandler.broadcast(MT.SENDCHAT,text_colour+","+msg);
@@ -203,3 +202,31 @@ class FFAGame extends Game { //free for all
     @Override public void checkObjective() { }
 
 }
+
+
+/*
+class DUELGame extends Game { //1 v 1
+
+    private int red_points = 0;
+    private int blue_points = 0;
+
+    public DUELGame() {
+
+    }
+
+    @Override public void addKill(Player player) {
+
+    }
+
+    @Override public ArrayList<Vector3> getLeaderBoard() {
+
+    }
+
+    @Override public TEAMTAG chooseTeam() {
+
+    }
+
+    @Override public void checkObjective() { }
+
+}
+*/

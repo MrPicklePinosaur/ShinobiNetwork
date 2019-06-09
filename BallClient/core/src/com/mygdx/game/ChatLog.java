@@ -49,7 +49,7 @@ public class ChatLog extends ApplicationAdapter {
         chatLogLabel.setWrap(true); //you still need to setWrap to true each time the label is changed
         table.bottom().right().padBottom(10f).padRight(10f);
 
-        final String name = "User";   //placeholder for player username
+        //String name = Global.user_data.getUsername();
         chatText.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {

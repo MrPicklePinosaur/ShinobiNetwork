@@ -18,11 +18,7 @@ class Global {
 
 	public static Json json = new Json();
 
-	public static Camera camera;
 	public static UserData user_data;
-
-	//Scene 2d
-	public static Stage stage;
 	public static ChatLog chatlog;
 
 	//Important vars

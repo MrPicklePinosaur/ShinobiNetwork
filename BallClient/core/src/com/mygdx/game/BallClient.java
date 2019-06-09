@@ -131,7 +131,7 @@ public class BallClient {
             Global.chatlog.recieve_message(chat[0],chat[1]);
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
-            Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
+            //Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
         } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {

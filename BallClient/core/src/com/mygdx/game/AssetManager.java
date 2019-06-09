@@ -31,6 +31,7 @@ public class AssetManager {
     }
 
     public static Texture getSpritesheet(String file_path) {
+        assert (AssetManager.animation_lib.containsKey(file_path)): file_path+" not found";
         return AssetManager.animation_lib.get(file_path);
     }
 

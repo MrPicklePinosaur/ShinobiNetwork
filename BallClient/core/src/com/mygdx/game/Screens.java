@@ -12,14 +12,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 class MainmenuScreen implements Screen {
@@ -183,14 +182,22 @@ class InventoryScreen implements Screen {
         inventory_grid.pad(100);
 
         //populate the table with the contents of the user's inventory
-
-        String[] inv = Global.user_data.getInventory();
+        ArrayList<String> inv = new ArrayList<String>();
+        for (String i : Global.user_data.getInventory()) { inv.add(i); }
 
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns
+                Stack stack = new Stack(); //used to overlay images
                 Image empty_slot_img = new Image(empty_slot);
+                stack.add(empty_slot_img);
+                if (inv.size() > 0) {
+                    String item_path = inv.get(0)+".png";
+                    Image item = new Image(AssetManager.getSpritesheet(item_path));
+                    inv.remove(0);
+                    stack.add(item);
+                }
                 empty_slot_img.setScaling(Scaling.fit);
-                inventory_grid.add(empty_slot_img).pad(10);
+                inventory_grid.add(stack).pad(10);
             }
             inventory_grid.row(); //move down a row
         }

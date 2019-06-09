@@ -28,7 +28,7 @@ public class BallClientMain extends Game {
 	InventoryScreen inventory_screen;
 
 	@Override
-	public void create () { ;
+	public void create () {
 		Global.game = this;
 
 		//Init calls

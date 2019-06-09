@@ -155,7 +155,7 @@ class BallClientHandler {
                     data = (MT.UPDATEPARTICLE + "$" + msg);break;
             }
         }
-        System.out.println(data);
+
         assert (data != null): "empty message";
         return data;
     }

@@ -147,7 +147,10 @@ public class BallClient {
         } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
             System.out.println("CREDS ACCEPTED");
 
+            //System.out.println(msg[1]);
             Global.user_data = UserData.init_client(msg[1]); //TODO: LINK READ USER DATA
+
+            Global.game.loadScreens();
 
         } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
             System.out.println("CREDS DENIED");

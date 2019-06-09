@@ -134,7 +134,7 @@ class BallClientHandler {
 
         switch(msg_type) {
             case CREDSACCEPTED:
-                data = MT.CREDSACCEPTED+"$"+msg;  System.out.println(data);break; //there is no msg
+                data = MT.CREDSACCEPTED+"$"+msg; break; //there is no msg
             case CREDSDENIED:
                 data = MT.CREDSDENIED+"$"; break; //there is no msg
         }
@@ -155,7 +155,7 @@ class BallClientHandler {
                     data = (MT.UPDATEPARTICLE + "$" + msg);break;
             }
         }
-
+        System.out.println(data);
         assert (data != null): "empty message";
         return data;
     }
@@ -185,7 +185,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity() {
-        String player_class = "wizard";
+        String player_class = "ninja";
         TEAMTAG team = Global.game.chooseTeam();
 
         this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),team);

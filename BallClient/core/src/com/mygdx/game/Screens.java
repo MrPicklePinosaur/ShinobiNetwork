@@ -141,6 +141,28 @@ class GameScreen implements Screen {
     public Stage getStage() { return this.stage; }
 }
 
+class ConnectingScreen implements Screen {
+
+    public ConnectingScreen() {
+
+    }
+
+    @Override public void render(float delta) {
+
+    }
+
+    @Override public void show() { }
+
+    @Override public void hide() { }
+
+    @Override public void dispose() { }
+
+    @Override public void resize(int width,int height) { }
+    @Override public void pause() { }
+    @Override public void resume() { }
+
+}
+
 class InventoryScreen implements Screen {
 
     private Stage stage;
@@ -152,11 +174,17 @@ class InventoryScreen implements Screen {
 
         this.stage = new Stage();
 
+        //INVENTORY
+        //some basic settings for the table
         this.inventory_grid = new Table();
         inventory_grid.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
         inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
         inventory_grid.pad(100);
+
+        //populate the table with the contents of the user's inventory
+
+        String[] inv = Global.user_data.getInventory();
 
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns
@@ -167,6 +195,8 @@ class InventoryScreen implements Screen {
             inventory_grid.row(); //move down a row
         }
 
+
+        //BUTTONS
 
         stage.addActor(inventory_grid);
     }

@@ -10,4 +10,5 @@ public class UserData {
     public static UserData init_client(String json_data) { return Global.json.fromJson(UserData.class, json_data); }
 
     public String getUsername() { return this.username; }
+    public String[] getInventory() { return this.inventory; }
 }

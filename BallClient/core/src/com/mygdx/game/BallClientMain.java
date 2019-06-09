@@ -24,10 +24,11 @@ public class BallClientMain extends Game {
 
 	GameScreen game_screen;
 	MainmenuScreen mainmenu_screen;
+	ConnectingScreen connecting_screen;
 	InventoryScreen inventory_screen;
 
 	@Override
-	public void create () {
+	public void create () { ;
 		Global.game = this;
 
 		//Init calls
@@ -43,17 +44,20 @@ public class BallClientMain extends Game {
 			 //client goes back to main screen
 			Gdx.app.exit(); //for now the game just closes
 		}
-
 		Global.server_socket.send_msg(MT.CHECKCREDS,"daniel,password");
 
+		this.connecting_screen = new ConnectingScreen();
+		setScreen(connecting_screen);
+
+	}
+
+	public void loadScreens() {
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
 		this.inventory_screen = new InventoryScreen();
-
-		this.setScreen(this.mainmenu_screen);
-
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
+		setScreen(mainmenu_screen);
 	}
 
 	@Override

@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 class MainmenuScreen implements Screen {
 
@@ -23,9 +26,18 @@ class MainmenuScreen implements Screen {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
         this.play_button = new TextButton("Play",skin);
-        play_button.setPosition(0,0);
+        play_button.setPosition(300,500);
+        play_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.game.setScreen(Global.game.game_screen);
+                Global.server_socket.send_msg(MT.STARTGAME,"");
+            }
+        });
+
         this.inventory_button = new TextButton("Inventory",skin);
+        inventory_button.setPosition(300,400);
         this.quit_button = new TextButton("Exit Game",skin);
+        quit_button.setPosition(300,300);
 
         this.stage = new Stage();
         stage.addActor(play_button);
@@ -38,17 +50,17 @@ class MainmenuScreen implements Screen {
         this.stage.draw();
     }
 
-    @Override public void resize(int width,int height) { }
-
-    @Override public void pause() { }
-
-    @Override public void resume() { }
-
     @Override public void show() { Gdx.input.setInputProcessor(stage); }
 
     @Override public void hide() { }
 
     @Override public void dispose() { }
+
+    @Override public void resize(int width,int height) { }
+
+    @Override public void pause() { }
+
+    @Override public void resume() { }
 
     public Stage getStage() { return this.stage; }
 }
@@ -63,22 +75,18 @@ class GameScreen implements Screen {
 
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
-    private Camera camera;
-    private ChatLog chatlog;
 
     public GameScreen() {
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
-        this.camera = new Camera();
-        Gdx.gl.glEnable(GL20.GL_BLEND);
+        //Gdx.gl.glEnable(GL20.GL_BLEND);
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
-        InputHandler input_handler = new InputHandler();
-        inputMultiplexer.addProcessor(input_handler);
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        this.input_handler = new InputHandler();
+        inputMultiplexer.addProcessor(this.input_handler);
     }
 
     @Override public void render(float delta) {
@@ -93,19 +101,19 @@ class GameScreen implements Screen {
         stage.draw();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        chatlog.drawLog(shapeRenderer);
+        Global.chatlog.drawLog(shapeRenderer);
         shapeRenderer.end();
 
         //update stuff
         float deltaTime = Gdx.graphics.getDeltaTime();
         Global.updateInput();
-        input_handler.sendMouse();
-        input_handler.handleInput();
+        this.input_handler.sendMouse();
+        this.input_handler.handleInput();
         Entity.stepFrameAll(deltaTime);
 
-        camera.moveCam();
-        batch.setProjectionMatrix(camera.getCam().combined);
-        camera.updateCam();
+        Global.camera.moveCam();
+        batch.setProjectionMatrix(Global.camera.getCam().combined);
+        Global.camera.updateCam();
     }
 
     @Override public void resize(int width,int height) { }
@@ -114,7 +122,7 @@ class GameScreen implements Screen {
 
     @Override public void resume() { }
 
-    @Override public void show() { Gdx.input.setInputProcessor(stage); }
+    @Override public void show() { Gdx.input.setInputProcessor(inputMultiplexer); }
 
     @Override public void hide() { }
 

@@ -16,10 +16,12 @@ import com.badlogic.gdx.utils.Json;
 
 class Global {
 
+	public static BallClientMain game;
 	public static Json json = new Json();
 
 	public static UserData user_data;
 	public static ChatLog chatlog;
+	public static Camera camera;
 
 	//Important vars
 	public static BallClient server_socket;
@@ -47,7 +49,7 @@ enum MT {
 	//Message types - output
 	USIN, CHATMSG, CMD,
 
-	CHECKCREDS,
+	CHECKCREDS, STARTGAME,
 
 	//Message types (MT) - input
 	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,

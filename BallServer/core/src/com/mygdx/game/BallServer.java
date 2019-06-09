@@ -139,7 +139,7 @@ class BallClientHandler {
                 data = MT.CREDSDENIED+"$"; break; //there is no msg
         }
 
-        if (this.game_in_progress == true) { //these messages are only allowed to be send when  a game is in progress,
+        if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
             switch (msg_type) {
                 case UPDATEENTITY: //tell client the position of all entites
                     data = (MT.UPDATEENTITY + "$" + msg);break;
@@ -179,8 +179,9 @@ class BallClientHandler {
 
             } //if the creds work
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
+        } else if (msg[0].equals(MT.STARTGAME.toString())) {
+            this.toggleGameInProgress();
         }
-        //TODO: ADD GENERIC UPDATEENTITY ENTITY MESSAGE TYPE
     }
 
     public void init_client_entity() {

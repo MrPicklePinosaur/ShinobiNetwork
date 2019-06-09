@@ -22,8 +22,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class BallClientMain extends Game {
 
+	GameScreen game_screen;
+	MainmenuScreen mainmenu_screen;
+
 	@Override
 	public void create () {
+		Global.game = this;
+
 		//Init calls
 		AssetManager.loadAnimations("spritesheet_lib.txt");
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
@@ -40,11 +45,13 @@ public class BallClientMain extends Game {
 
 		Global.server_socket.send_msg(MT.CHECKCREDS,"daniel,password");
 
-		MainmenuScreen main_menu = new MainmenuScreen();
-		this.setScreen(main_menu);
+		this.mainmenu_screen = new MainmenuScreen();
+		this.game_screen = new GameScreen();
 
-		GameScreen game_screen = new GameScreen();
+		this.setScreen(this.mainmenu_screen);
+
 		Global.chatlog = new ChatLog(game_screen.getStage());
+		Global.camera = new Camera();
 	}
 
 	@Override

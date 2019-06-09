@@ -116,7 +116,6 @@ public class Entity {
 
             float rot = e.getRotation();
             if (rot < 0) rot += MathUtils.PI2; //get rid of negative angles
-
             //TODO: dont generalise for players (only reflection in y-axis)
             if (e.getET().equals(ET.PLAYER.toString())) {
                 //if mouse is in 2nd or 3rd quadrant, face left

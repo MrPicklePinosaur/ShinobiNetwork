@@ -98,16 +98,20 @@ public class BallClient {
         switch(msg_type) {
             case CHECKCREDS: //message is in the format: username, password
                 data = (MT.CHECKCREDS + "$" + msg);break;
+            case STARTGAME:
+                data = (MT.STARTGAME+"$");
+                this.toggleGameInProgress();
+                break;
         }
 
         if (this.game_in_progress == true) {
             switch (msg_type) {
                 case USIN: //if the message we want to send is a user input
-                    data = (MT.USIN + "$" + msg);break;
+                    data = (MT.USIN + "$" + msg); break;
                 case CHATMSG:
-                    data = (MT.CHATMSG + "$" + msg);break;
+                    data = (MT.CHATMSG + "$" + msg); break;
                 case CMD:
-                    data = (MT.CMD + "$" + msg);break;
+                    data = (MT.CMD + "$" + msg); break;
             }
         }
         assert (data != null): "empty message";
@@ -119,7 +123,6 @@ public class BallClient {
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(MT.UPDATEENTITY.toString())) {
             String[] pos = msg[1].split(" ");
-            //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
                 Entity.update_entity(s);
             }
@@ -131,7 +134,7 @@ public class BallClient {
             Global.chatlog.recieve_message(chat[0],chat[1]);
         } else if (msg[0].equals(MT.BINDCAM.toString())) {
             String[] pos = msg[1].split(",");
-            //Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
+            Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
         } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {

@@ -479,19 +479,25 @@ class LoginScreen implements Screen {
         //TODO: display a message saying creds are invalid
         this.invalid_creds.setText("Invalid username or password");
     }
-    public void register_success() { this.warning_text.setText("Registration Successful!"); }
+    public void register_success() {
+        this.warning_text.setText("Registration Successful!");
+        this.reg_username_field.setText("");
+        this.reg_email_field.setText("");
+        this.reg_password_field.setText("");
+        this.confirm_password_field.setText("");
+    }
     public void register_failed() { this.warning_text.setText("Username taken"); }
 
     public String register(String username,String email,String password,String confirmpass) {
         if (username.length()==0 || email.length()==0 || password.length()==0 || confirmpass.length()==0) { return "Empty field"; }
         if (!password.equals(confirmpass)) { return "Passwords don't match"; }
-        if (!(3 < username.length() && username.length() < 16)) { return "Username must be between 3 and 16 characters"; }
+        if (!(3 <= username.length() && username.length() <= 16)) { return "Username must be between 3 and 16 characters"; }
         if (username.contains("![a-zA-Z0-9]")) { return "Username can only contain letters and numbers"; }
-        if (!(8 < password.length() && password.length() < 30)) { return "Password must be between 8 and 30 characters"; }
+        if (!(8 <= password.length() && password.length() <= 30)) { return "Password must be between 8 and 30 characters"; }
         if (password.contains("![a-zA-Z0-9]")) { return "Password can only contain letters and numbers"; }
 
         //if all else is good, send message to server to check to see if username is taken
-
+        Global.server_socket.send_msg(MT.REGISTER,username+","+password);
         return ""; //no warning :)
     }
 

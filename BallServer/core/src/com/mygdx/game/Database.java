@@ -1,8 +1,6 @@
 //shrey mahey
 package com.mygdx.game;
 
-import com.badlogic.gdx.utils.JsonValue;
-
 import java.sql.*;
 import java.util.HashMap;
 
@@ -23,10 +21,10 @@ public class Database {
             System.out.println("Successfully connected to DB.");
 
         } catch (Exception ex){ System.out.println("Database constructor error: "+ex); }
-        loadAllData();
+        refreshData();
     }
 
-    public void loadAllData(){
+    public void refreshData(){
             try {
                 this.stmt = c.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM players");
@@ -36,8 +34,8 @@ public class Database {
                     String password = rs.getString("password");
                     String data = rs.getString("data");
 
-                    this.password_list.put(username,password);
-                    this.data_list.put(username,data);
+                    if (!this.password_list.containsKey(username)) { this.password_list.put(username,password); }
+                    if (!this.data_list.containsKey(username)) { this.data_list.put(username,data); }
                 }
             } catch(Exception ex){ System.out.println("getData method error: "+ex); }
     }
@@ -85,14 +83,20 @@ public class Database {
             this.stmt = c.createStatement();
             if (this.data_list.containsKey(username)) { return false; } //if the username already exists, update it
             // otherwise create a new entry
-
-            //INSERT JSON OBJECT!!!!
-            String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"',)";
+            String empty_json =
+                    "{\n"+
+                        "\"username\": \""+username+"\",\n"+
+                        "\"total_kills\": 0,\n"+
+                        "\"total_deaths\": 0,\n"+
+                        "\"total_damage\": 0,\n"+
+                        "\"inventory\": []\n"+
+                    "}";
+            String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"','"+empty_json+"')";
             stmt.executeUpdate(playerInfo);
-            return true;
 
+            refreshData();
         } catch (SQLException ex) { System.out.println("writeTODB error: "+ex); }
-
+        return true;
     }
 
 

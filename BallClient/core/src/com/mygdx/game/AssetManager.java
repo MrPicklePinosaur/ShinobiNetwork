@@ -19,6 +19,7 @@ import java.util.*;
 public class AssetManager {
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
     public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
+    public static HashMap<String, String> item_descrip = new HashMap<String, String>();
 
     public static void load_all() {
         loadFromDirectory("sprites/",AssetManager.animation_lib);

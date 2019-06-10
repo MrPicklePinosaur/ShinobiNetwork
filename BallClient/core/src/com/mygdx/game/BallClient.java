@@ -61,7 +61,10 @@ public class BallClient {
                         });
 
                     }
-                } catch(IOException ex) { System.out.println(ex);}
+                } catch(IOException ex) {
+                    System.out.println(ex);
+                    Global.game.setScreen(Global.game.retryconnection_screen); //move player to attempt reconnection screen if connection is loss
+                }
 
             }
         }).start();
@@ -73,7 +76,9 @@ public class BallClient {
             outstream.close();
             instream.close();
             client_sock.close();
-        } catch(IOException ex) { System.out.println(ex); }
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
     }
 
     //Can be used from anywhere in the main thread to send messages
@@ -157,9 +162,9 @@ public class BallClient {
         } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
             Global.game.login_screen.creds_declined();
         } else if (msg[0].equals(MT.REGISTERSUCCESS.toString())) {
-
+            Global.game.login_screen.register_success();
         } else if (msg[0].equals(MT.REGISTERFAILED.toString())) {
-
+            Global.game.login_screen.register_failed();
         }
     }
 

@@ -59,8 +59,6 @@ enum MT { //mt stands for messageTyoe
 
 	CREDSACCEPTED, CREDSDENIED,
 
-	OPENINV,
-
 	//Message Types (MT) - input
 	USIN, CHATMSG, CMD,
 

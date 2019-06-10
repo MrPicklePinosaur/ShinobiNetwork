@@ -91,7 +91,7 @@ class GameScreen implements Screen {
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
 
-    private boolean show_inventory = false;
+    private boolean show_inventory = true;
     private Table loadout_overlay;
     private Table inventory_overlay;
     private ImageButton back_button;
@@ -113,11 +113,11 @@ class GameScreen implements Screen {
         this.back_button = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
         back_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                System.out.println("close inv");
-                turnOffInv();
+                toggleInvVisible();
             }
         });
-        turnOffInv();
+
+        toggleInvVisible(); //hide inventory screen
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
@@ -157,19 +157,18 @@ class GameScreen implements Screen {
         Global.camera.updateCam();
     }
 
-    public void turnOnInv() {
-        this.show_inventory = true;
-        ScreenUtils.refreshInventory(this.inventory_overlay);
-        this.inventory_overlay.setVisible(true);
-        this.loadout_overlay.setVisible(true);
-        this.back_button.setVisible(true);
-    }
-
-    public void turnOffInv() {
-        this.show_inventory = false;
-        this.inventory_overlay.setVisible(false);
-        this.loadout_overlay.setVisible(false);
-        this.back_button.setVisible(false);
+    public void toggleInvVisible() {
+        this.show_inventory = !this.show_inventory;
+        if (this.show_inventory == true) {
+            ScreenUtils.refreshInventory(this.inventory_overlay);
+            this.inventory_overlay.setVisible(true);
+            this.loadout_overlay.setVisible(true);
+            this.back_button.setVisible(true);
+        } else {
+            this.inventory_overlay.setVisible(false);
+            this.loadout_overlay.setVisible(false);
+            this.back_button.setVisible(false);
+        }
     }
 
     @Override public void show() {
@@ -401,7 +400,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

@@ -94,7 +94,7 @@ public class Player extends Entity {
         this.dmg_dealt = 0;
     }
 
-    public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
+    public void handleInput(BallClientHandler client_socket,String raw_inputs) { //takes in user inputs from client and does physics simulations
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
         for (String key : inputs) {
@@ -140,7 +140,7 @@ public class Player extends Entity {
             if (key.equals("Key_B")) {
                 //check to see if player is in spawn zones, if yes, open shop menu
                 if (Global.game.isInsideSpawn(this)) {
-                    System.out.println("openshop");
+                    client_socket.send_msg(MT.OPENINV,"");
                 }
 
             }

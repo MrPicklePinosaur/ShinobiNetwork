@@ -61,8 +61,8 @@ public class ChatLog extends ApplicationAdapter {
         textfield.setActor(chatText);
     }
 
-    public void drawLog(ShapeRenderer shapeRenderer) {
-        shapeRenderer.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
+    public void drawLog(ShapeRenderer sr) {
+        sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
     }
 
     public void send_msg(String msg) {

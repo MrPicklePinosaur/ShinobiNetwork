@@ -144,6 +144,9 @@ public class BallClient {
                 //Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
 
+        } else if (msg[0].equals(MT.OPENINV.toString())) {
+            Global.game.game_screen.turnOnInv();
+            System.out.println("turn on inv");
         } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
             System.out.println("CREDS ACCEPTED");
 

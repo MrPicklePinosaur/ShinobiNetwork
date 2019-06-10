@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -90,7 +91,7 @@ class GameScreen implements Screen {
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
 
-    //private boolean show_inventory = false;
+    private boolean show_inventory = false;
     private Table loadout_overlay;
     private Table inventory_overlay;
 
@@ -102,6 +103,10 @@ class GameScreen implements Screen {
         this.loadout_overlay = new Table();
 
         this.inventory_overlay = new Table();
+        inventory_overlay.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        inventory_overlay.setDebug(true);
+        inventory_overlay.setFillParent(true);
+        inventory_overlay.pad(100);
 
         turnOffInv();
 
@@ -126,6 +131,7 @@ class GameScreen implements Screen {
         stage.draw();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        if (this.show_inventory) { ScreenUtils.dimScreen(shapeRenderer,0.2f); } //dim screen if inv is open
         Global.chatlog.drawLog(shapeRenderer);
         shapeRenderer.end();
 
@@ -141,9 +147,26 @@ class GameScreen implements Screen {
         Global.camera.updateCam();
     }
 
-    @Override public void show() { Gdx.input.setInputProcessor(inputMultiplexer); }
+    public void turnOnInv() {
+        this.show_inventory = true;
+        ScreenUtils.refreshInventory(this.inventory_overlay);
+        this.inventory_overlay.setVisible(true);
+        this.loadout_overlay.setVisible(true);
+    }
 
-    @Override public void hide() { }
+    public void turnOffInv() {
+        this.show_inventory = false;
+        this.inventory_overlay.setVisible(false);
+        this.loadout_overlay.setVisible(false);
+    }
+
+    @Override public void show() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    @Override public void hide() { Gdx.gl.glDisable(GL20.GL_BLEND); }
 
     @Override public void dispose() { }
 
@@ -152,15 +175,6 @@ class GameScreen implements Screen {
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
 
-    public void turnOnInv() {
-        this.inventory_overlay.setVisible(true);
-        this.loadout_overlay.setVisible(true);
-    }
-
-    public void turnOffInv() {
-        this.inventory_overlay.setVisible(false);
-        this.loadout_overlay.setVisible(false);
-    }
 }
 class AwaitauthScreen implements Screen {
 
@@ -239,7 +253,6 @@ class InventoryScreen implements Screen {
         inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
         inventory_grid.pad(100);
-        refreshInventory();
 
         //BUTTONS
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
@@ -302,34 +315,8 @@ class InventoryScreen implements Screen {
         stage.draw();
     }
 
-    public void refreshInventory() {
-        //TODO: when refreshing inventory, actually ask the server for a refresh
-        Texture empty_slot = AssetManager.getUIImage("empty_slot");
-        this.inventory_grid.clearChildren();
-        //populate the table with the contents of the user's inventory
-        ArrayList<String> inv = new ArrayList<String>();
-        for (String i : Global.user_data.getInventory()) { inv.add(i); }
-
-        for (int j = 0; j < 6; j++) { //6 rows
-            for (int i = 0; i < 4; i++) { //4 columns
-                Stack stack = new Stack(); //used to overlay images
-                Image empty_slot_img = new Image(empty_slot);
-                stack.add(empty_slot_img);
-                if (inv.size() > 0) { //go through client's inv list and draw them
-                    String item_path = inv.get(0);
-                    Image item = new Image(AssetManager.getSpritesheet(item_path));
-                    inv.remove(0);
-                    stack.add(item);
-                }
-                empty_slot_img.setScaling(Scaling.fit);
-                this.inventory_grid.add(stack).pad(10);
-            }
-            this.inventory_grid.row(); //move down a row
-        }
-    }
-
     @Override public void show() {
-        refreshInventory();
+        ScreenUtils.refreshInventory(this.inventory_grid);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -398,12 +385,11 @@ class LoginScreen implements Screen {
         table.setPosition(200,200);
 
         stage.addActor(table);
-
-        //AUTO LOGIN FOR NOW
-        //submit_creds("daniel","password");
     }
 
     @Override public void render(float delta) {
+        //AUTO LOGIN FOR NOW
+        submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }
@@ -457,4 +443,38 @@ class LobbyScreen implements Screen {
     @Override public void pause() { }
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
+}
+
+class ScreenUtils {
+
+    public static void refreshInventory(Table grid) {
+        //TODO: when refreshing inventory, actually ask the server for a refresh
+        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+        grid.clearChildren();
+        //populate the table with the contents of the user's inventory
+        ArrayList<String> inv = new ArrayList<String>();
+        for (String i : Global.user_data.getInventory()) { inv.add(i); }
+
+        for (int j = 0; j < 6; j++) { //6 rows
+            for (int i = 0; i < 4; i++) { //4 columns
+                Stack stack = new Stack(); //used to overlay images
+                Image empty_slot_img = new Image(empty_slot);
+                stack.add(empty_slot_img);
+                if (inv.size() > 0) { //go through client's inv list and draw them
+                    String item_path = inv.get(0);
+                    Image item = new Image(AssetManager.getSpritesheet(item_path));
+                    inv.remove(0);
+                    stack.add(item);
+                }
+                empty_slot_img.setScaling(Scaling.fit);
+                grid.add(stack).pad(10);
+            }
+            grid.row(); //move down a row
+        }
+    }
+
+    public static void dimScreen(ShapeRenderer sr,float dimness) {
+        sr.setColor(0,0,0,dimness);
+        sr.rect(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+    }
 }

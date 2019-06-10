@@ -18,6 +18,7 @@ public class BallClientMain extends Game {
 	MainmenuScreen mainmenu_screen;
 	ConnectingScreen connecting_screen;
 	InventoryScreen inventory_screen;
+	LoginScreen login_screen;
 
 	@Override
 	public void create () {
@@ -47,9 +48,10 @@ public class BallClientMain extends Game {
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
 		this.inventory_screen = new InventoryScreen();
+		this.login_screen = new LoginScreen();
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
-		setScreen(mainmenu_screen);
+		setScreen(login_screen);
 	}
 
 	@Override

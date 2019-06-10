@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -47,6 +49,11 @@ class MainmenuScreen implements Screen {
 
         TextButton quit_button = new TextButton("Exit Game",skin);
         quit_button.setPosition(300,300);
+        quit_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Gdx.app.exit();
+            }
+        });
 
         this.stage = new Stage();
         stage.addActor(play_button);
@@ -164,8 +171,8 @@ class InventoryScreen implements Screen {
     private Stage stage;
 
     public InventoryScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
-        Texture empty_slot = new Texture(Gdx.files.internal("empty_slot.png"));
+        //Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
+        Texture empty_slot = AssetManager.getUIImage("empty_slot");
 
         this.stage = new Stage();
 
@@ -187,7 +194,7 @@ class InventoryScreen implements Screen {
                 Image empty_slot_img = new Image(empty_slot);
                 stack.add(empty_slot_img);
                 if (inv.size() > 0) { //go through client's inv list and draw them
-                    String item_path = inv.get(0)+".png";
+                    String item_path = inv.get(0);
                     Image item = new Image(AssetManager.getSpritesheet(item_path));
                     inv.remove(0);
                     stack.add(item);
@@ -200,10 +207,67 @@ class InventoryScreen implements Screen {
 
 
         //BUTTONS
-        //ImageButton backButton = new ImageButton();
+        ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
+        backButton.setPosition(20,200);
+        backButton.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.game.setScreen(Global.game.mainmenu_screen);
+            }
+        });
 
-        //stage.addActor(backButton);
+        stage.addActor(backButton);
         stage.addActor(inventory_grid);
+    }
+
+    @Override public void render(float delta) {
+        stage.act(delta);
+
+        stage.draw();
+    }
+
+    @Override public void show() { Gdx.input.setInputProcessor(stage); }
+
+    @Override public void hide() { }
+
+    @Override public void dispose() { }
+
+    @Override public void resize(int width,int height) { }
+    @Override public void pause() { }
+    @Override public void resume() { }
+    public Stage getStage() { return this.stage; }
+}
+
+class LoginScreen implements Screen {
+
+    private Stage stage;
+
+    public LoginScreen() {
+        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
+        stage = new Stage();
+
+        final TextField username_field = new TextField("",skin);
+        username_field.setMessageText("Username");
+
+        final TextField password_field = new TextField("",skin);
+        password_field.setMessageText("Password");
+        password_field.setPasswordMode(true);
+        password_field.setPasswordCharacter('*');
+
+        TextButton login_button = new TextButton("Login!",skin);
+        login_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                password_field.setText(""); //if creds are invalid, display and message and clear password field
+            }
+        });
+
+        Table table = new Table();
+        table.add(username_field);
+        table.row();
+        table.add(password_field);
+        table.row();
+        table.add(login_button);
+        table.setPosition(200,200);
+        stage.addActor(table);
     }
 
     @Override public void render(float delta) {

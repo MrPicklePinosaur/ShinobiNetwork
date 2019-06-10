@@ -22,7 +22,7 @@ public class AssetManager {
 
     public static void load_all() {
         loadFromDirectory("sprites/",AssetManager.animation_lib);
-        //load_sprites("ui_lib.txt",AssetManager.ui_lib);
+        loadFromDirectory("ui/",AssetManager.ui_lib);
     }
 
     public static void loadFromDirectory(String path,HashMap<String,Texture> target) {
@@ -33,30 +33,19 @@ public class AssetManager {
             if (file.isDirectory()) { AssetManager.loadFromDirectory(path+file.name()+"/",target); } //if we find a folder, go there
             if (file.name().contains(".png")) {
                 String filepath = path+file.name();
-                //String name = file.name().replaceAll("\\.png","");
-                target.put(file.name(),new Texture(Gdx.files.internal(filepath)));
+                String name = file.name().replaceAll("\\.png","");
+                target.put(name,new Texture(Gdx.files.internal(filepath)));
             }
         }
     }
-    /*
-    public static void load_sprites(FileHandle root, HashMap<String,Texture> target) { //loads all spreadsheets and converts them into Animation objects
-        try { //the lib holds the filepaths of all the spritesheets
-            Scanner fileReader = new Scanner(new BufferedReader(new FileReader(lib_filepath)));
-            while (fileReader.hasNext()) {
-                String filepath = fileReader.nextLine();
-                Texture spritesheet = new Texture(filepath);
 
-                target.put(filepath,spritesheet);
-            }
-            fileReader.close();
-        } catch (IOException ex) { System.out.println(ex); }
+    public static Texture getSpritesheet(String name) {
+        assert (AssetManager.animation_lib.containsKey(name)): name+" not found";
+        return AssetManager.animation_lib.get(name);
     }
-    */
-
-    public static Texture getSpritesheet(String file_path) {
-        assert (AssetManager.animation_lib.containsKey(file_path)): file_path+" not found";
-        return AssetManager.animation_lib.get(file_path);
+    public static Texture getUIImage(String name) {
+        assert (AssetManager.ui_lib.containsKey(name)): name+" not found";
+        return AssetManager.ui_lib.get(name);
     }
-
 
 }

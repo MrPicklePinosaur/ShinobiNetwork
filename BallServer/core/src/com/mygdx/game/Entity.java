@@ -34,7 +34,6 @@ public abstract class Entity {
     public Entity(String name) {
         this.id = Global.new_code();
         this.name = name;
-        this.texture_path = this.name+".png";
 
         //Init sprite
         this.spriteWidth = Global.SPRITESIZE;
@@ -53,7 +52,7 @@ public abstract class Entity {
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
             try { //possibly a bad idea to slap a try-catch here
-                msg += (" " + e.getET().toString() + "," + e.getId() + "," + e.getTexturePath() + "," + e.getX() + "," + e.getY() + "," + e.getRotation());
+                msg += (" " + e.getET().toString() + "," + e.getId() + "," + e.getName() + "," + e.getX() + "," + e.getY() + "," + e.getRotation());
             } catch (NullPointerException ex) { System.out.println(ex); }
         }
 
@@ -115,7 +114,7 @@ public abstract class Entity {
     public float getY() { return this.body.getPosition().y*Global.PPM; }
     public float getRotation() { return this.body.getTransform().getRotation(); }
     public Body getBody() { return this.body; }
-    public String getTexturePath() { return this.texture_path; }
+    public String getName() { return this.name; }
     public int getId() { return this.id; }
     public CopyOnWriteArrayList<Projectile> getProjectileList() { return projectile_list; }
 

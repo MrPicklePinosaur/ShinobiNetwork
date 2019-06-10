@@ -26,8 +26,8 @@ public class ChatLog extends ApplicationAdapter {
     private LinkedList<String> playerMSGs = new LinkedList<String>();
 
     public ChatLog(Stage stage) {
-        atlas = new TextureAtlas("gdx-skins/clean-crispy/skin/clean-crispy-ui.atlas");
-        skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
+        atlas = new TextureAtlas("gdx-skins/level-plane/skin/level-plane-ui.atlas");
+        skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         skin.addRegions(atlas);
 
         Table newTable = new Table();

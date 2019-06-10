@@ -34,9 +34,9 @@ public class Entity {
     private Animation<TextureRegion> animation;
     private float frameTime = 0.25f; //used for animation
 
-    private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
+    private Entity(String name) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
 
-        TextureRegion[] frames = Entity.createAnimation(texture_path);
+        TextureRegion[] frames = Entity.createAnimation(name);
         this.animation = new Animation<TextureRegion>(frameTime,frames);
 
         this.x = 0; this.y = 0; this.rotation = 0;
@@ -74,7 +74,7 @@ public class Entity {
         String[] parsed = data.split(",");
         String entity_type = parsed[0];
         int id = Integer.parseInt(parsed[1]);
-        String texture_path = parsed[2];
+        String name = parsed[2];
         float x = Float.parseFloat(parsed[3]);
         float y = Float.parseFloat(parsed[4]);
         float rot = Float.parseFloat(parsed[5]);
@@ -82,7 +82,7 @@ public class Entity {
         Entity entity;
         if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
             //This block creates and integrates the entity
-            Entity newEntity = new Entity(texture_path);
+            Entity newEntity = new Entity(name);
             entity_library.put(id,newEntity);
 
             entity = newEntity;

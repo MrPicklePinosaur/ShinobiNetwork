@@ -10,15 +10,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class BallClientMain extends Game {
 
@@ -32,7 +24,7 @@ public class BallClientMain extends Game {
 		Global.game = this;
 
 		//Init calls
-		AssetManager.loadAnimations("spritesheet_lib.txt");
+		AssetManager.load_all();
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 
 		Particle.load_particles("particle_lib.txt");

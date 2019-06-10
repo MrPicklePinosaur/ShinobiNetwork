@@ -24,14 +24,11 @@ import java.util.Scanner;
 class MainmenuScreen implements Screen {
 
     private Stage stage;
-    private TextButton play_button;
-    private TextButton inventory_button;
-    private TextButton quit_button;
 
     public MainmenuScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
-        this.play_button = new TextButton("Play",skin);
+        TextButton play_button = new TextButton("Play",skin);
         play_button.setPosition(300,500);
         play_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -40,7 +37,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        this.inventory_button = new TextButton("Inventory",skin);
+        TextButton inventory_button = new TextButton("Inventory",skin);
         inventory_button.setPosition(300,400);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -48,7 +45,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        this.quit_button = new TextButton("Exit Game",skin);
+        TextButton quit_button = new TextButton("Exit Game",skin);
         quit_button.setPosition(300,300);
 
         this.stage = new Stage();
@@ -165,7 +162,6 @@ class ConnectingScreen implements Screen {
 class InventoryScreen implements Screen {
 
     private Stage stage;
-    private Table inventory_grid;
 
     public InventoryScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
@@ -175,7 +171,7 @@ class InventoryScreen implements Screen {
 
         //INVENTORY
         //some basic settings for the table
-        this.inventory_grid = new Table();
+        Table inventory_grid = new Table();
         inventory_grid.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
         inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
@@ -190,7 +186,7 @@ class InventoryScreen implements Screen {
                 Stack stack = new Stack(); //used to overlay images
                 Image empty_slot_img = new Image(empty_slot);
                 stack.add(empty_slot_img);
-                if (inv.size() > 0) {
+                if (inv.size() > 0) { //go through client's inv list and draw them
                     String item_path = inv.get(0)+".png";
                     Image item = new Image(AssetManager.getSpritesheet(item_path));
                     inv.remove(0);
@@ -204,7 +200,9 @@ class InventoryScreen implements Screen {
 
 
         //BUTTONS
+        //ImageButton backButton = new ImageButton();
 
+        //stage.addActor(backButton);
         stage.addActor(inventory_grid);
     }
 

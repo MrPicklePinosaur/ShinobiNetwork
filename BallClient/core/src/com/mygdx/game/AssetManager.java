@@ -9,6 +9,8 @@
 
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.io.*;
@@ -16,19 +18,40 @@ import java.util.*;
 
 public class AssetManager {
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
+    public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
 
-    public static void loadAnimations(String lib_filepath) { //loads all spreadsheets and converts them into Animation objects
+    public static void load_all() {
+        loadFromDirectory("sprites/",AssetManager.animation_lib);
+        //load_sprites("ui_lib.txt",AssetManager.ui_lib);
+    }
+
+    public static void loadFromDirectory(String path,HashMap<String,Texture> target) {
+        FileHandle root = new FileHandle(path);
+        assert (root.isDirectory()): "Invalid directory"; //checks to see if input is acc a directory
+
+        for (FileHandle file : root.list()) {
+            if (file.isDirectory()) { AssetManager.loadFromDirectory(path+file.name()+"/",target); } //if we find a folder, go there
+            if (file.name().contains(".png")) {
+                String filepath = path+file.name();
+                //String name = file.name().replaceAll("\\.png","");
+                target.put(file.name(),new Texture(Gdx.files.internal(filepath)));
+            }
+        }
+    }
+    /*
+    public static void load_sprites(FileHandle root, HashMap<String,Texture> target) { //loads all spreadsheets and converts them into Animation objects
         try { //the lib holds the filepaths of all the spritesheets
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(lib_filepath)));
             while (fileReader.hasNext()) {
                 String filepath = fileReader.nextLine();
                 Texture spritesheet = new Texture(filepath);
 
-                AssetManager.animation_lib.put(filepath,spritesheet);
+                target.put(filepath,spritesheet);
             }
             fileReader.close();
         } catch (IOException ex) { System.out.println(ex); }
     }
+    */
 
     public static Texture getSpritesheet(String file_path) {
         assert (AssetManager.animation_lib.containsKey(file_path)): file_path+" not found";

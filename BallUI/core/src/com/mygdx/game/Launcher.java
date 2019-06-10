@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.LinkedList;
+import java.util.TreeMap;
 import java.util.Vector;
 
 public class Launcher extends ApplicationAdapter {
@@ -31,7 +32,7 @@ public class Launcher extends ApplicationAdapter {
     private Stage stage;
     private Table table;
     private HealthTracker ht;
-    SqliteDB db;
+    TreeMap<String,Integer> players;
     @Override
     public void create () {
         stage = new Stage();
@@ -49,10 +50,9 @@ public class Launcher extends ApplicationAdapter {
         int level = 50;
         String query1 = "INSERT INTO players (username,class,level) VALUES ('u','c',1)";
         //String query1 = "INSERT INTO players (username,class,level) VALUES ('"+username+"', '"+classname+"', "+level+")";
-        db = new SqliteDB();
-        db.addPlayer("Shrey M","p1");//query1);
-        db.getPlayers();
-        db.closeConnection();
+        players = new TreeMap<String, Integer>();
+        players.put("Shrey",1);
+        players.put("Daniel",100);
     }
 
     @Override
@@ -74,6 +74,7 @@ public class Launcher extends ApplicationAdapter {
         //cl.sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
         cl.sr.rect(1340,550,250,350,Color.CLEAR,Color.CLEAR,Color.BLUE,Color.BLUE);  //temporary space cover, will be replaced by minimap later
         cl.sr.end();
+        Leaderboard.updateLeaderboard(players);
     }
 
     @Override

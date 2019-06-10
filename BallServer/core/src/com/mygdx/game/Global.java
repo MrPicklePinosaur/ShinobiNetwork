@@ -9,16 +9,10 @@
 
 package com.mygdx.game;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 
-import java.util.HashSet;
-
 import java.util.*;
-import java.io.*;
 
 class Global {
 
@@ -27,7 +21,7 @@ class Global {
 
 	public static World world;
 	public static Game game;
-	public static Map map;
+	public static GameMap map;
 	public static Database db;
 
 	//Important vars

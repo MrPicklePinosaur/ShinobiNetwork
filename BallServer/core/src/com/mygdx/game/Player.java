@@ -112,6 +112,8 @@ public class Player extends Entity {
 
             } //shoot bullet
             if (key.equals("MOUSE_LEFT_UP")) {
+                if (Global.game.isInsideSpawn(this)) { continue; } //player cant shoot when inside spawn
+
                 if (this.weapon.stats.getFireType().equals("charged")) { Player.hold_list.remove(this); }
 
                 //used for charged weapons
@@ -137,6 +139,10 @@ public class Player extends Entity {
             if (key.equals("Key_SPACE")) { this.ability.begin(); }
             if (key.equals("Key_B")) {
                 //check to see if player is in spawn zones, if yes, open shop menu
+                if (Global.game.isInsideSpawn(this)) {
+                    System.out.println("openshop");
+                }
+
             }
         }
     }
@@ -204,6 +210,9 @@ public class Player extends Entity {
     public void setDmgMult(float dmg_mult) { this.dmg_mult = dmg_mult; }
     public void setSpeed(float speed) { this.speed = speed; }
     public Boolean modHp(float deltaHp) { //returns wether or not the player was killed
+
+        if (Global.game.isInsideSpawn(this)) { return false; } //if player is in spawn point, dont take damage
+
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
         if (this.health <= 0) {

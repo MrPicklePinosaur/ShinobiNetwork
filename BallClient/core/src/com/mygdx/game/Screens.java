@@ -47,7 +47,12 @@ class MainmenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
-
+        /*
+        Table stats = new Table();
+        TextField kills = new TextField();
+        TextField deaths = new TextField();
+        TextField damage = new TextField();
+        */
         this.stage = new Stage();
         stage.addActor(play_button);
         stage.addActor(inventory_button);
@@ -85,17 +90,28 @@ class GameScreen implements Screen {
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
 
+    //private boolean show_inventory = false;
+    private Table loadout_overlay;
+    private Table inventory_overlay;
+
     public GameScreen() {
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
-        //Gdx.gl.glEnable(GL20.GL_BLEND);
+        this.loadout_overlay = new Table();
+
+        this.inventory_overlay = new Table();
+
+        turnOffInv();
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         this.input_handler = new InputHandler();
         inputMultiplexer.addProcessor(this.input_handler);
+
+        this.stage.addActor(loadout_overlay);
+        this.stage.addActor(inventory_overlay);
     }
 
     @Override public void render(float delta) {
@@ -135,8 +151,17 @@ class GameScreen implements Screen {
     @Override public void pause() { }
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
-}
 
+    public void turnOnInv() {
+        this.inventory_overlay.setVisible(true);
+        this.loadout_overlay.setVisible(true);
+    }
+
+    public void turnOffInv() {
+        this.inventory_overlay.setVisible(false);
+        this.loadout_overlay.setVisible(false);
+    }
+}
 class AwaitauthScreen implements Screen {
 
     private Stage stage;
@@ -323,6 +348,7 @@ class LoginScreen implements Screen {
     private Stage stage;
     private TextField username_field;
     private TextField password_field;
+    private Label invalid_creds;
 
     public LoginScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
@@ -357,13 +383,20 @@ class LoginScreen implements Screen {
             }
         });
 
+        this.invalid_creds = new Label("",skin);
+
+        CheckBox remember_me = new CheckBox("Remember me",skin);
+
         Table table = new Table();
         table.add(username_field);
+        table.add(invalid_creds);
         table.row();
         table.add(password_field);
         table.row();
         table.add(login_button);
+        table.add(remember_me);
         table.setPosition(200,200);
+
         stage.addActor(table);
 
         //AUTO LOGIN FOR NOW
@@ -388,6 +421,7 @@ class LoginScreen implements Screen {
     public void creds_declined() {
         this.password_field.setText(""); //if the creds are wrong, clear the password field
         //TODO: display a message saying creds are invalid
+        this.invalid_creds.setText("Invalid username or password");
     }
 
     @Override public void show() { Gdx.input.setInputProcessor(stage); }

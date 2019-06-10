@@ -1,10 +1,12 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Game {
@@ -33,23 +35,45 @@ public abstract class Game {
         this.player_list.remove(p);
     }
 
-    public void checkObjective() {
+    public boolean checkObjective(String zonename) {
         for (Player p : this.player_list) {
-            for (String zone : Global.map.getObjectives().keySet()) {
-                Rectangle zoneRect = Global.map.getObjectives().get(zone);
-                if (zone.equals("hardpoint") && zoneRect.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
-                    assert (KOTHGame.class.isInstance(Global.game)): "Trying to use King of the Hill zone in non KOTH gamemode";
-                    KOTHGame koth = (KOTHGame) Global.game;
-                    koth.insideZone(p.getTeamtag());
-                }
+            for (Map.Entry<String, Rectangle> entry : Global.map.getObjectives().entrySet()) {
+                String name = entry.getKey();
+                Rectangle zoneRect = entry.getValue();
+
+                if (!zonename.equals(name)) { continue; }
+                if (zoneRect.contains(p.getX(),p.getY())) { return true; }
             }
         }
+        return false;
     }
+
+    public boolean isInsideSpawn(Player p) {
+        if ((Global.game.checkObjective("red_spawn") && p.getTeamtag() == TEAMTAG.RED) || (Global.game.checkObjective("blue_spawn") && p.getTeamtag() == TEAMTAG.BLUE)) {
+            return true;
+        } return false;
+    }
+
+    /*
+    public void isInZone(Player p,String zone,Rectangle zoneRect) {
+        if (!zoneRect.contains(p.getX(),p.getY())) { return false; }
+
+        if (zone.equals("hardpoint")) { //if a player is actually inside the objective zone
+            assert (KOTHGame.class.isInstance(Global.game)): "Trying to use King of the Hill zone in non KOTH gamemode";
+            KOTHGame koth = (KOTHGame) Global.game;
+            koth.insideZone(p.getTeamtag());
+            return true;
+        } else if (zone.equals("red_spawn")) {
+
+        }
+
+        return false;
+    }
+    */
 
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
-
 
     /*
     public String getTextColour(TEAMTAG teamtag) {

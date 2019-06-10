@@ -94,12 +94,14 @@ class GameScreen implements Screen {
     private boolean show_inventory = false;
     private Table loadout_overlay;
     private Table inventory_overlay;
+    private ImageButton back_button;
 
     public GameScreen() {
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
+        //inventory stuff
         this.loadout_overlay = new Table();
 
         this.inventory_overlay = new Table();
@@ -108,6 +110,13 @@ class GameScreen implements Screen {
         inventory_overlay.setFillParent(true);
         inventory_overlay.pad(100);
 
+        this.back_button = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
+        back_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                System.out.println("close inv");
+                turnOffInv();
+            }
+        });
         turnOffInv();
 
         this.inputMultiplexer = new InputMultiplexer();
@@ -117,6 +126,7 @@ class GameScreen implements Screen {
 
         this.stage.addActor(loadout_overlay);
         this.stage.addActor(inventory_overlay);
+        this.stage.addActor(back_button);
     }
 
     @Override public void render(float delta) {
@@ -152,12 +162,14 @@ class GameScreen implements Screen {
         ScreenUtils.refreshInventory(this.inventory_overlay);
         this.inventory_overlay.setVisible(true);
         this.loadout_overlay.setVisible(true);
+        this.back_button.setVisible(true);
     }
 
     public void turnOffInv() {
         this.show_inventory = false;
         this.inventory_overlay.setVisible(false);
         this.loadout_overlay.setVisible(false);
+        this.back_button.setVisible(false);
     }
 
     @Override public void show() {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -41,7 +42,7 @@ public class Launcher extends ApplicationAdapter {
         stage.addActor(table);
         cl = new ChatLog(table);
         minimap = new Texture("MiniMap.png");
-        ht = new HealthTracker();
+        ht = new HealthTracker(new Vector2(100f,100f));
 
         String username = "Daniel Liu";
         String classname = "Scout";
@@ -64,15 +65,19 @@ public class Launcher extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        ht.updateHealthBar(100,50,new Vector2(450,250));
+        ht.drawAll();
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
+        Timer.updateLives(20,20);
+        Timer.updateTime(99.59f);
         cl.sr.begin(ShapeRenderer.ShapeType.Filled);
-        cl.sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
-        cl.sr.rect(1340,550,250,350,Color.BLACK,Color.BLACK,Color.BLACK,Color.BLACK);  //temporary space cover, will be replaced by minimap later
+        //cl.sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
+        cl.sr.rect(1340,550,250,350,Color.CLEAR,Color.CLEAR,Color.BLUE,Color.BLUE);  //temporary space cover, will be replaced by minimap later
         cl.sr.end();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
+        ht.dispose();
     }}

@@ -89,7 +89,7 @@ public class SqliteDB {
                 use the executeQuery() method,
                 which returns the ResultSet.
                 */
-                System.out.println("added player to list");
+                System.out.println("added play  er to list");
             }
         }catch(Exception e){
             System.out.println("addPlayer method error: "+e);

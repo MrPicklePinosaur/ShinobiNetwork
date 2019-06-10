@@ -33,13 +33,13 @@ public class BallClient {
         this.self = this;
     }
 
-    public Boolean start_connection() {
+    public boolean start_connection() {
         try { //init stuff
             client_sock = new Socket(this.ip, this.port);
             outstream = new PrintWriter(client_sock.getOutputStream(), true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println("Failed to start connection "+ex);
             return false;
         }
 
@@ -61,7 +61,7 @@ public class BallClient {
                         });
 
                     }
-                } catch(IOException ex) { System.out.println(ex); }
+                } catch(IOException ex) { System.out.println(ex);}
 
             }
         }).start();

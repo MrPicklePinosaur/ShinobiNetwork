@@ -25,6 +25,9 @@ class Global {
 
 	//Important vars
 	public static BallClient server_socket;
+	public static String server_ip = "127.0.0.1";
+	public static int server_port = 5000;
+
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;

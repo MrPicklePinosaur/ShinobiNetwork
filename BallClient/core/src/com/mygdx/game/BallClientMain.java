@@ -16,31 +16,30 @@ public class BallClientMain extends Game {
 
 	GameScreen game_screen;
 	MainmenuScreen mainmenu_screen;
-	ConnectingScreen connecting_screen;
+	AwaitauthScreen awaitauth_screen;
+	RetryconnectionScreen retryconnection_screen;
 	InventoryScreen inventory_screen;
 	LoginScreen login_screen;
 
 	@Override
 	public void create () {
+		Thread.currentThread().setName("Main");
 		Global.game = this;
 
 		//Init calls
-		AssetManager.load_all();
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
-
+		AssetManager.load_all();
 		Particle.load_particles("particle_lib.txt");
 
-		//Init server
-		Global.server_socket = new BallClient("127.0.0.1",5000);
-		Thread.currentThread().setName("Main");
-		if (Global.server_socket.start_connection() == false) {
-			 //client goes back to main screen
-			Gdx.app.exit(); //for now the game just closes
-		}
-
+		this.retryconnection_screen = new RetryconnectionScreen();
 		this.login_screen = new LoginScreen();
-		this.connecting_screen = new ConnectingScreen();
-		setScreen(login_screen);
+		this.awaitauth_screen = new AwaitauthScreen();
+
+		if (!Global.game.attempt_connection(Global.server_ip, Global.server_port)) { //attempt to connect to server
+			setScreen(retryconnection_screen); //if login fails, ask client if they want to try again
+		} else { //otherwise go straight to login screen
+			setScreen(login_screen);
+		}
 	}
 
 	public void loadScreens() {
@@ -50,6 +49,11 @@ public class BallClientMain extends Game {
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
 		setScreen(mainmenu_screen);
+	}
+
+	public boolean attempt_connection(String ip,int port) {
+		Global.server_socket = new BallClient(ip,port); //Init server
+		return Global.server_socket.start_connection();
 	}
 
 	@Override

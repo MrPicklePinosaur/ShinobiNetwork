@@ -3,25 +3,18 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 class MainmenuScreen implements Screen {
 
@@ -144,17 +137,18 @@ class GameScreen implements Screen {
     public Stage getStage() { return this.stage; }
 }
 
-class ConnectingScreen implements Screen {
+class AwaitauthScreen implements Screen {
 
-    public ConnectingScreen() {
-
+    private Stage stage;
+    public AwaitauthScreen() {
+        this.stage = new Stage();
     }
 
     @Override public void render(float delta) {
 
     }
 
-    @Override public void show() { }
+    @Override public void show() { Gdx.input.setInputProcessor(stage); }
 
     @Override public void hide() { }
 
@@ -163,7 +157,45 @@ class ConnectingScreen implements Screen {
     @Override public void resize(int width,int height) { }
     @Override public void pause() { }
     @Override public void resume() { }
+    public Stage getStage() { return this.stage; }
+}
 
+class RetryconnectionScreen implements Screen {
+
+    private Stage stage;
+    private TextButton retry_button;
+    private boolean connected = false;
+
+    public RetryconnectionScreen() {
+        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
+        this.stage = new Stage();
+
+        this.retry_button = new TextButton("Retry connection",skin);
+        retry_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                connected = Global.game.attempt_connection(Global.server_ip, Global.server_port);
+            }
+        });
+        stage.addActor(retry_button);
+    }
+
+    @Override public void render(float delta) {
+        stage.act(delta);
+        stage.draw();
+
+        if (this.connected) { Global.game.setScreen(Global.game.login_screen); } //if user connects, take them to login screen
+    }
+
+    @Override public void show() { Gdx.input.setInputProcessor(stage); }
+
+    @Override public void hide() { }
+
+    @Override public void dispose() { }
+
+    @Override public void resize(int width,int height) { }
+    @Override public void pause() { }
+    @Override public void resume() { }
+    public Stage getStage() { return this.stage; }
 }
 
 class InventoryScreen implements Screen {
@@ -335,7 +367,7 @@ class LoginScreen implements Screen {
         stage.addActor(table);
 
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
     }
 
     @Override public void render(float delta) {
@@ -350,7 +382,7 @@ class LoginScreen implements Screen {
         Global.server_socket.send_msg(MT.CHECKCREDS,username+","+password);
     }
     public void creds_accepted() {
-        Global.game.setScreen(Global.game.connecting_screen);
+        Global.game.setScreen(Global.game.awaitauth_screen);
         Global.game.loadScreens();
     }
     public void creds_declined() {

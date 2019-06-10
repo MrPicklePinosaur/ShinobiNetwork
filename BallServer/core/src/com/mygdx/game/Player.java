@@ -135,6 +135,9 @@ public class Player extends Entity {
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_SPACE")) { this.ability.begin(); }
+            if (key.equals("Key_B")) {
+                //check to see if player is in spawn zones, if yes, open shop menu
+            }
         }
     }
 

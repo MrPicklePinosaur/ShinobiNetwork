@@ -35,16 +35,15 @@ public class BallServerMain extends ApplicationAdapter {
 		//Map.loadAll("map_library.txt");
 
 		//Connect to database
-		//Database.connect("database.db");
+		Global.db = new Database();
 
-		Global.game = new KOTHGame();
+		Global.game = new TDMGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
 		//current_map = Map.getMap("Mountain Temple");
 		Global.map = new Map("maps/mountain_temple.tmx");
-
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
@@ -89,10 +88,8 @@ public class BallServerMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//periodically send client position of all entities
-		String entity_data = Entity.send_all();
-		if (!entity_data.equals("")) { BallClientHandler.broadcast(MT.UPDATEENTITY,Entity.send_all()); } //broadcast only if there is something to broadcast
-		String particle_data = Particle.send_particles();
-		if (!particle_data.equals("")) { }
+		Entity.send_all();
+		Particle.send_particles();
 
 		//draw stuff (TESTING ONLY)
 		tiledMapRenderer.render();
@@ -116,6 +113,7 @@ public class BallServerMain extends ApplicationAdapter {
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();
 		Global.disposeGlobals();
+		Global.db.closeConnection();
 		Gdx.app.exit();
 	}
 }

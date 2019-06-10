@@ -1,12 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Ability {
-    protected static LinkedList<Ability> active_abilities = new LinkedList<Ability>(); //list of abilities current being used
-    protected static LinkedList<Ability> cooldown_abilities = new LinkedList<Ability>(); //list of abbilities currently under cooldown
+    protected static CopyOnWriteArrayList<Ability> active_abilities = new CopyOnWriteArrayList<Ability>(); //list of abilities current being used
+    protected static CopyOnWriteArrayList<Ability> cooldown_abilities = new CopyOnWriteArrayList<Ability>(); //list of abbilities currently under cooldown
 
     protected String name;
     protected float max_duration;
@@ -112,23 +114,48 @@ class SwiftstrikeAbility extends Ability {
 
     public SwiftstrikeAbility() { }
 
-    @Override public void activate() { }
+    @Override public void activate() {
+        if (this.name.equals("cherryblossom_twinblades")) {
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+            for (int i = 0; i < 4; i ++) {
+                this.player.shoot(slash_projectile,this.player.getMouseAngle()+90*i*MathUtils.degreesToRadians,"double",1,1);
+            }
+
+        }
+    }
 
     @Override public void update() { //do a speed boost
         int impX = (int) (this.dash_speed * MathUtils.cos(this.player.getMouseAngle()));
         int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getMouseAngle()));
         this.player.getBody().applyLinearImpulse(impX, impY, 0, 0, true);
 
-        if (this.name.equals("basic")) {
-        }
-        else if (this.name.equals("whirlwind") && this.ticker%2 == 0) {
+        if (this.name.equals("whirlwind_sheath") && this.ticker%2 == 0) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
         }
     }
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
-        if (this.name.equals("basic")) {
+        if (this.name.equals("simple_wakizashi")) {
             this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+        } else if (this.name.equals("shadowstep_dagger")) {
+            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+        } else if (this.name.equals("tsuinejji")) {
+            float dist1 = 0.3f*Global.PPM;
+            float dist2 = 0.4f*Global.PPM;
+            float shoot_angle = 20*MathUtils.degreesToRadians;
+            float a = player.getRotation();
+
+            //left slashes
+            Vector2 ice_pos1 = new Vector2(player.getX()+dist1*MathUtils.cos(a+MathUtils.PI/2),player.getY()+dist1*MathUtils.sin(a+MathUtils.PI/2));
+            Vector2 ice_pos2 = new Vector2(player.getX()+dist2*MathUtils.cos(a+MathUtils.PI/2),player.getY()+dist2*MathUtils.sin(a+MathUtils.PI/2));
+            Vector2 fire_pos1 = new Vector2(player.getX()+dist1*MathUtils.cos(a-MathUtils.PI/2),player.getY()+dist1*MathUtils.sin(a-MathUtils.PI/2));
+            Vector2 fire_pos2 = new Vector2(player.getX()+dist2*MathUtils.cos(a-MathUtils.PI/2),player.getY()+dist2*MathUtils.sin(a-MathUtils.PI/2));
+
+            this.player.newProjectile("tsuinejji_ice_slash",a-shoot_angle,1,1,ice_pos1);
+            this.player.newProjectile("tsuinejji_ice_slash",a-shoot_angle,1,1,ice_pos2);
+            this.player.newProjectile("tsuinejji_fire_slash",a+shoot_angle,1,1,fire_pos1);
+            this.player.newProjectile("tsuinejji_fire_slash",a+shoot_angle,1,1,fire_pos2);
+
         }
     }
 
@@ -199,7 +226,14 @@ class SpellAbility extends Ability{
     }
 
     @Override public void update() {
-
+        if (this.name.equals("flamethrower_scroll") && this.ticker%4 == 0) {
+            float dist = 0.15f*Global.PPM;
+            for (int i = 0; i < 2; i++) {
+                float angle = player.getMouseAngle() + (-12 + Global.rnd.nextInt(24)) * MathUtils.degreesToRadians;
+                Vector2 pos = new Vector2(player.getX() + dist * MathUtils.cos(angle), player.getY() + dist * MathUtils.sin(angle));
+                player.newProjectile(spell_projectile, angle, 1, 1, pos);
+            }
+        }
     }
 
     @Override public void deactivate() {

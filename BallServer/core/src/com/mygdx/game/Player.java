@@ -19,11 +19,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import javafx.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player extends Entity {
-    private static ArrayList<Player> shoot_cooldown_list = new ArrayList<Player>();
-    private static ArrayList<Player> hold_list = new ArrayList<Player>();
-    private HashMap<String,ActiveEffect> activeEffects_list = new HashMap<String, ActiveEffect>();
+    private static CopyOnWriteArrayList<Player> shoot_cooldown_list = new CopyOnWriteArrayList<Player>();
+    private static CopyOnWriteArrayList<Player> hold_list = new CopyOnWriteArrayList<Player>();
+    private ConcurrentHashMap<String,ActiveEffect> activeEffects_list = new ConcurrentHashMap<String, ActiveEffect>();
 
     public PlayerStats stats;
     private Ability ability;
@@ -63,11 +65,10 @@ public class Player extends Entity {
         circle.dispose();
 
         //init other vars
-        String weapon_name = "brimstone_edge";
+        String weapon_name = "jade_katana";
         this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
 
         this.init_stats(json_stat_data);
-
     }
 
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
@@ -76,7 +77,7 @@ public class Player extends Entity {
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
         this.reset_performance_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"basic");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"cherryblossom_twinblades");
     }
 
     public void reset_game_stats() {
@@ -134,6 +135,9 @@ public class Player extends Entity {
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_SPACE")) { this.ability.begin(); }
+            if (key.equals("Key_B")) {
+                //check to see if player is in spawn zones, if yes, open shop menu
+            }
         }
     }
 
@@ -184,7 +188,7 @@ public class Player extends Entity {
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
     public float getMouseAngle() { return this.m_angle; }
-    public HashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public ConcurrentHashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
     public float getDmgMult() { return this.dmg_mult; }
     public float getCurrentHp() { return this.health; }
     public float getSpeed() { return this.speed; }

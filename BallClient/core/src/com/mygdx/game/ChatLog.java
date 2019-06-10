@@ -25,15 +25,15 @@ public class ChatLog extends ApplicationAdapter {
     
     private LinkedList<String> playerMSGs = new LinkedList<String>();
 
-    public ChatLog() {
-        atlas = new TextureAtlas("gdx-skins/clean-crispy/skin/clean-crispy-ui.atlas");
-        skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
+    public ChatLog(Stage stage) {
+        atlas = new TextureAtlas("gdx-skins/level-plane/skin/level-plane-ui.atlas");
+        skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         skin.addRegions(atlas);
 
         Table newTable = new Table();
         newTable.setFillParent(true);
         newTable.setDebug(false);
-        Global.stage.addActor(newTable);
+        stage.addActor(newTable);
         this.table = newTable; //this table is the UI table, so be careful when clearing children
 
         // Add widgets to the table here.
@@ -49,7 +49,6 @@ public class ChatLog extends ApplicationAdapter {
         chatLogLabel.setWrap(true); //you still need to setWrap to true each time the label is changed
         table.bottom().right().padBottom(10f).padRight(10f);
 
-        final String name = "User";   //placeholder for player username
         chatText.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
@@ -68,6 +67,7 @@ public class ChatLog extends ApplicationAdapter {
 
     public void send_msg(String msg) {
         msg = msg.replace(',',' '); //remove all commas
+        msg = Global.user_data.getUsername()+": "+msg;
         Global.server_socket.send_chat_msg(msg);
     }
 

@@ -6,12 +6,12 @@
 		"damage": 10,
 		"bullet_speed": 4,
 		"max_dist": 1.5,
-		"penetration": 1,
+		"penetration": 2,
 		"travel_pattern": "straight"
 	},
 	{
 		"name": "brimstone_slice",
-		"damage": 15,
+		"damage": 12,
 		"bullet_speed": 3.2,
 		"max_dist": 1,
 		"penetration": 1,
@@ -19,9 +19,9 @@
 	},
 	{
 		"name": "jade_slice",
-		"damage": 8,
-		"bullet_speed": 4,
-		"max_dist": 1,
+		"damage": 12,
+		"bullet_speed": 4.2,
+		"max_dist": 1.5,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
@@ -38,14 +38,14 @@
 	{
 		"name": "cherryblossom_slash",
 		"damage": 7,
-		"bullet_speed": 3.8,
-		"max_dist": 1.6,
+		"bullet_speed": 2.2,
+		"max_dist": 2,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
 	{
 		"name": "tsuinejji_ice_slash",
-		"damage": 7,
+		"damage": 4,
 		"bullet_speed": 3.8,
 		"max_dist": 1.6,
 		"penetration": 1,
@@ -53,7 +53,7 @@
 	},
 	{
 		"name": "tsuinejji_fire_slash",
-		"damage": 7,
+		"damage": 4,
 		"bullet_speed": 3.8,
 		"max_dist": 1.6,
 		"penetration": 1,
@@ -69,13 +69,30 @@
 	},
 	{
 		"name": "shadowstep_slash",
-		"damage": 7,
-		"bullet_speed": 3.8,
-		"max_dist": 1.6,
+		"damage": 12,
+		"bullet_speed": 2,
+		"max_dist": 1,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "whirlwind_slash",
+		"damage": 5,
+		"bullet_speed": 3.5,
+		"max_dist": 1.5,
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
 
+	//spell bolts
+	{
+		"name": "flamethrower_bolt",
+		"damage": 2,
+		"bullet_speed": 2,
+		"max_dist": 1.5,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 
 

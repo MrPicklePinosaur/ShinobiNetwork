@@ -10,25 +10,24 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Random;
+import com.badlogic.gdx.utils.Json;
 
 class Global {
 
-	public static Camera camera;
+	public static BallClientMain game;
+	public static Json json = new Json();
 
-	//Scene 2d
-	public static Stage stage;
+	public static UserData user_data;
 	public static ChatLog chatlog;
+	public static Camera camera;
 
 	//Important vars
 	public static BallClient server_socket;
+	public static String server_ip = "127.0.0.1";
+	public static int server_port = 5000;
+
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
@@ -53,8 +52,12 @@ enum MT {
 	//Message types - output
 	USIN, CHATMSG, CMD,
 
+	CHECKCREDS, STARTGAME,
+
 	//Message types (MT) - input
 	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
+
+	CREDSACCEPTED, CREDSDENIED,
 }
 
 enum ET {

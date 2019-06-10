@@ -9,73 +9,51 @@
 
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class BallClientMain extends ApplicationAdapter {
+public class BallClientMain extends Game {
 
-	//heavy lifters
-	SpriteBatch batch;
-	ShapeRenderer shapeRenderer;
-	InputMultiplexer inputMultiplexer;
-	InputHandler input_handler;
-	//TiledMapRenderer tiledMapRenderer; //EXTREMELY USEFUL LATER
-
-	Sprite background;
-
-	//UI stuff
+	GameScreen game_screen;
+	MainmenuScreen mainmenu_screen;
+	AwaitauthScreen awaitauth_screen;
+	RetryconnectionScreen retryconnection_screen;
+	InventoryScreen inventory_screen;
+	LoginScreen login_screen;
 
 	@Override
 	public void create () {
-		//Init calls
-		AssetManager.loadAnimations("spritesheet_lib.txt");
-		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+		Thread.currentThread().setName("Main");
+		Global.game = this;
 
+		//Init calls
+		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+		AssetManager.load_all();
 		Particle.load_particles("particle_lib.txt");
 
-		//init ui stuff
-		Global.stage = new Stage();
-		Global.chatlog = new ChatLog();
+		this.retryconnection_screen = new RetryconnectionScreen();
+		this.login_screen = new LoginScreen();
+		this.awaitauth_screen = new AwaitauthScreen();
 
-		//init variables
-		batch = new SpriteBatch();
-		shapeRenderer = new ShapeRenderer();
-		//shapeRenderer.setProjectionMatrix(Global.camera.getCam().combined);
-		Global.camera = new Camera();
-
-		//input
-		InputMultiplexer inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(Global.stage);
-		input_handler = new InputHandler();
-		inputMultiplexer.addProcessor(input_handler);
-		Gdx.input.setInputProcessor(inputMultiplexer);
-
-		//init sprites (REMOVE LATER)
-		background = new Sprite(new Texture("mountain_temple.png"));
-
-		//Init server
-
-		Global.server_socket = new BallClient("127.0.0.1",5000);
-
-		Thread.currentThread().setName("Main");
-
-		if (Global.server_socket.start_connection() == false) {
-			 //client goes back to main screen
-			Gdx.app.exit(); //for now the game just closes
+		if (!Global.game.attempt_connection(Global.server_ip, Global.server_port)) { //attempt to connect to server
+			setScreen(retryconnection_screen); //if login fails, ask client if they want to try again
+		} else { //otherwise go straight to login screen
+			setScreen(login_screen);
 		}
+	}
 
-		Gdx.gl.glEnable(GL20.GL_BLEND);
+	public void loadScreens() {
+		this.mainmenu_screen = new MainmenuScreen();
+		this.game_screen = new GameScreen();
+		this.inventory_screen = new InventoryScreen();
+		Global.chatlog = new ChatLog(game_screen.getStage());
+		Global.camera = new Camera();
+		setScreen(mainmenu_screen);
+	}
+
+	public boolean attempt_connection(String ip,int port) {
+		Global.server_socket = new BallClient(ip,port); //Init server
+		return Global.server_socket.start_connection();
 	}
 
 	@Override
@@ -83,36 +61,11 @@ public class BallClientMain extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		batch.begin();
-		background.draw(batch);
-		Entity.drawAll(batch);
-		Particle.draw_all(batch,Gdx.graphics.getDeltaTime());
-		batch.end();
-
-		//draw UI
-		Global.stage.act(Gdx.graphics.getDeltaTime());
-		Global.stage.draw();
-
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		Global.chatlog.drawLog(shapeRenderer);
-		shapeRenderer.end();
-
-		//update stuff
-		float deltaTime = Gdx.graphics.getDeltaTime();
-		Global.updateInput();
-		input_handler.sendMouse();
-		input_handler.handleInput();
-		Entity.stepFrameAll(deltaTime);
-
-		Global.camera.moveCam();
-		batch.setProjectionMatrix(Global.camera.getCam().combined);
-		Global.camera.updateCam();
-
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
 		//server_socket.close_connection(); //this line causes nullPointer on serverside for some reason
         Gdx.app.exit();
 	}

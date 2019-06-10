@@ -25,6 +25,7 @@ public class BallClient {
     private String ip;
     private int port;
     private BallClient self;
+    private boolean game_in_progress = false;
 
     public BallClient(String ip, int port) {
         this.ip = ip;
@@ -32,13 +33,13 @@ public class BallClient {
         this.self = this;
     }
 
-    public Boolean start_connection() {
+    public boolean start_connection() {
         try { //init stuff
             client_sock = new Socket(this.ip, this.port);
             outstream = new PrintWriter(client_sock.getOutputStream(), true);
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println("Failed to start connection "+ex);
             return false;
         }
 
@@ -60,7 +61,7 @@ public class BallClient {
                         });
 
                     }
-                } catch(IOException ex) { System.out.println(ex); }
+                } catch(IOException ex) { System.out.println(ex);}
 
             }
         }).start();
@@ -93,13 +94,25 @@ public class BallClient {
 
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
+
         switch(msg_type) {
-            case USIN: //if the message we want to send is a user input
-                data = (MT.USIN+"$"+msg); break;
-            case CHATMSG:
-                data = (MT.CHATMSG+"$"+msg); break;
-            case CMD:
-                data = (MT.CMD+"$"+msg); break;
+            case CHECKCREDS: //message is in the format: username, password
+                data = (MT.CHECKCREDS + "$" + msg);break;
+            case STARTGAME:
+                data = (MT.STARTGAME+"$");
+                this.toggleGameInProgress();
+                break;
+        }
+
+        if (this.game_in_progress == true) {
+            switch (msg_type) {
+                case USIN: //if the message we want to send is a user input
+                    data = (MT.USIN + "$" + msg); break;
+                case CHATMSG:
+                    data = (MT.CHATMSG + "$" + msg); break;
+                case CMD:
+                    data = (MT.CMD + "$" + msg); break;
+            }
         }
         assert (data != null): "empty message";
         return data;
@@ -110,7 +123,6 @@ public class BallClient {
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(MT.UPDATEENTITY.toString())) {
             String[] pos = msg[1].split(" ");
-            //System.out.println(Arrays.toString(pos));
             for (String s : pos) {
                 Entity.update_entity(s);
             }
@@ -126,11 +138,26 @@ public class BallClient {
         } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {
-                String[] data = particle.split(","); //data comes in the form: name,x,y
-                Particle.createParticle(data[0],new Vector2(Float.parseFloat(data[1]),Float.parseFloat(data[2])));
+                String[] data = particle.split(","); //data comes in the form: name,x,y,duration
+                Entity entity = Entity.getEntity(Integer.parseInt(data[0]));
+                new Particle(entity,data[1],(int)Float.parseFloat(data[2]));
+                //Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
 
+        } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
+            System.out.println("CREDS ACCEPTED");
+
+            //System.out.println(msg[1]);
+            Global.user_data = UserData.init_client(msg[1]); //TODO: LINK READ USER DATA
+
+            Global.game.login_screen.creds_accepted();
+
+        } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
+            Global.game.login_screen.creds_declined();
         }
     }
+
+    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
+    public boolean isGameInProgress() { return this.game_in_progress; }
 
 }

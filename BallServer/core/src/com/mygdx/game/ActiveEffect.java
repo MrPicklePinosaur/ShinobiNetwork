@@ -20,6 +20,12 @@ public class ActiveEffect {
     public void begin() {
         if (this.name.equals("speedy")) {
             player.setSpeed(player.getSpeed()*2);
+        } else if (this.name.equals("burning")) {
+            new Particle(player,"burning",(int)max_duration);
+        } else if (this.name.equals("frostbite")) {
+            new Particle(player, "frostbite", (int) max_duration);
+        } else if (this.name.equals("frozen")) {
+            player.setSpeed(player.getSpeed()/2);
         }
     }
 
@@ -34,8 +40,9 @@ public class ActiveEffect {
 
     public void update() {
         if (this.name.equals("burning")) {
-            System.out.println("ouch that burns "+duration_left);
-            this.player.modHp(-1);
+            this.player.modHp(-0.05f);
+        } else if (this.name.equals("frostbite")) {
+            this.player.modHp(-0.05f);
         }
 
     }
@@ -50,6 +57,8 @@ public class ActiveEffect {
 
     public void end() {
         if (this.name.equals("speedy")) {
+            player.setSpeed(player.stats.getSpeed());
+        } else if (this.name.equals("frozen")) {
             player.setSpeed(player.stats.getSpeed());
         }
         this.player.removeEffect(this.name);

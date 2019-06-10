@@ -28,6 +28,7 @@ class Global {
 	public static World world;
 	public static Game game;
 	public static Map map;
+	public static Database db;
 
 	//Important vars
 	public static final int SCREEN_WIDTH = 800;
@@ -62,8 +63,12 @@ enum MT { //mt stands for messageTyoe
 	//Message Types - output
 	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
 
+	CREDSACCEPTED, CREDSDENIED,
+
 	//Message Types (MT) - input
-	USIN, CHATMSG, CMD
+	USIN, CHATMSG, CMD,
+
+	CHECKCREDS, STARTGAME,
 }
 
 enum ET { //et sstands for entitiy type
@@ -76,10 +81,6 @@ enum COMMANDS {
 
 enum TEAMTAG {
 	RED, BLUE, SOLO
-}
-
-enum GAMETYPE {
-	TDM, FFA
 }
 
 enum FIREPATTERN { //bullet pattern

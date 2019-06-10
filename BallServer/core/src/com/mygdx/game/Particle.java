@@ -8,29 +8,33 @@ import java.util.LinkedList;
 
 public class Particle {
 
-    private static HashMap<String, LinkedList<Vector2>> particle_list = new HashMap<String, LinkedList<Vector2>>();
+    private static ArrayList<Particle> particle_list = new ArrayList<Particle>();
 
-    public static void newParticle(String name, Vector2 pos) {
-        if (Particle.particle_list.containsKey(name)) {
-            Particle.particle_list.get(name).add(pos);
-        } else {
-            LinkedList<Vector2> pos_list = new LinkedList<Vector2>();
-            pos_list.add(pos);
-            Particle.particle_list.put(name,pos_list);
-        }
+    private Entity entity;
+    private String name;
+    private float x;
+    private float y;
+    private int duration;
+
+    public Particle(Entity entity,String name,int duration) {
+        this.entity = entity;
+        this.name = name;
+        this.duration = duration;
+
+        Particle.particle_list.add(this);
     }
 
-    public static String send_particles() {
+
+    public static void send_particles() {
+        if (Particle.particle_list.size() == 0) { return; }
         String msg = "";
-        for (String name : Particle.particle_list.keySet()) {
-            LinkedList<Vector2> pos_list = Particle.particle_list.get(name);
-            for (Vector2 pos : pos_list) {
-                msg += (" "+name+","+pos.x+","+pos.y);
-            }
+        for (Particle p : Particle.particle_list) {
+            msg += (" "+p.entity.getId()+","+p.name+","+p.duration);
         }
+        Particle.particle_list.clear();
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
-        return msg;
+        BallClientHandler.broadcast(MT.UPDATEPARTICLE,msg);
     }
 
 }

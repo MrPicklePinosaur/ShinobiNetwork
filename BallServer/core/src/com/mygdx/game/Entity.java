@@ -10,6 +10,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.*;
@@ -33,7 +34,6 @@ public abstract class Entity {
     public Entity(String name) {
         this.id = Global.new_code();
         this.name = name;
-        this.texture_path = this.name+".png";
 
         //Init sprite
         this.spriteWidth = Global.SPRITESIZE;
@@ -47,38 +47,57 @@ public abstract class Entity {
         BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
     }
 
-    public static String send_all() { //packages all entity positions into a string
+    public static void send_all() { //packages all entity positions into a string
+        if (Entity.entity_list.size() == 0) { return; }
         String msg = "";
         for (Entity e : Entity.entity_list) { //for each entity
             try { //possibly a bad idea to slap a try-catch here
-                msg += (" " + e.getET().toString() + "," + e.getId() + "," + e.getTexturePath() + "," + e.getX() + "," + e.getY() + "," + e.getRotation());
+                msg += (" " + e.getET().toString() + "," + e.getId() + "," + e.getName() + "," + e.getX() + "," + e.getY() + "," + e.getRotation());
             } catch (NullPointerException ex) { System.out.println(ex); }
         }
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
-        return msg;
+        BallClientHandler.broadcast(MT.UPDATEENTITY,msg);
     }
 
     //Projecitle stuff
     public void shoot(String name,float angle,String fire_pattern,float dmg_mult,float speed_mult) {
         if (fire_pattern.equals("straight")) { this.newProjectile(name,angle, dmg_mult,speed_mult); }
-        else if (fire_pattern.equals("triple")) {
-            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
-        }
         else if (fire_pattern.equals("double")) {
             this.newProjectile(name, angle - 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
             this.newProjectile(name, angle + 7 * MathUtils.degreesToRadians, dmg_mult,speed_mult);
+        } else if (fire_pattern.equals("triple")) {
+            for (int i = -1; i < 2; i++) { this.newProjectile(name,angle+10*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
+        } else if (fire_pattern.equals("penta")) {
+            for (int i = -2; i < 5; i++) { this.newProjectile(name,angle+8*i*MathUtils.degreesToRadians, dmg_mult,speed_mult); }
+        } else if (fire_pattern.equals("ring")) {
+
+            float radius = 0.5f*Global.PPM; //hard coded radius for now
+            for (int i = 0; i < 12; i++) {
+                float direct = angle-30*i*MathUtils.degreesToRadians;
+                float x = this.getX()+radius*MathUtils.cos(direct);
+                float y = this.getY()+radius*MathUtils.sin(direct);
+                Vector2 spawn_pos = new Vector2(x,y);
+                this.newProjectile(name,direct-90*MathUtils.degreesToRadians,dmg_mult,speed_mult,spawn_pos);
+            }
+
         }
     }
 
-    private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
+    public void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
         Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
+        p.init_pos(spawn_pos.x/Global.PPM,spawn_pos.y/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setDamage(p.getDamage()*dmg_mult);
         p.setSpeed(p.getSpeed()*speed_mult);
-        p.init_pos(this.getX()/Global.PPM,this.getY()/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
+
         p.setVelocity(angle);
         this.projectile_list.add(p);
     }
+    private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
+        this.newProjectile(name,angle,dmg_mult,speed_mult,new Vector2(this.getX(),this.getY()));
+    }
+
+
     public void removeProjectile(Projectile projectile) {
         //safe removal of projectile
         //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
@@ -95,7 +114,7 @@ public abstract class Entity {
     public float getY() { return this.body.getPosition().y*Global.PPM; }
     public float getRotation() { return this.body.getTransform().getRotation(); }
     public Body getBody() { return this.body; }
-    public String getTexturePath() { return this.texture_path; }
+    public String getName() { return this.name; }
     public int getId() { return this.id; }
     public CopyOnWriteArrayList<Projectile> getProjectileList() { return projectile_list; }
 

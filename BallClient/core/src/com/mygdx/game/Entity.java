@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
+import java.util.EmptyStackException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -33,9 +34,9 @@ public class Entity {
     private Animation<TextureRegion> animation;
     private float frameTime = 0.25f; //used for animation
 
-    private Entity(String texture_path) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
+    private Entity(String name) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
 
-        TextureRegion[] frames = Entity.createAnimation(texture_path);
+        TextureRegion[] frames = Entity.createAnimation(name);
         this.animation = new Animation<TextureRegion>(frameTime,frames);
 
         this.x = 0; this.y = 0; this.rotation = 0;
@@ -73,7 +74,7 @@ public class Entity {
         String[] parsed = data.split(",");
         String entity_type = parsed[0];
         int id = Integer.parseInt(parsed[1]);
-        String texture_path = parsed[2];
+        String name = parsed[2];
         float x = Float.parseFloat(parsed[3]);
         float y = Float.parseFloat(parsed[4]);
         float rot = Float.parseFloat(parsed[5]);
@@ -81,7 +82,7 @@ public class Entity {
         Entity entity;
         if (!Entity.entity_library.containsKey(id)) { //if entity doesnt exist yet, create it
             //This block creates and integrates the entity
-            Entity newEntity = new Entity(texture_path);
+            Entity newEntity = new Entity(name);
             entity_library.put(id,newEntity);
 
             entity = newEntity;
@@ -115,7 +116,6 @@ public class Entity {
 
             float rot = e.getRotation();
             if (rot < 0) rot += MathUtils.PI2; //get rid of negative angles
-
             //TODO: dont generalise for players (only reflection in y-axis)
             if (e.getET().equals(ET.PLAYER.toString())) {
                 //if mouse is in 2nd or 3rd quadrant, face left
@@ -135,6 +135,13 @@ public class Entity {
         }
     }
 
+    public static Entity getEntity(int id) {
+        assert (Entity.entity_library.containsKey(id)): "Entity not found";
+        return Entity.entity_library.get(id);
+    }
+    public static Boolean isAlive(int id) {
+        return Entity.entity_library.containsKey(id) ? true : false;
+    }
     public String getET() { return this.entity_type; }
     public float getX() { return this.x; }
     public float getY() { return this.y; }

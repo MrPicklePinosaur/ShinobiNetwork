@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AssetManager { //mainly just a bunch of helper methods
-    private static LinkedList<Body> kill_list = new LinkedList<Body>(); //list of bodies to be safely destroyed
-    private static HashMap<Entity, Vector3> move_list = new HashMap<Entity, Vector3>(); //list of bodies to be safely moved
+    private static CopyOnWriteArrayList<Body> kill_list = new CopyOnWriteArrayList<Body>(); //list of bodies to be safely destroyed
+    private static ConcurrentHashMap<Entity, Vector3> move_list = new ConcurrentHashMap<Entity, Vector3>(); //list of bodies to be safely moved
 
     //json libraries
     private static HashMap<String,String> player_stats = new HashMap<String, String>();

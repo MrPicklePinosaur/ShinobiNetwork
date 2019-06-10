@@ -10,34 +10,47 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class Game {
 
     protected CopyOnWriteArrayList<String> chat_log;
-    protected LinkedList<Player> player_list;
+    protected CopyOnWriteArrayList<Player> player_list;
 
     public Game() {
         this.chat_log = new CopyOnWriteArrayList<String>();
-        this.player_list = new LinkedList<Player>();
+        this.player_list = new CopyOnWriteArrayList<Player>();
     }
 
     public void new_chat_msg(String msg) {
         chat_log.add(msg);
         if (msg.equals("") || msg == null) { return; }
-        msg = "USER: " + msg;
 
         String text_colour = "grey";
         BallClientHandler.broadcast(MT.SENDCHAT,text_colour+","+msg);
     }
     public void wipe_chat() { this.chat_log.clear(); }
 
-    public LinkedList<Player> getPlayerList() { return this.player_list; }
+    public CopyOnWriteArrayList<Player> getPlayerList() { return this.player_list; }
     public void addPlayer(Player p) { this.player_list.add(p); }
     public void removePlayer(Player p) {
         assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";
         this.player_list.remove(p);
     }
 
+    public void checkObjective() {
+        for (Player p : this.player_list) {
+            for (String zone : Global.map.getObjectives().keySet()) {
+                Rectangle zoneRect = Global.map.getObjectives().get(zone);
+                if (zone.equals("hardpoint") && zoneRect.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
+                    assert (KOTHGame.class.isInstance(Global.game)): "Trying to use King of the Hill zone in non KOTH gamemode";
+                    KOTHGame koth = (KOTHGame) Global.game;
+                    koth.insideZone(p.getTeamtag());
+                }
+            }
+        }
+    }
+
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
-    public abstract void checkObjective();
+
+
     /*
     public String getTextColour(TEAMTAG teamtag) {
         String text_colour;
@@ -97,8 +110,6 @@ class TDMGame extends Game { //team death match
         return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
     }
 
-    @Override public void checkObjective() { }
-
 }
 
 class KOTHGame extends Game { //king of the hill
@@ -114,21 +125,13 @@ class KOTHGame extends Game { //king of the hill
 
     }
 
-    @Override public void checkObjective() {
-        for (Player p : this.player_list) {
-            for (Rectangle r : Global.map.getObjectives()) {
-                if (r.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
-
-                    if (p.getTeamtag() == TEAMTAG.RED) {
-                        red_points+=POINTS_PER_TICK;
-                        this.checkWin();
-                    } else if (p.getTeamtag() == TEAMTAG.BLUE) {
-                        blue_points+=POINTS_PER_TICK;
-                        this.checkWin();
-                    }
-
-                }
-            }
+    public void insideZone(TEAMTAG teamtag) {
+        if (teamtag == TEAMTAG.RED) {
+            red_points+=POINTS_PER_TICK;
+            this.checkWin();
+        } else if (teamtag == TEAMTAG.BLUE) {
+            blue_points+=POINTS_PER_TICK;
+            this.checkWin();
         }
     }
 
@@ -199,7 +202,5 @@ class FFAGame extends Game { //free for all
     @Override public TEAMTAG chooseTeam() {
         return TEAMTAG.SOLO;
     }
-
-    @Override public void checkObjective() { }
 
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 
+import java.awt.event.InputEvent;
 import java.net.Socket;
 
 public class InputHandler extends InputAdapter {
@@ -33,6 +34,7 @@ public class InputHandler extends InputAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) { msg+=(",Key_A"); }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) { msg+=(",Key_D"); }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { msg+=(",Key_SPACE"); }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)) { msg+=(",Key_B"); } //button to open shop menu
         if (msg.equals("")) return; //if there isnt any input, don't send a message
         msg = msg.substring(1); //get rid of extra comma in front
 

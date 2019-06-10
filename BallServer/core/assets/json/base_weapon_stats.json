@@ -6,7 +6,7 @@
 		"fire_type": "manual",
 		"fire_rate": 0.2,
 		"fire_pattern": "straight",
-		"time_to_charge": 1000000
+		"time_to_charge": 1000000,
 	},
 	{
 		"name": "brimstone_edge",

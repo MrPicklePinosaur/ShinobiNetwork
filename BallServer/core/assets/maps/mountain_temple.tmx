@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="76">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="109">
  <tileset firstgid="1" source="tilesets/mountain temple.tsx"/>
  <tileset firstgid="29" source="tilesets/animatedWaterShallow.tsx"/>
  <layer id="9" name="floor" width="96" height="96">
@@ -502,7 +502,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="COLLISION" visible="0">
+ <objectgroup id="6" name="COLLISION">
   <object id="14" x="1024" y="1023.82" width="1024.14" height="64"/>
   <object id="15" x="1023.93" y="1984.21" width="1024.14" height="64"/>
   <object id="18" x="2016" y="1087.82" width="32.1818" height="416.364"/>
@@ -520,61 +520,59 @@
   <object id="40" x="736.032" y="1696.01" width="287.984" height="64.0625"/>
   <object id="41" x="736.02" y="1376.17" width="32.0435" height="319.826"/>
  </objectgroup>
- <objectgroup id="17" name="red_spawn" visible="0">
-  <object id="49" x="815.818" y="1454.91">
+ <objectgroup id="23" name="spawn_points">
+  <object id="89" name="red" x="816" y="1456.5">
    <point/>
   </object>
-  <object id="50" x="880.182" y="1487.64">
+  <object id="90" name="red" x="880" y="1488">
    <point/>
   </object>
-  <object id="51" x="943.818" y="1454.91">
+  <object id="91" name="red" x="944.5" y="1456">
    <point/>
   </object>
-  <object id="52" x="880" y="1583.67">
+  <object id="92" name="red" x="944" y="1616.5">
    <point/>
   </object>
-  <object id="53" x="815" y="1615">
+  <object id="93" name="red" x="879.5" y="1585.5">
    <point/>
   </object>
-  <object id="54" x="945" y="1614.33">
+  <object id="94" name="red" x="815" y="1618">
    <point/>
   </object>
- </objectgroup>
- <objectgroup id="18" name="blue_spawn" visible="0">
-  <object id="65" x="2128.5" y="1456.5">
+  <object id="95" name="solo" x="1103.5" y="1140.5">
    <point/>
   </object>
-  <object id="66" x="2192" y="1490">
+  <object id="96" name="solo" x="1104" y="1937">
    <point/>
   </object>
-  <object id="67" x="2255.83" y="1457.5">
+  <object id="97" name="solo" x="1968.5" y="1936.5">
    <point/>
   </object>
-  <object id="68" x="2257" y="1616">
+  <object id="98" name="solo" x="1968.5" y="1138.5">
    <point/>
   </object>
-  <object id="69" x="2192.5" y="1584.5">
+  <object id="99" name="blue" x="2127.5" y="1457.5">
    <point/>
   </object>
-  <object id="70" x="2128" y="1617.5">
+  <object id="100" name="blue" x="2191" y="1488">
    <point/>
   </object>
- </objectgroup>
- <objectgroup id="19" name="solo_spawn" visible="0">
-  <object id="71" x="1103.33" y="1137">
+  <object id="101" name="blue" x="2255.5" y="1456">
    <point/>
   </object>
-  <object id="72" x="1104" y="1937.33">
+  <object id="102" name="blue" x="2256" y="1619">
    <point/>
   </object>
-  <object id="73" x="1968.33" y="1936">
+  <object id="103" name="blue" x="2191.5" y="1586">
    <point/>
   </object>
-  <object id="74" x="1968.33" y="1136.33">
+  <object id="104" name="blue" x="2127.5" y="1618.5">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="20" name="objectives">
-  <object id="75" x="1471.33" y="1472" width="129.333" height="128"/>
+ <objectgroup id="20" name="zones">
+  <object id="75" name="hardpoint" x="1471.33" y="1472" width="129.333" height="128"/>
+  <object id="107" name="red_spawn" x="736.667" y="1312" width="320.667" height="446.667"/>
+  <object id="108" name="blue_spawn" x="2016" y="1310.67" width="318" height="447.333"/>
  </objectgroup>
 </map>

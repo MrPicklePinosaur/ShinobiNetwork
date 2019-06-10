@@ -22,13 +22,24 @@ import java.util.logging.FileHandler;
 public class Particle {
     private static HashMap<String,FileHandle> behavior_lib = new HashMap<String, FileHandle>();
     private static TextureAtlas particle_atlas = new TextureAtlas();
-    private static LinkedList<ParticleEffect> particle_list = new LinkedList<ParticleEffect>();
+    private static LinkedList<Particle> particle_list = new LinkedList<Particle>();
 
-    private String filepath;
-    public Particle(String filepath) {
-        this.filepath = filepath;
+    private ParticleEffect particle;
+    private Entity entity;
+    private String name;
+
+    public Particle(Entity entity,String name,int duration) {
+        this.entity = entity;
+        this.name = name;
+
+        this.particle = new ParticleEffect();
+        this.particle.load(Particle.behavior_lib.get(name),Particle.particle_atlas);
+        this.particle.setPosition(entity.getX(),entity.getY());
+        this.particle.setDuration(duration);
+        Particle.particle_list.add(this);
+
+        this.particle.start();
     }
-
     public static void load_particles(String lib_firepath) {
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(lib_firepath)));
@@ -47,23 +58,21 @@ public class Particle {
         } catch(FileNotFoundException ex) { System.out.println(ex); }
     }
 
-    public static ParticleEffect createParticle(String particle_name, Vector2 pos) {
-        ParticleEffect new_particle = new ParticleEffect();
-        new_particle.load(Particle.behavior_lib.get(particle_name),Particle.particle_atlas);
-        new_particle.setPosition(pos.x,pos.y);
-        new_particle.start();
-        Particle.particle_list.add(new_particle);
-        return new_particle;
-    }
-
     public static void draw_all(SpriteBatch batch, float deltaTime) {
-        ArrayList<ParticleEffect> complete_list = new ArrayList<ParticleEffect>();
-        for (ParticleEffect p : Particle.particle_list) {
-            p.draw(batch,deltaTime);
-            if (p.isComplete()) { complete_list.add(p); } //if the particle effect has no more use
+        ArrayList<Particle> complete_list = new ArrayList<Particle>();
+        for (Particle p : Particle.particle_list) {
+            //first. update the particles
+            //TODO: REMOVE PARTICLE IF BINDED ENTITY DIES!!!!!!
+            p.particle.setPosition(p.entity.getX(),p.entity.getY());
+
+            p.particle.draw(batch,deltaTime);
+            if (p.particle.isComplete()) { complete_list.add(p); } //if the particle effect has no more use
         }
-        for (ParticleEffect p : complete_list) { //remove all particles that arent doing anything
+        for (Particle p : complete_list) { //remove all particles that arent doing anything
             Particle.particle_list.remove(p);
         }
     }
+
+    public ParticleEffect getParticle() { return this.particle; }
+    public Entity getBindedEntity() { return this.entity; }
 }

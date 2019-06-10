@@ -1,6 +1,8 @@
 //shrey mahey
 package com.mygdx.game;
 
+import com.badlogic.gdx.utils.JsonValue;
+
 import java.sql.*;
 import java.util.HashMap;
 
@@ -62,6 +64,7 @@ public class Database {
         return this.data_list.get(username);
     }
 
+    /*
     public void writeToDB(String username,String password,String json) {
 
         try {
@@ -74,6 +77,22 @@ public class Database {
                 stmt.executeUpdate(playerInfo);
             }
         } catch (SQLException ex) { System.out.println("writeTODB error: "+ex); }
+    }
+    */
+
+    public boolean new_user(String username,String password) {
+        try {
+            this.stmt = c.createStatement();
+            if (this.data_list.containsKey(username)) { return false; } //if the username already exists, update it
+            // otherwise create a new entry
+
+            //INSERT JSON OBJECT!!!!
+            String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"',)";
+            stmt.executeUpdate(playerInfo);
+            return true;
+
+        } catch (SQLException ex) { System.out.println("writeTODB error: "+ex); }
+
     }
 
 

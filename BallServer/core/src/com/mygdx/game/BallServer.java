@@ -182,6 +182,12 @@ class BallClientHandler {
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
         } else if (msg[0].equals(MT.STARTGAME.toString())) {
             this.toggleGameInProgress();
+        } else if (msg[0].equals(MT.REGISTER.toString())) {
+            String[] user_data = msg[1].split(",");
+            boolean register_sucess = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
+
+            if (register_sucess) { this.send_msg(MT.REGISTERSUCCESS,"");}
+            else { this.send_msg(MT.REGISTERFAILED,""); }
         }
     }
 

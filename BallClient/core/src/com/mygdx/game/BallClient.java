@@ -98,6 +98,8 @@ public class BallClient {
         switch(msg_type) {
             case CHECKCREDS: //message is in the format: username, password
                 data = (MT.CHECKCREDS + "$" + msg);break;
+            case REGISTER: //message is in the format: username, password
+                data = (MT.REGISTER+"$"+msg); break;
             case STARTGAME:
                 data = (MT.STARTGAME+"$");
                 this.toggleGameInProgress();
@@ -154,6 +156,10 @@ public class BallClient {
 
         } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
             Global.game.login_screen.creds_declined();
+        } else if (msg[0].equals(MT.REGISTERSUCCESS.toString())) {
+
+        } else if (msg[0].equals(MT.REGISTERFAILED.toString())) {
+
         }
     }
 

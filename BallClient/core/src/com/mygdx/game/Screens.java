@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -348,12 +349,19 @@ class LoginScreen implements Screen {
     private TextField password_field;
     private Label invalid_creds;
 
+    private Label warning_text;
+    private TextField reg_username_field;
+    private TextField reg_email_field;
+    private TextField reg_password_field;
+    private TextField confirm_password_field;
+
     public LoginScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         stage = new Stage();
 
         this.username_field = new TextField("",skin);
         username_field.setMessageText("Username"); //displays when box is empty
+        username_field.setMaxLength(16);
         username_field.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
@@ -366,6 +374,7 @@ class LoginScreen implements Screen {
         password_field.setMessageText("Password");
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
+        username_field.setMaxLength(30);
         password_field.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
@@ -385,17 +394,67 @@ class LoginScreen implements Screen {
 
         CheckBox remember_me = new CheckBox("Remember me",skin);
 
-        Table table = new Table();
-        table.add(username_field);
-        table.add(invalid_creds);
-        table.row();
-        table.add(password_field);
-        table.row();
-        table.add(login_button);
-        table.add(remember_me);
-        table.setPosition(200,200);
+        Table login_table = new Table();
+        login_table.setBounds(0,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
+        login_table.add(invalid_creds);
+        login_table.row();
+        login_table.add(username_field);
+        login_table.row();
+        login_table.add(password_field);
+        login_table.row();
+        login_table.add(remember_me.pad(10));
+        login_table.row();
+        login_table.add(login_button);
 
-        stage.addActor(table);
+
+        Table register_table = new Table();
+        register_table.setBounds(Global.SCREEN_WIDTH/2,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
+        register_table.setDebug(true);
+
+        this.warning_text = new Label("",skin);
+
+        this.reg_username_field = new TextField("",skin);
+        reg_username_field.setMessageText("Username");
+        reg_username_field.setMaxLength(16);
+
+        this.reg_email_field = new TextField("",skin);
+        reg_email_field.setMessageText("Email");
+        reg_email_field.setMaxLength(30);
+
+        this.reg_password_field = new TextField("",skin);
+        reg_password_field.setMessageText("Password");
+        reg_password_field.setPasswordMode(true);
+        reg_password_field.setPasswordCharacter('*');
+        reg_password_field.setMaxLength(30);
+
+        this.confirm_password_field = new TextField("",skin);
+        confirm_password_field.setMessageText("Confirm password");
+        confirm_password_field.setPasswordMode(true);
+        confirm_password_field.setPasswordCharacter('*');
+        confirm_password_field.setMaxLength(30);
+
+        TextButton register_button = new TextButton("Register!",skin);
+        register_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                String warning = register(reg_username_field.getText(),reg_email_field.getText(),reg_password_field.getText(),confirm_password_field.getText());
+                warning_text.setText(warning);
+            }
+        });
+
+        register_table.add(warning_text).pad(10);
+        register_table.row();
+        register_table.add(reg_username_field);
+        register_table.row();
+        register_table.add(reg_email_field);
+        register_table.row();
+        register_table.add(reg_password_field);
+        register_table.row();
+        register_table.add(confirm_password_field);
+        register_table.row();
+        register_table.add(register_button);
+
+        stage.addActor(login_table);
+        stage.addActor(register_table);
     }
 
     @Override public void render(float delta) {
@@ -419,6 +478,21 @@ class LoginScreen implements Screen {
         this.password_field.setText(""); //if the creds are wrong, clear the password field
         //TODO: display a message saying creds are invalid
         this.invalid_creds.setText("Invalid username or password");
+    }
+    public void register_success() { this.warning_text.setText("Registration Successful!"); }
+    public void register_failed() { this.warning_text.setText("Username taken"); }
+
+    public String register(String username,String email,String password,String confirmpass) {
+        if (username.length()==0 || email.length()==0 || password.length()==0 || confirmpass.length()==0) { return "Empty field"; }
+        if (!password.equals(confirmpass)) { return "Passwords don't match"; }
+        if (!(3 < username.length() && username.length() < 16)) { return "Username must be between 3 and 16 characters"; }
+        if (username.contains("![a-zA-Z0-9]")) { return "Username can only contain letters and numbers"; }
+        if (!(8 < password.length() && password.length() < 30)) { return "Password must be between 8 and 30 characters"; }
+        if (password.contains("![a-zA-Z0-9]")) { return "Password can only contain letters and numbers"; }
+
+        //if all else is good, send message to server to check to see if username is taken
+
+        return ""; //no warning :)
     }
 
     @Override public void show() { Gdx.input.setInputProcessor(stage); }

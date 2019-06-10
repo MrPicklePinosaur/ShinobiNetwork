@@ -27,19 +27,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Map {
-    private static HashMap<String,Map> map_list = new HashMap<String, Map>();
+public class GameMap {
+    private static HashMap<String, GameMap> map_list = new HashMap<String, GameMap>();
 
     private TiledMap map;
     private String file_path;
 
-    //Map landmarks
+    //GameMap landmarks
     private ArrayList<Vector2> red_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> blue_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> solo_spawn = new ArrayList<Vector2>();
     private HashMap<String,Rectangle> map_zones = new HashMap<String, Rectangle>();
 
-    public Map(String file_path) {
+    public GameMap(String file_path) {
         this.file_path = file_path;
         this.map = new TmxMapLoader().load(file_path);
 
@@ -63,7 +63,7 @@ public class Map {
             fdef.filter.categoryBits = Global.BIT_STATIC;
             fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
             Body new_body = AssetManager.createBody(fdef, BodyDef.BodyType.StaticBody);
-            new_body.setUserData(new Pair<Class<?>,Map>(Map.class,this));
+            new_body.setUserData(new Pair<Class<?>, GameMap>(GameMap.class,this));
             //new_body.setUserData(this);
             new_body.setTransform((rect.getX()+rect.getWidth()/2)/Global.PPM,(rect.getY()+rect.getHeight()/2)/Global.PPM,0);
 
@@ -99,8 +99,8 @@ public class Map {
             while (fileReader.hasNext()) {
                 //data comes in the form: "map_name","file_path"
                 String[] data = fileReader.nextLine().split(",");
-                Map newMap = new Map(data[1]);
-                Map.map_list.put(data[0],newMap);
+                GameMap newMap = new GameMap(data[1]);
+                GameMap.map_list.put(data[0],newMap);
             }
             fileReader.close();
         } catch(IOException ex) { System.out.println(ex); }
@@ -135,8 +135,8 @@ public class Map {
 
     public HashMap<String, Rectangle> getObjectives() { return this.map_zones; }
     public TiledMap getTiledMap() { return this.map; }
-    public static Map getMap(String map_name) {
-        assert (Map.map_list.containsKey(map_name)): "Map is not found or has not been loaded";
-        return Map.map_list.get(map_name);
+    public static GameMap getMap(String map_name) {
+        assert (GameMap.map_list.containsKey(map_name)): "GameMap is not found or has not been loaded";
+        return GameMap.map_list.get(map_name);
     }
 }

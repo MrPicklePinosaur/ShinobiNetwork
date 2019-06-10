@@ -32,7 +32,7 @@ public class BallServerMain extends ApplicationAdapter {
 	public void create () {
 		//init assets
 		AssetManager.load_all_json();
-		//Map.loadAll("map_library.txt");
+		//GameMap.loadAll("map_library.txt");
 
 		//Connect to database
 		Global.db = new Database();
@@ -42,8 +42,8 @@ public class BallServerMain extends ApplicationAdapter {
 		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
-		//current_map = Map.getMap("Mountain Temple");
-		Global.map = new Map("maps/mountain_temple.tmx");
+		//current_map = GameMap.getMap("Mountain Temple");
+		Global.map = new GameMap("maps/mountain_temple.tmx");
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
@@ -100,7 +100,7 @@ public class BallServerMain extends ApplicationAdapter {
 		ActiveEffect.updateAll(Global.deltatime);
 		Player.updateAll(Global.deltatime);
 		Projectile.updateAll();
-		Global.game.checkObjective();
+		//Global.game.checkObjective();
 		Global.world.step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
 		AssetManager.moveBodies();

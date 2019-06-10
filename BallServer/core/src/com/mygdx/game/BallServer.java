@@ -153,6 +153,8 @@ class BallClientHandler {
                     data = (MT.BINDCAM + "$" + msg);break; //amsg is an x and y value of where the camera should be at
                 case UPDATEPARTICLE:
                     data = (MT.UPDATEPARTICLE + "$" + msg);break;
+                case OPENINV:
+                    data = (MT.OPENINV + "$");break;
             }
         }
 
@@ -164,7 +166,8 @@ class BallClientHandler {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
         if (msg[0].equals(MT.USIN.toString())) {
-            this.client_entity.handleInput(msg[1]);
+
+            this.client_entity.handleInput(this,msg[1]);
         } else if (msg[0].equals(MT.CHATMSG.toString())) {
             Global.game.new_chat_msg(msg[1]);
         } else if (msg[0].equals(MT.CMD.toString())) {

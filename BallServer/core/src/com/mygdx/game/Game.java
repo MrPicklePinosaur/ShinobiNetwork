@@ -33,10 +33,24 @@ public abstract class Game {
         this.player_list.remove(p);
     }
 
+    public void checkObjective() {
+        for (Player p : this.player_list) {
+            for (String zone : Global.map.getObjectives().keySet()) {
+                Rectangle zoneRect = Global.map.getObjectives().get(zone);
+                if (zone.equals("hardpoint") && zoneRect.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
+                    assert (KOTHGame.class.isInstance(Global.game)): "Trying to use King of the Hill zone in non KOTH gamemode";
+                    KOTHGame koth = (KOTHGame) Global.game;
+                    koth.insideZone(p.getTeamtag());
+                }
+            }
+        }
+    }
+
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
-    public abstract void checkObjective();
+
+
     /*
     public String getTextColour(TEAMTAG teamtag) {
         String text_colour;
@@ -96,8 +110,6 @@ class TDMGame extends Game { //team death match
         return red_count >= blue_count ? TEAMTAG.BLUE : TEAMTAG.RED;
     }
 
-    @Override public void checkObjective() { }
-
 }
 
 class KOTHGame extends Game { //king of the hill
@@ -113,21 +125,13 @@ class KOTHGame extends Game { //king of the hill
 
     }
 
-    @Override public void checkObjective() {
-        for (Player p : this.player_list) {
-            for (Rectangle r : Global.map.getObjectives()) {
-                if (r.contains(p.getX(),p.getY())) { //if a player is actually inside the objective zone
-
-                    if (p.getTeamtag() == TEAMTAG.RED) {
-                        red_points+=POINTS_PER_TICK;
-                        this.checkWin();
-                    } else if (p.getTeamtag() == TEAMTAG.BLUE) {
-                        blue_points+=POINTS_PER_TICK;
-                        this.checkWin();
-                    }
-
-                }
-            }
+    public void insideZone(TEAMTAG teamtag) {
+        if (teamtag == TEAMTAG.RED) {
+            red_points+=POINTS_PER_TICK;
+            this.checkWin();
+        } else if (teamtag == TEAMTAG.BLUE) {
+            blue_points+=POINTS_PER_TICK;
+            this.checkWin();
         }
     }
 
@@ -199,34 +203,4 @@ class FFAGame extends Game { //free for all
         return TEAMTAG.SOLO;
     }
 
-    @Override public void checkObjective() { }
-
 }
-
-
-/*
-class DUELGame extends Game { //1 v 1
-
-    private int red_points = 0;
-    private int blue_points = 0;
-
-    public DUELGame() {
-
-    }
-
-    @Override public void addKill(Player player) {
-
-    }
-
-    @Override public ArrayList<Vector3> getLeaderBoard() {
-
-    }
-
-    @Override public TEAMTAG chooseTeam() {
-
-    }
-
-    @Override public void checkObjective() { }
-
-}
-*/

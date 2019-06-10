@@ -37,21 +37,19 @@ public class BallClientMain extends Game {
 			 //client goes back to main screen
 			Gdx.app.exit(); //for now the game just closes
 		}
-		Global.server_socket.send_msg(MT.CHECKCREDS,"daniel,password");
 
+		this.login_screen = new LoginScreen();
 		this.connecting_screen = new ConnectingScreen();
-		setScreen(connecting_screen);
-
+		setScreen(login_screen);
 	}
 
 	public void loadScreens() {
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
 		this.inventory_screen = new InventoryScreen();
-		this.login_screen = new LoginScreen();
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
-		setScreen(login_screen);
+		setScreen(mainmenu_screen);
 	}
 
 	@Override

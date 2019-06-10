@@ -169,21 +169,86 @@ class ConnectingScreen implements Screen {
 class InventoryScreen implements Screen {
 
     private Stage stage;
-
+    private Table inventory_grid;
     public InventoryScreen() {
-        //Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
-        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
         this.stage = new Stage();
 
         //INVENTORY
         //some basic settings for the table
-        Table inventory_grid = new Table();
+        this.inventory_grid = new Table();
         inventory_grid.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
         inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
         inventory_grid.pad(100);
+        refreshInventory();
 
+        //BUTTONS
+        ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
+        backButton.setPosition(20,200);
+        backButton.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.game.setScreen(Global.game.mainmenu_screen);
+            }
+        });
+
+        Table tabs = new Table();
+        TextButton allItems_button = new TextButton("All items",skin);
+        allItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+
+            }
+        });
+        TextButton ninjaItems_button = new TextButton("Ninja",skin);
+        ninjaItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+
+            }
+        });
+        TextButton archerItems_button = new TextButton("Archer",skin);
+        archerItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+
+            }
+        });
+        TextButton warriorItems_button = new TextButton("Warrior",skin);
+        warriorItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+
+            }
+        });
+        TextButton wizardItems_button = new TextButton("Wizard",skin);
+        wizardItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+
+            }
+        });
+
+        tabs.add(wizardItems_button);
+        tabs.add(warriorItems_button);
+        tabs.add(archerItems_button);
+        tabs.add(ninjaItems_button);
+        tabs.add(allItems_button);
+        tabs.setPosition(150,300);
+        tabs.setTransform(true);
+        tabs.rotateBy(90);
+
+        stage.addActor(backButton);
+        stage.addActor(inventory_grid);
+        stage.addActor(tabs);
+    }
+
+    @Override public void render(float delta) {
+        stage.act(delta);
+
+        stage.draw();
+    }
+
+    public void refreshInventory() {
+        //TODO: when refreshing inventory, actually ask the server for a refresh
+        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+        this.inventory_grid.clearChildren();
         //populate the table with the contents of the user's inventory
         ArrayList<String> inv = new ArrayList<String>();
         for (String i : Global.user_data.getInventory()) { inv.add(i); }
@@ -200,32 +265,16 @@ class InventoryScreen implements Screen {
                     stack.add(item);
                 }
                 empty_slot_img.setScaling(Scaling.fit);
-                inventory_grid.add(stack).pad(10);
+                this.inventory_grid.add(stack).pad(10);
             }
-            inventory_grid.row(); //move down a row
+            this.inventory_grid.row(); //move down a row
         }
-
-
-        //BUTTONS
-        ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
-        backButton.setPosition(20,200);
-        backButton.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-                Global.game.setScreen(Global.game.mainmenu_screen);
-            }
-        });
-
-        stage.addActor(backButton);
-        stage.addActor(inventory_grid);
     }
 
-    @Override public void render(float delta) {
-        stage.act(delta);
-
-        stage.draw();
+    @Override public void show() {
+        refreshInventory();
+        Gdx.input.setInputProcessor(stage);
     }
-
-    @Override public void show() { Gdx.input.setInputProcessor(stage); }
 
     @Override public void hide() { }
 
@@ -240,23 +289,39 @@ class InventoryScreen implements Screen {
 class LoginScreen implements Screen {
 
     private Stage stage;
+    private TextField username_field;
+    private TextField password_field;
 
     public LoginScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         stage = new Stage();
 
-        final TextField username_field = new TextField("",skin);
-        username_field.setMessageText("Username");
+        this.username_field = new TextField("",skin);
+        username_field.setMessageText("Username"); //displays when box is empty
+        username_field.setTextFieldListener(new TextField.TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char c) {
+                //if enter is pressed, submit form
+                if (c == '\r') { submit_creds(username_field.getText(),password_field.getText()); }
+            }
+        });
 
-        final TextField password_field = new TextField("",skin);
+        this.password_field = new TextField("",skin);
         password_field.setMessageText("Password");
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
+        password_field.setTextFieldListener(new TextField.TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char c) {
+                //if enter is pressed, submit form
+                if (c == '\r') { submit_creds(username_field.getText(),password_field.getText()); }
+            }
+        });
 
         TextButton login_button = new TextButton("Login!",skin);
         login_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                password_field.setText(""); //if creds are invalid, display and message and clear password field
+                submit_creds(username_field.getText(),password_field.getText()); //we also submit the form if the button is pressed
             }
         });
 
@@ -268,15 +333,55 @@ class LoginScreen implements Screen {
         table.add(login_button);
         table.setPosition(200,200);
         stage.addActor(table);
+
+        //AUTO LOGIN FOR NOW
+        submit_creds("daniel","password");
     }
 
     @Override public void render(float delta) {
         stage.act(delta);
-
         stage.draw();
     }
 
+    public void submit_creds(String username,String password) {
+        username = username.replaceAll("[,$\\s]",""); //get rid of dangerous characters
+        password = password.replaceAll("[,$\\s]","");
+        if (username.equals("") || password.equals("")) { creds_declined(); return; } //dont send if field(s) are empty
+        Global.server_socket.send_msg(MT.CHECKCREDS,username+","+password);
+    }
+    public void creds_accepted() {
+        Global.game.setScreen(Global.game.connecting_screen);
+        Global.game.loadScreens();
+    }
+    public void creds_declined() {
+        this.password_field.setText(""); //if the creds are wrong, clear the password field
+        //TODO: display a message saying creds are invalid
+    }
+
     @Override public void show() { Gdx.input.setInputProcessor(stage); }
+
+    @Override public void hide() { }
+
+    @Override public void dispose() { }
+
+    @Override public void resize(int width,int height) { }
+    @Override public void pause() { }
+    @Override public void resume() { }
+    public Stage getStage() { return this.stage; }
+}
+
+class LobbyScreen implements Screen {
+
+    private Stage stage;
+    public LobbyScreen() {
+
+    }
+
+    @Override public void render(float delta) {
+
+    }
+
+    @Override public void show() { }
 
     @Override public void hide() { }
 

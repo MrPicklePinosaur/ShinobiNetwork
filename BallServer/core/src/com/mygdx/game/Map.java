@@ -9,14 +9,11 @@
 
 package com.mygdx.game;
 
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -40,7 +37,7 @@ public class Map {
     private ArrayList<Vector2> red_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> blue_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> solo_spawn = new ArrayList<Vector2>();
-    private ArrayList<Rectangle> map_objectives = new ArrayList<Rectangle>();
+    private HashMap<String,Rectangle> map_zones = new HashMap<String, Rectangle>();
 
     public Map(String file_path) {
         this.file_path = file_path;
@@ -48,10 +45,8 @@ public class Map {
 
         //load map objects
         this.loadCollisions();
-        this.load_spawn_points(this.red_spawn,this.map.getLayers().get("red_spawn").getObjects());
-        this.load_spawn_points(this.blue_spawn,this.map.getLayers().get("blue_spawn").getObjects());
-        this.load_spawn_points(this.solo_spawn,this.map.getLayers().get("solo_spawn").getObjects());
-        this.load_map_objectives(this.map_objectives);
+        this.load_spawn_points(this.map.getLayers().get("spawn_points").getObjects());
+        this.load_zones(this.map_zones);
 
         //System.out.println(Arrays.toString(this.red_spawn.toArray()));
     }
@@ -76,18 +71,25 @@ public class Map {
         }
     }
 
-    public void load_spawn_points(ArrayList<Vector2> target, MapObjects layer) {
+    public void load_spawn_points(MapObjects layer) {
         for (MapObject obj : layer) { //spawn points are saved as point objects on the TiledMap
             Rectangle rect = ((RectangleMapObject) obj).getRectangle(); //points are saved as rectangle with h = 0 and w =0
-            //System.out.println(rect);
-            target.add(new Vector2(rect.x,rect.y));
+            Vector2 spawn_point = new Vector2(rect.x,rect.y);
+
+            if (obj.getName().equals("red")) {
+                this.red_spawn.add(spawn_point);
+            } else if (obj.getName().equals("blue")) {
+                this.blue_spawn.add(spawn_point);
+            } else if (obj.getName().equals("solo")) {
+                this.solo_spawn.add(spawn_point);
+            }
         }
     }
-    public void load_map_objectives(ArrayList<Rectangle> target) {
-        MapObjects objectives = this.map.getLayers().get("objectives").getObjects();
+    public void load_zones(HashMap<String,Rectangle> target) {
+        MapObjects objectives = this.map.getLayers().get("zones").getObjects();
         for (MapObject obj : objectives) {
             Rectangle rect = ((RectangleMapObject) obj).getRectangle();
-            target.add(rect);
+            target.put(obj.getName(),rect);
         }
     }
 
@@ -131,7 +133,7 @@ public class Map {
         return best_spawn;
     }
 
-    public ArrayList<Rectangle> getObjectives() { return this.map_objectives; }
+    public HashMap<String, Rectangle> getObjectives() { return this.map_zones; }
     public TiledMap getTiledMap() { return this.map; }
     public static Map getMap(String map_name) {
         assert (Map.map_list.containsKey(map_name)): "Map is not found or has not been loaded";

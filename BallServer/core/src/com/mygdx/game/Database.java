@@ -65,10 +65,11 @@ public class Database {
     public void writeToDB(String username,String password,String json) {
 
         try {
+            this.stmt = c.createStatement();
             if (this.data_list.containsKey(username)){ //if the username already exists, update it
-
+                String updateData = "UPDATE players SET data = "+json+" WHERE username = "+username;
+                stmt.executeUpdate(updateData);
             } else { //otherwise create a new entry
-                this.stmt = c.createStatement();
                 String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"','"+json+"')";
                 stmt.executeUpdate(playerInfo);
             }

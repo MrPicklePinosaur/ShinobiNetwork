@@ -22,9 +22,8 @@ class MainmenuScreen implements Screen {
     private Stage stage;
 
     public MainmenuScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
-        TextButton play_button = new TextButton("Play",skin);
+        TextButton play_button = new TextButton("Play",Global.skin);
         play_button.setPosition(300,500);
         play_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -33,7 +32,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        TextButton inventory_button = new TextButton("Inventory",skin);
+        TextButton inventory_button = new TextButton("Inventory",Global.skin);
         inventory_button.setPosition(300,400);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -41,7 +40,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        TextButton quit_button = new TextButton("Exit Game",skin);
+        TextButton quit_button = new TextButton("Exit Game",Global.skin);
         quit_button.setPosition(300,300);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -60,10 +59,10 @@ class MainmenuScreen implements Screen {
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
         }
-        Label kd = new Label("KDR: "+kdr,skin);
-        Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),skin);
-        Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),skin);
-        Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),skin);
+        Label kd = new Label("KDR: "+kdr,Global.skin);
+        Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),Global.skin);
+        Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),Global.skin);
+        Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),Global.skin);
 
         stats.add(kd);
         stats.row();
@@ -117,20 +116,19 @@ class GameScreen implements Screen {
     private Inventory inv;
 
     public GameScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
         //menu
-        TextButton resume_button = new TextButton("Resume",skin);
-        TextButton inventory_button = new TextButton("Inventory",skin);
+        TextButton resume_button = new TextButton("Resume",Global.skin);
+        TextButton inventory_button = new TextButton("Inventory",Global.skin);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 show_inv();
             }
         });
-        TextButton exit_button = new TextButton("Leave Game",skin);
+        TextButton exit_button = new TextButton("Leave Game",Global.skin);
 
         this.pause_menu = new Table();
         pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
@@ -245,10 +243,9 @@ class RetryconnectionScreen implements Screen {
     private boolean connected = false;
 
     public RetryconnectionScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         this.stage = new Stage();
 
-        this.retry_button = new TextButton("Retry connection",skin);
+        this.retry_button = new TextButton("Retry connection",Global.skin);
         retry_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 connected = Global.game.attempt_connection(Global.server_ip, Global.server_port);
@@ -282,7 +279,6 @@ class InventoryScreen implements Screen {
     private Inventory inv;
 
     public InventoryScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
         this.stage = new Stage();
         this.inv = new Inventory(this.stage);
@@ -326,48 +322,53 @@ class Inventory {
     private Table tabs;
 
     public Inventory(Stage screen_stage) {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         this.stage = screen_stage;
 
         //INVENTORY
         //some basic settings for the table
         this.inventory_grid = new Table();
-        inventory_grid.setBounds(Global.SCREEN_WIDTH/8,0,Global.SCREEN_WIDTH*5/8,Global.SCREEN_HEIGHT);
-        inventory_grid.setDebug(true);
+        inventory_grid.setBounds(Global.SCREEN_WIDTH/8,0,Global.SCREEN_WIDTH*3/8,Global.SCREEN_HEIGHT);
+        //inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
         inventory_grid.left();
 
         this.loadout_inv = new Table();
 
+
         //BUTTONS
-        TextButton allItems_button = new TextButton("All items",skin);
+        TextButton allItems_button = new TextButton("All items",Global.skin);
         allItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 refreshInventory("");
+                hide_loadout();
             }
         });
-        TextButton ninjaItems_button = new TextButton("Ninja",skin);
+        TextButton ninjaItems_button = new TextButton("Ninja",Global.skin);
         ninjaItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 refreshInventory("katana,waki");
+                show_loadout("ninja");
             }
         });
-        TextButton archerItems_button = new TextButton("Archer",skin);
+        TextButton archerItems_button = new TextButton("Archer",Global.skin);
         archerItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 refreshInventory("bow,quiver");
+                show_loadout("archer");
             }
         });
-        TextButton warriorItems_button = new TextButton("Warrior",skin);
+        TextButton warriorItems_button = new TextButton("Warrior",Global.skin);
         warriorItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 refreshInventory("sword,helm");
+                show_loadout("warrior");
             }
         });
-        TextButton wizardItems_button = new TextButton("Wizard",skin);
+        TextButton wizardItems_button = new TextButton("Wizard",Global.skin);
         wizardItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 refreshInventory("staff,spell");
+                show_loadout("wizard");
             }
         });
 
@@ -422,12 +423,52 @@ class Inventory {
         refreshInventory("");
         this.inventory_grid.setVisible(true);
         this.tabs.setVisible(true);
+        this.loadout_inv.setVisible(false);
     }
 
     public void hide_inv() {
         this.inventory_grid.setVisible(false);
         this.tabs.setVisible(false);
+        this.loadout_inv.setVisible(false);
     }
+
+    public void refresh_loadout(String filter) {
+        assert (filter.equals("ninja") || filter.equals("archer") || filter.equals("warrior") || filter.equals("wizard")): "Invalid filter";
+        String[] loadout = Global.user_data.getLoadout(filter); //the first item is the weapon, second is the ability
+
+        this.loadout_inv.clear();
+
+        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+
+        Label class_name = new Label(filter,Global.skin);
+
+        //weapon slot
+        Stack weapon_stack = new Stack();
+        weapon_stack.add(new Image(empty_slot));
+        if (loadout.length == 2) { weapon_stack.add(new Image(AssetManager.getSpritesheet(loadout[0]))); } //if the user actually has a weapon equipped
+
+        //class preview
+        Stack class_preview = new Stack();
+        class_preview.add(new Image(AssetManager.getUIImage("selected_class")));
+        class_preview.add(new Image(AssetManager.getUIImage(filter)));
+
+        //ability slot
+        Stack ability_stack = new Stack();
+        ability_stack.add(new Image(empty_slot));
+
+        if (loadout.length == 2) { ability_stack.add(new Image(AssetManager.getSpritesheet(loadout[1]))); } //if the user actually has an ability equipped
+
+        loadout_inv.add(class_name);
+        loadout_inv.row();
+        loadout_inv.add(weapon_stack);
+        loadout_inv.add(class_preview).pad(10);
+        loadout_inv.add(ability_stack);
+        loadout_inv.setBounds(Global.SCREEN_WIDTH*4/8,0,Global.SCREEN_WIDTH*4/8,Global.SCREEN_HEIGHT);
+        loadout_inv.pad(30);
+    }
+
+    public void show_loadout(String filter) { refresh_loadout(filter); this.loadout_inv.setVisible(true); }
+    public void hide_loadout() { this.loadout_inv.setVisible(false); }
 }
 
 class LoginScreen implements Screen {
@@ -444,10 +485,9 @@ class LoginScreen implements Screen {
     private TextField confirm_password_field;
 
     public LoginScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         stage = new Stage();
 
-        this.username_field = new TextField("",skin);
+        this.username_field = new TextField("",Global.skin);
         username_field.setMessageText("Username"); //displays when box is empty
         username_field.setMaxLength(16);
         username_field.setTextFieldListener(new TextField.TextFieldListener() {
@@ -458,7 +498,7 @@ class LoginScreen implements Screen {
             }
         });
 
-        this.password_field = new TextField("",skin);
+        this.password_field = new TextField("",Global.skin);
         password_field.setMessageText("Password");
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
@@ -471,16 +511,16 @@ class LoginScreen implements Screen {
             }
         });
 
-        TextButton login_button = new TextButton("Login!",skin);
+        TextButton login_button = new TextButton("Login!",Global.skin);
         login_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 submit_creds(username_field.getText(),password_field.getText()); //we also submit the form if the button is pressed
             }
         });
 
-        this.invalid_creds = new Label("",skin);
+        this.invalid_creds = new Label("",Global.skin);
 
-        CheckBox remember_me = new CheckBox("Remember me",skin);
+        CheckBox remember_me = new CheckBox("Remember me",Global.skin);
 
         Table login_table = new Table();
         login_table.setBounds(0,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
@@ -498,29 +538,29 @@ class LoginScreen implements Screen {
         Table register_table = new Table();
         register_table.setBounds(Global.SCREEN_WIDTH/2,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
 
-        this.warning_text = new Label("",skin);
+        this.warning_text = new Label("",Global.skin);
 
-        this.reg_username_field = new TextField("",skin);
+        this.reg_username_field = new TextField("",Global.skin);
         reg_username_field.setMessageText("Username");
         reg_username_field.setMaxLength(16);
 
-        this.reg_email_field = new TextField("",skin);
+        this.reg_email_field = new TextField("",Global.skin);
         reg_email_field.setMessageText("Email");
         reg_email_field.setMaxLength(30);
 
-        this.reg_password_field = new TextField("",skin);
+        this.reg_password_field = new TextField("",Global.skin);
         reg_password_field.setMessageText("Password");
         reg_password_field.setPasswordMode(true);
         reg_password_field.setPasswordCharacter('*');
         reg_password_field.setMaxLength(30);
 
-        this.confirm_password_field = new TextField("",skin);
+        this.confirm_password_field = new TextField("",Global.skin);
         confirm_password_field.setMessageText("Confirm password");
         confirm_password_field.setPasswordMode(true);
         confirm_password_field.setPasswordCharacter('*');
         confirm_password_field.setMaxLength(30);
 
-        TextButton register_button = new TextButton("Register!",skin);
+        TextButton register_button = new TextButton("Register!",Global.skin);
         register_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 String warning = register(reg_username_field.getText(),reg_email_field.getText(),reg_password_field.getText(),confirm_password_field.getText());

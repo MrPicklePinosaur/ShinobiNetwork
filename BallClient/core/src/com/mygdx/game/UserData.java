@@ -10,9 +10,7 @@ public class UserData {
 
     public UserData() { }
 
-    public static UserData init_client(String json_data) {
-        System.out.println(json_data);
-        return Global.json.fromJson(UserData.class, json_data); }
+    public static UserData init_client(String json_data) { return Global.json.fromJson(UserData.class, json_data); }
 
     public String getUsername() { return this.username; }
     public int getTotalKills() { return this.total_kills; }

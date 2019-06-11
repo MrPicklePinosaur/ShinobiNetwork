@@ -64,5 +64,9 @@ public class AssetManager {
         assert (AssetManager.ui_lib.containsKey(name)): name+" not found";
         return AssetManager.ui_lib.get(name);
     }
+    public static ItemData getItemDescrip(String item_name) {
+        assert (AssetManager.item_descrip.containsKey(item_name)): item_name+" not found";
+        return AssetManager.item_descrip.get(item_name);
+    }
 
 }

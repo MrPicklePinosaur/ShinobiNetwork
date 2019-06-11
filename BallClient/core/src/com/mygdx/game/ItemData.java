@@ -10,4 +10,6 @@ public class ItemData {
     public ItemData() { }
 
     public static ItemData init_itemdata(String json_data) { return Global.json.fromJson(ItemData.class, json_data); }
+
+    public String getItemType() { return this.item_type; }
 }

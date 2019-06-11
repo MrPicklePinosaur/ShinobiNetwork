@@ -73,5 +73,13 @@
 		"special_text": "",
 	},
 
+	{
+		"id": "royal_warhammer",
+		"display_name": "Royal Warhammer",
+		"item_type": "hammer",
+		"stat_text": "",
+		"special_text": "",
+	},
+
 
 ]

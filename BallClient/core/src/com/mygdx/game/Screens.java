@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Scaling;
 import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class MainmenuScreen implements Screen {
 
@@ -182,7 +183,7 @@ class GameScreen implements Screen {
     public void toggleInvVisible() {
         this.show_inventory = !this.show_inventory;
         if (this.show_inventory == true) {
-            ScreenUtils.refreshInventory(this.inventory_overlay);
+            ScreenUtils.refreshInventory(this.inventory_overlay,"");
             this.inventory_overlay.setVisible(true);
             this.loadout_overlay.setVisible(true);
             this.back_button.setVisible(true);
@@ -274,6 +275,7 @@ class InventoryScreen implements Screen {
 
     private Stage stage;
     private Table inventory_grid;
+
     public InventoryScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
@@ -300,31 +302,31 @@ class InventoryScreen implements Screen {
         TextButton allItems_button = new TextButton("All items",skin);
         allItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-
+                ScreenUtils.refreshInventory(inventory_grid,"");
             }
         });
         TextButton ninjaItems_button = new TextButton("Ninja",skin);
         ninjaItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-
+                ScreenUtils.refreshInventory(inventory_grid,"katana,waki");
             }
         });
         TextButton archerItems_button = new TextButton("Archer",skin);
         archerItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-
+                ScreenUtils.refreshInventory(inventory_grid,"bow,quiver");
             }
         });
         TextButton warriorItems_button = new TextButton("Warrior",skin);
         warriorItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-
+                ScreenUtils.refreshInventory(inventory_grid,"sword,helm");
             }
         });
         TextButton wizardItems_button = new TextButton("Wizard",skin);
         wizardItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-
+                ScreenUtils.refreshInventory(inventory_grid,"staff,spell");
             }
         });
 
@@ -349,7 +351,7 @@ class InventoryScreen implements Screen {
     }
 
     @Override public void show() {
-        ScreenUtils.refreshInventory(this.inventory_grid);
+        ScreenUtils.refreshInventory(this.inventory_grid,"");
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -534,38 +536,19 @@ class LoginScreen implements Screen {
     public Stage getStage() { return this.stage; }
 }
 
-class LobbyScreen implements Screen {
-
-    private Stage stage;
-    public LobbyScreen() {
-
-    }
-
-    @Override public void render(float delta) {
-
-    }
-
-    @Override public void show() { }
-
-    @Override public void hide() { }
-
-    @Override public void dispose() { }
-
-    @Override public void resize(int width,int height) { }
-    @Override public void pause() { }
-    @Override public void resume() { }
-    public Stage getStage() { return this.stage; }
-}
-
 class ScreenUtils {
 
-    public static void refreshInventory(Table grid) {
+    public static void refreshInventory(Table grid,String filter) { //filter inv by item type, if an empty string is provided, it means no filtere
         //TODO: when refreshing inventory, actually ask the server for a refresh
         Texture empty_slot = AssetManager.getUIImage("empty_slot");
         grid.clearChildren();
         //populate the table with the contents of the user's inventory
         ArrayList<String> inv = new ArrayList<String>();
-        for (String i : Global.user_data.getInventory()) { inv.add(i); }
+        for (String name : Global.user_data.getInventory()) {
+            if (filter.contains(AssetManager.getItemDescrip(name).getItemType()) || filter.length() == 0) {
+                inv.add(name);
+            }
+        }
 
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns

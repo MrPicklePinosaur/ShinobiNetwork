@@ -55,10 +55,31 @@ class MainmenuScreen implements Screen {
         TextField deaths = new TextField();
         TextField damage = new TextField();
         */
+
+        Table stats = new Table();
+        float kdr = Global.user_data.getTotalKills();
+        if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
+            kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
+        }
+        Label kd = new Label("KDR: "+kdr,skin);
+        Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),skin);
+        Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),skin);
+        Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),skin);
+
+        stats.add(kd);
+        stats.row();
+        stats.add(kills);
+        stats.row();
+        stats.add(deaths);
+        stats.row();
+        stats.add(damage);
+        stats.setPosition(Global.SCREEN_WIDTH*3/4,Global.SCREEN_WIDTH/2);
+
         this.stage = new Stage();
         stage.addActor(play_button);
         stage.addActor(inventory_button);
         stage.addActor(quit_button);
+        stage.addActor(stats);
     }
 
     @Override public void render(float delta) {

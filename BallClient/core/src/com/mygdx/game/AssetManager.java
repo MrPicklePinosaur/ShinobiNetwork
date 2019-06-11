@@ -12,6 +12,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.io.*;
 import java.util.*;
@@ -19,11 +21,25 @@ import java.util.*;
 public class AssetManager {
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
     public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
-    public static HashMap<String, String> item_descrip = new HashMap<String, String>();
+    public static HashMap<String, ItemData> item_descrip = new HashMap<String, ItemData>();
 
     public static void load_all() {
         loadFromDirectory("sprites/",AssetManager.animation_lib);
         loadFromDirectory("ui/",AssetManager.ui_lib);
+        load_itemdata(AssetManager.item_descrip,"json/item_descriptions.json");
+    }
+
+    public static void load_itemdata(HashMap<String,ItemData> lib,String filepath) {
+        JsonReader json = new JsonReader();
+        JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
+
+        JsonValue cur = raw_json.child;
+        while (true) {
+            ItemData newitemdata = ItemData.init_itemdata(cur.toString());
+            lib.put(cur.getString("id"),newitemdata);
+            if (cur.next == null) { break; }
+            cur = cur.next;
+        }
     }
 
     public static void loadFromDirectory(String path,HashMap<String,Texture> target) {

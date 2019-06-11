@@ -3,11 +3,75 @@
 	{
 		"id": "kazemonji",
 		"display_name": "Kazemonji",
-		"weapon_type": "katana",
+		"item_type": "katana",
 		"stat_text": "",
 		"special_text": "",
+	},
+	{
+		"id": "brimstone_edge",
+		"display_name": "Brimstone Edge",
+		"item_type": "katana",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "jade_katana",
+		"display_name": "Jade Katana",
+		"item_type": "katana",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "nihiru",
+		"display_name": "Nihiru, the Demon Blade",
+		"item_type": "katana",
+		"stat_text": "",
+		"special_text": "",
+	},
 
-	}
+
+	{
+		"id": "simple_wakizashi",
+		"display_name": "Simple Wakizashi",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "cherryblossom_twinblades",
+		"display_name": "Cherryblossom Twinblades",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "tsuinejji",
+		"display_name": "Tsuinejji, the Twin Blades",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
+		{
+		"id": "bloodsucker_talon",
+		"display_name": "Bloodsucker Talon",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "shadowstep_dagger",
+		"display_name": "Shadowstep Dagger",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "whirlwind_sheath",
+		"display_name": "Whirlwind Sheath",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
 
 
 ]

@@ -14,10 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 class MainmenuScreen implements Screen {
 
@@ -114,17 +112,35 @@ class GameScreen implements Screen {
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
 
-    private boolean show_inventory = true;
+    private boolean show_menu = false;
+    private Table pause_menu;
     private Table loadout_overlay;
     private Table inventory_overlay;
-    private ImageButton back_button;
 
     public GameScreen() {
+        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
-        //inventory stuff
+        //menu
+        TextButton resume_button = new TextButton("Resume",skin);
+        TextButton inventory_button = new TextButton("Inventory",skin);
+        inventory_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                show_inv();
+            }
+        });
+        TextButton exit_button = new TextButton("Leave Game",skin);
+
+        this.pause_menu = new Table();
+        pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        pause_menu.add(resume_button).pad(10);
+        pause_menu.row();
+        pause_menu.add(inventory_button).pad(10);
+        pause_menu.row();
+        pause_menu.add(exit_button).pad(10);
+
         this.loadout_overlay = new Table();
 
         this.inventory_overlay = new Table();
@@ -133,23 +149,18 @@ class GameScreen implements Screen {
         inventory_overlay.setFillParent(true);
         inventory_overlay.pad(100);
 
-        this.back_button = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
-        back_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-                toggleInvVisible();
-            }
-        });
-
-        toggleInvVisible(); //hide inventory screen
-
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         this.input_handler = new InputHandler();
         inputMultiplexer.addProcessor(this.input_handler);
 
+        this.stage.addActor(pause_menu);
         this.stage.addActor(loadout_overlay);
         this.stage.addActor(inventory_overlay);
-        this.stage.addActor(back_button);
+
+        this.inventory_overlay.setVisible(false);
+        this.pause_menu.setVisible(false);
+        this.loadout_overlay.setVisible(false);
     }
 
     @Override public void render(float delta) {
@@ -164,7 +175,7 @@ class GameScreen implements Screen {
         stage.draw();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (this.show_inventory) { ScreenUtils.dimScreen(shapeRenderer,0.2f); } //dim screen if inv is open
+        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.2f); } //dim screen if inv is open
         Global.chatlog.drawLog(shapeRenderer);
         shapeRenderer.end();
 
@@ -180,19 +191,24 @@ class GameScreen implements Screen {
         Global.camera.updateCam();
     }
 
-    public void toggleInvVisible() {
-        this.show_inventory = !this.show_inventory;
-        if (this.show_inventory == true) {
-            ScreenUtils.refreshInventory(this.inventory_overlay,"");
-            this.inventory_overlay.setVisible(true);
-            this.loadout_overlay.setVisible(true);
-            this.back_button.setVisible(true);
-        } else {
-            this.inventory_overlay.setVisible(false);
-            this.loadout_overlay.setVisible(false);
-            this.back_button.setVisible(false);
-        }
+    public void show_menu() {
+        this.show_menu = true;
+        this.pause_menu.setVisible(true);
     }
+
+    public void show_inv() {
+        ScreenUtils.refreshInventory(this.inventory_overlay,"");
+        this.pause_menu.setVisible(false);
+        this.inventory_overlay.setVisible(true);
+    }
+
+    public void hide_menu() {
+        this.show_menu = false;
+        this.pause_menu.setVisible(false);
+        this.inventory_overlay.setVisible(false);
+    }
+
+    public boolean isMenuVisible() { return this.show_menu; }
 
     @Override public void show() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -275,6 +291,7 @@ class InventoryScreen implements Screen {
 
     private Stage stage;
     private Table inventory_grid;
+    private Table loadout_inv;
 
     public InventoryScreen() {
         Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
@@ -288,6 +305,8 @@ class InventoryScreen implements Screen {
         inventory_grid.setDebug(true);
         inventory_grid.setFillParent(true);
         inventory_grid.pad(100);
+
+        this.loadout_inv = new Table();
 
         //BUTTONS
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
@@ -341,6 +360,7 @@ class InventoryScreen implements Screen {
 
         stage.addActor(backButton);
         stage.addActor(inventory_grid);
+        stage.addActor(loadout_inv);
         stage.addActor(tabs);
     }
 
@@ -432,7 +452,6 @@ class LoginScreen implements Screen {
 
         Table register_table = new Table();
         register_table.setBounds(Global.SCREEN_WIDTH/2,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
-        register_table.setDebug(true);
 
         this.warning_text = new Label("",skin);
 

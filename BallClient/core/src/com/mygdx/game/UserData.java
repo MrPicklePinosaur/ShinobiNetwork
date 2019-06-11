@@ -7,6 +7,10 @@ public class UserData {
     int total_deaths;
     int total_damage;
     String[] inventory;
+    String[] ninja_loadout;
+    String[] archer_loadout;
+    String[] warrior_loadout;
+    String[] wizard_loadout;
 
     public UserData() { }
 

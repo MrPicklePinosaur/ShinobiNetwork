@@ -29,9 +29,9 @@ class Projectile extends Entity {
     private float speed;
     private int totalPenetrations;
 
-    public Projectile(String name,String json_stat_data,Entity owner) {
+    public Projectile(String name,Entity owner) {
         super(name);
-        this.stats = Global.json.fromJson(ProjectileStats.class,json_stat_data);
+        this.stats = Global.json.fromJson(ProjectileStats.class,AssetManager.getProjectileJsonData(name));
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
 

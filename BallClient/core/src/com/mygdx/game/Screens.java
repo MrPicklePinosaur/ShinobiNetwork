@@ -166,12 +166,14 @@ class GameScreen implements Screen {
             ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
             choose.addListener(new ClickListener() {
                 @Override public void clicked(InputEvent event,float x,float y) {
-                    Global.server_socket.send_msg(MT.RESPAWN,class_list[index]);
+                    String[] load_out = Global.user_data.getLoadout(class_list[index]); //TODO: DONT TRUST USER WITH THIS DATA
+                    String msg = class_list[index]+","+load_out[0]+","+load_out[1];
+                    Global.server_socket.send_msg(MT.RESPAWN,msg);
                 }
             });
             respawn_menu.add(choose).pad(10);
         }
-        this.hide_death_screen();
+        //this.hide_death_screen();
 
         this.stage.addActor(pause_menu);
         this.stage.addActor(respawn_menu);

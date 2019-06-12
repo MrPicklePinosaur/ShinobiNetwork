@@ -197,6 +197,11 @@ class BallClientHandler {
 
             if (register_success) { this.send_msg(MT.REGISTERSUCCESS,""); }
             else { this.send_msg(MT.REGISTERFAILED,""); }
+        } else if (msg_type == MT.RESPAWN) {
+            String[] data = msg[1].split(","); //message comes in the form: class,weapon,ability
+
+            init_client_entity(data[0],data[1],data[2]);
+
         }
 
         //the following is code that will only work if client_entity is enabled
@@ -207,10 +212,8 @@ class BallClientHandler {
         }
     }
 
-    public void init_client_entity() {
-        String player_class = "ninja";
-
-        this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),this.teamtag);
+    public void init_client_entity(String player_class,String weapon,String ability) {
+        this.client_entity = new Player(player_class,weapon,ability,this.teamtag);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);

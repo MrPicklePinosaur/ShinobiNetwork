@@ -164,6 +164,9 @@ class GameScreen implements Screen {
         for (int i = 0; i < 4; i++) {
             final int index = i;
             ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
+            Image class_image = new Image(AssetManager.getUIImage(class_list[index]));
+            class_image.setFillParent(true);
+            choose.addActor(class_image);
             choose.addListener(new ClickListener() {
                 @Override public void clicked(InputEvent event,float x,float y) {
                     String[] load_out = Global.user_data.getLoadout(class_list[index]); //TODO: DONT TRUST USER WITH THIS DATA
@@ -192,13 +195,13 @@ class GameScreen implements Screen {
         Particle.draw_all(batch, Gdx.graphics.getDeltaTime());
         batch.end();
 
-        //draw UI
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
         shapeRenderer.end();
+
+        //draw UI
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
         //update stuff
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -647,7 +650,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

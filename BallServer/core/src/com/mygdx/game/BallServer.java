@@ -99,16 +99,10 @@ class BallClientHandler {
                     Global.game.new_chat_msg("CLIENT HAS DISCONNECTED");
 
                     //first of all, send a message to the client telling them they dced
-
-                    //tell entity to stop drawing it
-                    if (client_entity != null) { //there is a chance that an entity was never inited
-                        killPlayer();
-                    }
-
-                    //tie off some loose ends
-                    removeClient();
+                    removePlayerFromGame();
                     close_connection();
                 }
+
 
             }
         }).start();
@@ -120,6 +114,17 @@ class BallClientHandler {
         Entity.removeEntity(this.client_entity.getWeapon()); //remove the player's weapon
         Global.game.removePlayer(this.client_entity);
         this.client_entity = null;
+        if (isGameInProgress()) { send_msg(MT.CHOOSECLASS,""); } //if the player is still in game ask to choose new class to play as now
+    }
+
+    public void removePlayerFromGame () { //used when the player dcs
+        //tell entity to stop drawing it
+        if (client_entity != null) { //there is a chance that an entity was never inited
+            killPlayer();
+        }
+
+        //tie off some loose ends
+        removeClient();
     }
 
     public void close_connection() {
@@ -194,6 +199,7 @@ class BallClientHandler {
             Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
             this.disableGIP();
+            removePlayerFromGame();
             Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");

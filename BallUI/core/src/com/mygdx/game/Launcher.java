@@ -22,17 +22,15 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import java.util.LinkedList;
-import java.util.TreeMap;
-import java.util.Vector;
+import java.util.*;
 
 public class Launcher extends ApplicationAdapter {
     ChatLog cl;
     Texture minimap;
     private Stage stage;
     private Table table;
-    private HealthTracker ht;
-    TreeMap<String,Integer> players;
+    HashMap<String,LinkedList<Integer>> players;
+    Leaderboard lb;
     @Override
     public void create () {
         stage = new Stage();
@@ -41,18 +39,25 @@ public class Launcher extends ApplicationAdapter {
         table.setFillParent(true);
         table.setDebug(false);
         stage.addActor(table);
+        stage.addActor(Leaderboard.table);
         cl = new ChatLog(table);
+        //Leaderboard.setTable(leaderTable);
         minimap = new Texture("MiniMap.png");
-        ht = new HealthTracker(new Vector2(100f,100f));
 
         String username = "Daniel Liu";
         String classname = "Scout";
         int level = 50;
         String query1 = "INSERT INTO players (username,class,level) VALUES ('u','c',1)";
         //String query1 = "INSERT INTO players (username,class,level) VALUES ('"+username+"', '"+classname+"', "+level+")";
-        players = new TreeMap<String, Integer>();
-        players.put("Shrey",1);
-        players.put("Daniel",100);
+        players = new HashMap<String, LinkedList<Integer>>();
+        players.put("Shrey",new LinkedList<Integer>(Arrays.asList(1,20,200,0)));
+        players.put("Daniel",new LinkedList<Integer>(Arrays.asList(200,0,200000,0)));
+        lb = new Leaderboard("Team");
+        lb.updateLeaderboard(players);
+        players.put("Anish",new LinkedList<Integer>(Arrays.asList(0,200,0,1)));
+        lb.updateLeaderboard(players);
+        players.put("Anisahodsaioasdj",new LinkedList<Integer>(Arrays.asList(0,200,0,1)));
+        lb.updateLeaderboard(players);
     }
 
     @Override
@@ -65,7 +70,6 @@ public class Launcher extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        ht.drawAll();
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Timer.updateLives(20,20);
@@ -74,11 +78,9 @@ public class Launcher extends ApplicationAdapter {
         //cl.sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
         cl.sr.rect(1340,550,250,350,Color.CLEAR,Color.CLEAR,Color.BLUE,Color.BLUE);  //temporary space cover, will be replaced by minimap later
         cl.sr.end();
-        Leaderboard.updateLeaderboard(players);
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        ht.dispose();
     }}

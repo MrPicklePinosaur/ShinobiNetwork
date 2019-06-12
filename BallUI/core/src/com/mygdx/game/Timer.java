@@ -76,21 +76,17 @@ public class Timer {
 
         */
         //lefthand side
-        sr.rect(Gdx.graphics.getWidth()/2.631578946f,Gdx.graphics.getHeight()-height,-Gdx.graphics.getWidth()*2f/10f,height,Color.NAVY,Color.NAVY,Color.NAVY,Color.NAVY);
-        sr.rect(Gdx.graphics.getWidth()/2.65339967f,Gdx.graphics.getHeight()/1.08433735f, -Gdx.graphics.getWidth()/5.16129f*bluelives/20f,height/1.153846153f,Color.BLUE,Color.BLUE,Color.BLUE,Color.BLUE);
+        sr.rect(Gdx.graphics.getWidth()/2.631578946f,Gdx.graphics.getHeight()/1.0650879f,-Gdx.graphics.getWidth()*2f/10f,height/1.666666667f,Color.NAVY,Color.NAVY,Color.NAVY,Color.NAVY);
+        sr.rect(Gdx.graphics.getWidth()/2.65339967f,Gdx.graphics.getHeight()/1.05882353f, -Gdx.graphics.getWidth()/5.16129f*bluelives/20f,height/2.14285714f,Color.BLUE,Color.BLUE,Color.BLUE,Color.BLUE);
         //righthand side
-        sr.rect(Gdx.graphics.getWidth()*6.2f/10f,Gdx.graphics.getHeight()-height,Gdx.graphics.getWidth()*2f/10f,height,Color.FOREST,Color.FOREST,Color.FOREST,Color.FOREST);
-        sr.rect(Gdx.graphics.getWidth()/1.60481f,Gdx.graphics.getHeight()/1.08433735f, Gdx.graphics.getWidth()/5.16129f*redlives/20f,height/1.153846153f,Color.GREEN,Color.GREEN,Color.GREEN,Color.GREEN);
+        sr.rect(Gdx.graphics.getWidth()*6.2f/10f,Gdx.graphics.getHeight()/1.0650879f,Gdx.graphics.getWidth()*2f/10f,height/1.666666667f,Color.FOREST,Color.FOREST,Color.FOREST,Color.FOREST);
+        sr.rect(Gdx.graphics.getWidth()/1.60481f,Gdx.graphics.getHeight()/1.05882353f, Gdx.graphics.getWidth()/5.16129f*redlives/20f,height/2.14285714f,Color.GREEN,Color.GREEN,Color.GREEN,Color.GREEN);
         for(int i=0;i<redlives;i++){
-            if(i!=0) {
-                sr.rect(Gdx.graphics.getWidth() / 1.60481f + i * 16f, Gdx.graphics.getHeight() / 1.08433735f, Gdx.graphics.getWidth() * 0.00375f, height / 1.153846153f, Color.FOREST, Color.FOREST, Color.FOREST, Color.FOREST);
-                //15-->15.26, 0.00625-->0.003
-            }
+            sr.rect(Gdx.graphics.getWidth() / 1.60481f + i * 16f, Gdx.graphics.getHeight() / 1.05882353f, Gdx.graphics.getWidth() * 0.00375f, height / 2.14285714f, Color.FOREST, Color.FOREST, Color.FOREST, Color.FOREST);
+            //15-->15.26, 0.00625-->0.003
         }
         for(int i=0;i<bluelives;i++){
-            if(i!=0) {
-                sr.rect(Gdx.graphics.getWidth() / 2.65339967f - i * 16f, Gdx.graphics.getHeight() / 1.08433735f, -Gdx.graphics.getWidth() * 0.00375f, height / 1.153846153f, Color.NAVY,Color.NAVY,Color.NAVY,Color.NAVY);
-            }
+            sr.rect(Gdx.graphics.getWidth() / 2.65339967f - i * 16f, Gdx.graphics.getHeight() / 1.05882353f, -Gdx.graphics.getWidth() * 0.00375f, height / 2.14285714f, Color.NAVY,Color.NAVY,Color.NAVY,Color.NAVY);
         }
         //687 = 1600*1.60481 + 20*x +
         //310 = 20*x + 1600*0.0015f

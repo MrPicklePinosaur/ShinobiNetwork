@@ -5,9 +5,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -568,10 +570,8 @@ class LoginScreen implements Screen {
     private TextField reg_email_field;
     private TextField reg_password_field;
     private TextField confirm_password_field;
-
     public LoginScreen() {
         stage = new Stage();
-
         this.username_field = new TextField("",Global.skin);
         username_field.setMessageText("Username"); //displays when box is empty
         username_field.setMaxLength(16);
@@ -607,22 +607,44 @@ class LoginScreen implements Screen {
 
         CheckBox remember_me = new CheckBox("Remember me",Global.skin);
 
-        Table login_table = new Table();
+        Table login_table = new Table(Global.skin);
+        Pixmap loginPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        loginPixmap.setColor(Color.valueOf("db0a3180"));//hexcode with A - 80: 50% transparency
+        loginPixmap.fill();
+        login_table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(loginPixmap))));
+
+        Label logInLabel = new Label("Log in!",Global.skin);
+        Label.LabelStyle logInLabelStyle = new Label.LabelStyle();
+        logInLabelStyle.font = Global.skin.getFont("PixelFont");
+        logInLabel.setStyle(logInLabelStyle);
+
         login_table.setBounds(0,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
-        login_table.add(invalid_creds);
+        login_table.add(logInLabel).padBottom(10);
         login_table.row();
-        login_table.add(username_field);
+        login_table.add(invalid_creds).padBottom(10);
         login_table.row();
-        login_table.add(password_field);
+        login_table.add(username_field).padBottom(5);
         login_table.row();
-        login_table.add(remember_me.pad(10));
+        login_table.add(password_field).padTop(5).padBottom(5);
         login_table.row();
-        login_table.add(login_button);
+        login_table.add(remember_me).padTop(5);
+        login_table.row();
+        login_table.add(login_button).padTop(10);
 
 
-        Table register_table = new Table();
+        Table register_table = new Table(Global.skin);
+        Pixmap registerPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        registerPixmap.setColor(Color.valueOf("084ca180"));//hexcode with A - 80: 50% transparency
+        registerPixmap.fill();
+        register_table.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(registerPixmap))));
+
+        Label registerLabel = new Label("Register!",Global.skin);
+        Label.LabelStyle registerLabelStyle = new Label.LabelStyle();
+        registerLabelStyle.font = Global.skin.getFont("PixelFont");
+        registerLabel.setStyle(registerLabelStyle);
+
+
         register_table.setBounds(Global.SCREEN_WIDTH/2,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
-
         this.warning_text = new Label("",Global.skin);
 
         this.reg_username_field = new TextField("",Global.skin);
@@ -653,17 +675,19 @@ class LoginScreen implements Screen {
             }
         });
 
-        register_table.add(warning_text).pad(10);
+        register_table.add(registerLabel).padBottom(10);
         register_table.row();
-        register_table.add(reg_username_field);
+        register_table.add(warning_text).padBottom(10);
         register_table.row();
-        register_table.add(reg_email_field);
+        register_table.add(reg_username_field).padBottom(5);
         register_table.row();
-        register_table.add(reg_password_field);
+        register_table.add(reg_email_field).padTop(5).padBottom(5);
         register_table.row();
-        register_table.add(confirm_password_field);
+        register_table.add(reg_password_field).padTop(5).padBottom(5);
         register_table.row();
-        register_table.add(register_button);
+        register_table.add(confirm_password_field).padTop(5);
+        register_table.row();
+        register_table.add(register_button).padTop(10);
 
         stage.addActor(login_table);
         stage.addActor(register_table);
@@ -671,7 +695,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

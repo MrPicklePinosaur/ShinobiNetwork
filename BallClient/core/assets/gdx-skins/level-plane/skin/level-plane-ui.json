@@ -94,6 +94,12 @@ com.badlogic.gdx.graphics.Color: {
 		g: 1
 		b: 1
 		a: 1
+	},
+	"gray": {
+		"r": 0.29412,
+		"g": 0.30196,
+		"b": 0.31765,
+		"a": 1
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
@@ -686,7 +692,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: black
 		up: button-1
 		down: button-1-down
-	}
+	},
+	"large": {
+		"font": title,
+		"fontColor": white,
+		"up": button-big-1,
+		"down": button-big-1-down
+	},
 	c2: {
 		font: subtitle
 		fontColor: black
@@ -723,7 +735,11 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: button-small-3
 		down: button-small-3-down
 	}
-}
+},
+com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable: {
+	paddedGray: { region: white, leftWidth: 200, rightWidth: 200, topHeight: 4, bottomHeight: 4 },
+	paddedDarkGray: { region: white, leftWidth: 200, rightWidth: 200, topHeight: 4, bottomHeight: 4 }
+},
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: subtitle

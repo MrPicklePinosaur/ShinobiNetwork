@@ -3,15 +3,18 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -20,7 +23,6 @@ import java.util.ArrayList;
 class MainmenuScreen implements Screen {
 
     private Stage stage;
-
     public MainmenuScreen() {
 
         TextButton play_button = new TextButton("Play",Global.skin);
@@ -163,7 +165,7 @@ class GameScreen implements Screen {
         final String[] class_list = new String[]{"ninja","archer","warrior","wizard"};
         for (int i = 0; i < 4; i++) {
             final int index = i;
-            ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
+            ImageButton choose = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("choose_class_up"))),new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("choose_class_down"))));
             Image class_image = new Image(AssetManager.getUIImage(class_list[index]));
             class_image.setFillParent(true);
             choose.addActor(class_image);
@@ -286,11 +288,30 @@ class RetryconnectionScreen implements Screen {
     private Stage stage;
     private TextButton retry_button;
     private boolean connected = false;
+    private TextButton.TextButtonStyle tbs;
 
     public RetryconnectionScreen() {
         this.stage = new Stage();
-
-        this.retry_button = new TextButton("Retry connection",Global.skin);
+        this.tbs = new TextButton.TextButtonStyle();
+        Drawable db = Global.skin.newDrawable("buttonColor",Color.GRAY);
+        db.setLeftWidth(Global.SCREEN_WIDTH/75f);
+        db.setRightWidth(Global.SCREEN_WIDTH/100f);
+        db.setTopHeight(Global.SCREEN_HEIGHT/55f);
+        db.setBottomHeight(Global.SCREEN_HEIGHT/100f);
+        this.tbs.up = db;
+        db = Global.skin.newDrawable("buttonOverColor",Color.BLUE);
+        this.tbs.over = db;
+        db = Global.skin.newDrawable("buttonDownColor",Color.GREEN);
+        this.tbs.down = db;
+        this.tbs.font = Global.skin.getFont("PixelFont");
+        this.tbs.overFontColor = Color.BLACK;
+        this.tbs.fontColor = Color.WHITE;
+        this.tbs.pressedOffsetX = 3;
+        this.tbs.pressedOffsetY = -3;
+        Global.skin.add("PixelFontStyle",tbs);
+        this.retry_button = new TextButton("Retry connection",Global.skin,"PixelFontStyle");
+        this.retry_button.setStyle(this.tbs);
+        this.retry_button.setPosition(Global.SCREEN_WIDTH/2f-this.retry_button.getWidth()/2f,Global.SCREEN_HEIGHT/2f-this.retry_button.getHeight()/2f);
         retry_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 connected = Global.game.attempt_connection(Global.server_ip, Global.server_port);
@@ -329,7 +350,7 @@ class InventoryScreen implements Screen {
         this.inv = new Inventory(this.stage);
         inv.show_inv();
 
-        ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
+        ImageButton backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("back"))));
         backButton.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.mainmenu_screen);
@@ -452,7 +473,7 @@ class Inventory {
 
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns
-                final ImageButton slot = new ImageButton(new TextureRegionDrawable(empty_slot_up),new TextureRegionDrawable(empty_slot_down));
+                final ImageButton slot = new ImageButton(new TextureRegionDrawable(new TextureRegion(empty_slot_up)),new TextureRegionDrawable(new TextureRegion(empty_slot_down)));
                 slot.addListener(new ClickListener() {
                     @Override public void clicked(InputEvent event,float x,float y) {
                         if (slot.getChildren().size > 1) { //size gratehr than 1 means that there is an item on this slot

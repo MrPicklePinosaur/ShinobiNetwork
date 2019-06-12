@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="877d0f0e-2c27-4f95-aa2b-00a3865a7dab" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../BallClient/core/assets/json/item_descriptions.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/assets/json/item_descriptions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/UserData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/UserData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/base_player_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/base_player_stats.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/base_weapon_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/base_weapon_stats.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/projectile_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/projectile_stats.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Ability.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Ability.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher.iws" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/assets/gdx-skins/level-plane/skin/level-plane-ui.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/assets/gdx-skins/level-plane/skin/level-plane-ui.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -101,7 +96,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
+            <state relative-caret-position="261">
               <caret line="78" column="25" selection-start-line="78" selection-start-column="25" selection-end-line="78" selection-end-column="25" />
             </state>
           </provider>
@@ -192,7 +187,7 @@
     <option name="LAST_EDITED_MODULE_NAME" />
     <option name="LAST_EDITED_TAB_NAME" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="408" />
     <option name="y" value="-6" />
     <option name="width" value="981" />
@@ -412,7 +407,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="704" extended-state="7" />
+    <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19594067" />
@@ -425,7 +420,7 @@
       <window_info id="DB Browser" order="7" weight="0.32943013" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49726775" visible="true" weight="0.32941177" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49726775" weight="0.32941177" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -544,7 +539,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
+        <state relative-caret-position="261">
           <caret line="78" column="25" selection-start-line="78" selection-start-column="25" selection-end-line="78" selection-end-column="25" />
         </state>
       </provider>

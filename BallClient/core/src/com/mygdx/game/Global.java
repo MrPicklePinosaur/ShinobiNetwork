@@ -10,6 +10,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -18,6 +22,22 @@ import com.badlogic.gdx.utils.Json;
 class Global {
 
 	public static Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
+
+	static{
+		Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		pixmap.setColor(Color.GRAY);
+		pixmap.fill();
+		skin.add("buttonColor",new Texture(pixmap));
+		pixmap.setColor(Color.BLUE);
+		pixmap.fill();
+		skin.add("buttonOverColor",new Texture(pixmap));
+		pixmap.setColor(Color.GREEN);
+		pixmap.fill();
+		skin.add("buttonDownColor",new Texture(pixmap));
+		skin.add("defaultFont",new BitmapFont());
+		skin.add("PixelFont",new BitmapFont(Gdx.files.internal("fonts/PixelFont.fnt")));
+	}
+
 	public static BallClientMain game;
 	public static Json json = new Json();
 

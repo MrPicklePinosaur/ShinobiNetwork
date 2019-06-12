@@ -139,6 +139,8 @@ public class Entity {
         assert (Entity.entity_library.containsKey(id)): "Entity not found";
         return Entity.entity_library.get(id);
     }
+
+    public static void clearEntityLib() { Entity.entity_library.clear(); }
     public static Boolean isAlive(int id) {
         return Entity.entity_library.containsKey(id) ? true : false;
     }

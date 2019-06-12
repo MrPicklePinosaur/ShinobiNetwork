@@ -62,7 +62,7 @@ enum MT { //mt stands for messageTyoe
 	//Message Types (MT) - input
 	USIN, CHATMSG, CMD, CHOOSECLASS,
 
-	CHECKCREDS, REGISTER, STARTGAME,
+	CHECKCREDS, REGISTER, STARTGAME, LEAVEGAME
 }
 
 enum ET { //et sstands for entitiy type

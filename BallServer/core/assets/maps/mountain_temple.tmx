@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="109">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="110">
  <tileset firstgid="1" source="tilesets/mountain temple.tsx"/>
  <tileset firstgid="29" source="tilesets/animatedWaterShallow.tsx"/>
  <layer id="9" name="floor" width="96" height="96">
@@ -567,6 +567,9 @@
    <point/>
   </object>
   <object id="104" name="blue" x="2127.5" y="1618.5">
+   <point/>
+  </object>
+  <object id="109" name="default_camera" x="1537.5" y="1538.5">
    <point/>
   </object>
  </objectgroup>

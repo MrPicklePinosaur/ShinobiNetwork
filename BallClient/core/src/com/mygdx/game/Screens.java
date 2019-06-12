@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class MainmenuScreen implements Screen {
 
@@ -29,6 +30,7 @@ class MainmenuScreen implements Screen {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.game_screen);
                 Global.server_socket.send_msg(MT.STARTGAME,"");
+                Global.server_socket.toggleGameInProgress();
             }
         });
 
@@ -130,6 +132,13 @@ class GameScreen implements Screen {
             }
         });
         TextButton exit_button = new TextButton("Leave Game",Global.skin);
+        exit_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.server_socket.send_msg(MT.LEAVEGAME,"");
+                Global.server_socket.toggleGameInProgress();
+                Global.game.setScreen(Global.game.mainmenu_screen);
+            }
+        });
 
         this.pause_menu = new Table();
         pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);

@@ -53,7 +53,7 @@ class BallClientHandler {
     private BallClientHandler self;
 
     private Player client_entity; //used so we know which entity belongs to client
-    private boolean game_in_progress = false;
+    private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
@@ -82,8 +82,14 @@ class BallClientHandler {
                         //interperate client message
                         input_unpacker(client_msg);
 
-                        if (client_entity != null) { send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); } //TODO: prob a bad idea to put this here
+                        if (!game_in_progress) { continue; } //everything under here is stuff that can only be done if player is in game
 
+                        if (client_entity == null) { //if the player is not alive
+                            Vector2 default_camera_point = Global.map.getDefaultCameraPoint(); //if they arent, lock to a default point
+                            send_msg(MT.BINDCAM,default_camera_point.x+","+default_camera_point.y);
+                        } else { //if they are alive, send lock camera to their pos
+                            send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY());
+                        }
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
                     System.out.println("CLIENT HAS DISCONNECTED");
@@ -179,6 +185,8 @@ class BallClientHandler {
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
         } else if (msg_type == MT.STARTGAME) {
             this.toggleGameInProgress();
+        } else if (msg_type == MT.LEAVEGAME) {
+            this.toggleGameInProgress(); //TODO: THIS MAY CAUSE WEIRD BUGS, INSTEAD DO TURNGAMEINPROGRESSON and TURNGAMEINPROGRESSOFF
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");
             boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user

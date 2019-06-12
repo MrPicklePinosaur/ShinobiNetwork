@@ -100,29 +100,25 @@ public class BallClient {
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
 
-        switch(msg_type) {
-            case CHECKCREDS: //message is in the format: username, password
-                data = (MT.CHECKCREDS + "$" + msg);break;
-            case REGISTER: //message is in the format: username, password
-                data = (MT.REGISTER+"$"+msg); break;
-            case STARTGAME:
-                data = (MT.STARTGAME+"$");
-                this.toggleGameInProgress();
-                break;
+        if (msg_type == MT.STARTGAME) {
+            data = (MT.STARTGAME+"$");
+            this.toggleGameInProgress();
+        } else if (msg_type == MT.CHECKCREDS || msg_type == MT.REGISTER) {
+            data = msg_type+"$"+msg;
         }
 
+        /*
+        CHECKCREDS - message is in the format: username, password
+        REGISTER - message is in the format: username, password
+         */
+
+        //the following only work if game is in progress
         if (this.game_in_progress == true) {
-            switch (msg_type) {
-                case USIN: //if the message we want to send is a user input
-                    data = (MT.USIN + "$" + msg); break;
-                case CHATMSG:
-                    data = (MT.CHATMSG + "$" + msg); break;
-                case CMD:
-                    data = (MT.CMD + "$" + msg); break;
-                case CHOOSECLASS:
-                    data = (MT.CMD + "$" + msg); break; //messages is the class that is chosen to play as
+            if (msg_type == MT.USIN || msg_type == MT.CHATMSG || msg_type == MT.CMD || msg_type == MT.CHOOSECLASS) {
+                data = msg_type+"$"+msg;
             }
         }
+
         assert (data != null): "empty message";
         return data;
     }

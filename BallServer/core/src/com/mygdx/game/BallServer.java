@@ -134,32 +134,24 @@ class BallClientHandler {
     private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
 
-        switch(msg_type) {
-            case CREDSACCEPTED:
-                data = MT.CREDSACCEPTED+"$"+msg; break; //there is no msg
-            case CREDSDENIED:
-                data = MT.CREDSDENIED+"$"; break; //there is no msg
-            case REGISTERSUCCESS:
-                data = MT.REGISTERSUCCESS+"$"; break;
-            case REGISTERFAILED:
-                data = MT.REGISTERFAILED+"$"; break;
+        if (msg_type == MT.CREDSACCEPTED) { //with message
+            data = MT.CREDSACCEPTED+"$"+msg;
+        } else if (msg_type == MT.CREDSDENIED || msg_type == MT.REGISTERSUCCESS || msg_type == MT.REGISTERFAILED) {
+            data = MT.REGISTERFAILED+"$"; //no message
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            switch (msg_type) {
-                case UPDATEENTITY: //tell client the position of all entites
-                    data = (MT.UPDATEENTITY + "$" + msg);break;
-                case KILLENTITY: //tell client to remove client from their render queue
-                    data = (MT.KILLENTITY + "$" + msg);break; //in this case, msg is the entity id
-                case LOADMAP:
-                    data = (MT.LOADMAP + "$" + msg);break; //msg is the filepath of the map image
-                case SENDCHAT:
-                    data = (MT.SENDCHAT + "$" + msg);break; //msg is text_colour,msg
-                case BINDCAM:
-                    data = (MT.BINDCAM + "$" + msg);break; //amsg is an x and y value of where the camera should be at
-                case UPDATEPARTICLE:
-                    data = (MT.UPDATEPARTICLE + "$" + msg);break;
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE) {
+                data = msg_type+"$"+msg;
             }
+            /*
+            UPDATEENTITY - tell client the position of all entites
+            KILLENTITY - tell client to remove client from their render queue; in this case, msg is the entity id
+            LOADMAP - msg is the filepath of the map image
+            SENDCHAT - msg is the new chat msg
+            BINDCAM - msg is an x and y value of where the camera should be at
+            UPDATEPARTICLE -
+             */
         }
 
         assert (data != null): "empty message";
@@ -169,37 +161,36 @@ class BallClientHandler {
     private void input_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        MT mt = MT.valueOf(msg[0].toUpperCase());
+        MT msg_type = MT.valueOf(msg[0].toUpperCase());
 
-        switch(mt) {
-            case CHATMSG:
-                Global.game.new_chat_msg(msg[1]); break;
-            case CMD:
-                String[] cmd_msg = msg[1].split(" "); break;
-                //execute_command(cmd_msg);
-            case CHECKCREDS:
-                String[] cred = msg[1].split(",");
-                if (Global.db.checkCredentials(cred[0], cred[1])) {
+        if (msg_type == MT.CHATMSG) {
+            Global.game.new_chat_msg(msg[1]);
+        } else if (msg_type == MT.CMD) {
+            String[] cmd_msg = msg[1].split(" ");
+            execute_command(cmd_msg);
+        } else if (msg_type == MT.CHECKCREDS) {
+            String[] cred = msg[1].split(",");
+            if (Global.db.checkCredentials(cred[0],cred[1])) {
 
-                    String json_data = Global.db.getData(cred[0]).replaceAll("\\s", ""); //get rid of all white space in json
-                    send_msg(MT.CREDSACCEPTED, json_data); //if the creds are accepted, send the data to client
+                String json_data = Global.db.getData(cred[0]).replaceAll("\\s",""); //get rid of all white space in json
+                send_msg(MT.CREDSACCEPTED,json_data); //if the creds are accepted, send the data to client
 
-                } //if the creds work
-                else { send_msg(MT.CREDSDENIED, ""); } //if they dont
-                break;
-            case STARTGAME:
-                this.toggleGameInProgress(); break;
-            case REGISTER:
-                String[] user_data = msg[1].split(",");
-                boolean register_success = Global.db.new_user(user_data[0], user_data[1]); //atempt to create a new user
+            } //if the creds work
+            else { send_msg(MT.CREDSDENIED,""); } //if they dont
+        } else if (msg_type == MT.STARTGAME) {
+            this.toggleGameInProgress();
+        } else if (msg_type == MT.REGISTER) {
+            String[] user_data = msg[1].split(",");
+            boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
 
-                if (register_success) { this.send_msg(MT.REGISTERSUCCESS, ""); }
-                else { this.send_msg(MT.REGISTERFAILED, ""); }
-                break;
-
+            if (register_success) { this.send_msg(MT.REGISTERSUCCESS,""); }
+            else { this.send_msg(MT.REGISTERFAILED,""); }
         }
 
-        if (mt == MT.USIN && this.client_entity != null) {
+        //the following is code that will only work if client_entity is enabled
+        if (client_entity == null) { return; }
+
+        if (msg_type == MT.USIN) {
             this.client_entity.handleInput(msg[1]);
         }
     }

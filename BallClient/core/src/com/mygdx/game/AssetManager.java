@@ -22,6 +22,7 @@ public class AssetManager {
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
     public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
     public static HashMap<String, ItemData> item_descrip = new HashMap<String, ItemData>();
+    public static HashMap<String,LinkedList<String>> loadout = new HashMap<String,LinkedList<String>>();
 
     public static void load_all() {
         loadFromDirectory("sprites/",AssetManager.animation_lib);

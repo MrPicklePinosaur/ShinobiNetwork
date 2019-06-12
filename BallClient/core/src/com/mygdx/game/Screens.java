@@ -433,7 +433,7 @@ class Inventory {
 
     public void refreshInventory(String filter) { //filter inv by item type, if an empty string is provided, it means no filtere
         //TODO: when refreshing inventory, actually ask the server for a refresh
-        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+
         this.inventory_grid.clearChildren();
         //populate the table with the contents of the user's inventory
         ArrayList<String> inv = new ArrayList<String>();
@@ -443,22 +443,26 @@ class Inventory {
             }
         }
 
+        Texture empty_slot_up = AssetManager.getUIImage("empty_slot_up");
+        //Texture empty_slot_hover = AssetManager.getUIImage("empty_slot_hover");
+        Texture empty_slot_down = AssetManager.getUIImage("empty_slot_down");
+
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns
-                Stack stack = new Stack(); //used to overlay images
-                Image empty_slot_img = new Image(empty_slot);
-                stack.add(empty_slot_img);
+                ImageButton slot = new ImageButton(new TextureRegionDrawable(empty_slot_up),new TextureRegionDrawable(empty_slot_down));
                 if (inv.size() > 0) { //go through client's inv list and draw them
                     String item_path = inv.get(0);
                     Image item = new Image(AssetManager.getSpritesheet(item_path));
+                    item.setFillParent(true);
+                    slot.addActor(item);
                     inv.remove(0);
-                    stack.add(item);
                 }
-                empty_slot_img.setScaling(Scaling.fit);
-                this.inventory_grid.add(stack).pad(10);
+
+                this.inventory_grid.add(slot).pad(10);
             }
             this.inventory_grid.row(); //move down a row
         }
+
     }
 
     public void show_inv() {

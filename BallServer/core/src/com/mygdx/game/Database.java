@@ -109,8 +109,8 @@ public class Database {
                 "\"inventory\": "+default_inv+",\n"+
                         "\"ninja_loadout\": "+default_ninja+",\n"+
                         "\"archer_loadout\": "+default_archer+",\n"+
-                        "\"warrior_loadout\": "+default_inv+",\n"+
-                        "\"wizard_loadout\": "+default_inv+",\n"+
+                        "\"warrior_loadout\": "+default_warrior+",\n"+
+                        "\"wizard_loadout\": "+default_wizard+",\n"+
                 "}";
         return defaultJson;
     }

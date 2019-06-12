@@ -119,6 +119,8 @@ public class BallClient {
                     data = (MT.CHATMSG + "$" + msg); break;
                 case CMD:
                     data = (MT.CMD + "$" + msg); break;
+                case CHOOSECLASS:
+                    data = (MT.CMD + "$" + msg); break; //messages is the class that is chosen to play as
             }
         }
         assert (data != null): "empty message";

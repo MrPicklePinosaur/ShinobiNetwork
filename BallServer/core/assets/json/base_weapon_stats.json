@@ -22,7 +22,7 @@
 		"weapon_type": "katana",
 		"projectile": "jade_slice",
 		"fire_type": "manual",
-		"fire_rate": 0.3,
+		"fire_rate": 0.25,
 		"fire_pattern": "straight",
 		"time_to_charge": 1000000
 	},

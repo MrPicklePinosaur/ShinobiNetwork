@@ -113,6 +113,7 @@ class GameScreen implements Screen {
 
     private boolean show_menu = false;
     private Table pause_menu;
+    private Table choose_class;
     private Inventory inv;
 
     public GameScreen() {
@@ -137,18 +138,32 @@ class GameScreen implements Screen {
         pause_menu.add(inventory_button).pad(10);
         pause_menu.row();
         pause_menu.add(exit_button).pad(10);
+        this.pause_menu.setVisible(false);
 
+        //Inventory
         this.inv = new Inventory(this.stage);
         this.inv.hide_inv();
+
+        //Choose class menu
+        this.choose_class = new Table();
+        choose_class.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        for (int i = 0; i < 4; i++) {
+            ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
+            choose.addListener(new ClickListener() {
+                @Override public void clicked(InputEvent event,float x,float y) {
+                    
+                }
+            });
+            choose_class.add(choose).pad(10);
+        }
+
+        this.stage.addActor(pause_menu);
+        this.stage.addActor(choose_class);
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         this.input_handler = new InputHandler();
         inputMultiplexer.addProcessor(this.input_handler);
-
-        this.stage.addActor(pause_menu);
-
-        this.pause_menu.setVisible(false);
     }
 
     @Override public void render(float delta) {
@@ -164,7 +179,6 @@ class GameScreen implements Screen {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if inv is open
-        Global.chatlog.drawLog(shapeRenderer);
         shapeRenderer.end();
 
         //update stuff

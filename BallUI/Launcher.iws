@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="877d0f0e-2c27-4f95-aa2b-00a3865a7dab" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/assets/json/item_descriptions.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/assets/json/item_descriptions.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/UserData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/UserData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/base_player_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/base_player_stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/base_weapon_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/base_weapon_stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/core/assets/json/projectile_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/assets/json/projectile_stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Ability.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Ability.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Launcher.iws" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/core/com/mygdx/game/HealthTracker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/core/com/mygdx/game/Launcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/core/com/mygdx/game/Launcher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/core/com/mygdx/game/Leaderboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/core/com/mygdx/game/Leaderboard.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -82,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1252">
-              <caret line="188" column="48" lean-forward="true" selection-start-line="188" selection-start-column="48" selection-end-line="188" selection-end-column="48" />
+            <state relative-caret-position="249">
+              <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2201#2209#0" expanded="true" />
@@ -97,7 +98,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="79">
@@ -106,10 +107,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
+            <state relative-caret-position="133">
               <caret line="78" column="140" selection-start-line="78" selection-start-column="140" selection-end-line="78" selection-end-column="140" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -181,9 +182,9 @@
         <option value="$PROJECT_DIR$/core/src/com/mygdx/game/SqliteDB.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/game/HealthTracker.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java" />
-        <option value="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java" />
       </list>
     </option>
   </component>
@@ -191,7 +192,7 @@
     <option name="LAST_EDITED_MODULE_NAME" />
     <option name="LAST_EDITED_TAB_NAME" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="408" />
     <option name="y" value="-6" />
     <option name="width" value="981" />
@@ -411,7 +412,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
+    <frame x="-7" y="-7" width="1295" height="704" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19594067" />
@@ -515,10 +516,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="78" column="140" selection-start-line="78" selection-start-column="140" selection-end-line="78" selection-end-column="140" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1252">
-          <caret line="188" column="48" lean-forward="true" selection-start-line="188" selection-start-column="48" selection-end-line="188" selection-end-column="48" />
+        <state relative-caret-position="249">
+          <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2201#2209#0" expanded="true" />
@@ -535,16 +546,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="79">
           <caret line="78" column="25" selection-start-line="78" selection-start-column="25" selection-end-line="78" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="78" column="140" selection-start-line="78" selection-start-column="140" selection-end-line="78" selection-end-column="140" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

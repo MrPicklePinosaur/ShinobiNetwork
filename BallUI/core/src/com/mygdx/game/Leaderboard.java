@@ -79,6 +79,8 @@ public class Leaderboard {
             0% — 00
             */
 
+            //www.hexcolortool.com for color codes
+
             Pixmap blueTitlePixmap = new Pixmap(1,1,Pixmap.Format.RGB565);
             blueTitlePixmap.setColor(Color.valueOf("084ca180"));
             blueTitlePixmap.fill();

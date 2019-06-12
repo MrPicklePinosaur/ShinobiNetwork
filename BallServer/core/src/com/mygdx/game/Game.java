@@ -117,7 +117,7 @@ class TDMGame extends Game { //team death match
 
     @Override public ArrayList<Vector3> getLeaderBoard() {
         ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.performance.getGameStats()); }
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
         return leaderboard;
     }
 
@@ -183,7 +183,7 @@ class KOTHGame extends Game { //king of the hill
 
     @Override public ArrayList<Vector3> getLeaderBoard() { //TODO: when sending team points, round to nearest whole number
         ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.performance.getGameStats()); }
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
         return leaderboard;
     }
 
@@ -212,14 +212,14 @@ class FFAGame extends Game { //free for all
 
     @Override public void addKill(Player player) {
         this.new_chat_msg("USER has obtained a KILL!");
-        if (player.performance.getKills() >= KILLS_TO_WIN) { //Player wins
+        if (player.getKills() >= KILLS_TO_WIN) { //Player wins
             this.new_chat_msg("USER has emerged VICTORIOUS");
         }
     }
 
     @Override public ArrayList<Vector3> getLeaderBoard() {
         ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.performance.getGameStats()); }
+        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
         return leaderboard;
     }
 

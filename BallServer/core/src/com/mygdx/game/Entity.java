@@ -26,6 +26,7 @@ public abstract class Entity {
     protected ET entity_type;
     protected int id;
     protected String name;
+    protected String texture_path;
     protected Body body;
     protected int spriteWidth;
     protected int spriteHeight;

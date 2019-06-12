@@ -47,19 +47,15 @@ public class CollisionListener implements ContactListener {
                         //deal damage
                         float damage = b.getDamage();
                         b.hit_effect(p,damage); //apply special effects, if there are any
-                        owner.performance.addDmgDealt(b.getDamage());
+                        owner.addDmgDealt(b.getDamage());
 
-                        try {
-                            if (p.modHp(-1*damage)) { //if the bullet killed the player
-                                b.kill_effect(p); //apply special effects, if there are any
+                        if (p.modHp(-1*damage)) { //if the bullet killed the player
+                            b.kill_effect(p); //apply special effects, if there are any
 
-                                //update stats
-                                Global.game.addKill(owner);
-                                owner.performance.addKill();
-                                p.performance.addDeath();
-                            }
-                        } catch (NullPointerException ex) { //if player dies and damage is still attmpting to be dealt
-                            System.out.println("Nullpointer in collisionlistener");
+                            //update stats
+                            Global.game.addKill(owner);
+                            owner.addKill();
+                            p.addDeath();
                         }
                     }
                 });

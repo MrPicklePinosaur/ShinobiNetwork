@@ -54,7 +54,6 @@ class BallClientHandler {
 
     private Player client_entity; //used so we know which entity belongs to client
     private TEAMTAG teamtag;
-    UserStats performance;
     private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
     public BallClientHandler(Socket client_sock) {
@@ -69,7 +68,6 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
 
         //init_client_entity();
-        this.performance = new UserStats();
 
         new Thread(new Runnable() {
             @Override
@@ -99,32 +97,26 @@ class BallClientHandler {
                     Global.game.new_chat_msg("CLIENT HAS DISCONNECTED");
 
                     //first of all, send a message to the client telling them they dced
-                    removePlayerFromGame();
+
+                    //tell entity to stop drawing it
+                    if (client_entity != null) { //there is a chance that an entity was never inited
+                        broadcast(MT.KILLENTITY, "" + client_entity.getId());
+
+                        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
+                        Entity.removeEntity(client_entity); //remove client entity from list
+
+                        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+
+                        Global.game.removePlayer(client_entity);
+                    }
+
+                    //tie off some loose ends
+                    removeClient();
                     close_connection();
                 }
 
-
             }
         }).start();
-    }
-
-    public void killPlayer() {
-        AssetManager.flagForPurge(this.client_entity.getBody()); //flag entity body for removal
-        Entity.removeEntity(this.client_entity); //remove client entity from list
-        Entity.removeEntity(this.client_entity.getWeapon()); //remove the player's weapon
-        Global.game.removePlayer(this.client_entity);
-        this.client_entity = null;
-        if (isGameInProgress()) { send_msg(MT.CHOOSECLASS,""); } //if the player is still in game ask to choose new class to play as now
-    }
-
-    public void removePlayerFromGame () { //used when the player dcs
-        //tell entity to stop drawing it
-        if (client_entity != null) { //there is a chance that an entity was never inited
-            killPlayer();
-        }
-
-        //tie off some loose ends
-        removeClient();
     }
 
     public void close_connection() {
@@ -199,7 +191,6 @@ class BallClientHandler {
             Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
             this.disableGIP();
-            removePlayerFromGame();
             Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");
@@ -210,7 +201,11 @@ class BallClientHandler {
         } else if (msg_type == MT.RESPAWN) {
             String[] data = msg[1].split(","); //message comes in the form: class,weapon,ability
 
-            init_client_entity(data[0],data[1],data[2]);
+            if (this.client_entity == null) { //if client doesnt have an entity, make a new one
+                init_client_entity(data[0], data[1], data[2]);
+            } else { //otherwise, update the class
+                switch_class(data[0], data[1], data[2]);
+            }
 
         }
 
@@ -227,6 +222,12 @@ class BallClientHandler {
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);
+    }
+
+    public void switch_class(String class_name,String weapon,String ability) {
+        Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
+        AssetManager.flagForMove(client_entity,new Vector3(spawn_point.x,spawn_point.y,0));
+        client_entity.init_data(class_name,weapon,ability);
     }
 
     public void execute_command(String[] command) {

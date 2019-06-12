@@ -23,6 +23,7 @@ public class Entity {
     private static ConcurrentHashMap<Integer,Entity> entity_library = new ConcurrentHashMap<Integer,Entity>(); //used so we know which piece of data belongs to which entity
 
     private String entity_type;
+    private String name;
     private float x;
     private float y;
     private float rotation;
@@ -35,13 +36,16 @@ public class Entity {
     private float frameTime = 0.25f; //used for animation
 
     private Entity(String name) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
-
-        TextureRegion[] frames = Entity.createAnimation(name);
-        this.animation = new Animation<TextureRegion>(frameTime,frames);
+        this.name = name;
+        init_animation(name);
 
         this.x = 0; this.y = 0; this.rotation = 0;
         this.old_x = 0; this.old_y = 0; this.old_rotation = 0;
-        this.frameTime = 1f;
+    }
+
+    public void init_animation(String name) {
+        TextureRegion[] frames = Entity.createAnimation(name);
+        this.animation = new Animation<TextureRegion>(frameTime,frames);
 
     }
 
@@ -88,6 +92,12 @@ public class Entity {
             entity = newEntity;
 
         } else { entity = Entity.entity_library.get(id); }
+
+        if (!name.equals(entity.getName())) { //if the name changed, that means the animation changed
+            System.out.println("name change");
+            entity.init_animation(name);
+            entity.setName(name);
+        }
 
         //apply all the updates
         entity.entity_type = entity_type;
@@ -139,15 +149,16 @@ public class Entity {
         assert (Entity.entity_library.containsKey(id)): "Entity not found";
         return Entity.entity_library.get(id);
     }
-
-    public static void clearEntityLib() { Entity.entity_library.clear(); }
     public static Boolean isAlive(int id) {
         return Entity.entity_library.containsKey(id) ? true : false;
     }
+    public String getName() { return this.name; }
     public String getET() { return this.entity_type; }
     public float getX() { return this.x; }
     public float getY() { return this.y; }
     public float getRotation() { return this.rotation; }
     public float getOldX() { return this.old_x; }
     public float getOldY() { return this.old_y; }
+
+    public void setName(String name) { this.name = name; }
 }

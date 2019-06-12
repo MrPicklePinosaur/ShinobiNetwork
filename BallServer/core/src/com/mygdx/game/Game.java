@@ -57,7 +57,8 @@ public abstract class Game {
     public String getAllHP() {
         String msg = "";
         for (Player p : this.player_list) {
-            msg += (" "+p.getId()+","+p.getCurrentHp());
+            float hp = p.getCurrentHp()/p.stats.getHp();
+            msg += (" "+p.getId()+","+hp);
         }
         if (msg.length() != 0) { msg = msg.substring(1); }
         return msg;

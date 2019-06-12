@@ -25,7 +25,6 @@ public class Entity {
 
     private String entity_type;
     private String name;
-    private int id;
     private float x;
     private float y;
     private float rotation;
@@ -107,9 +106,17 @@ public class Entity {
         entity.update_pos(x,y,rot);
 
         //update health bars
-        
+        if (ET.valueOf(entity.entity_type.toUpperCase()) == ET.PLAYER) {
+            HealthTracker ht;
+            if (!HealthTracker.getHealthBarList().containsKey(id)) { //if an hp bar hasnt been created for this char yet
+                ht = new HealthTracker(id);
+            } else {
+                ht = HealthTracker.getHealthBarList().get(id);
+            }
+            assert (ht != null) : "Health bar not found";
 
-        HealthTracker.sync_pos();
+            ht.setPos(entity.getX() - ht.getBarWidth() / 2, entity.getY() - HealthTracker.y_offset);
+        }
     }
 
     public static void kill_entity(int id) {

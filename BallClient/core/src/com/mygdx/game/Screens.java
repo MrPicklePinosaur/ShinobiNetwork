@@ -202,7 +202,7 @@ class GameScreen implements Screen {
         shapeRenderer.end();
 
         batch.begin();
-        HealthTracker.drawAll(batch);
+        //HealthTracker.drawAll(batch);
         batch.end();
 
         //draw UI
@@ -675,7 +675,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

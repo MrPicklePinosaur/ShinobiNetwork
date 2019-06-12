@@ -49,7 +49,8 @@ class Projectile extends Entity {
         fdef.shape = circle;
 
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
-        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
+        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_REDSTATIC | Global.BIT_BLUESTATIC;
+
         fdef.isSensor = true;
         this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));

@@ -39,6 +39,8 @@ class Global {
 	public static final short BIT_PLAYER = 4;
 	public static final short BIT_ENEMY = 8;
 	public static final short BIT_PROJECTILE = 16;
+	public static final short BIT_REDSTATIC = 32;
+	public static final short BIT_BLUESTATIC = 64;
 
 	//Used for i/o
 	private static int code = -1;

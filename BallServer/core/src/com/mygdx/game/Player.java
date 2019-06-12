@@ -58,8 +58,15 @@ public class Player extends Entity {
         circle.setRadius((this.spriteWidth/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
+
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+        if (this.teamtag == TEAMTAG.RED) {
+            fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE | Global.BIT_BLUESTATIC;
+        } else if (this.teamtag == TEAMTAG.BLUE) {
+            fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE | Global.BIT_REDSTATIC;
+        }
+
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
@@ -218,6 +225,9 @@ public class Player extends Entity {
         if (this.health <= 0) {
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
+
+            //TODO: CLEAR ALL ACTIVE EFFECTS
+
             this.reset_game_stats();
             return true;
         }

@@ -61,8 +61,16 @@ public class GameMap {
             shape.setAsBox(rect.getWidth()/Global.PPM/2,rect.getHeight()/Global.PPM/2); //the parameters are half the width and half the height (for some reason)
             FixtureDef fdef = new FixtureDef();
             fdef.shape = shape;
-            fdef.filter.categoryBits = Global.BIT_STATIC;
-            fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+
+            if (obj.getName() == null) {
+                fdef.filter.categoryBits = Global.BIT_STATIC;
+                fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+            } else if (obj.getName().equals("red_spawn_door")) {
+                fdef.filter.categoryBits = Global.BIT_REDSTATIC;
+            } else if (obj.getName().equals("blue_spawn_door")) {
+                fdef.filter.categoryBits = Global.BIT_BLUESTATIC;
+            }
+
             Body new_body = AssetManager.createBody(fdef, BodyDef.BodyType.StaticBody);
             new_body.setUserData(new Pair<Class<?>, GameMap>(GameMap.class,this));
             //new_body.setUserData(this);

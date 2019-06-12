@@ -27,10 +27,12 @@ public class Player extends Entity {
     private static CopyOnWriteArrayList<Player> hold_list = new CopyOnWriteArrayList<Player>();
     private ConcurrentHashMap<String,ActiveEffect> activeEffects_list = new ConcurrentHashMap<String, ActiveEffect>();
 
+    private BallClientHandler server_socket;
     public PlayerStats stats;
     private Ability ability;
     private float m_angle;
     private TEAMTAG teamtag;
+    UserStats performance;
 
     private Weapon weapon;
 
@@ -42,13 +44,9 @@ public class Player extends Entity {
     private float health;
     private float speed;
 
-    //performance stats
-    private int kills;
-    private int deaths;
-    private float dmg_dealt;
-
-    public Player(String name,String weapon_name,String ability_name,TEAMTAG teamtag) {
+    public Player(String name,String weapon_name,String ability_name,TEAMTAG teamtag,BallClientHandler server_socket) {
         super(name);
+        this.server_socket = server_socket;
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
         this.m_angle = 0;
@@ -73,6 +71,8 @@ public class Player extends Entity {
         circle.dispose();
 
         //init other vars
+        this.performance = server_socket.performance;
+
         this.weapon = new Weapon(weapon_name,this);
 
         this.init_stats(AssetManager.getPlayerJsonData(this.name));
@@ -84,7 +84,6 @@ public class Player extends Entity {
 
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
-        this.reset_performance_stats();
     }
 
     public void init_ability(String ability_name) {
@@ -97,12 +96,6 @@ public class Player extends Entity {
         this.resetShootCoolDown();
         this.resetHoldCount();
         this.resetDmgMult();
-    }
-
-    public void reset_performance_stats() { //used when the game resets
-        this.kills = 0;
-        this.deaths = 0;
-        this.dmg_dealt = 0;
     }
 
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
@@ -224,27 +217,18 @@ public class Player extends Entity {
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
         if (this.health <= 0) {
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
-            AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
+            //AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
 
             //TODO: CLEAR ALL ACTIVE EFFECTS
 
-            this.reset_game_stats();
+            //this.reset_game_stats();
+            server_socket.killPlayer();
             return true;
         }
         return false;
     }
 
-    //stat setters
-    public void addKill() { this.kills++; }
-    public void addDeath() { this.deaths++; }
-    public void addDmgDealt(float dmg_dealt) { this.dmg_dealt+= dmg_dealt; }
 
-    //stat getters
-    //possibly remove all the individual getters
-    public int getKills() { return this.kills; }
-    public int getDeaths() { return this.deaths; }
-    public float getDmgDealt() { return this.dmg_dealt; }
-    public Vector3 getGameStats() { return new Vector3(this.kills,this.deaths,this.dmg_dealt); }
 }
 
 class PlayerStats {

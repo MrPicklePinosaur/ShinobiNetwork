@@ -54,6 +54,7 @@ class BallClientHandler {
 
     private Player client_entity; //used so we know which entity belongs to client
     private TEAMTAG teamtag;
+    UserStats performance;
     private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
     public BallClientHandler(Socket client_sock) {
@@ -68,6 +69,7 @@ class BallClientHandler {
         } catch(IOException ex) { System.out.println(ex); }
 
         //init_client_entity();
+        this.performance = new UserStats();
 
         new Thread(new Runnable() {
             @Override
@@ -100,14 +102,7 @@ class BallClientHandler {
 
                     //tell entity to stop drawing it
                     if (client_entity != null) { //there is a chance that an entity was never inited
-                        broadcast(MT.KILLENTITY, "" + client_entity.getId());
-
-                        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                        Entity.removeEntity(client_entity); //remove client entity from list
-
-                        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
-
-                        Global.game.removePlayer(client_entity);
+                        killPlayer();
                     }
 
                     //tie off some loose ends
@@ -117,6 +112,14 @@ class BallClientHandler {
 
             }
         }).start();
+    }
+
+    public void killPlayer() {
+        AssetManager.flagForPurge(this.client_entity.getBody()); //flag entity body for removal
+        Entity.removeEntity(this.client_entity); //remove client entity from list
+        Entity.removeEntity(this.client_entity.getWeapon()); //remove the player's weapon
+        Global.game.removePlayer(this.client_entity);
+        this.client_entity = null;
     }
 
     public void close_connection() {
@@ -214,7 +217,7 @@ class BallClientHandler {
     }
 
     public void init_client_entity(String player_class,String weapon,String ability) {
-        this.client_entity = new Player(player_class,weapon,ability,this.teamtag);
+        this.client_entity = new Player(player_class,weapon,ability,this.teamtag,this);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);

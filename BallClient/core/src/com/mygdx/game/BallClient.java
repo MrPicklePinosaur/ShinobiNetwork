@@ -100,13 +100,17 @@ public class BallClient {
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
 
-        if (msg_type == MT.STARTGAME || msg_type == MT.LEAVEGAME) { //if the message does not need to contain a msg
+        if (msg_type == MT.STARTGAME) { //if the message does not need to contain a msg
             data = msg_type+"$";
 
         } else if (msg_type == MT.CHECKCREDS || msg_type == MT.REGISTER) {
             data = msg_type+"$"+msg;
         }
 
+        if (msg_type == MT.LEAVEGAME) {
+            data = msg_type+"$";
+            Entity.clearEntityLib();
+        }
         /*
         CHECKCREDS - message is in the format: username, password
         REGISTER - message is in the format: username, password

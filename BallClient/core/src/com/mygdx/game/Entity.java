@@ -145,6 +145,7 @@ public class Entity {
         }
     }
 
+    public static void clearEntityLib() { Entity.entity_library.clear(); }
     public static Entity getEntity(int id) {
         assert (Entity.entity_library.containsKey(id)): "Entity not found";
         return Entity.entity_library.get(id);

@@ -197,11 +197,16 @@ class WarcryAbility extends Ability {
 
 class QuiverAbility extends Ability{
 
+    private String quiver_projectile;
+    private String quiver_pattern;
+
     public QuiverAbility() { }
 
     @Override public void activate() {
-
-    }
+        if (this.name.equals("simple_quiver")) {
+            this.player.shoot(quiver_projectile,player.getMouseAngle(),quiver_pattern,1,1);
+        }
+     }
 
     @Override public void update() { //all players within a certain radius get a buff/debuff
 

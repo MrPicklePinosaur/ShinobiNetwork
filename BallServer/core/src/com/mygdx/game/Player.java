@@ -27,6 +27,7 @@ public class Player extends Entity {
     private static CopyOnWriteArrayList<Player> hold_list = new CopyOnWriteArrayList<Player>();
     private ConcurrentHashMap<String,ActiveEffect> activeEffects_list = new ConcurrentHashMap<String, ActiveEffect>();
 
+    private BallClientHandler server_socket;
     public PlayerStats stats;
     private Ability ability;
     private float m_angle;
@@ -47,8 +48,9 @@ public class Player extends Entity {
     private int deaths;
     private float dmg_dealt;
 
-    public Player(String name,String weapon_name,String ability_name,TEAMTAG teamtag) {
+    public Player(String name,String weapon_name,String ability_name,TEAMTAG teamtag,BallClientHandler server_socket) {
         super(name);
+        this.server_socket = server_socket;
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
         this.m_angle = 0;
@@ -72,11 +74,8 @@ public class Player extends Entity {
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
         circle.dispose();
 
-        //init other vars
-        this.weapon = new Weapon(weapon_name,this);
+        init_data(name,weapon_name,ability_name);
 
-        this.init_stats(AssetManager.getPlayerJsonData(this.name));
-        this.init_ability(ability_name);
     }
 
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
@@ -87,9 +86,13 @@ public class Player extends Entity {
         this.reset_performance_stats();
     }
 
-    public void init_ability(String ability_name) {
+    public void init_data(String class_name,String weapon_name,String ability_name) {
+        this.name = class_name;
+        this.weapon = new Weapon(weapon_name,this);
+        this.init_stats(AssetManager.getPlayerJsonData(class_name));
         this.ability = Ability.createAbility(this,this.stats.getAblType(),ability_name);
     }
+
 
     public void reset_game_stats() {
         this.health = this.stats.getHp();
@@ -229,6 +232,10 @@ public class Player extends Entity {
             //TODO: CLEAR ALL ACTIVE EFFECTS
 
             this.reset_game_stats();
+
+            //ask user to choose new class
+            server_socket.send_msg(MT.CHOOSECLASS,"");
+
             return true;
         }
         return false;

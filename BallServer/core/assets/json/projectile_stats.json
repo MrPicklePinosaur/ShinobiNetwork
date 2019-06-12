@@ -84,10 +84,52 @@
 		"travel_pattern": "straight"
 	},
 
-	//spell bolts
+	//bows
 	{
-		"name": "flamethrower_bolt",
-		"damage": 2,
+		"name": "reinforced_arrow",
+		"damage": 10,
+		"bullet_speed": 5,
+		"max_dist": 4,
+		"penetration": 2,
+		"travel_pattern": "straight"
+	},
+
+	//quivers
+	{
+		"name": "simple_shot",
+		"damage": 30,
+		"bullet_speed": 3.5,
+		"max_dist": 4,
+		"penetration": 2,
+		"travel_pattern": "straight"
+	},
+
+	//swords
+	{
+		"name": "warrior_strike",
+		"damage": 17,
+		"bullet_speed": 2,
+		"max_dist": 0.7,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+
+	//helms
+
+	//staff bolts
+	{
+		"name": "ruby_bolt",
+		"damage": 12,
+		"bullet_speed": 2,
+		"max_dist": 2,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+
+	//spell blasts
+	{
+		"name": "flamethrower_blast",
+		"damage": 1,
 		"bullet_speed": 2,
 		"max_dist": 1.5,
 		"penetration": 1,

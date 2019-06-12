@@ -247,7 +247,7 @@ class GameScreen implements Screen {
     }
 
     @Override public void hide() {
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+        //Gdx.gl.glDisable(GL20.GL_BLEND);
         this.hide_menu();
         this.hide_death_screen();
     }
@@ -671,7 +671,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        //submit_creds("daniel","password");
+        submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

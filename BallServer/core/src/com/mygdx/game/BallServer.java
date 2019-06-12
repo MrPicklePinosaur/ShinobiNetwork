@@ -98,17 +98,7 @@ class BallClientHandler {
 
                     //first of all, send a message to the client telling them they dced
 
-                    //tell entity to stop drawing it
-                    if (client_entity != null) { //there is a chance that an entity was never inited
-                        broadcast(MT.KILLENTITY, "" + client_entity.getId());
-
-                        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                        Entity.removeEntity(client_entity); //remove client entity from list
-
-                        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
-
-                        Global.game.removePlayer(client_entity);
-                    }
+                    destroy_player();
 
                     //tie off some loose ends
                     removeClient();
@@ -117,6 +107,20 @@ class BallClientHandler {
 
             }
         }).start();
+    }
+
+    public void destroy_player() {
+        //tell entity to stop drawing it
+        if (client_entity == null) { return; }//there is a chance that an entity was never inited
+        broadcast(MT.KILLENTITY, "" + client_entity.getId());
+
+        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
+        Entity.removeEntity(client_entity); //remove client entity from list
+
+        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+
+        Global.game.removePlayer(client_entity);
+        this.client_entity = null;
     }
 
     public void close_connection() {
@@ -190,6 +194,7 @@ class BallClientHandler {
             this.teamtag = Global.game.chooseTeam();
             Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
+            destroy_player();
             this.disableGIP();
             Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {
@@ -201,7 +206,11 @@ class BallClientHandler {
         } else if (msg_type == MT.RESPAWN) {
             String[] data = msg[1].split(","); //message comes in the form: class,weapon,ability
 
-            init_client_entity(data[0],data[1],data[2]);
+            if (this.client_entity == null) { //if client doesnt have an entity, make a new one
+                init_client_entity(data[0], data[1], data[2]);
+            } else { //otherwise, update the class
+                switch_class(data[0], data[1], data[2]);
+            }
 
         }
 
@@ -214,10 +223,16 @@ class BallClientHandler {
     }
 
     public void init_client_entity(String player_class,String weapon,String ability) {
-        this.client_entity = new Player(player_class,weapon,ability,this.teamtag);
+        this.client_entity = new Player(player_class,weapon,ability,this.teamtag,this);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);
+    }
+
+    public void switch_class(String class_name,String weapon,String ability) {
+        Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
+        AssetManager.flagForMove(client_entity,new Vector3(spawn_point.x,spawn_point.y,0));
+        client_entity.init_data(class_name,weapon,ability);
     }
 
     public void execute_command(String[] command) {

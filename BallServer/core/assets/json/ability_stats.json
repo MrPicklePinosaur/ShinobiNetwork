@@ -72,7 +72,7 @@
 
 	"warcry": [
 		{
-			"name": "basic",
+			"name": "simple_helm",
 			"max_duration": 2,
 			"max_cooldown": 5,
 			"radius": 200,
@@ -100,9 +100,11 @@
 
 	"quiver": [
 		{
-			"name": "basic",
-			"max_duration": 2,
-			"max_cooldown": 5,
+			"name": "simple_quiver",
+			"max_duration": 0,
+			"max_cooldown": 4,
+			"quiver_projectile": "simple_shot",
+			"quiver_pattern": "straight"
 		}
 	],
 
@@ -111,7 +113,7 @@
 			"name": "flamethrower_scroll",
 			"max_duration": 3,
 			"max_cooldown": 4,
-			"spell_projectile": "flamethrower_bolt",
+			"spell_projectile": "flamethrower_blast",
 			"spell_pattern": "double"
 		}
 	]

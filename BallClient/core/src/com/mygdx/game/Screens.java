@@ -449,12 +449,27 @@ class Inventory {
 
         for (int j = 0; j < 6; j++) { //6 rows
             for (int i = 0; i < 4; i++) { //4 columns
-                ImageButton slot = new ImageButton(new TextureRegionDrawable(empty_slot_up),new TextureRegionDrawable(empty_slot_down));
+                final ImageButton slot = new ImageButton(new TextureRegionDrawable(empty_slot_up),new TextureRegionDrawable(empty_slot_down));
+                slot.addListener(new ClickListener() {
+                    @Override public void clicked(InputEvent event,float x,float y) {
+                        if (slot.getChildren().size > 1) { //size gratehr than 1 means that there is an item on this slot
+
+                            //find out which slot the item belongs in and equip it
+                            String item_name = slot.getName();
+                            assert(item_name != null && !item_name.equals("")): "Slot name is empty";
+
+                            String item_type = AssetManager.getItemDescrip(item_name).getItemType();
+                            String filter = Global.user_data.setLoadout(item_name,item_type);
+                            refresh_loadout(filter);
+                        }
+                    }
+                });
                 if (inv.size() > 0) { //go through client's inv list and draw them
                     String item_path = inv.get(0);
                     Image item = new Image(AssetManager.getSpritesheet(item_path));
                     item.setFillParent(true);
                     slot.addActor(item);
+                    slot.setName(item_path);
                     inv.remove(0);
                 }
 
@@ -484,7 +499,7 @@ class Inventory {
 
         this.loadout_inv.clear();
 
-        Texture empty_slot = AssetManager.getUIImage("empty_slot");
+        Texture empty_slot = AssetManager.getUIImage("empty_slot_up");
 
         Label class_name = new Label(filter,Global.skin);
 

@@ -8,6 +8,7 @@ public class ActiveEffect {
     private float max_duration;
 
     private float duration_left;
+    private int ticker;
 
     public ActiveEffect(Player player,String name,float max_duration) {
         this.player = player;
@@ -15,6 +16,7 @@ public class ActiveEffect {
         this.max_duration = max_duration;
 
         this.resetDurationTimer();
+        this.resetTicker();
     }
 
     public void begin() {
@@ -34,15 +36,16 @@ public class ActiveEffect {
             for (ActiveEffect a : p.getActiveEffectsList().values()) {
                 a.update();
                 a.tickEffectDuration(deltaTime);
+                a.tickTicker();
             }
         }
     }
 
     public void update() {
-        if (this.name.equals("burning")) {
-            this.player.modHp(-0.05f);
-        } else if (this.name.equals("frostbite")) {
-            this.player.modHp(-0.05f);
+        if (this.name.equals("burning") && ticker%6 == 0) {
+            this.player.modHp(-0.15f);
+        } else if (this.name.equals("frostbite") && ticker%6 == 0) {
+            this.player.modHp(-0.5f);
         }
 
     }
@@ -52,6 +55,7 @@ public class ActiveEffect {
         if (this.duration_left <= 0) {
             this.end();
             this.resetDurationTimer();
+            this.resetTicker();
         }
     }
 
@@ -68,5 +72,8 @@ public class ActiveEffect {
     public void resetDurationTimer() {
         this.duration_left = this.max_duration;
     }
+
+    public void tickTicker() { this.ticker--; }
+    public void resetTicker() { this.ticker = 1000000; }
 
 }

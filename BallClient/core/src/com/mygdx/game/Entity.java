@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.EmptyStackException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Entity {
@@ -37,6 +38,7 @@ public class Entity {
 
     private Entity(String name) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
         this.name = name;
+
         init_animation(name);
 
         this.x = 0; this.y = 0; this.rotation = 0;
@@ -102,6 +104,19 @@ public class Entity {
         //apply all the updates
         entity.entity_type = entity_type;
         entity.update_pos(x,y,rot);
+
+        //update health bars
+        if (ET.valueOf(entity.entity_type.toUpperCase()) == ET.PLAYER) {
+            HealthTracker ht;
+            if (!HealthTracker.getHealthBarList().containsKey(id)) { //if an hp bar hasnt been created for this char yet
+                ht = new HealthTracker(id);
+            } else {
+                ht = HealthTracker.getHealthBarList().get(id);
+            }
+            assert (ht != null) : "Health bar not found";
+
+            ht.setPos(entity.getX() - ht.getBarWidth() / 2, entity.getY() - HealthTracker.y_offset);
+        }
     }
 
     public static void kill_entity(int id) {
@@ -160,6 +175,8 @@ public class Entity {
     public float getRotation() { return this.rotation; }
     public float getOldX() { return this.old_x; }
     public float getOldY() { return this.old_y; }
+
+    public static ConcurrentHashMap<Integer,Entity> getEntityLib() { return Entity.entity_library; }
 
     public void setName(String name) { this.name = name; }
 }

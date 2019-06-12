@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BallClient {
     //heavy lifters
@@ -170,6 +172,9 @@ public class BallClient {
             Global.game.login_screen.register_success();
         } else if (msg_type == MT.REGISTERFAILED) {
             Global.game.login_screen.register_failed();
+        } else if (msg_type == MT.UPDATEHP) {
+            String[] hp_data = msg[1].split(" "); //message comes in the form  id1,hp1 id2,hp2
+            HealthTracker.update_data(hp_data);
         }
     }
 

@@ -81,7 +81,7 @@ public class Database {
     public boolean new_user(String username,String password) {
         try {
             this.stmt = c.createStatement();
-            if (this.data_list.containsKey(username)) { return false; } //if the username already exists, update it
+            if (this.data_list.containsKey(username)) { return false; } //if the username already exists we cannot use that passwrod
             // otherwise create a new entry
             String empty_json = getDefaultJson(username);
             String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"','"+empty_json+"')";

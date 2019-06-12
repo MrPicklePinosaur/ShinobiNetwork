@@ -54,22 +54,16 @@ public abstract class Game {
         } return false;
     }
 
-    /*
-    public void isInZone(Player p,String zone,Rectangle zoneRect) {
-        if (!zoneRect.contains(p.getX(),p.getY())) { return false; }
-
-        if (zone.equals("hardpoint")) { //if a player is actually inside the objective zone
-            assert (KOTHGame.class.isInstance(Global.game)): "Trying to use King of the Hill zone in non KOTH gamemode";
-            KOTHGame koth = (KOTHGame) Global.game;
-            koth.insideZone(p.getTeamtag());
-            return true;
-        } else if (zone.equals("red_spawn")) {
-
+    public String getAllHP() {
+        String msg = "";
+        for (Player p : this.player_list) {
+            float hp = p.getCurrentHp()/p.stats.getHp();
+            msg += (" "+p.getId()+","+hp);
         }
-
-        return false;
+        if (msg.length() != 0) { msg = msg.substring(1); }
+        return msg;
     }
-    */
+
 
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();

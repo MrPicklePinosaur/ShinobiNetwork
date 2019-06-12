@@ -85,7 +85,7 @@ public abstract class Entity {
     }
 
     public void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
-        Projectile p = new Projectile(name,AssetManager.getProjectileJsonData(name),this);
+        Projectile p = new Projectile(name,this);
         p.init_pos(spawn_pos.x/Global.PPM,spawn_pos.y/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
         p.setDamage(p.getDamage()*dmg_mult);
         p.setSpeed(p.getSpeed()*speed_mult);

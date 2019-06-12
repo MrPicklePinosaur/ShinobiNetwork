@@ -12,10 +12,12 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Json;
 
 class Global {
 
+	public static Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 	public static BallClientMain game;
 	public static Json json = new Json();
 
@@ -28,8 +30,8 @@ class Global {
 	public static String server_ip = "127.0.0.1";
 	public static int server_port = 5000;
 
-	public static final int SCREEN_WIDTH = 800;
-	public static final int SCREEN_HEIGHT = 600;
+	public static final int SCREEN_WIDTH = 1200;
+	public static final int SCREEN_HEIGHT = 800;
 	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
 	public static int PPM = 100;
 
@@ -50,12 +52,12 @@ class Global {
 
 enum MT {
 	//Message types - output
-	USIN, CHATMSG, CMD,
+	USIN, CHATMSG, CMD, RESPAWN,
 
-	CHECKCREDS, REGISTER, STARTGAME,
+	CHECKCREDS, REGISTER, STARTGAME, LEAVEGAME,
 
 	//Message types (MT) - input
-	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
+	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE, CHOOSECLASS,
 
 	CREDSACCEPTED, CREDSDENIED, REGISTERSUCCESS, REGISTERFAILED,
 }

@@ -39,6 +39,8 @@ class Global {
 	public static final short BIT_PLAYER = 4;
 	public static final short BIT_ENEMY = 8;
 	public static final short BIT_PROJECTILE = 16;
+	public static final short BIT_REDSTATIC = 32;
+	public static final short BIT_BLUESTATIC = 64;
 
 	//Used for i/o
 	private static int code = -1;
@@ -55,14 +57,14 @@ class Global {
 
 enum MT { //mt stands for messageTyoe
 	//Message Types - output
-	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE,
+	UPDATEENTITY, KILLENTITY, LOADMAP, SENDCHAT, BINDCAM, UPDATEPARTICLE, CHOOSECLASS,
 
 	CREDSACCEPTED, CREDSDENIED, REGISTERSUCCESS, REGISTERFAILED,
 
 	//Message Types (MT) - input
-	USIN, CHATMSG, CMD,
+	USIN, CHATMSG, CMD, RESPAWN,
 
-	CHECKCREDS, REGISTER, STARTGAME,
+	CHECKCREDS, REGISTER, STARTGAME, LEAVEGAME
 }
 
 enum ET { //et sstands for entitiy type

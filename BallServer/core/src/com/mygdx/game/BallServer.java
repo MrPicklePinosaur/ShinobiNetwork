@@ -53,7 +53,8 @@ class BallClientHandler {
     private BallClientHandler self;
 
     private Player client_entity; //used so we know which entity belongs to client
-    private boolean game_in_progress = false;
+    private TEAMTAG teamtag;
+    private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
     public BallClientHandler(Socket client_sock) {
         this.client_sock = client_sock;
@@ -66,7 +67,7 @@ class BallClientHandler {
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch(IOException ex) { System.out.println(ex); }
 
-        init_client_entity();
+        //init_client_entity();
 
         new Thread(new Runnable() {
             @Override
@@ -82,8 +83,14 @@ class BallClientHandler {
                         //interperate client message
                         input_unpacker(client_msg);
 
-                        if (isGameInProgress()) { send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); } //TODO: prob a bad idea to put this here
+                        if (!game_in_progress) { continue; } //everything under here is stuff that can only be done if player is in game
 
+                        if (client_entity == null) { //if the player is not alive
+                            Vector2 default_camera_point = Global.map.getDefaultCameraPoint(); //if they arent, lock to a default point
+                            send_msg(MT.BINDCAM,default_camera_point.x+","+default_camera_point.y);
+                        } else { //if they are alive, send lock camera to their pos
+                            send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY());
+                        }
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
                     System.out.println("CLIENT HAS DISCONNECTED");
@@ -92,17 +99,19 @@ class BallClientHandler {
                     //first of all, send a message to the client telling them they dced
 
                     //tell entity to stop drawing it
-                    broadcast(MT.KILLENTITY,""+client_entity.getId());
+                    if (client_entity != null) { //there is a chance that an entity was never inited
+                        broadcast(MT.KILLENTITY, "" + client_entity.getId());
 
-                    AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                    Entity.removeEntity(client_entity); //remove client entity from list
+                        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
+                        Entity.removeEntity(client_entity); //remove client entity from list
 
-                    Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+                        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
 
-                    removeClient();
-                    Global.game.removePlayer(client_entity);
+                        Global.game.removePlayer(client_entity);
+                    }
 
                     //tie off some loose ends
+                    removeClient();
                     close_connection();
                 }
 
@@ -132,32 +141,24 @@ class BallClientHandler {
     private String output_packer(MT msg_type, String msg) { //helper method that 'encodes' message
         String data = null;
 
-        switch(msg_type) {
-            case CREDSACCEPTED:
-                data = MT.CREDSACCEPTED+"$"+msg; break; //there is no msg
-            case CREDSDENIED:
-                data = MT.CREDSDENIED+"$"; break; //there is no msg
-            case REGISTERSUCCESS:
-                data = MT.REGISTERSUCCESS+"$"; break;
-            case REGISTERFAILED:
-                data = MT.REGISTERFAILED+"$"; break;
+        if (msg_type == MT.CREDSACCEPTED) { //with message
+            data = MT.CREDSACCEPTED+"$"+msg;
+        } else if (msg_type == MT.CREDSDENIED || msg_type == MT.REGISTERSUCCESS || msg_type == MT.REGISTERFAILED) {
+            data = MT.REGISTERFAILED+"$"; //no message
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            switch (msg_type) {
-                case UPDATEENTITY: //tell client the position of all entites
-                    data = (MT.UPDATEENTITY + "$" + msg);break;
-                case KILLENTITY: //tell client to remove client from their render queue
-                    data = (MT.KILLENTITY + "$" + msg);break; //in this case, msg is the entity id
-                case LOADMAP:
-                    data = (MT.LOADMAP + "$" + msg);break; //msg is the filepath of the map image
-                case SENDCHAT:
-                    data = (MT.SENDCHAT + "$" + msg);break; //msg is text_colour,msg
-                case BINDCAM:
-                    data = (MT.BINDCAM + "$" + msg);break; //amsg is an x and y value of where the camera should be at
-                case UPDATEPARTICLE:
-                    data = (MT.UPDATEPARTICLE + "$" + msg);break;
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS) {
+                data = msg_type+"$"+msg;
             }
+            /*
+            UPDATEENTITY - tell client the position of all entites
+            KILLENTITY - tell client to remove client from their render queue; in this case, msg is the entity id
+            LOADMAP - msg is the filepath of the map image
+            SENDCHAT - msg is the new chat msg
+            BINDCAM - msg is an x and y value of where the camera should be at
+            UPDATEPARTICLE -
+             */
         }
 
         assert (data != null): "empty message";
@@ -167,15 +168,14 @@ class BallClientHandler {
     private void input_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(MT.USIN.toString())) {
+        MT msg_type = MT.valueOf(msg[0].toUpperCase());
 
-            this.client_entity.handleInput(msg[1]);
-        } else if (msg[0].equals(MT.CHATMSG.toString())) {
+        if (msg_type == MT.CHATMSG) {
             Global.game.new_chat_msg(msg[1]);
-        } else if (msg[0].equals(MT.CMD.toString())) {
+        } else if (msg_type == MT.CMD) {
             String[] cmd_msg = msg[1].split(" ");
             execute_command(cmd_msg);
-        } else if (msg[0].equals(MT.CHECKCREDS.toString())) {
+        } else if (msg_type == MT.CHECKCREDS) {
             String[] cred = msg[1].split(",");
             if (Global.db.checkCredentials(cred[0],cred[1])) {
 
@@ -184,22 +184,37 @@ class BallClientHandler {
 
             } //if the creds work
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
-        } else if (msg[0].equals(MT.STARTGAME.toString())) {
-            this.toggleGameInProgress();
-        } else if (msg[0].equals(MT.REGISTER.toString())) {
+        } else if (msg_type == MT.STARTGAME) {
+            this.enableGIP();
+            send_msg(MT.CHOOSECLASS,""); //tell users to choose class when they join the game
+            this.teamtag = Global.game.chooseTeam();
+            Global.game.new_chat_msg("USER has joined the game!");
+        } else if (msg_type == MT.LEAVEGAME) {
+            this.disableGIP();
+            Global.game.new_chat_msg("USER has left the game!");
+        } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");
             boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
 
             if (register_success) { this.send_msg(MT.REGISTERSUCCESS,""); }
             else { this.send_msg(MT.REGISTERFAILED,""); }
+        } else if (msg_type == MT.RESPAWN) {
+            String[] data = msg[1].split(","); //message comes in the form: class,weapon,ability
+
+            init_client_entity(data[0],data[1],data[2]);
+
+        }
+
+        //the following is code that will only work if client_entity is enabled
+        if (client_entity == null) { return; }
+
+        if (msg_type == MT.USIN) {
+            this.client_entity.handleInput(msg[1]);
         }
     }
 
-    public void init_client_entity() {
-        String player_class = "ninja";
-        TEAMTAG team = Global.game.chooseTeam();
-
-        this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),team);
+    public void init_client_entity(String player_class,String weapon,String ability) {
+        this.client_entity = new Player(player_class,weapon,ability,this.teamtag);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);
@@ -229,7 +244,8 @@ class BallClientHandler {
 
     public void removeClient() { BallClientHandler.client_list.remove(this); }
 
-    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
+    public void enableGIP() { this.game_in_progress = true; } //enable game in progress
+    public void disableGIP() { this.game_in_progress = false; } //disable game in progress
     public boolean isGameInProgress() { return this.game_in_progress; }
 }
 

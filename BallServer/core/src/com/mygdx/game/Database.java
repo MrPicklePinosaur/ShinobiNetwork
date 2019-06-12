@@ -83,20 +83,36 @@ public class Database {
             this.stmt = c.createStatement();
             if (this.data_list.containsKey(username)) { return false; } //if the username already exists, update it
             // otherwise create a new entry
-            String empty_json =
-                    "{\n"+
-                        "\"username\": \""+username+"\",\n"+
-                        "\"total_kills\": 0,\n"+
-                        "\"total_deaths\": 0,\n"+
-                        "\"total_damage\": 0,\n"+
-                        "\"inventory\": []\n"+
-                    "}";
+            String empty_json = getDefaultJson(username);
             String playerInfo = "INSERT INTO players (username,password,data) VALUES ('"+username+"','"+password+"','"+empty_json+"')";
             stmt.executeUpdate(playerInfo);
 
-            refreshData();
+            refreshData(); //make sure to reload all data when we modify the database
         } catch (SQLException ex) { System.out.println("writeTODB error: "+ex); }
         return true;
+    }
+
+    public String getDefaultJson(String username) {
+
+        String default_inv = "[\"kazemonji\",\"simple_wakizashi\"]";
+        String default_ninja = "[\"kazemonji\",\"simple_wakizashi\"]";
+        String default_archer = "[]";
+        String default_warrior = "[]";
+        String default_wizard = "[]";
+
+        String defaultJson =
+                "{\n"+
+                "\"username\": \""+username+"\",\n"+
+                "\"total_kills\": 0,\n"+
+                "\"total_deaths\": 0,\n"+
+                "\"total_damage\": 0,\n"+
+                "\"inventory\": "+default_inv+",\n"+
+                        "\"ninja_loadout\": "+default_ninja+",\n"+
+                        "\"archer_loadout\": "+default_archer+",\n"+
+                        "\"warrior_loadout\": "+default_warrior+",\n"+
+                        "\"wizard_loadout\": "+default_wizard+",\n"+
+                "}";
+        return defaultJson;
     }
 
 

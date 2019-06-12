@@ -31,6 +31,7 @@ public class Player extends Entity {
     private Ability ability;
     private float m_angle;
     private TEAMTAG teamtag;
+
     private Weapon weapon;
 
     private float shoot_cooldown;
@@ -46,7 +47,7 @@ public class Player extends Entity {
     private int deaths;
     private float dmg_dealt;
 
-    public Player(String name,String json_stat_data,TEAMTAG teamtag) {
+    public Player(String name,String weapon_name,String ability_name,TEAMTAG teamtag) {
         super(name);
         this.entity_type = ET.PLAYER;
         this.teamtag = teamtag;
@@ -57,18 +58,25 @@ public class Player extends Entity {
         circle.setRadius((this.spriteWidth/4f)/Global.PPM); //diameter of the circle is half of the width of the entity
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
+
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+        if (this.teamtag == TEAMTAG.RED) {
+            fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE | Global.BIT_BLUESTATIC;
+        } else if (this.teamtag == TEAMTAG.BLUE) {
+            fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE | Global.BIT_REDSTATIC;
+        }
+
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
         circle.dispose();
 
         //init other vars
-        String weapon_name = "jade_katana";
-        this.weapon = new Weapon(weapon_name,AssetManager.getWeaponJsonData(weapon_name),this);
+        this.weapon = new Weapon(weapon_name,this);
 
-        this.init_stats(json_stat_data);
+        this.init_stats(AssetManager.getPlayerJsonData(this.name));
+        this.init_ability(ability_name);
     }
 
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
@@ -77,7 +85,10 @@ public class Player extends Entity {
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
         this.reset_performance_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"cherryblossom_twinblades");
+    }
+
+    public void init_ability(String ability_name) {
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),ability_name);
     }
 
     public void reset_game_stats() {
@@ -214,6 +225,9 @@ public class Player extends Entity {
         if (this.health <= 0) {
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
+
+            //TODO: CLEAR ALL ACTIVE EFFECTS
+
             this.reset_game_stats();
             return true;
         }

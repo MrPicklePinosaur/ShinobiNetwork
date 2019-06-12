@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="109">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="24" nextobjectid="112">
  <tileset firstgid="1" source="tilesets/mountain temple.tsx"/>
  <tileset firstgid="29" source="tilesets/animatedWaterShallow.tsx"/>
  <layer id="9" name="floor" width="96" height="96">
@@ -519,6 +519,8 @@
   <object id="39" x="736.03" y="1312.01" width="288.009" height="64.0625"/>
   <object id="40" x="736.032" y="1696.01" width="287.984" height="64.0625"/>
   <object id="41" x="736.02" y="1376.17" width="32.0435" height="319.826"/>
+  <object id="110" name="red_spawn_door" x="1024" y="1503" width="33" height="65.5"/>
+  <object id="111" name="blue_spawn_door" x="2015.5" y="1501.5" width="32.5" height="66"/>
  </objectgroup>
  <objectgroup id="23" name="spawn_points">
   <object id="89" name="red" x="816" y="1456.5">
@@ -567,6 +569,9 @@
    <point/>
   </object>
   <object id="104" name="blue" x="2127.5" y="1618.5">
+   <point/>
+  </object>
+  <object id="109" name="default_camera" x="1537.5" y="1538.5">
    <point/>
   </object>
  </objectgroup>

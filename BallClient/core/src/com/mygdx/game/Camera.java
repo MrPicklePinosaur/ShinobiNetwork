@@ -26,7 +26,7 @@ public class Camera {
     private float cam_bind_y;
 
     public Camera() {
-        this.cam = new OrthographicCamera(400,400);
+        this.cam = new OrthographicCamera(600,400);
         this.cam_bind_x = 0; this.cam_bind_y = 0;
     }
 

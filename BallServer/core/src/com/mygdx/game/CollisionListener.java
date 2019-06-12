@@ -39,7 +39,7 @@ public class CollisionListener implements ContactListener {
             final Player owner = (Player) b.getOwner();
             if ((p.getTeamtag() == TEAMTAG.SOLO || p.getTeamtag() != owner.getTeamtag()) && p != owner) { //if the player is allowed to be hit (aka no friendly fire)
 
-                Gdx.app.postRunnable(new Runnable() {
+                Gdx.app.postRunnable(new Runnable() { //TODO: HANDLE OWNER DYING WHILE STUFF IS HAPPENING
                     @Override
                     public void run() {
                         b.checkPenetration(); //check to see if bullet should die

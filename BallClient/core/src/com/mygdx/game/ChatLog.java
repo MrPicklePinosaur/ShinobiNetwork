@@ -17,7 +17,6 @@ import java.util.LinkedList;
 
 public class ChatLog extends ApplicationAdapter {
     private Table table;
-    private Skin skin;
     private TextureAtlas atlas;
     private Label chatLabel;
     private Label chatLogLabel;
@@ -26,9 +25,8 @@ public class ChatLog extends ApplicationAdapter {
     private LinkedList<String> playerMSGs = new LinkedList<String>();
 
     public ChatLog(Stage stage) {
-        atlas = new TextureAtlas("gdx-skins/level-plane/skin/level-plane-ui.atlas");
-        skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
-        skin.addRegions(atlas);
+        //atlas = new TextureAtlas("gdx-skins/level-plane/skin/level-plane-ui.atlas");
+        //skin.addRegions(atlas);
 
         Table newTable = new Table();
         newTable.setFillParent(true);
@@ -37,10 +35,10 @@ public class ChatLog extends ApplicationAdapter {
         this.table = newTable; //this table is the UI table, so be careful when clearing children
 
         // Add widgets to the table here.
-        chatLabel = new Label("Chat: ", skin);
+        chatLabel = new Label("Chat: ", Global.skin);
         chatLabel.setAlignment(Align.right);
-        chatLogLabel = new Label("", skin);
-        chatText = new TextField("", skin);
+        chatLogLabel = new Label("", Global.skin);
+        chatText = new TextField("", Global.skin);
         chatText.setWidth(150);
         chatText.setMaxLength(120); //if 120 characters was good enough for twitter, it's good enough for us
         table.add(chatLabel).width(100f);
@@ -62,7 +60,7 @@ public class ChatLog extends ApplicationAdapter {
     }
 
     public void drawLog(ShapeRenderer sr) {
-        sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
+        //sr.rect(1340,150,250,400,new Color(0,0,0,0.25f),new Color(0,0,0,0.25f),Color.BLACK,Color.BLACK);
     }
 
     public void send_msg(String msg) {
@@ -87,11 +85,11 @@ public class ChatLog extends ApplicationAdapter {
         //Updating table
         table.clearChildren();
         for (String msg : this.playerMSGs) {
-            Label userName = new Label(msg.substring(0, msg.indexOf(":") + 2), skin);
+            Label userName = new Label(msg.substring(0, msg.indexOf(":") + 2), Global.skin);
             userName.setWrap(true);
             userName.setWidth(10f);
             userName.setAlignment(Align.right);
-            Label content = new Label(msg.substring(msg.indexOf(":") + 2), skin);
+            Label content = new Label(msg.substring(msg.indexOf(":") + 2), Global.skin);
             content.setWrap(true);
             content.setWidth(150);
 
@@ -99,7 +97,7 @@ public class ChatLog extends ApplicationAdapter {
             table.add(content).width(150f).padBottom(10f);
             table.row();
         }
-        table.add(new Label("Chat: ", skin)).right();
+        table.add(new Label("Chat: ", Global.skin)).right();
         table.add(chatText);
         table.bottom().right().padBottom(10f).padRight(10f);
     }

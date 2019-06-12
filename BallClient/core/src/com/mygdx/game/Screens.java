@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -23,18 +22,18 @@ class MainmenuScreen implements Screen {
     private Stage stage;
 
     public MainmenuScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
-        TextButton play_button = new TextButton("Play",skin);
+        TextButton play_button = new TextButton("Play",Global.skin);
         play_button.setPosition(300,500);
         play_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.game_screen);
                 Global.server_socket.send_msg(MT.STARTGAME,"");
+                Global.server_socket.enableGIP();
             }
         });
 
-        TextButton inventory_button = new TextButton("Inventory",skin);
+        TextButton inventory_button = new TextButton("Inventory",Global.skin);
         inventory_button.setPosition(300,400);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -42,7 +41,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        TextButton quit_button = new TextButton("Exit Game",skin);
+        TextButton quit_button = new TextButton("Exit Game",Global.skin);
         quit_button.setPosition(300,300);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -61,10 +60,10 @@ class MainmenuScreen implements Screen {
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
         }
-        Label kd = new Label("KDR: "+kdr,skin);
-        Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),skin);
-        Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),skin);
-        Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),skin);
+        Label kd = new Label("KDR: "+kdr,Global.skin);
+        Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),Global.skin);
+        Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),Global.skin);
+        Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),Global.skin);
 
         stats.add(kd);
         stats.row();
@@ -113,42 +112,77 @@ class GameScreen implements Screen {
     private InputMultiplexer inputMultiplexer;
     private InputHandler input_handler;
 
-    private boolean show_inventory = true;
-    private Table loadout_overlay;
-    private Table inventory_overlay;
-    private ImageButton back_button;
+    private boolean show_menu = false;
+    private Table pause_menu;
+    private Table respawn_menu;
+    private Inventory inv;
 
     public GameScreen() {
         this.stage = new Stage();
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
 
-        //inventory stuff
-        this.loadout_overlay = new Table();
-
-        this.inventory_overlay = new Table();
-        inventory_overlay.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
-        inventory_overlay.setDebug(true);
-        inventory_overlay.setFillParent(true);
-        inventory_overlay.pad(100);
-
-        this.back_button = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
-        back_button.addListener(new ClickListener() {
+        //menu
+        TextButton resume_button = new TextButton("Resume",Global.skin);
+        resume_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                toggleInvVisible();
+                Global.game.game_screen.hide_menu();
+            }
+        });
+        TextButton inventory_button = new TextButton("Inventory",Global.skin);
+        inventory_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                show_inv();
+            }
+        });
+        TextButton exit_button = new TextButton("Leave Game",Global.skin);
+        exit_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.server_socket.send_msg(MT.LEAVEGAME,"");
+                Global.server_socket.disableGIP();
+                Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
 
-        toggleInvVisible(); //hide inventory screen
+        this.pause_menu = new Table();
+        pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        pause_menu.add(resume_button).pad(10);
+        pause_menu.row();
+        pause_menu.add(inventory_button).pad(10);
+        pause_menu.row();
+        pause_menu.add(exit_button).pad(10);
+        this.pause_menu.setVisible(false);
+
+        //Inventory
+        this.inv = new Inventory(this.stage);
+        this.inv.hide_inv();
+
+        //Choose class menu
+        this.respawn_menu = new Table();
+        respawn_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        final String[] class_list = new String[]{"ninja","archer","warrior","wizard"};
+        for (int i = 0; i < 4; i++) {
+            final int index = i;
+            ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
+            choose.addListener(new ClickListener() {
+                @Override public void clicked(InputEvent event,float x,float y) {
+                    String[] load_out = Global.user_data.getLoadout(class_list[index]); //TODO: DONT TRUST USER WITH THIS DATA
+                    String msg = class_list[index]+","+load_out[0]+","+load_out[1];
+                    Global.server_socket.send_msg(MT.RESPAWN,msg);
+                    hide_death_screen();
+                }
+            });
+            respawn_menu.add(choose).pad(10);
+        }
+        //this.hide_death_screen();
+
+        this.stage.addActor(pause_menu);
+        this.stage.addActor(respawn_menu);
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         this.input_handler = new InputHandler();
         inputMultiplexer.addProcessor(this.input_handler);
-
-        this.stage.addActor(loadout_overlay);
-        this.stage.addActor(inventory_overlay);
-        this.stage.addActor(back_button);
     }
 
     @Override public void render(float delta) {
@@ -163,8 +197,7 @@ class GameScreen implements Screen {
         stage.draw();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (this.show_inventory) { ScreenUtils.dimScreen(shapeRenderer,0.2f); } //dim screen if inv is open
-        Global.chatlog.drawLog(shapeRenderer);
+        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
         shapeRenderer.end();
 
         //update stuff
@@ -179,19 +212,28 @@ class GameScreen implements Screen {
         Global.camera.updateCam();
     }
 
-    public void toggleInvVisible() {
-        this.show_inventory = !this.show_inventory;
-        if (this.show_inventory == true) {
-            ScreenUtils.refreshInventory(this.inventory_overlay);
-            this.inventory_overlay.setVisible(true);
-            this.loadout_overlay.setVisible(true);
-            this.back_button.setVisible(true);
-        } else {
-            this.inventory_overlay.setVisible(false);
-            this.loadout_overlay.setVisible(false);
-            this.back_button.setVisible(false);
-        }
+    public void show_menu() {
+        this.show_menu = true;
+        this.pause_menu.setVisible(true);
     }
+    public void hide_menu() {
+        this.show_menu = false;
+        this.pause_menu.setVisible(false);
+        this.inv.hide_inv();
+    }
+    public void show_inv() {
+        this.pause_menu.setVisible(false);
+        this.inv.show_inv();
+    }
+    public void show_death_screen() {
+        this.hide_menu();
+        this.respawn_menu.setVisible(true);
+    }
+    public void hide_death_screen() {
+        this.respawn_menu.setVisible(false);
+    }
+
+    public boolean isMenuVisible() { return this.show_menu; }
 
     @Override public void show() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -199,7 +241,11 @@ class GameScreen implements Screen {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-    @Override public void hide() { Gdx.gl.glDisable(GL20.GL_BLEND); }
+    @Override public void hide() {
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        this.hide_menu();
+        this.hide_death_screen();
+    }
 
     @Override public void dispose() { }
 
@@ -239,10 +285,9 @@ class RetryconnectionScreen implements Screen {
     private boolean connected = false;
 
     public RetryconnectionScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         this.stage = new Stage();
 
-        this.retry_button = new TextButton("Retry connection",skin);
+        this.retry_button = new TextButton("Retry connection",Global.skin);
         retry_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 connected = Global.game.attempt_connection(Global.server_ip, Global.server_port);
@@ -273,73 +318,22 @@ class RetryconnectionScreen implements Screen {
 class InventoryScreen implements Screen {
 
     private Stage stage;
-    private Table inventory_grid;
+    private Inventory inv;
+
     public InventoryScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 
         this.stage = new Stage();
+        this.inv = new Inventory(this.stage);
+        inv.show_inv();
 
-        //INVENTORY
-        //some basic settings for the table
-        this.inventory_grid = new Table();
-        inventory_grid.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
-        inventory_grid.setDebug(true);
-        inventory_grid.setFillParent(true);
-        inventory_grid.pad(100);
-
-        //BUTTONS
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("back")));
-        backButton.setPosition(20,200);
         backButton.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
 
-        Table tabs = new Table();
-        TextButton allItems_button = new TextButton("All items",skin);
-        allItems_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-
-            }
-        });
-        TextButton ninjaItems_button = new TextButton("Ninja",skin);
-        ninjaItems_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-
-            }
-        });
-        TextButton archerItems_button = new TextButton("Archer",skin);
-        archerItems_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-
-            }
-        });
-        TextButton warriorItems_button = new TextButton("Warrior",skin);
-        warriorItems_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-
-            }
-        });
-        TextButton wizardItems_button = new TextButton("Wizard",skin);
-        wizardItems_button.addListener(new ClickListener() {
-            @Override public void clicked(InputEvent event,float x,float y) {
-
-            }
-        });
-
-        tabs.add(wizardItems_button);
-        tabs.add(warriorItems_button);
-        tabs.add(archerItems_button);
-        tabs.add(ninjaItems_button);
-        tabs.add(allItems_button);
-        tabs.setPosition(150,300);
-        tabs.setTransform(true);
-        tabs.rotateBy(90);
-
-        stage.addActor(backButton);
-        stage.addActor(inventory_grid);
-        stage.addActor(tabs);
+        this.stage.addActor(backButton.left().pad(20));
     }
 
     @Override public void render(float delta) {
@@ -349,7 +343,6 @@ class InventoryScreen implements Screen {
     }
 
     @Override public void show() {
-        ScreenUtils.refreshInventory(this.inventory_grid);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -361,6 +354,182 @@ class InventoryScreen implements Screen {
     @Override public void pause() { }
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
+}
+
+class Inventory {
+
+    private Stage stage;
+    private Table inventory_grid;
+    private Table loadout_inv;
+    private Table tabs;
+
+    public Inventory(Stage screen_stage) {
+        this.stage = screen_stage;
+
+        //INVENTORY
+        //some basic settings for the table
+        this.inventory_grid = new Table();
+        inventory_grid.setBounds(Global.SCREEN_WIDTH/8,0,Global.SCREEN_WIDTH*3/8,Global.SCREEN_HEIGHT);
+        //inventory_grid.setDebug(true);
+        inventory_grid.setFillParent(true);
+        inventory_grid.left();
+
+        this.loadout_inv = new Table();
+
+
+        //BUTTONS
+        TextButton allItems_button = new TextButton("All items",Global.skin);
+        allItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                refreshInventory("");
+                hide_loadout();
+            }
+        });
+        TextButton ninjaItems_button = new TextButton("Ninja",Global.skin);
+        ninjaItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                refreshInventory("katana,waki");
+                show_loadout("ninja");
+            }
+        });
+        TextButton archerItems_button = new TextButton("Archer",Global.skin);
+        archerItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                refreshInventory("bow,quiver");
+                show_loadout("archer");
+            }
+        });
+        TextButton warriorItems_button = new TextButton("Warrior",Global.skin);
+        warriorItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                refreshInventory("sword,helm");
+                show_loadout("warrior");
+            }
+        });
+        TextButton wizardItems_button = new TextButton("Wizard",Global.skin);
+        wizardItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                refreshInventory("staff,spell");
+                show_loadout("wizard");
+            }
+        });
+
+        this.tabs = new Table();
+        tabs.setBounds(Global.SCREEN_WIDTH/8,0,Global.SCREEN_HEIGHT,Global.SCREEN_WIDTH/8);
+        tabs.add(wizardItems_button);
+        tabs.add(warriorItems_button);
+        tabs.add(archerItems_button);
+        tabs.add(ninjaItems_button);
+        tabs.add(allItems_button);
+        tabs.setTransform(true);
+        tabs.rotateBy(90);
+        tabs.bottom();
+        tabs.setDebug(true);
+
+        stage.addActor(inventory_grid);
+        stage.addActor(loadout_inv);
+        stage.addActor(tabs);
+    }
+
+    public void refreshInventory(String filter) { //filter inv by item type, if an empty string is provided, it means no filtere
+        //TODO: when refreshing inventory, actually ask the server for a refresh
+
+        this.inventory_grid.clearChildren();
+        //populate the table with the contents of the user's inventory
+        ArrayList<String> inv = new ArrayList<String>();
+        for (String name : Global.user_data.getInventory()) {
+            if (filter.contains(AssetManager.getItemDescrip(name).getItemType()) || filter.length() == 0) {
+                inv.add(name);
+            }
+        }
+
+        Texture empty_slot_up = AssetManager.getUIImage("empty_slot_up");
+        //Texture empty_slot_hover = AssetManager.getUIImage("empty_slot_hover");
+        Texture empty_slot_down = AssetManager.getUIImage("empty_slot_down");
+
+        for (int j = 0; j < 6; j++) { //6 rows
+            for (int i = 0; i < 4; i++) { //4 columns
+                final ImageButton slot = new ImageButton(new TextureRegionDrawable(empty_slot_up),new TextureRegionDrawable(empty_slot_down));
+                slot.addListener(new ClickListener() {
+                    @Override public void clicked(InputEvent event,float x,float y) {
+                        if (slot.getChildren().size > 1) { //size gratehr than 1 means that there is an item on this slot
+
+                            //find out which slot the item belongs in and equip it
+                            String item_name = slot.getName();
+                            assert(item_name != null && !item_name.equals("")): "Slot name is empty";
+
+                            String item_type = AssetManager.getItemDescrip(item_name).getItemType();
+                            String filter = Global.user_data.setLoadout(item_name,item_type);
+                            refresh_loadout(filter);
+                        }
+                    }
+                });
+                if (inv.size() > 0) { //go through client's inv list and draw them
+                    String item_path = inv.get(0);
+                    Image item = new Image(AssetManager.getSpritesheet(item_path));
+                    item.setFillParent(true);
+                    slot.addActor(item);
+                    slot.setName(item_path);
+                    inv.remove(0);
+                }
+
+                this.inventory_grid.add(slot).pad(10);
+            }
+            this.inventory_grid.row(); //move down a row
+        }
+
+    }
+
+    public void show_inv() {
+        refreshInventory("");
+        this.inventory_grid.setVisible(true);
+        this.tabs.setVisible(true);
+        this.loadout_inv.setVisible(false);
+    }
+
+    public void hide_inv() {
+        this.inventory_grid.setVisible(false);
+        this.tabs.setVisible(false);
+        this.loadout_inv.setVisible(false);
+    }
+
+    public void refresh_loadout(String filter) {
+        assert (filter.equals("ninja") || filter.equals("archer") || filter.equals("warrior") || filter.equals("wizard")): "Invalid filter";
+        String[] loadout = Global.user_data.getLoadout(filter); //the first item is the weapon, second is the ability
+
+        this.loadout_inv.clear();
+
+        Texture empty_slot = AssetManager.getUIImage("empty_slot_up");
+
+        Label class_name = new Label(filter,Global.skin);
+
+        //weapon slot
+        Stack weapon_stack = new Stack();
+        weapon_stack.add(new Image(empty_slot));
+        if (loadout.length == 2) { weapon_stack.add(new Image(AssetManager.getSpritesheet(loadout[0]))); } //if the user actually has a weapon equipped
+
+        //class preview
+        Stack class_preview = new Stack();
+        class_preview.add(new Image(AssetManager.getUIImage("selected_class")));
+        class_preview.add(new Image(AssetManager.getUIImage(filter)));
+
+        //ability slot
+        Stack ability_stack = new Stack();
+        ability_stack.add(new Image(empty_slot));
+
+        if (loadout.length == 2) { ability_stack.add(new Image(AssetManager.getSpritesheet(loadout[1]))); } //if the user actually has an ability equipped
+
+        loadout_inv.add(class_name);
+        loadout_inv.row();
+        loadout_inv.add(weapon_stack);
+        loadout_inv.add(class_preview).pad(10);
+        loadout_inv.add(ability_stack);
+        loadout_inv.setBounds(Global.SCREEN_WIDTH*4/8,0,Global.SCREEN_WIDTH*4/8,Global.SCREEN_HEIGHT);
+        loadout_inv.pad(30);
+    }
+
+    public void show_loadout(String filter) { refresh_loadout(filter); this.loadout_inv.setVisible(true); }
+    public void hide_loadout() { this.loadout_inv.setVisible(false); }
 }
 
 class LoginScreen implements Screen {
@@ -377,10 +546,9 @@ class LoginScreen implements Screen {
     private TextField confirm_password_field;
 
     public LoginScreen() {
-        Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
         stage = new Stage();
 
-        this.username_field = new TextField("",skin);
+        this.username_field = new TextField("",Global.skin);
         username_field.setMessageText("Username"); //displays when box is empty
         username_field.setMaxLength(16);
         username_field.setTextFieldListener(new TextField.TextFieldListener() {
@@ -391,7 +559,7 @@ class LoginScreen implements Screen {
             }
         });
 
-        this.password_field = new TextField("",skin);
+        this.password_field = new TextField("",Global.skin);
         password_field.setMessageText("Password");
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
@@ -404,16 +572,16 @@ class LoginScreen implements Screen {
             }
         });
 
-        TextButton login_button = new TextButton("Login!",skin);
+        TextButton login_button = new TextButton("Login!",Global.skin);
         login_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 submit_creds(username_field.getText(),password_field.getText()); //we also submit the form if the button is pressed
             }
         });
 
-        this.invalid_creds = new Label("",skin);
+        this.invalid_creds = new Label("",Global.skin);
 
-        CheckBox remember_me = new CheckBox("Remember me",skin);
+        CheckBox remember_me = new CheckBox("Remember me",Global.skin);
 
         Table login_table = new Table();
         login_table.setBounds(0,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
@@ -430,31 +598,30 @@ class LoginScreen implements Screen {
 
         Table register_table = new Table();
         register_table.setBounds(Global.SCREEN_WIDTH/2,0,Global.SCREEN_WIDTH/2,Global.SCREEN_HEIGHT);
-        register_table.setDebug(true);
 
-        this.warning_text = new Label("",skin);
+        this.warning_text = new Label("",Global.skin);
 
-        this.reg_username_field = new TextField("",skin);
+        this.reg_username_field = new TextField("",Global.skin);
         reg_username_field.setMessageText("Username");
         reg_username_field.setMaxLength(16);
 
-        this.reg_email_field = new TextField("",skin);
+        this.reg_email_field = new TextField("",Global.skin);
         reg_email_field.setMessageText("Email");
         reg_email_field.setMaxLength(30);
 
-        this.reg_password_field = new TextField("",skin);
+        this.reg_password_field = new TextField("",Global.skin);
         reg_password_field.setMessageText("Password");
         reg_password_field.setPasswordMode(true);
         reg_password_field.setPasswordCharacter('*');
         reg_password_field.setMaxLength(30);
 
-        this.confirm_password_field = new TextField("",skin);
+        this.confirm_password_field = new TextField("",Global.skin);
         confirm_password_field.setMessageText("Confirm password");
         confirm_password_field.setPasswordMode(true);
         confirm_password_field.setPasswordCharacter('*');
         confirm_password_field.setMaxLength(30);
 
-        TextButton register_button = new TextButton("Register!",skin);
+        TextButton register_button = new TextButton("Register!",Global.skin);
         register_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 String warning = register(reg_username_field.getText(),reg_email_field.getText(),reg_password_field.getText(),confirm_password_field.getText());
@@ -480,7 +647,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        //submit_creds("daniel","password");
+        submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }
@@ -534,56 +701,7 @@ class LoginScreen implements Screen {
     public Stage getStage() { return this.stage; }
 }
 
-class LobbyScreen implements Screen {
-
-    private Stage stage;
-    public LobbyScreen() {
-
-    }
-
-    @Override public void render(float delta) {
-
-    }
-
-    @Override public void show() { }
-
-    @Override public void hide() { }
-
-    @Override public void dispose() { }
-
-    @Override public void resize(int width,int height) { }
-    @Override public void pause() { }
-    @Override public void resume() { }
-    public Stage getStage() { return this.stage; }
-}
-
 class ScreenUtils {
-
-    public static void refreshInventory(Table grid) {
-        //TODO: when refreshing inventory, actually ask the server for a refresh
-        Texture empty_slot = AssetManager.getUIImage("empty_slot");
-        grid.clearChildren();
-        //populate the table with the contents of the user's inventory
-        ArrayList<String> inv = new ArrayList<String>();
-        for (String i : Global.user_data.getInventory()) { inv.add(i); }
-
-        for (int j = 0; j < 6; j++) { //6 rows
-            for (int i = 0; i < 4; i++) { //4 columns
-                Stack stack = new Stack(); //used to overlay images
-                Image empty_slot_img = new Image(empty_slot);
-                stack.add(empty_slot_img);
-                if (inv.size() > 0) { //go through client's inv list and draw them
-                    String item_path = inv.get(0);
-                    Image item = new Image(AssetManager.getSpritesheet(item_path));
-                    inv.remove(0);
-                    stack.add(item);
-                }
-                empty_slot_img.setScaling(Scaling.fit);
-                grid.add(stack).pad(10);
-            }
-            grid.row(); //move down a row
-        }
-    }
 
     public static void dimScreen(ShapeRenderer sr,float dimness) {
         sr.setColor(0,0,0,dimness);

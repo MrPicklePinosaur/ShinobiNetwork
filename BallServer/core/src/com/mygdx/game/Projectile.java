@@ -29,9 +29,9 @@ class Projectile extends Entity {
     private float speed;
     private int totalPenetrations;
 
-    public Projectile(String name,String json_stat_data,Entity owner) {
+    public Projectile(String name,Entity owner) {
         super(name);
-        this.stats = Global.json.fromJson(ProjectileStats.class,json_stat_data);
+        this.stats = Global.json.fromJson(ProjectileStats.class,AssetManager.getProjectileJsonData(name));
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
 
@@ -49,7 +49,8 @@ class Projectile extends Entity {
         fdef.shape = circle;
 
         fdef.filter.categoryBits = Global.BIT_PROJECTILE;
-        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER;
+        fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_REDSTATIC | Global.BIT_BLUESTATIC;
+
         fdef.isSensor = true;
         this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));

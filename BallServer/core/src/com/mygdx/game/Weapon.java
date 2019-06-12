@@ -8,13 +8,13 @@ public class Weapon extends Entity {
     private Entity owner;
     public WeaponStats stats;
 
-    public Weapon(String name, String json_stat_data, Entity owner) {
+    public Weapon(String name,Entity owner) {
         super(name);
         this.owner = owner;
 
         this.entity_type = ET.WEAPON;
 
-        this.init_stats(json_stat_data);
+        this.init_stats(AssetManager.getWeaponJsonData(name));
     }
 
 

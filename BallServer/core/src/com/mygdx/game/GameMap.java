@@ -37,6 +37,7 @@ public class GameMap {
     private ArrayList<Vector2> red_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> blue_spawn = new ArrayList<Vector2>();
     private ArrayList<Vector2> solo_spawn = new ArrayList<Vector2>();
+    private Vector2 default_camera;
     private HashMap<String,Rectangle> map_zones = new HashMap<String, Rectangle>();
 
     public GameMap(String file_path) {
@@ -60,8 +61,16 @@ public class GameMap {
             shape.setAsBox(rect.getWidth()/Global.PPM/2,rect.getHeight()/Global.PPM/2); //the parameters are half the width and half the height (for some reason)
             FixtureDef fdef = new FixtureDef();
             fdef.shape = shape;
-            fdef.filter.categoryBits = Global.BIT_STATIC;
-            fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+
+            if (obj.getName() == null) {
+                fdef.filter.categoryBits = Global.BIT_STATIC;
+                fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+            } else if (obj.getName().equals("red_spawn_door")) {
+                fdef.filter.categoryBits = Global.BIT_REDSTATIC;
+            } else if (obj.getName().equals("blue_spawn_door")) {
+                fdef.filter.categoryBits = Global.BIT_BLUESTATIC;
+            }
+
             Body new_body = AssetManager.createBody(fdef, BodyDef.BodyType.StaticBody);
             new_body.setUserData(new Pair<Class<?>, GameMap>(GameMap.class,this));
             //new_body.setUserData(this);
@@ -74,14 +83,16 @@ public class GameMap {
     public void load_spawn_points(MapObjects layer) {
         for (MapObject obj : layer) { //spawn points are saved as point objects on the TiledMap
             Rectangle rect = ((RectangleMapObject) obj).getRectangle(); //points are saved as rectangle with h = 0 and w =0
-            Vector2 spawn_point = new Vector2(rect.x,rect.y);
+            Vector2 point = new Vector2(rect.x,rect.y);
 
             if (obj.getName().equals("red")) {
-                this.red_spawn.add(spawn_point);
+                this.red_spawn.add(point);
             } else if (obj.getName().equals("blue")) {
-                this.blue_spawn.add(spawn_point);
+                this.blue_spawn.add(point);
             } else if (obj.getName().equals("solo")) {
-                this.solo_spawn.add(spawn_point);
+                this.solo_spawn.add(point);
+            } else if (obj.getName().equals("default_camera")) {
+                this.default_camera = point;
             }
         }
     }
@@ -135,6 +146,7 @@ public class GameMap {
 
     public HashMap<String, Rectangle> getObjectives() { return this.map_zones; }
     public TiledMap getTiledMap() { return this.map; }
+    public Vector2 getDefaultCameraPoint() { return this.default_camera; }
     public static GameMap getMap(String map_name) {
         assert (GameMap.map_list.containsKey(map_name)): "GameMap is not found or has not been loaded";
         return GameMap.map_list.get(map_name);

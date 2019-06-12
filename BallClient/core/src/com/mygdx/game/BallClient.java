@@ -100,27 +100,25 @@ public class BallClient {
     private String out_packer(MT msg_type,String msg) { //helper method that 'encodes' message
         String data = null;
 
-        switch(msg_type) {
-            case CHECKCREDS: //message is in the format: username, password
-                data = (MT.CHECKCREDS + "$" + msg);break;
-            case REGISTER: //message is in the format: username, password
-                data = (MT.REGISTER+"$"+msg); break;
-            case STARTGAME:
-                data = (MT.STARTGAME+"$");
-                this.toggleGameInProgress();
-                break;
+        if (msg_type == MT.STARTGAME || msg_type == MT.LEAVEGAME) { //if the message does not need to contain a msg
+            data = msg_type+"$";
+
+        } else if (msg_type == MT.CHECKCREDS || msg_type == MT.REGISTER) {
+            data = msg_type+"$"+msg;
         }
 
+        /*
+        CHECKCREDS - message is in the format: username, password
+        REGISTER - message is in the format: username, password
+         */
+
+        //the following only work if game is in progress
         if (this.game_in_progress == true) {
-            switch (msg_type) {
-                case USIN: //if the message we want to send is a user input
-                    data = (MT.USIN + "$" + msg); break;
-                case CHATMSG:
-                    data = (MT.CHATMSG + "$" + msg); break;
-                case CMD:
-                    data = (MT.CMD + "$" + msg); break;
+            if (msg_type == MT.USIN || msg_type == MT.CHATMSG || msg_type == MT.CMD || msg_type == MT.RESPAWN) {
+                data = msg_type+"$"+msg;
             }
         }
+
         assert (data != null): "empty message";
         return data;
     }
@@ -128,21 +126,22 @@ public class BallClient {
     public static void in_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(MT.UPDATEENTITY.toString())) {
+        MT msg_type = MT.valueOf(msg[0].toUpperCase());
+        if (msg_type == MT.UPDATEENTITY) {
             String[] pos = msg[1].split(" ");
             for (String s : pos) {
                 Entity.update_entity(s);
             }
-        } else if (msg[0].equals(MT.KILLENTITY.toString())) {
+        } else if (msg_type == MT.KILLENTITY) {
             int id = Integer.parseInt(msg[1]);
             Entity.kill_entity(id);
-        } else if (msg[0].equals(MT.SENDCHAT.toString())) {
+        } else if (msg_type == MT.SENDCHAT) {
             String[] chat = msg[1].split(",");
             Global.chatlog.recieve_message(chat[0],chat[1]);
-        } else if (msg[0].equals(MT.BINDCAM.toString())) {
+        } else if (msg_type == MT.BINDCAM) {
             String[] pos = msg[1].split(",");
             Global.camera.bindPos(new Vector2(Float.parseFloat(pos[0]),Float.parseFloat(pos[1])));
-        } else if (msg[0].equals(MT.UPDATEPARTICLE.toString())) {
+        } else if (msg_type == MT.UPDATEPARTICLE) {
             String[] particle_list = msg[1].split(" ");
             for (String particle : particle_list) {
                 String[] data = particle.split(","); //data comes in the form: name,x,y,duration
@@ -151,7 +150,9 @@ public class BallClient {
                 //Particle.createParticle(data[0],Float.parseFloat(data[1]),Float.parseFloat(data[2]),Integer.parseInt(data[3]));
             }
 
-        } else if (msg[0].equals(MT.CREDSACCEPTED.toString())) {
+        } else if (msg_type == MT.CHOOSECLASS) {
+            Global.game.game_screen.show_death_screen();
+        } else if (msg_type == MT.CREDSACCEPTED) {
             System.out.println("CREDS ACCEPTED");
 
             //System.out.println(msg[1]);
@@ -159,16 +160,17 @@ public class BallClient {
 
             Global.game.login_screen.creds_accepted();
 
-        } else if (msg[0].equals(MT.CREDSDENIED.toString())) {
+        } else if (msg_type == MT.CREDSDENIED) {
             Global.game.login_screen.creds_declined();
-        } else if (msg[0].equals(MT.REGISTERSUCCESS.toString())) {
+        } else if (msg_type == MT.REGISTERSUCCESS) {
             Global.game.login_screen.register_success();
-        } else if (msg[0].equals(MT.REGISTERFAILED.toString())) {
+        } else if (msg_type == MT.REGISTERFAILED) {
             Global.game.login_screen.register_failed();
         }
     }
 
-    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
+    public void enableGIP() { this.game_in_progress = true; } //enable game in progress
+    public void disableGIP() { this.game_in_progress = false; } //disable game in progress
     public boolean isGameInProgress() { return this.game_in_progress; }
 
 }

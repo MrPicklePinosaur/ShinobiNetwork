@@ -201,6 +201,10 @@ class GameScreen implements Screen {
         if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
         shapeRenderer.end();
 
+        batch.begin();
+        HealthTracker.drawAll(batch);
+        batch.end();
+
         //draw UI
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

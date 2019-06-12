@@ -225,6 +225,11 @@ public class Player extends Entity {
 
         this.health += deltaHp;
         this.health = MathUtils.clamp(this.health,0,this.stats.getHp()); //clamped so hp doesnt exceed max hp
+
+        //update clients with new hp values
+        String hp = Global.game.getAllHP();
+        if (!hp.equals("")) { BallClientHandler.broadcast(MT.UPDATEHP,hp); }
+
         if (this.health <= 0) {
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));

@@ -1,57 +1,64 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
-public class HealthTracker{
-    static Skin skin;
-    static TextureAtlas atlas;
-    static SpriteBatch batch;
-    //static ProgressBar.ProgressBarStyle progressBarStyle;
-    //static TiledDrawable tiledDrawable;
-    static LinkedList<HealthTracker> HealthBars = new LinkedList<HealthTracker>();
-    private float health;
-    private Vector2 pos;
+public class HealthTracker {
+    private static HashMap<Integer,HealthTracker> health_bars = new HashMap<Integer,HealthTracker>();
     private ProgressBar bar;
-    static{
-        skin = new Skin(Gdx.files.internal("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.json"));
-        atlas = new TextureAtlas("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.atlas");
-        skin.addRegions(atlas);
-        batch = new SpriteBatch();
-    }
-    public HealthTracker(Vector2 v) {
-        this.health = 1f;
-        this.pos = v;
-        this.bar = new ProgressBar(0f,1f,0.01f,false,skin);
-        HealthBars.add(this);
+
+    public HealthTracker(int id) {
+        this.bar = new ProgressBar(0f,1f,0.01f,false,Global.skin);
+        health_bars.put(id,this);
         //progressBarStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
         //tiledDrawable = skin.getTiledDrawable("progressbar-tiled").tint(skin.getColor("selection"));
         //tiledDrawable.setMinWidth(0);
         //progressBarStyle.knobBefore = tiledDrawable;
     }
-    public void draw(float currHealth, Vector2 v){
-        this.bar.setValue(currHealth);
-        this.bar.setPosition(v.x,v.y);
-        batch.begin();
-        this.bar.draw(batch,1.0f);
-        batch.end();
-    }
-    public static void drawAll(){
-        for(HealthTracker ht : HealthBars){
-            ht.draw(ht.getHealth(),ht.getPos());
+
+    public static void drawAll(SpriteBatch batch){
+        for(HealthTracker ht : HealthTracker.health_bars.values()){
+            ht.getBar().draw(batch,1.0f);
         }
     }
-    public void setHealth(float hp){this.health = hp;}
-    public float getHealth(){return this.health;}
-    public Vector2 getPos(){return this.pos;}
-    public void setPos(float x,float y){this.pos.x = x; this.pos.y = y;}
 
-    public void dispose(){skin.dispose();atlas.dispose();}
+    public static void update_data(String[] data) {
+        for (int i = 0; i < data.length; i ++) {
+            String[] hp_data = data[i].split(",");
+
+            int id = Integer.parseInt(hp_data[0]);
+            float hp_percent = Float.parseFloat(hp_data[1]);
+
+            HealthTracker ht = null;
+            if (HealthTracker.health_bars.containsKey(id)) { ht = HealthTracker.health_bars.get(id); }
+            else { ht = new HealthTracker(id); }
+
+            assert (ht != null): "Failed to find hp bar";
+
+            ht.setHealth(hp_percent);
+        }
+    }
+
+    public static void sync_pos() {
+        for (Integer id : HealthTracker.health_bars.keySet()) {
+            if (Entity.getEntityLib().containsKey(id)) { //iif the entity is actually alive
+                Entity e = Entity.getEntity(id);
+                HealthTracker ht = HealthTracker.health_bars.get(id);
+
+                ht.setPos(e.getX(),e.getY());
+            }
+        }
+    }
+
+   public void setHealth(float hp) {
+        this.bar.setValue(hp);
+    }
+    public void setPos(float x,float y) { this.bar.setPosition(x,y); }
+
+    public ProgressBar getBar() { return this.bar; }
+    public static HashMap<Integer,HealthTracker> getHealthBarList() { return HealthTracker.health_bars; }
 }

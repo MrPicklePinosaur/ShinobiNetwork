@@ -94,11 +94,11 @@ public class Database {
 
     public String getDefaultJson(String username) {
 
-        String default_inv = "[\"kazemonji\",\"simple_wakizashi\"]";
+        String default_inv = "[\"kazemonji\",\"simple_wakizashi\",\"reinforced_bow\",\"simple_quiver\",\"warrior_sword\",\"simple_helm\",\"ruby_staff\",\"flamethrower_scroll\"]";
         String default_ninja = "[\"kazemonji\",\"simple_wakizashi\"]";
-        String default_archer = "[]";
-        String default_warrior = "[]";
-        String default_wizard = "[]";
+        String default_archer = "[\"reinforced_bow\",\"simple_quiver\"]";
+        String default_warrior = "[\"warrior_sword\",\"simple_helm\"]";
+        String default_wizard = "[\"ruby_staff\",\"flamethrower_scroll\"]";
 
         String defaultJson =
                 "{\n"+

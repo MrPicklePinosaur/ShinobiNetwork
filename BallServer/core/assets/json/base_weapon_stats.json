@@ -36,17 +36,39 @@
 		"time_to_charge": 1000000
 	}
 
-
+	//bows
 	{
-		"name": "royal_warhammer",
-		"weapon_type": "hammer",
-		"projectile": "katanaSlash",
-		"fire_type": "manual",
+		"name": "reinforced_bow",
+		"weapon_type": "bow",
+		"projectile": "reinforced_arrow",
+		"fire_type": "charged",
 		"fire_rate": 0.5,
+		"fire_pattern": "straight",
+		"time_to_charge": 1
+	},
+
+
+	//swords / melee
+	{
+		"name": "warrior_sword",
+		"weapon_type": "sword",
+		"projectile": "warrior_strike",
+		"fire_type": "manual",
+		"fire_rate": 0.6,
 		"fire_pattern": "straight",
 		"time_to_charge": 1000000
 	},
 
+	//staves
+	{
+		"name": "ruby_staff",
+		"weapon_type": "staff",
+		"projectile": "ruby_bolt",
+		"fire_type": "manual",
+		"fire_rate": 0.6,
+		"fire_pattern": "straight",
+		"time_to_charge": 1000000
+	},
 
 	{
 		"name": "doom_bow",

@@ -1,5 +1,6 @@
 [
 
+	//katanas
 	{
 		"id": "kazemonji",
 		"display_name": "Kazemonji",
@@ -30,6 +31,7 @@
 	},
 
 
+	//wakis
 	{
 		"id": "simple_wakizashi",
 		"display_name": "Simple Wakizashi",
@@ -73,13 +75,58 @@
 		"special_text": "",
 	},
 
+	
+	//bows
 	{
-		"id": "royal_warhammer",
-		"display_name": "Royal Warhammer",
-		"item_type": "hammer",
+		"id": "reinforced_bow",
+		"display_name": "Reinforced Bow",
+		"item_type": "bow",
 		"stat_text": "",
 		"special_text": "",
 	},
-	
 
+	//quivers
+	{
+		"id": "simple_quiver",
+		"display_name": "Simple Quiver",
+		"item_type": "quiver",
+		"stat_text": "",
+		"special_text": "",
+	},
+
+	//swords / melee
+	{
+		"id": "warrior_sword",
+		"display_name": "Sword of the Warrior",
+		"item_type": "sword",
+		"stat_text": "",
+		"special_text": "",
+	},
+
+	//helms
+	{
+		"id": "simple_helm",
+		"display_name": "Simple Combat Helm",
+		"item_type": "helm",
+		"stat_text": "",
+		"special_text": "",
+	},
+
+	//staffs
+	{
+		"id": "ruby_staff",
+		"display_name": "Ruby Staff",
+		"item_type": "staff",
+		"stat_text": "",
+		"special_text": "",
+	},
+
+	//spells
+	{
+		"id": "flamethrower_scroll",
+		"display_name": "Flamethrower Scroll",
+		"item_type": "spell",
+		"stat_text": "",
+		"special_text": "",
+	},
 ]

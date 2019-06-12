@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 class MainmenuScreen implements Screen {
 
@@ -30,7 +29,7 @@ class MainmenuScreen implements Screen {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.game_screen);
                 Global.server_socket.send_msg(MT.STARTGAME,"");
-                Global.server_socket.toggleGameInProgress();
+                Global.server_socket.enableGIP();
             }
         });
 
@@ -115,7 +114,7 @@ class GameScreen implements Screen {
 
     private boolean show_menu = false;
     private Table pause_menu;
-    private Table choose_class;
+    private Table respawn_menu;
     private Inventory inv;
 
     public GameScreen() {
@@ -125,6 +124,11 @@ class GameScreen implements Screen {
 
         //menu
         TextButton resume_button = new TextButton("Resume",Global.skin);
+        resume_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                Global.game.game_screen.hide_menu();
+            }
+        });
         TextButton inventory_button = new TextButton("Inventory",Global.skin);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -135,7 +139,7 @@ class GameScreen implements Screen {
         exit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.server_socket.send_msg(MT.LEAVEGAME,"");
-                Global.server_socket.toggleGameInProgress();
+                Global.server_socket.disableGIP();
                 Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
@@ -154,23 +158,23 @@ class GameScreen implements Screen {
         this.inv.hide_inv();
 
         //Choose class menu
-        this.choose_class = new Table();
-        choose_class.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        this.respawn_menu = new Table();
+        respawn_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
         final String[] class_list = new String[]{"ninja","archer","warrior","wizard"};
         for (int i = 0; i < 4; i++) {
             final int index = i;
             ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
             choose.addListener(new ClickListener() {
                 @Override public void clicked(InputEvent event,float x,float y) {
-                    Global.server_socket.send_msg(MT.CHOOSECLASS,class_list[index]);
+                    Global.server_socket.send_msg(MT.RESPAWN,class_list[index]);
                 }
             });
-            choose_class.add(choose).pad(10);
+            respawn_menu.add(choose).pad(10);
         }
         this.hide_death_screen();
 
         this.stage.addActor(pause_menu);
-        this.stage.addActor(choose_class);
+        this.stage.addActor(respawn_menu);
 
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
@@ -190,7 +194,7 @@ class GameScreen implements Screen {
         stage.draw();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if inv is open
+        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
         shapeRenderer.end();
 
         //update stuff
@@ -220,10 +224,10 @@ class GameScreen implements Screen {
     }
     public void show_death_screen() {
         this.hide_menu();
-        this.choose_class.setVisible(true);
+        this.respawn_menu.setVisible(true);
     }
     public void hide_death_screen() {
-        this.choose_class.setVisible(false);
+        this.respawn_menu.setVisible(false);
     }
 
     public boolean isMenuVisible() { return this.show_menu; }
@@ -234,7 +238,11 @@ class GameScreen implements Screen {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-    @Override public void hide() { Gdx.gl.glDisable(GL20.GL_BLEND); }
+    @Override public void hide() {
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        this.hide_menu();
+        this.hide_death_screen();
+    }
 
     @Override public void dispose() { }
 

@@ -52,7 +52,7 @@ class Global {
 
 enum MT {
 	//Message types - output
-	USIN, CHATMSG, CMD, CHOOSECLASS,
+	USIN, CHATMSG, CMD, RESPAWN,
 
 	CHECKCREDS, REGISTER, STARTGAME, LEAVEGAME,
 

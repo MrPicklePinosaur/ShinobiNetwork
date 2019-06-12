@@ -53,6 +53,7 @@ class BallClientHandler {
     private BallClientHandler self;
 
     private Player client_entity; //used so we know which entity belongs to client
+    private TEAMTAG teamtag;
     private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
     public BallClientHandler(Socket client_sock) {
@@ -184,9 +185,12 @@ class BallClientHandler {
             } //if the creds work
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
         } else if (msg_type == MT.STARTGAME) {
-            this.toggleGameInProgress();
+            this.enableGIP();
+            this.teamtag = Global.game.chooseTeam();
+            Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
-            this.toggleGameInProgress(); //TODO: THIS MAY CAUSE WEIRD BUGS, INSTEAD DO TURNGAMEINPROGRESSON and TURNGAMEINPROGRESSOFF
+            this.disableGIP();
+            Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");
             boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
@@ -205,9 +209,8 @@ class BallClientHandler {
 
     public void init_client_entity() {
         String player_class = "ninja";
-        TEAMTAG team = Global.game.chooseTeam();
 
-        this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),team);
+        this.client_entity = new Player(player_class,AssetManager.getPlayerJsonData(player_class),this.teamtag);
         Vector2 spawn_point = Global.map.get_spawn_point(this.client_entity.getTeamtag());
         this.client_entity.init_pos(spawn_point.x/Global.PPM,spawn_point.y/Global.PPM,0);
         Global.game.addPlayer(this.client_entity);
@@ -237,7 +240,8 @@ class BallClientHandler {
 
     public void removeClient() { BallClientHandler.client_list.remove(this); }
 
-    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
+    public void enableGIP() { this.game_in_progress = true; } //enable game in progress
+    public void disableGIP() { this.game_in_progress = false; } //disable game in progress
     public boolean isGameInProgress() { return this.game_in_progress; }
 }
 

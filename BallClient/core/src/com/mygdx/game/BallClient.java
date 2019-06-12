@@ -114,7 +114,7 @@ public class BallClient {
 
         //the following only work if game is in progress
         if (this.game_in_progress == true) {
-            if (msg_type == MT.USIN || msg_type == MT.CHATMSG || msg_type == MT.CMD || msg_type == MT.CHOOSECLASS) {
+            if (msg_type == MT.USIN || msg_type == MT.CHATMSG || msg_type == MT.CMD || msg_type == MT.RESPAWN) {
                 data = msg_type+"$"+msg;
             }
         }
@@ -166,7 +166,8 @@ public class BallClient {
         }
     }
 
-    public void toggleGameInProgress() { this.game_in_progress = !this.game_in_progress; }
+    public void enableGIP() { this.game_in_progress = true; } //enable game in progress
+    public void disableGIP() { this.game_in_progress = false; } //disable game in progress
     public boolean isGameInProgress() { return this.game_in_progress; }
 
 }

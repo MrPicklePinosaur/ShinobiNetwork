@@ -107,11 +107,11 @@ class BallClientHandler {
 
                         Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
 
-                        removeClient();
                         Global.game.removePlayer(client_entity);
                     }
 
                     //tie off some loose ends
+                    removeClient();
                     close_connection();
                 }
 
@@ -148,7 +148,7 @@ class BallClientHandler {
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE) {
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS) {
                 data = msg_type+"$"+msg;
             }
             /*
@@ -186,6 +186,7 @@ class BallClientHandler {
             else { send_msg(MT.CREDSDENIED,""); } //if they dont
         } else if (msg_type == MT.STARTGAME) {
             this.enableGIP();
+            send_msg(MT.CHOOSECLASS,""); //tell users to choose class when they join the game
             this.teamtag = Global.game.chooseTeam();
             Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {

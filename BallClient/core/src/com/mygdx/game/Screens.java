@@ -169,6 +169,7 @@ class GameScreen implements Screen {
                     String[] load_out = Global.user_data.getLoadout(class_list[index]); //TODO: DONT TRUST USER WITH THIS DATA
                     String msg = class_list[index]+","+load_out[0]+","+load_out[1];
                     Global.server_socket.send_msg(MT.RESPAWN,msg);
+                    hide_death_screen();
                 }
             });
             respawn_menu.add(choose).pad(10);

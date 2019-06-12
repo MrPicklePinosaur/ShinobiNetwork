@@ -175,6 +175,8 @@ public class BallClient {
         } else if (msg_type == MT.UPDATEHP) {
             String[] hp_data = msg[1].split(" "); //message comes in the form  id1,hp1 id2,hp2
             HealthTracker.update_data(hp_data);
+        } else if (msg_type == MT.GAMEOVER) {
+
         }
     }
 

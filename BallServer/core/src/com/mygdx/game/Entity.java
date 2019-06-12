@@ -109,6 +109,9 @@ public abstract class Entity {
 
 
     //Getters
+    public static CopyOnWriteArrayList<Entity> getEntityList() { return Entity.entity_list; }
+    public static void clearEntityList() { Entity.entity_list.clear(); }
+
     public ET getET() { return this.entity_type; }
     public float getX() { return this.body.getPosition().x*Global.PPM; }
     public float getY() { return this.body.getPosition().y*Global.PPM; }

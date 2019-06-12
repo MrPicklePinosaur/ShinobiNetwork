@@ -98,7 +98,7 @@ class BallClientHandler {
 
                     //first of all, send a message to the client telling them they dced
 
-                    destroy_player();
+                    destroy_player(client_entity);
 
                     //tie off some loose ends
                     removeClient();
@@ -109,18 +109,18 @@ class BallClientHandler {
         }).start();
     }
 
-    public void destroy_player() {
+    public static void destroy_player(Player e) {
         //tell entity to stop drawing it
-        if (client_entity == null) { return; }//there is a chance that an entity was never inited
-        broadcast(MT.KILLENTITY, "" + client_entity.getId());
+        if (e == null) { return; }//there is a chance that an entity was never inited
+        broadcast(MT.KILLENTITY, "" + e.getId());
 
-        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-        Entity.removeEntity(client_entity); //remove client entity from list
+        AssetManager.flagForPurge(e.getBody()); //flag entity body for removal
+        Entity.removeEntity(e); //remove client entity from list
 
-        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+        Entity.removeEntity(e.getWeapon()); //remove the player's weapon
 
-        Global.game.removePlayer(client_entity);
-        this.client_entity = null;
+        Global.game.removePlayer(e);
+        e = null;
     }
 
     public void close_connection() {
@@ -152,7 +152,7 @@ class BallClientHandler {
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP) {
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP || msg_type == MT.GAMEOVER) {
                 data = msg_type+"$"+msg;
             }
             /*
@@ -194,7 +194,7 @@ class BallClientHandler {
             this.teamtag = Global.game.chooseTeam();
             Global.game.new_chat_msg("USER has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
-            destroy_player();
+            destroy_player(client_entity);
             this.disableGIP();
             Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {

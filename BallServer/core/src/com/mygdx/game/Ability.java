@@ -102,6 +102,11 @@ public abstract class Ability {
 
     public void tickTicker() { this.ticker--; }
     public void resetTicker() { this.ticker = 1000000; }
+
+    public static void dispose() {
+        Ability.active_abilities.clear();
+        Ability.cooldown_abilities.clear();
+    }
 }
 
 

@@ -88,6 +88,10 @@ public class Player extends Entity {
 
     public void init_data(String class_name,String weapon_name,String ability_name) {
         this.name = class_name;
+        if (this.weapon != null) {
+            BallClientHandler.broadcast(MT.KILLENTITY,weapon.getId()+"");
+            Entity.removeEntity(this.getWeapon()); //remove the player's weapon
+        }
         this.weapon = new Weapon(weapon_name,this);
         this.init_stats(AssetManager.getPlayerJsonData(class_name));
         this.ability = Ability.createAbility(this,this.stats.getAblType(),ability_name);
@@ -246,6 +250,7 @@ public class Player extends Entity {
         return false;
     }
 
+    public void disableGIP() { this.server_socket.disableGIP(); }
     //stat setters
     public void addKill() { this.kills++; }
     public void addDeath() { this.deaths++; }

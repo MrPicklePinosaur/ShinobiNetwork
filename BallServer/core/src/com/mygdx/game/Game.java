@@ -64,6 +64,28 @@ public abstract class Game {
         return msg;
     }
 
+    /*
+    public void destroy_game() {
+        //delet entities
+        for (Entity e : Entity.getEntityList()) {
+            AssetManager.flagForPurge(e.getBody());
+            BallClientHandler.broadcast(MT.KILLENTITY, "" + e.getId());
+        }
+
+        Entity.clearEntityList();
+        Ability.dispose();
+
+        //delet players
+        for (Player p : this.player_list) {
+            p.disableGIP();
+        }
+        this.player_list.clear();
+
+        //delet map
+
+
+    }
+    */
 
     public abstract ArrayList<Vector3> getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
@@ -104,8 +126,10 @@ class TDMGame extends Game { //team death match
      public void checkWin() {
          if (blue_lives <= 0) { //BLUE LOSES!
              this.new_chat_msg("The RED TEAM emerges VICTORIOUS");
+             BallClientHandler.broadcast(MT.GAMEOVER,"RED");
          } else if (red_lives <= 0) { //RED LOSES!
              this.new_chat_msg("The BLUE TEAM emerges VICTORIOUS");
+             BallClientHandler.broadcast(MT.GAMEOVER,"BLUE");
          }
      }
 

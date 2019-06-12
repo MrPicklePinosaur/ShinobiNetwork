@@ -66,7 +66,7 @@ class BallClientHandler {
             instream = new BufferedReader(new InputStreamReader(client_sock.getInputStream()));
         } catch(IOException ex) { System.out.println(ex); }
 
-        init_client_entity();
+        //init_client_entity();
 
         new Thread(new Runnable() {
             @Override
@@ -82,7 +82,7 @@ class BallClientHandler {
                         //interperate client message
                         input_unpacker(client_msg);
 
-                        if (isGameInProgress()) { send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); } //TODO: prob a bad idea to put this here
+                        if (client_entity != null) { send_msg(MT.BINDCAM,client_entity.getX()+","+client_entity.getY()); } //TODO: prob a bad idea to put this here
 
                     }
                 } catch(IOException ex) { //if something weird happens (including the client normally leaving game) disconnect the client
@@ -92,15 +92,17 @@ class BallClientHandler {
                     //first of all, send a message to the client telling them they dced
 
                     //tell entity to stop drawing it
-                    broadcast(MT.KILLENTITY,""+client_entity.getId());
+                    if (client_entity != null) { //there is a chance that an entity was never inited
+                        broadcast(MT.KILLENTITY, "" + client_entity.getId());
 
-                    AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
-                    Entity.removeEntity(client_entity); //remove client entity from list
+                        AssetManager.flagForPurge(client_entity.getBody()); //flag entity body for removal
+                        Entity.removeEntity(client_entity); //remove client entity from list
 
-                    Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
+                        Entity.removeEntity(client_entity.getWeapon()); //remove the player's weapon
 
-                    removeClient();
-                    Global.game.removePlayer(client_entity);
+                        removeClient();
+                        Global.game.removePlayer(client_entity);
+                    }
 
                     //tie off some loose ends
                     close_connection();
@@ -167,31 +169,38 @@ class BallClientHandler {
     private void input_unpacker(String raw_msg) {
         //Message packet is in the form MSGTYPE$message
         String[] msg = raw_msg.split("\\$");
-        if (msg[0].equals(MT.USIN.toString())) {
+        MT mt = MT.valueOf(msg[0].toUpperCase());
 
+        switch(mt) {
+            case CHATMSG:
+                Global.game.new_chat_msg(msg[1]); break;
+            case CMD:
+                String[] cmd_msg = msg[1].split(" "); break;
+                //execute_command(cmd_msg);
+            case CHECKCREDS:
+                String[] cred = msg[1].split(",");
+                if (Global.db.checkCredentials(cred[0], cred[1])) {
+
+                    String json_data = Global.db.getData(cred[0]).replaceAll("\\s", ""); //get rid of all white space in json
+                    send_msg(MT.CREDSACCEPTED, json_data); //if the creds are accepted, send the data to client
+
+                } //if the creds work
+                else { send_msg(MT.CREDSDENIED, ""); } //if they dont
+                break;
+            case STARTGAME:
+                this.toggleGameInProgress(); break;
+            case REGISTER:
+                String[] user_data = msg[1].split(",");
+                boolean register_success = Global.db.new_user(user_data[0], user_data[1]); //atempt to create a new user
+
+                if (register_success) { this.send_msg(MT.REGISTERSUCCESS, ""); }
+                else { this.send_msg(MT.REGISTERFAILED, ""); }
+                break;
+
+        }
+
+        if (mt == MT.USIN && this.client_entity != null) {
             this.client_entity.handleInput(msg[1]);
-        } else if (msg[0].equals(MT.CHATMSG.toString())) {
-            Global.game.new_chat_msg(msg[1]);
-        } else if (msg[0].equals(MT.CMD.toString())) {
-            String[] cmd_msg = msg[1].split(" ");
-            execute_command(cmd_msg);
-        } else if (msg[0].equals(MT.CHECKCREDS.toString())) {
-            String[] cred = msg[1].split(",");
-            if (Global.db.checkCredentials(cred[0],cred[1])) {
-
-                String json_data = Global.db.getData(cred[0]).replaceAll("\\s",""); //get rid of all white space in json
-                send_msg(MT.CREDSACCEPTED,json_data); //if the creds are accepted, send the data to client
-
-            } //if the creds work
-            else { send_msg(MT.CREDSDENIED,""); } //if they dont
-        } else if (msg[0].equals(MT.STARTGAME.toString())) {
-            this.toggleGameInProgress();
-        } else if (msg[0].equals(MT.REGISTER.toString())) {
-            String[] user_data = msg[1].split(",");
-            boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
-
-            if (register_success) { this.send_msg(MT.REGISTERSUCCESS,""); }
-            else { this.send_msg(MT.REGISTERFAILED,""); }
         }
     }
 

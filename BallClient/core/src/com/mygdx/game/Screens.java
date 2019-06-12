@@ -147,15 +147,18 @@ class GameScreen implements Screen {
         //Choose class menu
         this.choose_class = new Table();
         choose_class.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
+        final String[] class_list = new String[]{"ninja","archer","warrior","wizard"};
         for (int i = 0; i < 4; i++) {
+            final int index = i;
             ImageButton choose = new ImageButton(new TextureRegionDrawable(AssetManager.getUIImage("choose_class_up")),new TextureRegionDrawable(AssetManager.getUIImage("choose_class_down")));
             choose.addListener(new ClickListener() {
                 @Override public void clicked(InputEvent event,float x,float y) {
-                    
+                    Global.server_socket.send_msg(MT.CHOOSECLASS,class_list[index]);
                 }
             });
             choose_class.add(choose).pad(10);
         }
+        this.hide_death_screen();
 
         this.stage.addActor(pause_menu);
         this.stage.addActor(choose_class);
@@ -197,16 +200,21 @@ class GameScreen implements Screen {
         this.show_menu = true;
         this.pause_menu.setVisible(true);
     }
-
-    public void show_inv() {
-        this.pause_menu.setVisible(false);
-        this.inv.show_inv();
-    }
-
     public void hide_menu() {
         this.show_menu = false;
         this.pause_menu.setVisible(false);
         this.inv.hide_inv();
+    }
+    public void show_inv() {
+        this.pause_menu.setVisible(false);
+        this.inv.show_inv();
+    }
+    public void show_death_screen() {
+        this.hide_menu();
+        this.choose_class.setVisible(true);
+    }
+    public void hide_death_screen() {
+        this.choose_class.setVisible(false);
     }
 
     public boolean isMenuVisible() { return this.show_menu; }

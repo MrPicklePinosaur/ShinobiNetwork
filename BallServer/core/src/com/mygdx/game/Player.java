@@ -77,7 +77,7 @@ public class Player extends Entity {
         //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
         this.reset_performance_stats();
-        this.ability = Ability.createAbility(this,this.stats.getAblType(),"cherryblossom_twinblades");
+        this.ability = Ability.createAbility(this,this.stats.getAblType(),"whirlwind_sheath");
     }
 
     public void reset_game_stats() {

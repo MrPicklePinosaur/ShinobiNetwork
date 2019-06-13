@@ -116,7 +116,7 @@ class MainmenuScreen implements Screen {
 
         title = new Label("Shinobi Network!",Global.skin);
         title.setStyle(Global.labelStyle);
-        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth(),Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title.setPosition(title.getWidth()*2.5f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
         title.setFontScale(1.5f);
         //rootTable.setDebug(true);
         //buttonTable.setDebug(true);
@@ -254,7 +254,7 @@ class GameScreen implements Screen {
         batch.end();
 
         batch.begin();
-        //HealthTracker.drawAll(batch);
+        HealthTracker.drawAll(batch);
         batch.end();
 
         //draw UI

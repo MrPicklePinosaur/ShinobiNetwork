@@ -49,6 +49,14 @@
 			"slash_projectile": "whirlwind_slash",
 			"slash_pattern": "double"
 		},
+		{
+			"name": "jade_wakizashi",
+			"max_duration": 0.1,
+			"max_cooldown": 1,
+			"dash_speed": 20,
+			"slash_projectile": "",
+			"slash_pattern": "straight"
+		},
 
 
 
@@ -80,6 +88,22 @@
 			"active_effect": "berzerk"
 		},
 		{
+			"name": "paladin_helm",
+			"max_duration": 2,
+			"max_cooldown": 5,
+			"radius": 200,
+			"affected_entites": "team",
+			"active_effect": "purify"
+		},
+		{
+			"name": "dragonborn_helm",
+			"max_duration": 2,
+			"max_cooldown": 5,
+			"radius": 200,
+			"affected_entites": "enemies",
+			"active_effect": "repel"
+		},
+		{
 			"name": "helm of hades",
 			"max_duration": 2,
 			"max_cooldown": 5,
@@ -105,6 +129,13 @@
 			"max_cooldown": 4,
 			"quiver_projectile": "simple_shot",
 			"quiver_pattern": "straight"
+		},
+		{
+			"name": "devastation_quiver",
+			"max_duration": 0,
+			"max_cooldown": 6,
+			"quiver_projectile": "devastation_shot",
+			"quiver_pattern": "triple"
 		}
 	],
 

@@ -46,6 +46,15 @@
 		"fire_pattern": "straight",
 		"time_to_charge": 1
 	},
+	{
+		"name": "savage_compoundbow",
+		"weapon_type": "bow",
+		"projectile": "savage_arrow",
+		"fire_type": "manual",
+		"fire_rate": 0.2,
+		"fire_pattern": "random",
+		"time_to_charge": 1000000
+	},
 
 
 	//swords / melee
@@ -56,6 +65,15 @@
 		"fire_type": "manual",
 		"fire_rate": 0.6,
 		"fire_pattern": "straight",
+		"time_to_charge": 1000000
+	},
+	{
+		"name": "destiny_axe",
+		"weapon_type": "sword",
+		"projectile": "destiny_strike",
+		"fire_type": "manual",
+		"fire_rate": 0.5,
+		"fire_pattern": "penta",
 		"time_to_charge": 1000000
 	},
 

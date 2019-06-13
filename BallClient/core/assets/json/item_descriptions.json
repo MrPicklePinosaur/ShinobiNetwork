@@ -53,7 +53,7 @@
 		"stat_text": "",
 		"special_text": "",
 	},
-		{
+	{
 		"id": "bloodsucker_talon",
 		"display_name": "Bloodsucker Talon",
 		"item_type": "waki",
@@ -74,12 +74,26 @@
 		"stat_text": "",
 		"special_text": "",
 	},
+	{
+		"id": "jade_wakizashi",
+		"display_name": "Jade Wakizashi",
+		"item_type": "waki",
+		"stat_text": "",
+		"special_text": "",
+	},
 
 	
 	//bows
 	{
 		"id": "reinforced_bow",
 		"display_name": "Reinforced Bow",
+		"item_type": "bow",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "savage_compoundbow",
+		"display_name": "Savage's Compound Bow",
 		"item_type": "bow",
 		"stat_text": "",
 		"special_text": "",
@@ -93,6 +107,13 @@
 		"stat_text": "",
 		"special_text": "",
 	},
+	{
+		"id": "devastation_quiver",
+		"display_name": "Quiver of Devastation",
+		"item_type": "quiver",
+		"stat_text": "",
+		"special_text": "",
+	},
 
 	//swords / melee
 	{
@@ -102,11 +123,32 @@
 		"stat_text": "",
 		"special_text": "",
 	},
+	{
+		"id": "destiny_axe",
+		"display_name": "The Blinding Light of Destiny",
+		"item_type": "sword",
+		"stat_text": "",
+		"special_text": "",
+	},
 
 	//helms
 	{
 		"id": "simple_helm",
 		"display_name": "Simple Combat Helm",
+		"item_type": "helm",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "paladin_helm",
+		"display_name": "Paladin Helmet",
+		"item_type": "helm",
+		"stat_text": "",
+		"special_text": "",
+	},
+	{
+		"id": "dragonborn_helm",
+		"display_name": "Helm of the Dragonborn",
 		"item_type": "helm",
 		"stat_text": "",
 		"special_text": "",

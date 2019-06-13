@@ -114,6 +114,8 @@ class Projectile extends Entity {
         } else if (name.equals("tsuinejji_ice_slash")) {
             int chance = Global.rnd.nextInt(100);
             if (chance < 50) { target.applyActiveEffect("frostbite", 2); }
+        } else if (name.equals("bloodsucker_slash")) {
+            ((Player) this.owner).modHp((int)(damage/2));
         }
 
         else if (name.equals("flamethrower_bolt")) {

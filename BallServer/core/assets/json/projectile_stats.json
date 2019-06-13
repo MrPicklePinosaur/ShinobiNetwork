@@ -93,6 +93,14 @@
 		"penetration": 1,
 		"travel_pattern": "straight"
 	},
+	{
+		"name": "savage_arrow",
+		"damage": 12,
+		"bullet_speed": 4,
+		"max_dist": 3.5,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 	//quivers
 	{
@@ -103,11 +111,27 @@
 		"penetration": 5,
 		"travel_pattern": "straight"
 	},
+	{
+		"name": "devastation_shot",
+		"damage": 30,
+		"bullet_speed": 1,
+		"max_dist": 3,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
 
 	//swords
 	{
 		"name": "warrior_strike",
 		"damage": 17,
+		"bullet_speed": 2,
+		"max_dist": 0.7,
+		"penetration": 1,
+		"travel_pattern": "straight"
+	},
+	{
+		"name": "destiny_strike",
+		"damage": 7,
 		"bullet_speed": 2,
 		"max_dist": 0.7,
 		"penetration": 1,

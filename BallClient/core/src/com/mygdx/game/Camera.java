@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Camera {
@@ -27,22 +28,26 @@ public class Camera {
 
     public Camera() {
         this.cam = new OrthographicCamera(600,400);
-        this.cam_bind_x = 0; this.cam_bind_y = 0;
+        cam.zoom = 0.9f;
+        cam_bind_x = 0; this.cam_bind_y = 0;
+        cam.update();
     }
 
     public void moveCam() { //make camera follow a target entity
         float x = this.cam_bind_x;
         float y = this.cam_bind_y;
 
-        if (this.isLocked == false) {
-            //shift camera in direction of mouse
-            float cam_shift_speed = 3;
-            float max_cam_dist = 45;
+        if (this.isLocked == false) { //shift camera in direction of mouse
 
-            this.cam.translate(cam_shift_speed*MathUtils.cos(Global.m_angle),cam_shift_speed*MathUtils.sin(Global.m_angle));
+            //this amazing camera code is from: https://stackoverflow.com/questions/24047172/libgdx-camera-smooth-translation
+            Vector3 target = new Vector3(x+MathUtils.cos(Global.m_angle)*20,y+MathUtils.sin(Global.m_angle)*20,0);
+            final float speed = 0.1f, ispeed=1.0f-speed;
 
-            this.cam.position.x = MathUtils.clamp(this.cam.position.x,x-max_cam_dist*Math.abs(MathUtils.cos(Global.m_angle)),x+max_cam_dist*Math.abs(MathUtils.cos(Global.m_angle)));
-            this.cam.position.y = MathUtils.clamp(this.cam.position.y,y-max_cam_dist*Math.abs(MathUtils.sin(Global.m_angle)),y+max_cam_dist*Math.abs(MathUtils.sin(Global.m_angle)));
+            Vector3 cameraPosition = cam.position;
+            cameraPosition.scl(ispeed);
+            target.scl(speed);
+            cameraPosition.add(target);
+            cam.position.set(cameraPosition);
         } else {
             this.cam.position.x = x;
             this.cam.position.y = y;

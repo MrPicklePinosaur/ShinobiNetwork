@@ -37,13 +37,14 @@ public class BallServerMain extends ApplicationAdapter {
 		//Connect to database
 		Global.db = new Database();
 
-		Global.game = new TDMGame();
+		Global.game = new FFAGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
 		//current_map = GameMap.getMap("Mountain Temple");
-		Global.map = new GameMap("maps/mountain_temple.tmx");
+		//Global.map = new GameMap("maps/mountain_temple.tmx");
+		Global.map = new GameMap("maps/mt_ffa.tmx");
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();

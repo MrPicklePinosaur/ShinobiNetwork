@@ -64,18 +64,15 @@ class MainmenuScreen implements Screen {
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
         }
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        BitmapFont pixelFont = Global.skin.getFont("PixelFont");
-        labelStyle.font = pixelFont;
-        labelStyle.fontColor = Color.valueOf("B5B5B5");
+
         Label kd = new Label("KDR: "+kdr,Global.skin);
         Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),Global.skin);
         Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),Global.skin);
         Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),Global.skin);
-        kd.setStyle(labelStyle);
-        kills.setStyle(labelStyle);
-        deaths.setStyle(labelStyle);
-        damage.setStyle(labelStyle);
+        kd.setStyle(Global.labelStyle);
+        kills.setStyle(Global.labelStyle);
+        deaths.setStyle(Global.labelStyle);
+        damage.setStyle(Global.labelStyle);
 
         stats.add(kd).expandY().right().padRight(10f);
         stats.row();
@@ -117,7 +114,7 @@ class MainmenuScreen implements Screen {
         rootTable.bottom();
 
         title = new Label("Ball Network!",Global.skin);
-        title.setStyle(labelStyle);
+        title.setStyle(Global.labelStyle);
         title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth()/2f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
         //rootTable.setDebug(true);
         //buttonTable.setDebug(true);
@@ -226,7 +223,13 @@ class GameScreen implements Screen {
             });
             respawn_menu.add(choose).pad(10);
         }
-        //this.hide_death_screen();
+        respawn_menu.row();
+        for (int i = 0; i < 4; i++) {
+            Label class_name = new Label(class_list[i],Global.skin);
+            class_name.setStyle(Global.labelStyle);
+            class_name.setFontScale(0.5f);
+            respawn_menu.add(class_name);
+        }
 
         this.stage.addActor(pause_menu);
         this.stage.addActor(respawn_menu);

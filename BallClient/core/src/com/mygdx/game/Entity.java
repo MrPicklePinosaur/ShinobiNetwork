@@ -113,8 +113,7 @@ public class Entity {
                 ht = HealthTracker.getHealthBarList().get(id);
             }
             assert (ht != null) : "Health bar not found";
-
-            ht.setPos(entity.getX() - ht.getBarWidth() / 2, entity.getY() - HealthTracker.y_offset);
+            ht.setPos(entity.getX() - ht.getBarWidth()/2, entity.getY() + HealthTracker.y_offset);
         }
     }
 

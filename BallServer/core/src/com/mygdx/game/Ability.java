@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -192,6 +193,10 @@ class WarcryAbility extends Ability {
                 p.applyActiveEffect(active_effect,max_duration);
             } else if (this.active_effect.equals("speedy")) {
                 p.applyActiveEffect(this.active_effect,max_duration);
+            } else if (this.active_effect.equals("purify")) {
+
+            } else if (this.active_effect.equals("repel")) {
+                
             }
 
         }
@@ -216,6 +221,8 @@ class QuiverAbility extends Ability{
     @Override public void activate() {
         if (this.name.equals("simple_quiver")) {
             this.player.shoot(quiver_projectile,player.getMouseAngle(),quiver_pattern,1,1);
+        } else if (this.name.equals("devastation_quiver")) {
+            this.player.shoot(quiver_projectile, player.getMouseAngle(), quiver_pattern, 1, 1);
         }
      }
 

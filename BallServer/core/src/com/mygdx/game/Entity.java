@@ -81,6 +81,9 @@ public abstract class Entity {
                 this.newProjectile(name,direct-90*MathUtils.degreesToRadians,dmg_mult,speed_mult,spawn_pos);
             }
 
+        } else if (fire_pattern.equals("random")) {
+            float offset = Global.rnd.nextInt(180)*MathUtils.degreesToRadians;
+            this.newProjectile(name,angle-MathUtils.PI/2+offset,dmg_mult,speed_mult);
         }
     }
 

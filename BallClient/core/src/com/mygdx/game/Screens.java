@@ -107,7 +107,8 @@ class MainmenuScreen implements Screen {
 
 class GameScreen implements Screen {
     //init sprites (REMOVE LATER)
-    static Sprite background = new Sprite(new Texture("mountain_temple.png"));
+    //static Sprite background = new Sprite(new Texture("mountain_temple.png"));
+    static Sprite background = new Sprite(new Texture("mt_ffa.png"));
 
     private Stage stage;
     private SpriteBatch batch;

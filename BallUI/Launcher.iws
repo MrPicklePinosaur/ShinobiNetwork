@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="877d0f0e-2c27-4f95-aa2b-00a3865a7dab" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/out/production/classes/META-INF/BallServer.core.main.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Launcher.iws" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/ChatLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/ChatLog.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -83,7 +78,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
+            <state relative-caret-position="372">
               <caret line="81" column="50" lean-forward="true" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -419,7 +414,7 @@
       <window_info id="DB Browser" order="7" weight="0.32943013" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49726775" weight="0.32941177" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49726775" visible="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -534,7 +529,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
+        <state relative-caret-position="372">
           <caret line="81" column="50" lean-forward="true" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />

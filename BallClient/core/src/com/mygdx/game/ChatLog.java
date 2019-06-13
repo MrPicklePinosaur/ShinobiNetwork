@@ -6,11 +6,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.LinkedList;
@@ -30,7 +33,8 @@ public class ChatLog extends ApplicationAdapter {
 
         Table newTable = new Table();
         newTable.setFillParent(true);
-        newTable.setDebug(false);
+        newTable.setDebug(true);
+
         stage.addActor(newTable);
         this.table = newTable; //this table is the UI table, so be careful when clearing children
 

@@ -112,7 +112,7 @@
 			"active_effect": "burning"
 		},
 		{
-			"name": "bunny helm",
+			"name": "bunny_helm",
 			"max_duration": 2,
 			"max_cooldown": 3,
 			"radius": 0,

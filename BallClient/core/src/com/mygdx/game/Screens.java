@@ -457,6 +457,7 @@ class Inventory {
     private Table inventory_grid;
     private Table loadout_inv;
     private Table tabs;
+    private Table page;
 
     public Inventory(Stage screen_stage) {
         this.stage = screen_stage;
@@ -520,6 +521,9 @@ class Inventory {
         tabs.rotateBy(90);
         tabs.bottom();
         tabs.setDebug(true);
+
+        this.page = new Table();
+
 
         stage.addActor(inventory_grid);
         stage.addActor(loadout_inv);

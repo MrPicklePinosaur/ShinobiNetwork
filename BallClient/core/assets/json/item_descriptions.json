@@ -153,6 +153,13 @@
 		"stat_text": "",
 		"special_text": "",
 	},
+	{
+		"id": "bunny_helm",
+		"display_name": "Bunny Helm",
+		"item_type": "helm",
+		"stat_text": "",
+		"special_text": "",
+	},
 
 	//staffs
 	{

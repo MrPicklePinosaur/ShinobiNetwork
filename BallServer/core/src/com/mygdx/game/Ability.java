@@ -196,7 +196,7 @@ class WarcryAbility extends Ability {
             } else if (this.active_effect.equals("purify")) {
 
             } else if (this.active_effect.equals("repel")) {
-                
+
             }
 
         }

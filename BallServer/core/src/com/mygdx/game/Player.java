@@ -253,9 +253,15 @@ public class Player extends Entity {
 
     public void disableGIP() { this.server_socket.disableGIP(); }
     //stat setters
-    public void addKill() { this.kills++; }
-    public void addDeath() { this.deaths++; }
-    public void addDmgDealt(float dmg_dealt) { this.dmg_dealt+= dmg_dealt; }
+    public void addKill() {
+        this.kills++;
+        BallClientHandler.broadcast(MT.UPDATELEADERBOARD,Global.game.getLeaderBoard());
+    }
+    public void addDeath() {
+        this.deaths++;
+        BallClientHandler.broadcast(MT.UPDATELEADERBOARD,Global.game.getLeaderBoard());
+    }
+    public void addDmgDealt(float dmg_dealt) { this.dmg_dealt+= dmg_dealt; } //we dont need to update damage dealt that often
 
     //stat getters
     //possibly remove all the individual getters

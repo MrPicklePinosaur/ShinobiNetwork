@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -457,7 +458,14 @@ class Inventory {
     private Table inventory_grid;
     private Table loadout_inv;
     private Table tabs;
+    private String current_tab;
+
     private Table page;
+    private ImageButton left;
+    private ImageButton right;
+    private Label page_label;
+
+    private int page_num;
 
     public Inventory(Stage screen_stage) {
         this.stage = screen_stage;
@@ -474,39 +482,45 @@ class Inventory {
 
 
         //BUTTONS
+        this.current_tab = "";
         TextButton allItems_button = new TextButton("All items",Global.skin);
         allItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                refreshInventory("");
+                current_tab = "";
                 hide_loadout();
+                refreshInventory(current_tab);
             }
         });
         TextButton ninjaItems_button = new TextButton("Ninja",Global.skin);
         ninjaItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                refreshInventory("katana,waki");
+                current_tab = "katana,waki";
                 show_loadout("ninja");
+                refreshInventory(current_tab);
             }
         });
         TextButton archerItems_button = new TextButton("Archer",Global.skin);
         archerItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                refreshInventory("bow,quiver");
+                current_tab = "bow,quiver";
                 show_loadout("archer");
+                refreshInventory(current_tab);
             }
         });
         TextButton warriorItems_button = new TextButton("Warrior",Global.skin);
         warriorItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                refreshInventory("sword,helm");
+                current_tab = "sword,helm";
                 show_loadout("warrior");
+                refreshInventory(current_tab);
             }
         });
         TextButton wizardItems_button = new TextButton("Wizard",Global.skin);
         wizardItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                refreshInventory("staff,spell");
+                current_tab = "staff,spell";
                 show_loadout("wizard");
+                refreshInventory(current_tab);
             }
         });
 
@@ -523,11 +537,44 @@ class Inventory {
         tabs.setDebug(true);
 
         this.page = new Table();
+        this.page_num = 1;
+        this.left = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("left_arrow"))));
+        left.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                page_num--;
+                switch_page();
+                refreshInventory(current_tab);
+            }
+        });
+        this.right = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("right_arrow"))));
+        warriorItems_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                page_num++;
+                switch_page();
+                refreshInventory(current_tab);
+            }
+        });
+        this.page_label = new Label(""+page_num,Global.skin);
+        page_label.setStyle(Global.labelStyle);
 
+        page.add(left);
+        page.add(page_label);
+        page.add(right);
 
         stage.addActor(inventory_grid);
         stage.addActor(loadout_inv);
         stage.addActor(tabs);
+    }
+
+    public void switch_page() {
+        page_num = MathUtils.clamp(page_num,1,999);
+        if (this.page_num == 1) { //hide left arrow if on page 1
+
+        } else { //otherwise show it
+
+        }
+        page_label.setText(""+this.page_num);
+        refreshInventory(current_tab);
     }
 
     public void refreshInventory(String filter) { //filter inv by item type, if an empty string is provided, it means no filtere

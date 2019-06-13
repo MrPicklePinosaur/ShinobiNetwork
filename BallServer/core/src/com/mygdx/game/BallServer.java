@@ -53,6 +53,7 @@ class BallClientHandler {
     private BallClientHandler self;
 
     private Player client_entity; //used so we know which entity belongs to client
+    private String user_name;
     private TEAMTAG teamtag;
     private boolean game_in_progress = false; //if the user is actually in game, we send tell them what the heck is going on during the game
 
@@ -151,7 +152,7 @@ class BallClientHandler {
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP || msg_type == MT.GAMEOVER) {
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP || msg_type == MT.GAMEOVER || msg_type == MT.UPDATELEADERBOARD) {
                 data = msg_type+"$"+msg;
             }
             /*
@@ -182,6 +183,7 @@ class BallClientHandler {
             String[] cred = msg[1].split(",");
             if (Global.db.checkCredentials(cred[0],cred[1])) {
 
+                this.user_name = cred[0];
                 String json_data = Global.db.getData(cred[0]).replaceAll("\\s",""); //get rid of all white space in json
                 send_msg(MT.CREDSACCEPTED,json_data); //if the creds are accepted, send the data to client
 

@@ -87,7 +87,7 @@ public abstract class Game {
     }
     */
 
-    public abstract ArrayList<Vector3> getLeaderBoard();
+    public abstract String getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
 
@@ -133,10 +133,8 @@ class TDMGame extends Game { //team death match
          }
      }
 
-    @Override public ArrayList<Vector3> getLeaderBoard() {
-        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
-        return leaderboard;
+    @Override public String getLeaderBoard() {
+        return "";
     }
 
     @Override public TEAMTAG chooseTeam() {
@@ -199,10 +197,8 @@ class KOTHGame extends Game { //king of the hill
         }
     }
 
-    @Override public ArrayList<Vector3> getLeaderBoard() { //TODO: when sending team points, round to nearest whole number
-        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
-        return leaderboard;
+    @Override public String getLeaderBoard() { //TODO: when sending team points, round to nearest whole number
+        return "";
     }
 
     @Override public TEAMTAG chooseTeam() {
@@ -235,9 +231,12 @@ class FFAGame extends Game { //free for all
         }
     }
 
-    @Override public ArrayList<Vector3> getLeaderBoard() {
-        ArrayList<Vector3> leaderboard = new ArrayList<Vector3>();
-        for (Player p : this.player_list) { leaderboard.add(p.getGameStats()); }
+    @Override public String getLeaderBoard() {
+        String leaderboard = "";
+        for (Player p : this.player_list) {
+             leaderboard += (" "+p.getName()+","+p.getKills()+","+p.getDeaths()+","+p.getDmgDealt());
+        }
+        if (leaderboard.length() != 0) { leaderboard = leaderboard.substring(1); }
         return leaderboard;
     }
 

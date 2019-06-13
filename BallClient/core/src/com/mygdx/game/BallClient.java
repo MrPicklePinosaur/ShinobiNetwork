@@ -177,6 +177,8 @@ public class BallClient {
             HealthTracker.update_data(hp_data);
         } else if (msg_type == MT.GAMEOVER) {
 
+        } else if (msg_type == MT.UPDATELEADERBOARD) {
+            System.out.println(msg[1]);
         }
     }
 

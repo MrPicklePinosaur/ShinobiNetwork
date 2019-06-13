@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -418,7 +419,16 @@ class InventoryScreen implements Screen {
             }
         });
 
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        Pixmap menuPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        menuPixmap.setColor(Color.valueOf("4c4c4c80"));
+        menuPixmap.fill();
+        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(menuPixmap))));
+
+        this.stage.addActor(rootTable);
         this.stage.addActor(backButton.left().pad(20));
+
     }
 
     @Override public void render(float delta) {

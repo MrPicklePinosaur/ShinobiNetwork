@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import java.util.HashMap;
@@ -16,8 +17,10 @@ public class HealthTracker {
     public static final float y_offset = 32;
 
     public HealthTracker(int id) {
-        this.bar = new ProgressBar(0f,1f,0.001f,false,Global.skin);
+        this.bar = new ProgressBar(0f,100f,1f,false,Global.skin);
+        bar.setValue(100f);
         health_bars.put(id,this);
+        Global.game.game_screen.getStage().addActor(bar);
         //\progressBarStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
         //tiledDrawable = skin.getTiledDrawable("progressbar-tiled").tint(skin.getColor("selection"));
         //tiledDrawable.setMinWidth(0);
@@ -36,9 +39,10 @@ public class HealthTracker {
             String[] hp_data = data[i].split(",");
 
             int id = Integer.parseInt(hp_data[0]);
-            float hp_percent = Float.parseFloat(hp_data[1]);
+            float hp_percent = Float.parseFloat(hp_data[1])*100;
 
             if (!HealthTracker.health_bars.containsKey(id)) { continue; } //if the hp bar doesnt exist, forget about it for now
+
             HealthTracker.health_bars.get(id).setHealth(hp_percent);
         }
     }

@@ -140,7 +140,6 @@ public class Player extends Entity {
                 float charge_dmg_mult = this.findDmgMult(this.weapon.stats.getTimeToCharge(),time_held);
                 float charge_speed_mult = this.findSpeedMult(this.weapon.stats.getTimeToCharge(),time_held);
 
-
                 //shoot projectile only when mouse is released
                 if (Player.shoot_cooldown_list.contains(this)) { break; } //if the player is currently under shoot cooldwon ,dont shoot
 

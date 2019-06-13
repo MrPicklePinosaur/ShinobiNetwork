@@ -19,6 +19,7 @@ public class HealthTracker {
     static Skin skin;
     public static final float y_offset = 25;
     static ProgressBar.ProgressBarStyle style;
+    static Label.LabelStyle nameStyle;
 
     static{
         skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
@@ -27,6 +28,9 @@ public class HealthTracker {
         style.knobBefore = skin.getDrawable("progressbar-knob-horizontal-c");
         style.background.setMinHeight(0f);
         style.knobBefore.setMinHeight(style.knobBefore.getMinHeight()*0.3f);
+        nameStyle = new Label.LabelStyle();
+        nameStyle.font = Global.skin.getFont("PixelFont");
+        nameStyle.fontColor = Color.BLACK;
     }
     public HealthTracker(int id) {
         this.bar = new ProgressBar(0f,1f,0.005f,false,skin);
@@ -41,12 +45,18 @@ public class HealthTracker {
         //tiledDrawable = skin.getTiledDrawable("progressbar-tiled").tint(skin.getColor("selection"));
         //tiledDrawable.setMinWidth(0);
         //progressBarStyle.knobBefore = tiledDrawable;
+
+        this.nameLabel = new Label(Global.user_data.username,skin);
+        this.nameLabel.setStyle(nameStyle);
+        this.nameLabel.setFontScale(0.25f);
     }
 
     public static void drawAll(SpriteBatch batch){
         for(HealthTracker ht : HealthTracker.health_bars.values()){
             ht.getBar().act(Gdx.graphics.getDeltaTime());
             ht.getBar().draw(batch,1.0f);
+            ht.nameLabel.setPosition(ht.getBar().getX()+ht.nameLabel.getPrefWidth()*ht.nameLabel.getFontScaleX(),ht.getBar().getY()+ht.getBar().getPrefHeight());
+            ht.nameLabel.draw(batch,1f);
         }
     }
 

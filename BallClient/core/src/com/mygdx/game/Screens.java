@@ -111,7 +111,8 @@ class MainmenuScreen implements Screen {
         buttonTable.row();
         buttonTable.add(quit_button).center().pad(10f).width(quit_button.getWidth()*2).height(quit_button.getHeight()*2);
         buttonTable.center();
-        rootTable.add(buttonTable).padRight(10f).right().padLeft(25f).padBottom(20f);
+        //rootTable.add(buttonTable).padRight(10f).right().padLeft(25f).padBottom(20f);
+        rootTable.add(buttonTable);
         rootTable.add(stats).expandX().right().padRight(10f).fillY();
         rootTable.bottom();
 
@@ -243,10 +244,6 @@ class GameScreen implements Screen {
         Particle.draw_all(batch, Gdx.graphics.getDeltaTime());
         batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
-        shapeRenderer.end();
-
         batch.begin();
         //HealthTracker.drawAll(batch);
         batch.end();
@@ -254,6 +251,10 @@ class GameScreen implements Screen {
         //draw UI
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        if (this.show_menu) { ScreenUtils.dimScreen(shapeRenderer,0.3f); } //dim screen if menu is open
+        shapeRenderer.end();
 
         //update stuff
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -297,7 +298,7 @@ class GameScreen implements Screen {
     }
 
     @Override public void hide() {
-        //sGdx.gl.glDisable(GL20.GL_BLEND);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
         this.hide_menu();
         this.hide_death_screen();
     }

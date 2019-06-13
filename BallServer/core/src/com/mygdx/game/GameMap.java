@@ -65,6 +65,9 @@ public class GameMap {
             if (obj.getName() == null) {
                 fdef.filter.categoryBits = Global.BIT_STATIC;
                 fdef.filter.maskBits = Global.BIT_PLAYER | Global.BIT_PROJECTILE;
+            } else if (obj.getName().equals("walk_boundry")) { //walk boundties are collisions that bullets may pass thorugh
+                fdef.filter.categoryBits = Global.BIT_STATIC;
+                fdef.filter.maskBits = Global.BIT_PLAYER;
             } else if (obj.getName().equals("red_spawn_door")) {
                 fdef.filter.categoryBits = Global.BIT_REDSTATIC;
             } else if (obj.getName().equals("blue_spawn_door")) {

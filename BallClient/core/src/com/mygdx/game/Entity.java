@@ -34,7 +34,8 @@ public class Entity {
     private float old_rotation;
 
     private Animation<TextureRegion> animation;
-    private float frameTime = 0.25f; //used for animation
+    private static final float animation_duration = 0.25f;//used for animation
+    private float frameTime;
 
     private Entity(String name) { //THE ONLY TIME CLIENT IS ALLOWED TO CREATE ENTITIES IS IF THE SERVER SAYS SO
         this.name = name;
@@ -47,8 +48,7 @@ public class Entity {
 
     public void init_animation(String name) {
         TextureRegion[] frames = Entity.createAnimation(name);
-        this.animation = new Animation<TextureRegion>(frameTime,frames);
-
+        this.animation = new Animation<TextureRegion>(animation_duration,frames);
     }
 
     private static TextureRegion[] createAnimation(String texture_path) {
@@ -126,8 +126,10 @@ public class Entity {
     }
 
     public void stepFrame(float deltaTime) { this.frameTime += deltaTime; } //possibly combine with getFrame
+    public void resetFrame() { this.frameTime = 0; }
     public static void stepFrameAll(float deltaTime) {
         for (Entity e : Entity.entity_library.values()) {
+            if (e.getOldX() == e.getX() && e.getOldY() == e.getY()) { e.resetFrame(); continue;} //ife entity hasnt moved, dont step animation
             e.stepFrame(deltaTime);
         }
     }

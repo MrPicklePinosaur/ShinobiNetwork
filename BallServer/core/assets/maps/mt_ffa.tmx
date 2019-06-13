@@ -704,10 +704,10 @@
 </data>
  </layer>
  <objectgroup id="60" name="COLLISION" visible="0">
-  <object id="89" x="2303.67" y="1568" width="128" height="64"/>
-  <object id="90" x="2272" y="1696" width="127.667" height="128"/>
-  <object id="91" x="2208" y="1887.67" width="96" height="127.667"/>
-  <object id="92" x="2080.33" y="1983.67" width="95.6667" height="96.3333"/>
+  <object id="89" name="walk_boundry" x="2303.67" y="1568" width="128" height="64"/>
+  <object id="90" name="walk_boundry" x="2272" y="1696" width="127.667" height="128"/>
+  <object id="91" name="walk_boundry" x="2208" y="1887.67" width="96" height="127.667"/>
+  <object id="92" name="walk_boundry" x="2080.33" y="1983.67" width="95.6667" height="96.3333"/>
   <object id="93" x="480" y="768" width="31.5" height="255.75"/>
   <object id="94" x="511.75" y="974.5" width="31.5" height="400"/>
   <object id="95" x="543.25" y="1312" width="32.25" height="320.75"/>
@@ -755,47 +755,47 @@
   <object id="141" x="2336" y="927.818" width="63.8182" height="63.0909"/>
   <object id="142" x="2304" y="895.818" width="31.6364" height="64.1818"/>
   <object id="143" x="2240.18" y="864" width="63.6364" height="63.6364"/>
-  <object id="144" x="1312.67" y="1119" width="191" height="34"/>
-  <object id="148" x="1471" y="1151.33" width="97" height="33"/>
-  <object id="149" x="1538" y="1183.33" width="92.6667" height="33"/>
-  <object id="150" x="1599.67" y="1215.67" width="224" height="32.6667"/>
-  <object id="151" x="1793" y="1248.67" width="94.3333" height="31.6667"/>
-  <object id="152" x="1856.33" y="1279.67" width="63" height="32.3333"/>
-  <object id="153" x="1887.67" y="1311.67" width="64" height="32.3333"/>
-  <object id="157" x="1920.25" y="1344" width="31.5" height="32.25"/>
-  <object id="158" x="1952" y="1343.75" width="31.5" height="350"/>
-  <object id="159" x="1984" y="1407.75" width="32" height="257.75"/>
-  <object id="160" x="2016" y="1472.25" width="31.75" height="160.5"/>
-  <object id="164" x="1920.5" y="1664.5" width="31" height="32.25"/>
-  <object id="165" x="1856.25" y="1697" width="95.5" height="32"/>
-  <object id="166" x="1664.67" y="1729.33" width="223.333" height="30.6667"/>
-  <object id="167" x="1472" y="1760.33" width="223.667" height="31.3333"/>
-  <object id="168" x="1408.33" y="1728.33" width="95.3333" height="31"/>
-  <object id="169" x="1376" y="1408.5" width="31.5" height="350.5"/>
-  <object id="170" x="1408" y="1280" width="32" height="159"/>
-  <object id="171" x="1376.5" y="1248.5" width="31" height="64"/>
-  <object id="172" x="1312.25" y="1247.5" width="63.75" height="32.5"/>
-  <object id="173" x="1280" y="1120.25" width="32.25" height="159.5"/>
-  <object id="174" x="1216.33" y="1120.33" width="31" height="223.333"/>
-  <object id="175" x="1184.33" y="1312" width="32" height="129"/>
-  <object id="176" x="1216.33" y="1408" width="31" height="95"/>
-  <object id="177" x="1247.67" y="1472.33" width="64.6667" height="32"/>
-  <object id="178" x="1312.33" y="1473" width="32" height="254.667"/>
-  <object id="182" x="1183.33" y="1599.33" width="97" height="33.3333"/>
-  <object id="183" x="1248" y="1632.67" width="64.3333" height="32.3333"/>
-  <object id="184" x="1280.33" y="1665" width="32" height="31.3333"/>
-  <object id="185" x="1184" y="1536.5" width="31" height="62.5"/>
-  <object id="186" x="1152.5" y="1504.5" width="31" height="64"/>
-  <object id="187" x="1120" y="1472.5" width="33" height="64.5"/>
-  <object id="188" x="1088.33" y="1441.33" width="31.3333" height="63"/>
-  <object id="189" x="1057" y="1377.67" width="31" height="93.3333"/>
-  <object id="190" x="1024" y="1343.33" width="32.3333" height="64"/>
-  <object id="191" x="991.667" y="1280" width="33" height="95"/>
-  <object id="192" x="960" y="1249" width="31.6667" height="62.3333"/>
-  <object id="193" x="929" y="1216.67" width="31" height="63.6667"/>
-  <object id="194" x="895.5" y="1088.5" width="33" height="158.5"/>
-  <object id="195" x="929.333" y="1088" width="286" height="36.6667"/>
-  <object id="196" x="959.333" y="1055.33" width="34" height="32.6667"/>
+  <object id="144" name="walk_boundry" x="1312.67" y="1119" width="191" height="34"/>
+  <object id="148" name="walk_boundry" x="1471" y="1151.33" width="97" height="33"/>
+  <object id="149" name="walk_boundry" x="1538" y="1183.33" width="92.6667" height="33"/>
+  <object id="150" name="walk_boundry" x="1599.67" y="1215.67" width="224" height="32.6667"/>
+  <object id="151" name="walk_boundry" x="1793" y="1248.67" width="94.3333" height="31.6667"/>
+  <object id="152" name="walk_boundry" x="1856.33" y="1279.67" width="63" height="32.3333"/>
+  <object id="153" name="walk_boundry" x="1887.67" y="1311.67" width="64" height="32.3333"/>
+  <object id="157" name="walk_boundry" x="1920.25" y="1344" width="31.5" height="32.25"/>
+  <object id="158" name="walk_boundry" x="1952" y="1343.75" width="31.5" height="350"/>
+  <object id="159" name="walk_boundry" x="1984" y="1407.75" width="32" height="257.75"/>
+  <object id="160" name="walk_boundry" x="2016" y="1472.25" width="31.75" height="160.5"/>
+  <object id="164" name="walk_boundry" x="1920.5" y="1664.5" width="31" height="32.25"/>
+  <object id="165" name="walk_boundry" x="1856.25" y="1697" width="95.5" height="32"/>
+  <object id="166" name="walk_boundry" x="1664.67" y="1729.33" width="223.333" height="30.6667"/>
+  <object id="167" name="walk_boundry" x="1472" y="1760.33" width="223.667" height="31.3333"/>
+  <object id="168" name="walk_boundry" x="1408.33" y="1728.33" width="95.3333" height="31"/>
+  <object id="169" name="walk_boundry" x="1376" y="1408.5" width="31.5" height="350.5"/>
+  <object id="170" name="walk_boundry" x="1408" y="1280" width="32" height="159"/>
+  <object id="171" name="walk_boundry" x="1376.5" y="1248.5" width="31" height="64"/>
+  <object id="172" name="walk_boundry" x="1312.25" y="1247.5" width="63.75" height="32.5"/>
+  <object id="173" name="walk_boundry" x="1280" y="1120.25" width="32.25" height="159.5"/>
+  <object id="174" name="walk_boundry" x="1216.33" y="1120.33" width="31" height="223.333"/>
+  <object id="175" name="walk_boundry" x="1184.33" y="1312" width="32" height="129"/>
+  <object id="176" name="walk_boundry" x="1216.33" y="1408" width="31" height="95"/>
+  <object id="177" name="walk_boundry" x="1247.67" y="1472.33" width="64.6667" height="32"/>
+  <object id="178" name="walk_boundry" x="1312.33" y="1473" width="32" height="254.667"/>
+  <object id="182" name="walk_boundry" x="1183.33" y="1599.33" width="97" height="33.3333"/>
+  <object id="183" name="walk_boundry" x="1248" y="1632.67" width="64.3333" height="32.3333"/>
+  <object id="184" name="walk_boundry" x="1280.33" y="1665" width="32" height="31.3333"/>
+  <object id="185" name="walk_boundry" x="1184" y="1536.5" width="31" height="62.5"/>
+  <object id="186" name="walk_boundry" x="1152.5" y="1504.5" width="31" height="64"/>
+  <object id="187" name="walk_boundry" x="1120" y="1472.5" width="33" height="64.5"/>
+  <object id="188" name="walk_boundry" x="1088.33" y="1441.33" width="31.3333" height="63"/>
+  <object id="189" name="walk_boundry" x="1057" y="1377.67" width="31" height="93.3333"/>
+  <object id="190" name="walk_boundry" x="1024" y="1343.33" width="32.3333" height="64"/>
+  <object id="191" name="walk_boundry" x="991.667" y="1280" width="33" height="95"/>
+  <object id="192" name="walk_boundry" x="960" y="1249" width="31.6667" height="62.3333"/>
+  <object id="193" name="walk_boundry" x="929" y="1216.67" width="31" height="63.6667"/>
+  <object id="194" name="walk_boundry" x="895.5" y="1088.5" width="33" height="158.5"/>
+  <object id="195" name="walk_boundry" x="929.333" y="1088" width="286" height="36.6667"/>
+  <object id="196" name="walk_boundry" x="959.333" y="1055.33" width="34" height="32.6667"/>
   <object id="204" x="512.667" y="768" width="191.333" height="62.6667"/>
   <object id="205" x="672" y="321.833" width="31.3333" height="445.833"/>
   <object id="206" x="2207.5" y="736" width="32" height="285.5"/>
@@ -809,15 +809,15 @@
   <object id="214" x="1087.5" y="768" width="736.5" height="62.5"/>
   <object id="215" x="1088" y="320.833" width="31.5" height="448.167"/>
   <object id="216" x="672.667" y="256.667" width="446.667" height="63.8333"/>
-  <object id="228" x="2240" y="1001.25" width="30" height="54.25"/>
-  <object id="229" x="2208.25" y="1025" width="32.5" height="31"/>
-  <object id="230" x="2271" y="1041" width="33.5" height="79.25"/>
-  <object id="231" x="2304.5" y="1091.75" width="60" height="30.5"/>
-  <object id="232" x="2332.5" y="1123.25" width="72.75" height="29.5"/>
-  <object id="233" x="2366.5" y="1153" width="96.25" height="33"/>
-  <object id="234" x="2431.5" y="1184.75" width="94.75" height="32.25"/>
-  <object id="235" x="2464" y="1217.5" width="95" height="30.75"/>
-  <object id="236" x="2530.5" y="1247.25" width="29" height="33"/>
+  <object id="228" name="walk_boundry" x="2240" y="1001.25" width="30" height="54.25"/>
+  <object id="229" name="walk_boundry" x="2208.25" y="1025" width="32.5" height="31"/>
+  <object id="230" name="walk_boundry" x="2271" y="1041" width="33.5" height="79.25"/>
+  <object id="231" name="walk_boundry" x="2304.5" y="1091.75" width="60" height="30.5"/>
+  <object id="232" name="walk_boundry" x="2332.5" y="1123.25" width="72.75" height="29.5"/>
+  <object id="233" name="walk_boundry" x="2366.5" y="1153" width="96.25" height="33"/>
+  <object id="234" name="walk_boundry" x="2431.5" y="1184.75" width="94.75" height="32.25"/>
+  <object id="235" name="walk_boundry" x="2464" y="1217.5" width="95" height="30.75"/>
+  <object id="236" name="walk_boundry" x="2530.5" y="1247.25" width="29" height="33"/>
  </objectgroup>
  <objectgroup id="57" name="spawn_points">
   <object id="237" name="solo" x="893.5" y="353">

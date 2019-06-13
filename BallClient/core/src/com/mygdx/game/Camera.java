@@ -20,7 +20,7 @@ public class Camera {
     private static final float cam_shift_speed = 1.5f;
 
     private OrthographicCamera cam;
-    private Boolean isLocked = true;
+    private Boolean isLocked = false;
 
     private float cam_bind_x;
     private float cam_bind_y;
@@ -36,14 +36,13 @@ public class Camera {
 
         if (this.isLocked == false) {
             //shift camera in direction of mouse
-            this.cam.position.x += Camera.cam_shift_speed * MathUtils.cos(Global.m_angle);
-            this.cam.position.y += Camera.cam_shift_speed * MathUtils.sin(Global.m_angle);
+            float cam_shift_speed = 3;
+            float max_cam_dist = 45;
 
-            float bound_x = Math.abs(Camera.max_cam_dist * MathUtils.cos(Global.m_angle));
-            float bound_y = Math.abs(Camera.max_cam_dist * MathUtils.sin(Global.m_angle));
+            this.cam.translate(cam_shift_speed*MathUtils.cos(Global.m_angle),cam_shift_speed*MathUtils.sin(Global.m_angle));
 
-            this.cam.position.x = MathUtils.clamp(this.cam.position.x, x - bound_x, x + bound_x);
-            this.cam.position.y = MathUtils.clamp(this.cam.position.y, y - bound_y, y + bound_y);
+            this.cam.position.x = MathUtils.clamp(this.cam.position.x,x-max_cam_dist*Math.abs(MathUtils.cos(Global.m_angle)),x+max_cam_dist*Math.abs(MathUtils.cos(Global.m_angle)));
+            this.cam.position.y = MathUtils.clamp(this.cam.position.y,y-max_cam_dist*Math.abs(MathUtils.sin(Global.m_angle)),y+max_cam_dist*Math.abs(MathUtils.sin(Global.m_angle)));
         } else {
             this.cam.position.x = x;
             this.cam.position.y = y;

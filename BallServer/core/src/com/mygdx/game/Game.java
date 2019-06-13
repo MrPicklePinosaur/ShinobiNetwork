@@ -225,16 +225,16 @@ class FFAGame extends Game { //free for all
     }
 
     @Override public void addKill(Player player) {
-        this.new_chat_msg("USER has obtained a KILL!");
+        this.new_chat_msg("["+player.getUserName()+"] has obtained a KILL!");
         if (player.getKills() >= KILLS_TO_WIN) { //Player wins
-            this.new_chat_msg("USER has emerged VICTORIOUS");
+            this.new_chat_msg("["+player.getUserName()+"] has emerged VICTORIOUS");
         }
     }
 
     @Override public String getLeaderBoard() {
         String leaderboard = "";
         for (Player p : this.player_list) {
-             leaderboard += (" "+p.getName()+","+p.getKills()+","+p.getDeaths()+","+p.getDmgDealt());
+             leaderboard += (" "+p.getUserName()+","+p.getKills()+","+p.getDeaths()+","+p.getDmgDealt());
         }
         if (leaderboard.length() != 0) { leaderboard = leaderboard.substring(1); }
         return leaderboard;

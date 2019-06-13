@@ -193,12 +193,12 @@ class BallClientHandler {
             this.enableGIP();
             send_msg(MT.CHOOSECLASS,""); //tell users to choose class when they join the game
             this.teamtag = Global.game.chooseTeam();
-            Global.game.new_chat_msg("USER has joined the game!");
+            Global.game.new_chat_msg("["+this.user_name+"] has joined the game!");
         } else if (msg_type == MT.LEAVEGAME) {
             destroy_player(client_entity);
             this.disableGIP();
             this.client_entity = null;
-            Global.game.new_chat_msg("USER has left the game!");
+            Global.game.new_chat_msg("["+this.user_name+"] has left the game!");
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");
             boolean register_success = Global.db.new_user(user_data[0],user_data[1]); //atempt to create a new user
@@ -210,6 +210,7 @@ class BallClientHandler {
 
             if (this.client_entity == null) { //if client doesnt have an entity, make a new one
                 init_client_entity(data[0], data[1], data[2]);
+                BallClientHandler.broadcast(MT.UPDATELEADERBOARD,Global.game.getLeaderBoard()); //add new user to leaderboard
             } else { //otherwise, update the class
                 switch_class(data[0], data[1], data[2]);
             }
@@ -264,6 +265,10 @@ class BallClientHandler {
     public void enableGIP() { this.game_in_progress = true; } //enable game in progress
     public void disableGIP() { this.game_in_progress = false; } //disable game in progress
     public boolean isGameInProgress() { return this.game_in_progress; }
+    public String getUserName() {
+        assert (this.user_name != null): "Username not inited yet";
+        return this.user_name;
+    }
 }
 
 

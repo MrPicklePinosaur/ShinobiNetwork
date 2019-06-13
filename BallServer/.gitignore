@@ -126,3 +126,6 @@ Thumbs.db
 
 ## Firebase stuff
 service-account.json
+
+## Stopping asset flooding
+*.log

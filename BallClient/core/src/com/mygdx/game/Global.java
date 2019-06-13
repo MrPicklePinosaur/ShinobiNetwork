@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -22,8 +23,10 @@ import com.badlogic.gdx.utils.Json;
 class Global {
 
 	public static Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
+	public static TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.atlas"));
 
 	static{
+		skin.addRegions(atlas);
 		Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.GRAY);
 		pixmap.fill();

@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,10 +22,13 @@ import java.util.ArrayList;
 class MainmenuScreen implements Screen {
 
     private Stage stage;
+    private Table rootTable;
+    private SpriteBatch batch = new SpriteBatch();
+    private Label title;
     public MainmenuScreen() {
 
         TextButton play_button = new TextButton("Play",Global.skin);
-        play_button.setPosition(300,500);
+        //play_button.setPosition(300,500);
         play_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.game_screen);
@@ -38,7 +38,7 @@ class MainmenuScreen implements Screen {
         });
 
         TextButton inventory_button = new TextButton("Inventory",Global.skin);
-        inventory_button.setPosition(300,400);
+        //inventory_button.setPosition(300,400);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.game.setScreen(Global.game.inventory_screen);
@@ -46,7 +46,7 @@ class MainmenuScreen implements Screen {
         });
 
         TextButton quit_button = new TextButton("Exit Game",Global.skin);
-        quit_button.setPosition(300,300);
+        //quit_button.setPosition(300,300);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Gdx.app.exit();
@@ -64,30 +64,73 @@ class MainmenuScreen implements Screen {
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
         }
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        BitmapFont pixelFont = Global.skin.getFont("PixelFont");
+        labelStyle.font = pixelFont;
+        labelStyle.fontColor = Color.valueOf("B5B5B5");
         Label kd = new Label("KDR: "+kdr,Global.skin);
         Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),Global.skin);
         Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),Global.skin);
         Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),Global.skin);
+        kd.setStyle(labelStyle);
+        kills.setStyle(labelStyle);
+        deaths.setStyle(labelStyle);
+        damage.setStyle(labelStyle);
 
-        stats.add(kd);
+        stats.add(kd).expandY().right().padRight(10f);
         stats.row();
-        stats.add(kills);
+        stats.add(kills).expandY().right().padRight(10f);
         stats.row();
-        stats.add(deaths);
+        stats.add(deaths).expandY().right().padRight(10f);
         stats.row();
-        stats.add(damage);
-        stats.setPosition(Global.SCREEN_WIDTH*3/4,Global.SCREEN_WIDTH/2);
+        stats.add(damage).expandY().right().padRight(10f);
+        //stats.setPosition(Global.SCREEN_WIDTH*3/4,Global.SCREEN_WIDTH/2);
+
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        Table buttonTable = new Table();
 
         this.stage = new Stage();
         stage.addActor(play_button);
         stage.addActor(inventory_button);
         stage.addActor(quit_button);
         stage.addActor(stats);
+        stage.addActor(rootTable);
+        stage.addActor(buttonTable);
+
+        Pixmap menuPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        menuPixmap.setColor(Color.valueOf("4c4c4c80"));
+        menuPixmap.fill();
+        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(menuPixmap))));
+
+        //rootTable.setSize(Global.SCREEN_WIDTH/2f,Global.SCREEN_HEIGHT);
+        //rootTable.setPosition(0f,0f);
+        buttonTable.add(play_button).pad(10f).width(play_button.getWidth()*2).height(play_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(quit_button).center().pad(10f).width(quit_button.getWidth()*2).height(quit_button.getHeight()*2);
+        buttonTable.center();
+        rootTable.add(buttonTable).padRight(10f).right().padLeft(25f).padBottom(20f);
+        rootTable.add(stats).expandX().right().padRight(10f).fillY();
+        rootTable.bottom();
+
+        title = new Label("Ball Network!",Global.skin);
+        title.setStyle(labelStyle);
+        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth()/2f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        //rootTable.setDebug(true);
+        //buttonTable.setDebug(true);
+        //stats.setDebug(true);
+
     }
 
     @Override public void render(float delta) {
         this.stage.act(delta);
         this.stage.draw();
+        batch.begin();
+        title.draw(batch,1f);
+        batch.end();
+
     }
 
     @Override public void show() { Gdx.input.setInputProcessor(stage); }

@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="877d0f0e-2c27-4f95-aa2b-00a3865a7dab" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Global.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallClient/core/src/com/mygdx/game/Screens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/core/src/com/mygdx/game/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BallServer/playersDB.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../BallServer/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BallServer/core/out/production/classes/META-INF/BallServer.core.main.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Launcher.iws" beforeDir="false" afterPath="$PROJECT_DIR$/Launcher.iws" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -64,7 +67,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
+            <state relative-caret-position="459">
               <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -80,8 +83,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28">
-              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="462">
+              <caret line="81" column="50" lean-forward="true" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -92,7 +95,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6">
+            <state relative-caret-position="459">
               <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
             </state>
           </provider>
@@ -101,7 +104,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1326">
+            <state relative-caret-position="1122">
               <caret line="78" column="140" selection-start-line="78" selection-start-column="140" selection-end-line="78" selection-end-column="140" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -122,7 +125,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/desktop/src/com/mygdx/game/desktop/DesktopLauncher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="51">
               <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -203,8 +206,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -301,7 +304,7 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560198639227" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sqlite-jdbc-3.27.2.1.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BallServer/BallServer.iws" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -416,7 +419,7 @@
       <window_info id="DB Browser" order="7" weight="0.32943013" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49726775" visible="true" weight="0.32941177" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49726775" weight="0.32941177" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -476,18 +479,35 @@
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/MyGdxGame.java" />
     <entry file="db://8a3c047e-29d1-44a0-a524-ee87a3dfd486/consoles/players" />
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/LogInUI.java" />
-    <entry file="db://530a9f8c-3986-4ae4-86dd-abe89f2aef8e/consoles/Connection">
-      <provider selected="true" editor-type-id="0.CONSOLE">
-        <state line="0" column="22" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0">
-          <folding />
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/SqliteDB.java" />
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/HealthTracker.java" />
+    <entry file="file://$PROJECT_DIR$/../BallServer/BallServer.iws">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2567#2568#0" expanded="true" />
+            <element signature="e#2630#2631#0" expanded="true" />
+            <element signature="e#3279#3280#0" expanded="true" />
+            <element signature="e#3310#3311#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/SqliteDB.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/HealthTracker.java" />
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Timer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
+        <state relative-caret-position="1122">
           <caret line="78" column="140" selection-start-line="78" selection-start-column="140" selection-end-line="78" selection-end-column="140" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -504,7 +524,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/desktop/src/com/mygdx/game/desktop/DesktopLauncher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
+        <state relative-caret-position="51">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -512,31 +532,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Launcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2567#2568#0" expanded="true" />
-            <element signature="e#2630#2631#0" expanded="true" />
-            <element signature="e#3279#3280#0" expanded="true" />
-            <element signature="e#3310#3311#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/ChatLog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6">
-          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/game/Leaderboard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="462">
+          <caret line="81" column="50" lean-forward="true" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -595,7 +594,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Launcher</last-edited>
+          <last-edited>core</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

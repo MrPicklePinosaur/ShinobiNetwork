@@ -113,9 +113,10 @@ class MainmenuScreen implements Screen {
         rootTable.add(stats).expandX().right().padRight(10f).fillY();
         rootTable.bottom();
 
-        title = new Label("Ball Network!",Global.skin);
+        title = new Label("Shinobi Network!",Global.skin);
         title.setStyle(Global.labelStyle);
-        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth()/2f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth(),Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title.setFontScale(1.5f);
         //rootTable.setDebug(true);
         //buttonTable.setDebug(true);
         //stats.setDebug(true);
@@ -190,14 +191,18 @@ class GameScreen implements Screen {
             }
         });
 
+
         this.pause_menu = new Table();
         pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
-        pause_menu.add(resume_button).pad(10);
+        pause_menu.add(resume_button).pad(10f).width(resume_button.getWidth()*2).height(resume_button.getHeight()*2);
         pause_menu.row();
-        pause_menu.add(inventory_button).pad(10);
+        pause_menu.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
         pause_menu.row();
-        pause_menu.add(exit_button).pad(10);
+        pause_menu.add(exit_button).center().pad(10f).width(exit_button.getWidth()*2).height(exit_button.getHeight()*2);
+        pause_menu.center();
         this.pause_menu.setVisible(false);
+
+
 
         //Inventory
         this.inv = new Inventory(this.stage);
@@ -305,6 +310,8 @@ class GameScreen implements Screen {
         this.hide_menu();
         this.hide_death_screen();
     }
+
+    public boolean isRespawnMenuVisible() { return this.respawn_menu.isVisible(); }
 
     @Override public void dispose() { }
 

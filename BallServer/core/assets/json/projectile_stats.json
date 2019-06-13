@@ -90,17 +90,17 @@
 		"damage": 10,
 		"bullet_speed": 5,
 		"max_dist": 4,
-		"penetration": 2,
+		"penetration": 1,
 		"travel_pattern": "straight"
 	},
 
 	//quivers
 	{
 		"name": "simple_shot",
-		"damage": 30,
+		"damage": 20,
 		"bullet_speed": 3.5,
 		"max_dist": 4,
-		"penetration": 2,
+		"penetration": 5,
 		"travel_pattern": "straight"
 	},
 

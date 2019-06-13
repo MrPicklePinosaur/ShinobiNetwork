@@ -140,7 +140,6 @@ public class Player extends Entity {
                 float charge_dmg_mult = this.findDmgMult(this.weapon.stats.getTimeToCharge(),time_held);
                 float charge_speed_mult = this.findSpeedMult(this.weapon.stats.getTimeToCharge(),time_held);
 
-
                 //shoot projectile only when mouse is released
                 if (Player.shoot_cooldown_list.contains(this)) { break; } //if the player is currently under shoot cooldwon ,dont shoot
 
@@ -235,6 +234,8 @@ public class Player extends Entity {
         if (!hp.equals("")) { BallClientHandler.broadcast(MT.UPDATEHP,hp); }
 
         if (this.health <= 0) {
+            new Particle(this,"blood_drop",1);
+
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));
 

@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -64,18 +65,15 @@ class MainmenuScreen implements Screen {
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
         }
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        BitmapFont pixelFont = Global.skin.getFont("PixelFont");
-        labelStyle.font = pixelFont;
-        labelStyle.fontColor = Color.valueOf("B5B5B5");
+
         Label kd = new Label("KDR: "+kdr,Global.skin);
         Label kills = new Label("Kills: "+Global.user_data.getTotalKills(),Global.skin);
         Label deaths = new Label("Deaths: "+Global.user_data.getTotalDeaths(),Global.skin);
         Label damage = new Label("Damage Dealt: "+Global.user_data.getTotalDamage(),Global.skin);
-        kd.setStyle(labelStyle);
-        kills.setStyle(labelStyle);
-        deaths.setStyle(labelStyle);
-        damage.setStyle(labelStyle);
+        kd.setStyle(Global.labelStyle);
+        kills.setStyle(Global.labelStyle);
+        deaths.setStyle(Global.labelStyle);
+        damage.setStyle(Global.labelStyle);
 
         stats.add(kd).expandY().right().padRight(10f);
         stats.row();
@@ -116,9 +114,10 @@ class MainmenuScreen implements Screen {
         rootTable.add(stats).expandX().right().padRight(10f).fillY();
         rootTable.bottom();
 
-        title = new Label("Ball Network!",Global.skin);
-        title.setStyle(labelStyle);
-        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth()/2f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title = new Label("Shinobi Network!",Global.skin);
+        title.setStyle(Global.labelStyle);
+        title.setPosition(Global.SCREEN_WIDTH/2f-title.getWidth(),Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title.setFontScale(1.5f);
         //rootTable.setDebug(true);
         //buttonTable.setDebug(true);
         //stats.setDebug(true);
@@ -193,14 +192,18 @@ class GameScreen implements Screen {
             }
         });
 
+
         this.pause_menu = new Table();
         pause_menu.setBounds(0,0,Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
-        pause_menu.add(resume_button).pad(10);
+        pause_menu.add(resume_button).pad(10f).width(resume_button.getWidth()*2).height(resume_button.getHeight()*2);
         pause_menu.row();
-        pause_menu.add(inventory_button).pad(10);
+        pause_menu.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
         pause_menu.row();
-        pause_menu.add(exit_button).pad(10);
+        pause_menu.add(exit_button).center().pad(10f).width(exit_button.getWidth()*2).height(exit_button.getHeight()*2);
+        pause_menu.center();
         this.pause_menu.setVisible(false);
+
+
 
         //Inventory
         this.inv = new Inventory(this.stage);
@@ -226,7 +229,13 @@ class GameScreen implements Screen {
             });
             respawn_menu.add(choose).pad(10);
         }
-        //this.hide_death_screen();
+        respawn_menu.row();
+        for (int i = 0; i < 4; i++) {
+            Label class_name = new Label(class_list[i],Global.skin);
+            class_name.setStyle(Global.labelStyle);
+            class_name.setFontScale(0.5f);
+            respawn_menu.add(class_name);
+        }
 
         this.stage.addActor(pause_menu);
         this.stage.addActor(respawn_menu);
@@ -302,6 +311,8 @@ class GameScreen implements Screen {
         this.hide_menu();
         this.hide_death_screen();
     }
+
+    public boolean isRespawnMenuVisible() { return this.respawn_menu.isVisible(); }
 
     @Override public void dispose() { }
 
@@ -408,7 +419,16 @@ class InventoryScreen implements Screen {
             }
         });
 
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        Pixmap menuPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        menuPixmap.setColor(Color.valueOf("4c4c4c80"));
+        menuPixmap.fill();
+        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(menuPixmap))));
+
+        this.stage.addActor(rootTable);
         this.stage.addActor(backButton.left().pad(20));
+
     }
 
     @Override public void render(float delta) {

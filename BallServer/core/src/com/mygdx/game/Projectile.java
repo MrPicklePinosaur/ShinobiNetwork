@@ -70,7 +70,7 @@ class Projectile extends Entity {
     }
 
     public void setVelocity(float angle) {
-        this.body.setLinearVelocity(this.stats.getBulletSpeed()* MathUtils.cos(angle),this.stats.getBulletSpeed()*MathUtils.sin(angle));
+        this.body.setLinearVelocity(this.getSpeed()* MathUtils.cos(angle),this.getSpeed()*MathUtils.sin(angle));
     }
 
     @Override public void init_stats(String json_data) {

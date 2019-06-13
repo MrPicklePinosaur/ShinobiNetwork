@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Json;
 
@@ -24,6 +25,8 @@ class Global {
 
 	public static Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
 	public static TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.atlas"));
+
+	public static Label.LabelStyle labelStyle;
 
 	static{
 		skin.addRegions(atlas);
@@ -39,6 +42,11 @@ class Global {
 		skin.add("buttonDownColor",new Texture(pixmap));
 		skin.add("defaultFont",new BitmapFont());
 		skin.add("PixelFont",new BitmapFont(Gdx.files.internal("fonts/PixelFont.fnt")));
+
+		Global.labelStyle = new Label.LabelStyle();
+		BitmapFont pixelFont = Global.skin.getFont("PixelFont");
+		labelStyle.font = pixelFont;
+		labelStyle.fontColor = Color.valueOf("B5B5B5");
 	}
 
 	public static BallClientMain game;

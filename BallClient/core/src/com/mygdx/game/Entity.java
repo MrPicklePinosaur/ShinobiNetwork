@@ -96,7 +96,6 @@ public class Entity {
         } else { entity = Entity.entity_library.get(id); }
 
         if (!name.equals(entity.getName())) { //if the name changed, that means the animation changed
-            System.out.println("name change");
             entity.init_animation(name);
             entity.setName(name);
         }

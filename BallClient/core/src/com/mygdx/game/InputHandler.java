@@ -31,7 +31,7 @@ public class InputHandler extends InputAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.D)) { msg+=(",Key_D"); }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { msg+=(",Key_SPACE"); }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (!Global.game.game_screen.isMenuVisible()) { Global.game.game_screen.show_menu(); }
+            if (!Global.game.game_screen.isMenuVisible() && !Global.game.game_screen.isRespawnMenuVisible()) { Global.game.game_screen.show_menu(); }
             else { Global.game.game_screen.hide_menu(); }
         } //button to open shop menu
         if (msg.equals("")) return; //if there isnt any input, don't send a message

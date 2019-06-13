@@ -112,7 +112,6 @@ class BallClientHandler {
     public static void destroy_player(Player e) {
         //tell entity to stop drawing it
         if (e == null) { return; }//there is a chance that an entity was never inited
-        broadcast(MT.KILLENTITY, "" + e.getId());
 
         AssetManager.flagForPurge(e.getBody()); //flag entity body for removal
         Entity.removeEntity(e); //remove client entity from list
@@ -196,6 +195,7 @@ class BallClientHandler {
         } else if (msg_type == MT.LEAVEGAME) {
             destroy_player(client_entity);
             this.disableGIP();
+            this.client_entity = null;
             Global.game.new_chat_msg("USER has left the game!");
         } else if (msg_type == MT.REGISTER) {
             String[] user_data = msg[1].split(",");

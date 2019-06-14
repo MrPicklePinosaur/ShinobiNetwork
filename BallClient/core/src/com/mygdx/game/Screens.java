@@ -165,7 +165,6 @@ class GameScreen implements Screen {
     //init sprites (REMOVE LATER)
     //static Sprite background = new Sprite(new Texture("mountain_temple.png"));
     static Sprite background = new Sprite(new Texture("mt_ffa.png"));
-
     //big bois
     private Stage stage;
     private SpriteBatch batch;
@@ -180,6 +179,7 @@ class GameScreen implements Screen {
     private Table respawn_menu;
     private Inventory inv;
     private Options options_menu;
+    static Leaderboard lb;
 
     public GameScreen() {
         this.stage = new Stage();
@@ -237,6 +237,9 @@ class GameScreen implements Screen {
 
         //Pause menu options
         this.options_menu = new Options(this.stage);
+
+        //Leaderboard
+        this.lb = new Leaderboard("FFA");
 
         //Choose class menu
         this.respawn_menu = new Table();
@@ -363,6 +366,7 @@ class GameScreen implements Screen {
     @Override public void pause() { }
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
+    public static Leaderboard getLB(){return lb;}
 
 }
 
@@ -1090,7 +1094,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        //submit_creds("daniel","password");
+        submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

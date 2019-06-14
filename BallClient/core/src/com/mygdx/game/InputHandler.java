@@ -48,6 +48,10 @@ public class InputHandler extends InputAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.TAB)){
             //Leaderboard stuff
+            GameScreen.getLB().setVisible(true);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.TAB)){
+            GameScreen.getLB().setVisible(false);
         }
 
         if (msg.equals("")) return; //if there isnt any input, don't send a message

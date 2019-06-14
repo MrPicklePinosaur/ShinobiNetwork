@@ -182,6 +182,7 @@ public class BallClient {
         } else if (msg_type == MT.UPDATELEADERBOARD) {
             //message comes in the form: name1,kills1,deaths1,damage1 name2,kills2,deaths2,damage2
             String[] entries = msg[1].split(" ");
+            Leaderboard.update_all(entries);
 
         } else if (msg_type == MT.PLAYSOUND) { //server is telling us to play a specific sound
             AudioPlayer.play_sound(msg[1]);

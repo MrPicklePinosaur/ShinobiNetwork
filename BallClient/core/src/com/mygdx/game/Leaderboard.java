@@ -46,7 +46,7 @@ import java.util.*;
 public class Leaderboard {
     //Leaderboard keeps track of 4 things:
     //Kills, Deaths, Damage Dealt, and the associated Username
-    static Table table; //table that is used to logically organize data for leaderboard
+    private Table table; //table that is used to logically organize data for leaderboard
     static TextureAtlas atlas;
     static Skin skin;
     private String gamemode; //what the general update method uses to decide what to display
@@ -60,17 +60,18 @@ public class Leaderboard {
     private Cell blueTeam;
     private LinkedList<Integer> numberData = new LinkedList<Integer>();
     private HashMap<String, LinkedList<Integer>> leaderboardData = new LinkedHashMap<String, LinkedList<Integer>>();
+    static LinkedList<Leaderboard> leaderboards = new LinkedList<Leaderboard>();
     static{
-        atlas = new TextureAtlas("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.atlas");
-        skin = new Skin(Gdx.files.internal("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.json"));
+        atlas = new TextureAtlas("gdx-skins/clean-crispy/skin/clean-crispy-ui.atlas");
+        skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
         skin.addRegions(atlas);
-        table = new Table();
-        table.setPosition(Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/2f);
-        //table.setDebug(true); - used to debug leaderboard
-        table.center(); //centers the table's contents on the screen
     }
     public Leaderboard(String gamemode){    //constructor that creates basic leaderboard resources based on gamemode
         this.gamemode = gamemode;
+        this.table = new Table();
+        this.table.setPosition(Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/2f);
+        //table.setDebug(true); - used to debug leaderboard
+        this.table.center(); //centers the table's contents on the screen
         if(this.gamemode.equals("Team")){
             Pixmap redTitlePixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888); //pixel used to set color of red team leaderboard
             redTitlePixmap.setColor(Color.valueOf("db0a3180"));//hexcode with A - 80: 50% transparency
@@ -142,6 +143,8 @@ public class Leaderboard {
             bluePixmap.dispose();
             //redTable.setDebug(true);
             //blueTable.setDebug(true);
+
+            leaderboards.add(this);
         }
     }
     public void updateLeaderboard(String[] unformattedData){
@@ -315,6 +318,18 @@ public class Leaderboard {
             blueTable.add(deaths).width(50f);
             blueTable.add(damage).width(50f);
             blueTable.row();
+        }
+    }
+    public static void update_all(String[] data){
+        for(Leaderboard lb : leaderboards){
+            lb.updateLeaderboard(data);
+        }
+    }
+    public void setVisible(boolean bool){
+        if(bool){
+            this.table.setVisible(true);
+        }else{
+            this.table.setVisible(false);
         }
     }
 }

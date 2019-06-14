@@ -211,6 +211,7 @@ public class Player extends Entity {
     public float getDmgMult() { return this.dmg_mult; }
     public float getCurrentHp() { return this.health; }
     public float getSpeed() { return this.speed; }
+    public String getUserName() { return this.server_socket.getUserName(); }
 
     //setters
     public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }

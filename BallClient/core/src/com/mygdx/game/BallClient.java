@@ -178,7 +178,8 @@ public class BallClient {
         } else if (msg_type == MT.GAMEOVER) {
 
         } else if (msg_type == MT.UPDATELEADERBOARD) {
-            System.out.println(msg[1]);
+            //message comes in the form: name1,kills1,deaths1,damage1 name2,kills2,deaths2,damage2
+            String[] entries = msg[1].split(" ");
         }
     }
 

@@ -49,7 +49,7 @@ public class ChatLog extends ApplicationAdapter {
         
         Cell textfield = table.add(chatText).width(150f);
         chatLogLabel.setWrap(true); //you still need to setWrap to true each time the label is changed
-        table.bottom().right().padBottom(10f).padRight(10f);
+        table.bottom().left().padBottom(10f).padLeft(10f);
 
         chatText.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
@@ -103,6 +103,6 @@ public class ChatLog extends ApplicationAdapter {
         }
         table.add(new Label("Chat: ", Global.skin)).right();
         table.add(chatText);
-        table.bottom().right().padBottom(10f).padRight(10f);
+        table.bottom().left().padBottom(10f).padLeft(10f);
     }
 }

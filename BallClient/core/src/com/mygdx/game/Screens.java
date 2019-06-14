@@ -16,8 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Scaling;
-import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -465,7 +463,17 @@ class Inventory {
     private ImageButton right;
     private Label page_label;
 
+    private Table item_info;
+    private Label item_name;
+    private Label stat_text;
+    private Label special_text;
+    private String selected_item;
+
+    private TextButton equip_button;
+
     private int page_num;
+    private static final int grid_x = 4;
+    private static final int grid_y = 6;
 
     public Inventory(Stage screen_stage) {
         this.stage = screen_stage;
@@ -480,47 +488,51 @@ class Inventory {
 
         this.loadout_inv = new Table();
 
-
         //BUTTONS
         this.current_tab = "";
         TextButton allItems_button = new TextButton("All items",Global.skin);
         allItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 current_tab = "";
+                page_num = 1;
                 hide_loadout();
-                refreshInventory(current_tab);
+                switch_page();
             }
         });
         TextButton ninjaItems_button = new TextButton("Ninja",Global.skin);
         ninjaItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 current_tab = "katana,waki";
+                page_num = 1;
                 show_loadout("ninja");
-                refreshInventory(current_tab);
+                switch_page();
             }
         });
         TextButton archerItems_button = new TextButton("Archer",Global.skin);
         archerItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 current_tab = "bow,quiver";
+                page_num = 1;
                 show_loadout("archer");
-                refreshInventory(current_tab);
+                switch_page();
             }
         });
         TextButton warriorItems_button = new TextButton("Warrior",Global.skin);
         warriorItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 current_tab = "sword,helm";
+                page_num = 1;
                 show_loadout("warrior");
-                refreshInventory(current_tab);
+                switch_page();
             }
         });
         TextButton wizardItems_button = new TextButton("Wizard",Global.skin);
         wizardItems_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 current_tab = "staff,spell";
+                page_num = 1;
                 show_loadout("wizard");
-                refreshInventory(current_tab);
+                switch_page();
             }
         });
 
@@ -543,38 +555,95 @@ class Inventory {
             @Override public void clicked(InputEvent event,float x,float y) {
                 page_num--;
                 switch_page();
-                refreshInventory(current_tab);
             }
         });
         this.right = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("right_arrow"))));
-        warriorItems_button.addListener(new ClickListener() {
+        right.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 page_num++;
                 switch_page();
-                refreshInventory(current_tab);
             }
         });
         this.page_label = new Label(""+page_num,Global.skin);
         page_label.setStyle(Global.labelStyle);
 
-        page.add(left);
+        page.add(left).pad(10);
         page.add(page_label);
-        page.add(right);
+        page.add(right).pad(10);
+        page.setPosition(100,100);
+
+        this.item_info = new Table();
+        this.item_name = new Label("",Global.skin);
+        item_name.setStyle(Global.labelStyle);
+        item_name.setFontScale(0.5f);
+        this.stat_text = new Label("",Global.skin);
+        stat_text.setStyle(Global.labelStyle);
+        stat_text.setFontScale(0.3f);
+        //TODO: change colour
+        this.special_text = new Label("",Global.skin);
+        special_text.setStyle(Global.labelStyle);
+        special_text.setFontScale(0.25f);
+        //TODO: change colour
+        this.equip_button = new TextButton("Equip",Global.skin);
+        equip_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                String item_type = AssetManager.getItemDescrip(selected_item).getItemType();
+                String filter = Global.user_data.setLoadout(selected_item,item_type);
+                refresh_loadout(filter);
+            }
+        });
+
+        item_info.setBounds(Global.SCREEN_WIDTH*4/8,0,Global.SCREEN_WIDTH*4/8,Global.SCREEN_HEIGHT/4f);
+        item_info.add(item_name);
+        item_info.row();
+        item_info.add(stat_text).pad(5);
+        item_info.row();
+        item_info.add(special_text).pad(5);
+        item_info.row();
+        item_info.add(equip_button).pad(5);
+        //item_info.setDebug(true);
 
         stage.addActor(inventory_grid);
         stage.addActor(loadout_inv);
         stage.addActor(tabs);
+        stage.addActor(page);
+        stage.addActor(item_info);
     }
 
     public void switch_page() {
         page_num = MathUtils.clamp(page_num,1,999);
-        if (this.page_num == 1) { //hide left arrow if on page 1
+        if (this.page_num == 1) { this.left.setVisible(false); } //hide left arrow if on page 1
+        else { this.left.setVisible(true); } //otherwise show it
 
-        } else { //otherwise show it
+        if (filterItems(current_tab).size() - (page_num-1)*grid_x*grid_y <= grid_x*grid_y) { //if there arent enough items to overflow onto the next page
+            this.right.setVisible(false); }
+        else { this.right.setVisible(true); }
 
-        }
         page_label.setText(""+this.page_num);
         refreshInventory(current_tab);
+        hide_item_info();
+    }
+
+    public void show_item_info(String item_name) {
+        ItemData item_data = AssetManager.getItemDescrip(item_name);
+
+        this.item_info.setVisible(true); //turn the whole table on
+
+        //UPDATE item info
+        this.item_name.setText(item_data.getDisplayName());
+        this.stat_text.setText(item_data.getStatText());
+        String spec_text = item_data.getSpecialText();
+        if (!spec_text.equals("")) { this.special_text.setText("\'" + item_data.getSpecialText() + "\'"); }
+        else { this.special_text.setText(""); }
+
+        if (this.current_tab.equals("")) { //dont show equp button on all items tab
+            this.equip_button.setVisible(false);
+        } else { this.equip_button.setVisible(true); }
+
+    }
+
+    public void hide_item_info() {
+        this.item_info.setVisible(false);
     }
 
     public void refreshInventory(String filter) { //filter inv by item type, if an empty string is provided, it means no filtere
@@ -582,19 +651,19 @@ class Inventory {
 
         this.inventory_grid.clearChildren();
         //populate the table with the contents of the user's inventory
-        ArrayList<String> inv = new ArrayList<String>();
-        for (String name : Global.user_data.getInventory()) {
-            if (filter.contains(AssetManager.getItemDescrip(name).getItemType()) || filter.length() == 0) {
-                inv.add(name);
-            }
+        ArrayList<String> inv = this.filterItems(filter);
+
+        int item_offset = (page_num-1)*grid_x*grid_y;
+        for (int i = 0; i < item_offset; i++) {
+            inv.remove(0);
         }
 
         Texture empty_slot_up = AssetManager.getUIImage("empty_slot_up");
         //Texture empty_slot_hover = AssetManager.getUIImage("empty_slot_hover");
         Texture empty_slot_down = AssetManager.getUIImage("empty_slot_down");
 
-        for (int j = 0; j < 6; j++) { //6 rows
-            for (int i = 0; i < 4; i++) { //4 columns
+        for (int j = 0; j < grid_y; j++) { //6 rows
+            for (int i = 0; i < grid_x; i++) { //4 columns
                 final ImageButton slot = new ImageButton(new TextureRegionDrawable(new TextureRegion(empty_slot_up)),new TextureRegionDrawable(new TextureRegion(empty_slot_down)));
                 slot.addListener(new ClickListener() {
                     @Override public void clicked(InputEvent event,float x,float y) {
@@ -604,9 +673,9 @@ class Inventory {
                             String item_name = slot.getName();
                             assert(item_name != null && !item_name.equals("")): "Slot name is empty";
 
-                            String item_type = AssetManager.getItemDescrip(item_name).getItemType();
-                            String filter = Global.user_data.setLoadout(item_name,item_type);
-                            refresh_loadout(filter);
+                            show_item_info(item_name);
+
+                            selected_item = item_name;
                         }
                     }
                 });
@@ -626,17 +695,32 @@ class Inventory {
 
     }
 
+    public ArrayList<String> filterItems(String filter) {
+        //populate the table with the contents of the user's inventory
+        ArrayList<String> inv = new ArrayList<String>();
+        for (String name : Global.user_data.getInventory()) {
+            if (filter.contains(AssetManager.getItemDescrip(name).getItemType()) || filter.length() == 0) {
+                inv.add(name);
+            }
+        }
+        return inv;
+    }
+
     public void show_inv() {
-        refreshInventory("");
+        this.current_tab = "";
+        switch_page();
         this.inventory_grid.setVisible(true);
         this.tabs.setVisible(true);
         this.loadout_inv.setVisible(false);
+        this.page.setVisible(true);
     }
 
     public void hide_inv() {
         this.inventory_grid.setVisible(false);
         this.tabs.setVisible(false);
         this.loadout_inv.setVisible(false);
+        this.page.setVisible(false);
+        this.item_info.setVisible(false);
     }
 
     public void refresh_loadout(String filter) {
@@ -648,6 +732,7 @@ class Inventory {
         Texture empty_slot = AssetManager.getUIImage("empty_slot_up");
 
         Label class_name = new Label(filter,Global.skin);
+        class_name.setStyle(Global.labelStyle);
 
         //weapon slot
         Stack weapon_stack = new Stack();
@@ -665,6 +750,7 @@ class Inventory {
 
         if (loadout.length == 2) { ability_stack.add(new Image(AssetManager.getSpritesheet(loadout[1]))); } //if the user actually has an ability equipped
 
+        loadout_inv.add();
         loadout_inv.add(class_name);
         loadout_inv.row();
         loadout_inv.add(weapon_stack);
@@ -815,7 +901,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

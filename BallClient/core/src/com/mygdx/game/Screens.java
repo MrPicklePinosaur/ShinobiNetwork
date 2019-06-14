@@ -11,6 +11,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -238,7 +239,7 @@ class GameScreen implements Screen {
         this.options_menu = new Options(this.stage);
 
         //Leaderboard
-        this.lb = new Leaderboard("FFA");
+        this.leaderboard = new Leaderboard("FFA",this.stage);
 
         //Choose class menu
         this.respawn_menu = new Table();
@@ -306,6 +307,11 @@ class GameScreen implements Screen {
         Global.updateInput();
         this.input_handler.sendMouse();
         this.input_handler.handleInput();
+        if(Gdx.input.isKeyPressed(Input.Keys.TAB)){
+            System.out.println(true);
+            this.leaderboard.setVisible(true);
+        }
+        //if(Gdx.input.isKeyJustPressed(Input.Keys.TAB))
         Entity.stepFrameAll(deltaTime);
 
         //cam stuff

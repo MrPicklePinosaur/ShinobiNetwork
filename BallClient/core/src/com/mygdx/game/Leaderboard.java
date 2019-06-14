@@ -36,6 +36,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -61,12 +62,14 @@ public class Leaderboard {
     private LinkedList<Integer> numberData = new LinkedList<Integer>();
     private HashMap<String, LinkedList<Integer>> leaderboardData = new LinkedHashMap<String, LinkedList<Integer>>();
     static LinkedList<Leaderboard> leaderboards = new LinkedList<Leaderboard>();
+    private Stage stage;
     static{
         atlas = new TextureAtlas("gdx-skins/clean-crispy/skin/clean-crispy-ui.atlas");
         skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
         skin.addRegions(atlas);
     }
-    public Leaderboard(String gamemode){    //constructor that creates basic leaderboard resources based on gamemode
+    public Leaderboard(String gamemode, Stage stage){    //constructor that creates basic leaderboard resources based on gamemode
+        this.stage = stage;
         this.gamemode = gamemode;
         this.table = new Table();
         this.table.setPosition(Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/2f);
@@ -145,6 +148,7 @@ public class Leaderboard {
             //blueTable.setDebug(true);
 
             leaderboards.add(this);
+            this.stage.addActor(this.table);
         }
     }
     public void updateLeaderboard(String[] unformattedData){
@@ -170,6 +174,7 @@ public class Leaderboard {
             redTeam.fill();
             blueTeam.fill();
         }
+        this.stage.addActor(this.table);
     }
     private void updateFFA(HashMap<String, LinkedList<Integer>> leaderboardData){
         table.clearChildren();

@@ -46,13 +46,6 @@ public class InputHandler extends InputAdapter {
             if (!Global.game.game_screen.isMenuVisible() && !Global.game.game_screen.isRespawnMenuVisible()) { Global.game.game_screen.show_menu(); }
             else { Global.game.game_screen.hide_menu(); } //otherwise turn it off
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.TAB)){
-            //Leaderboard stuff
-            GameScreen.getLB().setVisible(true);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.TAB)){
-            GameScreen.getLB().setVisible(false);
-        }
 
         if (msg.equals("")) return; //if there isnt any input, don't send a message
         msg = msg.substring(1); //get rid of extra comma in front

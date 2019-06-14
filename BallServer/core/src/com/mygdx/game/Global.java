@@ -11,6 +11,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ class Global {
 
 	public static Random rnd = new Random();
 	public static Json json = new Json();
+	public static JsonReader jsonReader = new JsonReader();
 
 	public static World world;
 	public static Game game;

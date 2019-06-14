@@ -30,25 +30,26 @@ public class BallServerMain extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Thread.currentThread().setName("Main");
+
 		//init assets
 		AssetManager.load_all_json();
-		//GameMap.loadAll("map_library.txt");
 
 		//Connect to database
 		Global.db = new Database();
 
+		//init game world
 		Global.game = new FFAGame();
 		Global.world = new World(new Vector2(0,0),true);
 		Global.world.setContactListener(new CollisionListener());
 
 		//choose a map
-		//current_map = GameMap.getMap("Mountain Temple");
-		//Global.map = new GameMap("maps/mountain_temple.tmx");
 		Global.map = new GameMap("maps/mt_ffa.tmx");
 
 		//init heavy lifres
 		debugRenderer = new Box2DDebugRenderer();
 
+		//Visual debugging
 		cam = new OrthographicCamera((float) 1400/Global.PPM,(float) 1400/Global.PPM);
 		cam.zoom = 1.2f;
 		cam.position.x = (float)1500/Global.PPM;
@@ -61,8 +62,6 @@ public class BallServerMain extends ApplicationAdapter {
 		//Init server and such
 		server = new BallServer(5000);
 		server.start_server();
-
-		Thread.currentThread().setName("Main");
 
 		//Thread that listens for connecting users
 		new Thread(new Runnable() {
@@ -96,12 +95,13 @@ public class BallServerMain extends ApplicationAdapter {
 		tiledMapRenderer.render();
 		debugRenderer.render(Global.world,cam.combined);
 
-		//update
+		//update instances
 		Ability.updateAll(Global.deltatime);
 		ActiveEffect.updateAll(Global.deltatime);
 		Player.updateAll(Global.deltatime);
 		Projectile.updateAll();
-		//Global.game.checkObjective();
+
+		//update world
 		Global.world.step(Global.deltatime,6,2); //step physics simulation
 		AssetManager.sweepBodies();
 		AssetManager.moveBodies();
@@ -110,6 +110,7 @@ public class BallServerMain extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+		Ability.dispose();
 		server.close_server();
 		tiledMapRenderer.dispose();
 		debugRenderer.dispose();

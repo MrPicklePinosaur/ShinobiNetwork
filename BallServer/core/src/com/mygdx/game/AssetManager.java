@@ -46,7 +46,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         return new_body;
     }
 
-    public static void flagForPurge(Body body) { AssetManager.kill_list.add(body); }
+    public static void flagForPurge(Body body) { AssetManager.kill_list.add(body); } //flag a body for safe deleteion
     public static void sweepBodies() { //removes all bodies safely
         for (Body b : AssetManager.kill_list) {
             assert(b != null): "Body you are trying to purge is null";
@@ -57,7 +57,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         AssetManager.kill_list.clear();
     }
 
-    public static void flagForMove(Entity e,Vector3 v) { AssetManager.move_list.put(e,v); }
+    public static void flagForMove(Entity e,Vector3 v) { AssetManager.move_list.put(e,v); } //flag a body for safe movement
     public static void moveBodies() { //moves all bodies safely
         for (Entity e : AssetManager.move_list.keySet()) {
             assert(e != null): "Body you are trying to move is null";
@@ -67,7 +67,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         AssetManager.move_list.clear();
     }
 
-    public static void load_all_json() {
+    public static void load_all_json() { //load all of the json we need
         AssetManager.load_json(AssetManager.player_stats,"json/base_player_stats.json");
         AssetManager.load_json(AssetManager.weapon_stats,"json/base_weapon_stats.json");
         AssetManager.load_json(AssetManager.projectile_stats,"json/projectile_stats.json");
@@ -75,21 +75,18 @@ public class AssetManager { //mainly just a bunch of helper methods
     }
 
     private static void load_json(HashMap<String,String> lib,String filepath) { //takes in a library and populates it with the json of the file at filepath
-        JsonReader json = new JsonReader();
-        JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
+        JsonValue raw_json = Global.jsonReader.parse(Gdx.files.internal(filepath));
 
         JsonValue cur = raw_json.child;
-        while (true) {
-            //System.out.println(cur.name+"\n"+cur);
-            //System.out.println(cur.getString("name")+"\n"+cur.toString());
+        while (true) { //if we havent reached the end of file yet
             lib.put(cur.getString("name"),cur.toString());
             if (cur.next == null) { break; }
             cur = cur.next;
         }
     }
-    private static void load_ability_json(HashMap<String,HashMap<String,String>> lib,String filepath) {
-        JsonReader json = new JsonReader();
-        JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
+
+    private static void load_ability_json(HashMap<String,HashMap<String,String>> lib,String filepath) { //load all projectile json
+        JsonValue raw_json = Global.jsonReader.parse(Gdx.files.internal(filepath));
 
         JsonValue abl_type = raw_json.child.child;
         while (true) { //iterate through ability types
@@ -110,6 +107,7 @@ public class AssetManager { //mainly just a bunch of helper methods
         }
     }
 
+    //getters
     public static String getPlayerJsonData(String key) {
         assert(AssetManager.player_stats.containsKey(key)): "Player stats not found!";
         return AssetManager.player_stats.get(key);

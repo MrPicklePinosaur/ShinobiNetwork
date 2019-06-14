@@ -18,15 +18,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Entity {
 
+    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>(); //holds all alive entities
     private CopyOnWriteArrayList<Projectile> projectile_list = new CopyOnWriteArrayList<Projectile>();
-
-    //just a simple list of all the alive entities
-    private static CopyOnWriteArrayList<Entity> entity_list = new CopyOnWriteArrayList<Entity>();
 
     protected ET entity_type;
     protected int id;
     protected String name;
-    protected String texture_path;
     protected Body body;
     protected int spriteWidth;
     protected int spriteHeight;
@@ -41,12 +38,6 @@ public abstract class Entity {
         entity_list.add(this);
     }
 
-    public static void removeEntity(Entity entity) {
-        assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
-        Entity.entity_list.remove(entity);
-        BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
-    }
-
     public static void send_all() { //packages all entity positions into a string
         if (Entity.entity_list.size() == 0) { return; }
         String msg = "";
@@ -58,6 +49,12 @@ public abstract class Entity {
 
         if (!msg.equals("")) { msg = msg.substring(1); } //get rid of extra space
         BallClientHandler.broadcast(MT.UPDATEENTITY,msg);
+    }
+
+    public static void removeEntity(Entity entity) { //tell client to delete entity
+        assert (Entity.entity_list.contains(entity)): "The entity that you are trying to remove isn't in the master list";
+        Entity.entity_list.remove(entity); //delete entity from server side lib
+        BallClientHandler.broadcast(MT.KILLENTITY,""+entity.getId()); //tell client to stop drawing it
     }
 
     //Projecitle stuff
@@ -96,25 +93,24 @@ public abstract class Entity {
         p.setVelocity(angle);
         this.projectile_list.add(p);
     }
+
     private void newProjectile(String name,float angle,float dmg_mult,float speed_mult) {
         this.newProjectile(name,angle,dmg_mult,speed_mult,new Vector2(this.getX(),this.getY()));
     }
 
-
     public void removeProjectile(Projectile projectile) {
         //safe removal of projectile
-        //assert(this.projectile_list.contains(projectile)): "projecitle you are trying to remove does not exist";
         if (!this.projectile_list.contains(projectile)) { return; } //if there is a probelm, ignore it
         this.projectile_list.remove(projectile);
         Entity.removeEntity(projectile);
         AssetManager.flagForPurge(projectile.getBody());
     }
 
-
-    //Getters
+    //statoc stuff
     public static CopyOnWriteArrayList<Entity> getEntityList() { return Entity.entity_list; }
     public static void clearEntityList() { Entity.entity_list.clear(); }
 
+    //getters
     public ET getET() { return this.entity_type; }
     public float getX() { return this.body.getPosition().x*Global.PPM; }
     public float getY() { return this.body.getPosition().y*Global.PPM; }
@@ -128,7 +124,6 @@ public abstract class Entity {
     public void init_pos(float x, float y, float rotation) { //DONT USE THIS TO MOVE THE ENTITY, INSTEAD USE PHYSICS
         this.body.setTransform(x,y,rotation);
     }
-
     public abstract void init_stats(String json_data);
 
 }

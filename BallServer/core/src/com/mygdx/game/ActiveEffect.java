@@ -1,12 +1,11 @@
 package com.mygdx.game;
 
-import java.util.LinkedList;
-
 public class ActiveEffect {
     private Player player;
     private String name;
     private float max_duration;
 
+    //variables used for updates
     private float duration_left;
     private int ticker;
 
@@ -19,7 +18,7 @@ public class ActiveEffect {
         this.resetTicker();
     }
 
-    public void begin() {
+    public void begin() { //init phase
         if (this.name.equals("speedy")) {
             player.setSpeed(player.getSpeed()*2);
         } else if (this.name.equals("burning")) {
@@ -68,11 +67,12 @@ public class ActiveEffect {
         this.player.removeEffect(this.name);
     }
 
+
+    //seimple setters
     public float getDurationLeft() { return this.duration_left; }
     public void resetDurationTimer() {
         this.duration_left = this.max_duration;
     }
-
     public void tickTicker() { this.ticker--; }
     public void resetTicker() { this.ticker = 1000000; }
 

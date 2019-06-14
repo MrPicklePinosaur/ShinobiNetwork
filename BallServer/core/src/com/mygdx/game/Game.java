@@ -11,15 +11,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Game {
 
-    protected CopyOnWriteArrayList<String> chat_log;
-    protected CopyOnWriteArrayList<Player> player_list;
+    protected CopyOnWriteArrayList<Player> player_list; //list of all players  in game
+    protected CopyOnWriteArrayList<String> chat_log; //list of all the chat messages that were sent
 
     public Game() {
-        this.chat_log = new CopyOnWriteArrayList<String>();
         this.player_list = new CopyOnWriteArrayList<Player>();
+        this.chat_log = new CopyOnWriteArrayList<String>();
     }
 
-    public void new_chat_msg(String msg) {
+    public void new_chat_msg(String msg) { //add a new mesages to chat
         chat_log.add(msg);
         if (msg.equals("") || msg == null) { return; }
 
@@ -64,39 +64,9 @@ public abstract class Game {
         return msg;
     }
 
-    /*
-    public void destroy_game() {
-        //delet entities
-        for (Entity e : Entity.getEntityList()) {
-            AssetManager.flagForPurge(e.getBody());
-            BallClientHandler.broadcast(MT.KILLENTITY, "" + e.getId());
-        }
-
-        Entity.clearEntityList();
-        Ability.dispose();
-
-        //delet players
-        for (Player p : this.player_list) {
-            p.disableGIP();
-        }
-        this.player_list.clear();
-
-        //delet map
-
-
-    }
-    */
-
     public abstract String getLeaderBoard();
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
-
-    /*
-    public String getTextColour(TEAMTAG teamtag) {
-        String text_colour;
-
-    }
-    */
 
 }
 

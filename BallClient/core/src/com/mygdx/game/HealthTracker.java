@@ -69,6 +69,7 @@ public class HealthTracker {
 
             if (!HealthTracker.health_bars.containsKey(id)) { continue; } //if the hp bar doesnt exist, forget about it for now
 
+
             HealthTracker.health_bars.get(id).setHealth(hp_percent);
         }
     }
@@ -77,8 +78,10 @@ public class HealthTracker {
     public void setPos(float x,float y) { this.bar.setPosition(x,y); }
     public static void removeBar(int id) {
         assert (HealthTracker.health_bars.containsKey(id)): "Health bar cannot be removed as it was not found";
+        HealthTracker.health_bars.get(id).getBar().remove();
         HealthTracker.health_bars.remove(id);
     }
+    public static void clearBars() { HealthTracker.health_bars.clear(); }
 
     public float getBarWidth() { return this.bar.getWidth(); }
     public ProgressBar getBar() { return this.bar; }

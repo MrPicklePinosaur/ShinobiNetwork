@@ -114,10 +114,10 @@ class BallClientHandler {
         //tell entity to stop drawing it
         if (e == null) { return; }//there is a chance that an entity was never inited
 
-        AssetManager.flagForPurge(e.getBody()); //flag entity body for removal
         Entity.removeEntity(e); //remove client entity from list
-
         Entity.removeEntity(e.getWeapon()); //remove the player's weapon
+
+        AssetManager.flagForPurge(e.getBody()); //flag entity body for removal
 
         Global.game.removePlayer(e);
         e = null;
@@ -152,7 +152,7 @@ class BallClientHandler {
         }
 
         if (this.game_in_progress == true) { //these messages are only allowed to be send when a game is in progress,
-            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP || msg_type == MT.GAMEOVER || msg_type == MT.UPDATELEADERBOARD) {
+            if (msg_type == MT.UPDATEENTITY || msg_type == MT.KILLENTITY || msg_type == MT.LOADMAP || msg_type == MT.SENDCHAT || msg_type == MT.BINDCAM || msg_type == MT.UPDATEPARTICLE || msg_type == MT.CHOOSECLASS || msg_type == MT.UPDATEHP || msg_type == MT.GAMEOVER || msg_type == MT.UPDATELEADERBOARD || msg_type == MT.PLAYSOUND) {
                 data = msg_type+"$"+msg;
             }
             /*

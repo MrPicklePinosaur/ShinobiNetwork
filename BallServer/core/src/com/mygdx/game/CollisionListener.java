@@ -29,6 +29,7 @@ public class CollisionListener implements ContactListener {
         //System.out.println(type_a.getKey()+" "+type_b.getKey());
         if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Projectile.class, GameMap.class)) {
             Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
+            BallClientHandler.broadcast(MT.PLAYSOUND,"wall_hit");
             b.removeProjecitle();
         }
 

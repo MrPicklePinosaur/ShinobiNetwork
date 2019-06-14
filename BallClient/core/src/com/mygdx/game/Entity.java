@@ -121,10 +121,6 @@ public class Entity {
         //assert (Entity.entity_library.containsKey(id)): "The entity you are trying to remove doesn't exist in master list";
         if (!Entity.entity_library.containsKey(id)) { return; } //if the entity we are trying to remove doesnt exist, ignore it
         Entity.entity_library.remove(id);
-
-        if (HealthTracker.getHealthBarList().containsKey(id)) {
-            HealthTracker.removeBar(id);
-        }
     }
 
     public void stepFrame(float deltaTime) { this.frameTime += deltaTime; } //possibly combine with getFrame

@@ -1,3 +1,15 @@
+/* Shinobi Network
+ ______   ______   __    __   ______
+/\  ___\ /\  __ \ /\ "-./  \ /\  ___\
+\ \ \__ \\ \  __ \\ \ \-./\ \\ \  __\
+ \ \_____\\ \_\ \_\\ \_\ \ \_\\ \_____\
+  \/_____/ \/_/\/_/ \/_/  \/_/ \/_____/
+
+    Handles game logic and the game loop
+    Also stores info about each player
+    Sublclasses of this class are just differernt gamemodes that require different logic
+ */
+
 package com.mygdx.game;
 
 import com.badlogic.gdx.maps.MapObject;

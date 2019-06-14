@@ -1,6 +1,10 @@
-package com.mygdx.game;
+/* Shinobi Network
+ __  __   ______   ______   __       ______  __  __       ______  ______   ______   ______   __  __   ______   ______
+/\ \_\ \ /\  ___\ /\  __ \ /\ \     /\__  _\/\ \_\ \     /\__  _\/\  == \ /\  __ \ /\  ___\ /\ \/ /  /\  ___\ /\  == \
+\ \  __ \\ \  __\ \ \  __ \\ \ \____\/_/\ \/\ \  __ \    \/_/\ \/\ \  __< \ \  __ \\ \ \____\ \  _"-.\ \  __\ \ \  __<
+ \ \_\ \_\\ \_____\\ \_\ \_\\ \_____\  \ \_\ \ \_\ \_\      \ \_\ \ \_\ \_\\ \_\ \_\\ \_____\\ \_\ \_\\ \_____\\ \_\ \_\
+  \/_/\/_/ \/_____/ \/_/\/_/ \/_____/   \/_/  \/_/\/_/       \/_/  \/_/ /_/ \/_/\/_/ \/_____/ \/_/\/_/ \/_____/ \/_/ /_/
 
-/*
 HealthTracker class:
 This class is responsible for creating "HealthTracker" objects
 that are tracked in a master list of HealthTrackers, where
@@ -25,6 +29,8 @@ update_data:
     method that takes in data of all players of the players HealthTracker id with the player's health.
     The HealthTracker associated with the players' id has its ProgressBar's value set to the player's health
 */
+
+package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

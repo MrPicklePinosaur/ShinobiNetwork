@@ -1,10 +1,12 @@
-/*
+/* Shinobi Network
  ______  __       ______   __  __   ______   ______
 /\  == \/\ \     /\  __ \ /\ \_\ \ /\  ___\ /\  == \
 \ \  _-/\ \ \____\ \  __ \\ \____ \\ \  __\ \ \  __<
  \ \_\   \ \_____\\ \_\ \_\\/\_____\\ \_____\\ \_\ \_\
   \/_/    \/_____/ \/_/\/_/ \/_____/ \/_____/ \/_/ /_/
 
+    The entity that the client owns
+    Player can do many things, such as use a special ability and use weapon
  */
 
 package com.mygdx.game;

@@ -1,20 +1,11 @@
-package com.mygdx.game;
+/* Shinobi Network
+ __       ______   ______   _____    ______   ______   ______   ______   ______   ______   _____
+/\ \     /\  ___\ /\  __ \ /\  __-. /\  ___\ /\  == \ /\  == \ /\  __ \ /\  __ \ /\  == \ /\  __-.
+\ \ \____\ \  __\ \ \  __ \\ \ \/\ \\ \  __\ \ \  __< \ \  __< \ \ \/\ \\ \  __ \\ \  __< \ \ \/\ \
+ \ \_____\\ \_____\\ \_\ \_\\ \____- \ \_____\\ \_\ \_\\ \_____\\ \_____\\ \_\ \_\\ \_\ \_\\ \____-
+  \/_____/ \/_____/ \/_/\/_/ \/____/  \/_____/ \/_/ /_/ \/_____/ \/_____/ \/_/\/_/ \/_/ /_/ \/____/
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 
-import java.util.*;
-/*
 Leaderboard class:
 This class is responsible for displaying a leaderboard ranking all the players by kills,
 with a differently formatted leaderboard depending on the type of gamemode.
@@ -34,6 +25,24 @@ Methods (that aren't setters/getters):
         up into two teams, and the two teams are ranked in terms of kills independently of each other. Each
         team is also sorted by most kills
 */
+
+package com.mygdx.game;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+
+import java.util.*;
+
 public class Leaderboard {
     //Leaderboard keeps track of 4 things:
     //Kills, Deaths, Damage Dealt, and the associated Username

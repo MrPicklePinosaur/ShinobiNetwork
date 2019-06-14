@@ -1,10 +1,12 @@
-/*
+/* Shinobi Network
  ______  ______   ______      __   ______   ______   ______  __   __       ______
 /\  == \/\  == \ /\  __ \    /\ \ /\  ___\ /\  ___\ /\__  _\/\ \ /\ \     /\  ___\
 \ \  _-/\ \  __< \ \ \/\ \  _\_\ \\ \  __\ \ \ \____\/_/\ \/\ \ \\ \ \____\ \  __\
  \ \_\   \ \_\ \_\\ \_____\/\_____\\ \_____\\ \_____\  \ \_\ \ \_\\ \_____\\ \_____\
   \/_/    \/_/ /_/ \/_____/\/_____/ \/_____/ \/_____/   \/_/  \/_/ \/_____/ \/_____/
 
+    Projectile is just a moving sprite that sends a message when it hits something
+    Also handles what happens when the projectile hits or kills a player
  */
 
 package com.mygdx.game;

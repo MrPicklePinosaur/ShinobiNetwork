@@ -1,3 +1,14 @@
+/* Shinobi Network
+ ______   ______   __   __       __   ______  __  __
+/\  __ \ /\  == \ /\ \ /\ \     /\ \ /\__  _\/\ \_\ \
+\ \  __ \\ \  __< \ \ \\ \ \____\ \ \\/_/\ \/\ \____ \
+ \ \_\ \_\\ \_____\\ \_\\ \_____\\ \_\  \ \_\ \/\_____\
+  \/_/\/_/ \/_____/ \/_/ \/_____/ \/_/   \/_/  \/_____/
+
+  Handles special abilities of players
+  There are four sub classes, one for each class the user can play as
+ */
+
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.MathUtils;

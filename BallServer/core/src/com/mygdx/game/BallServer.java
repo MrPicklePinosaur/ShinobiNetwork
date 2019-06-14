@@ -1,10 +1,11 @@
-/*
+/* Shinobi Network
  ______   ______   ______   __   __ ______   ______
 /\  ___\ /\  ___\ /\  == \ /\ \ / //\  ___\ /\  == \
 \ \___  \\ \  __\ \ \  __< \ \ \'/ \ \  __\ \ \  __<
  \/\_____\\ \_____\\ \_\ \_\\ \__|  \ \_____\\ \_\ \_\
   \/_____/ \/_____/ \/_/ /_/ \/_/    \/_____/ \/_/ /_/
 
+    This is where the magic happens, this is where the server communicates with the client
  */
 
 package com.mygdx.game;

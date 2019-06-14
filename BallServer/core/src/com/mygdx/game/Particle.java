@@ -1,3 +1,13 @@
+/* Shinobi Network
+ ______  ______   ______  ______  __   ______   __       ______
+/\  == \/\  __ \ /\  == \/\__  _\/\ \ /\  ___\ /\ \     /\  ___\
+\ \  _-/\ \  __ \\ \  __<\/_/\ \/\ \ \\ \ \____\ \ \____\ \  __\
+ \ \_\   \ \_\ \_\\ \_\ \_\ \ \_\ \ \_\\ \_____\\ \_____\\ \_____\
+  \/_/    \/_/\/_/ \/_/ /_/  \/_/  \/_/ \/_____/ \/_____/ \/_____/
+
+ Stores info about all the currently alive particle effects
+ */
+
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;

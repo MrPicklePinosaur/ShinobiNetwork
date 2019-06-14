@@ -1,10 +1,11 @@
-/*
+/* Shinobi Network
  __    __   ______   __   __   __
 /\ "-./  \ /\  __ \ /\ \ /\ "-.\ \
 \ \ \-./\ \\ \  __ \\ \ \\ \ \-.  \
  \ \_\ \ \_\\ \_\ \_\\ \_\\ \_\\"\_\
   \/_/  \/_/ \/_/\/_/ \/_/ \/_/ \/_/
 
+	The place where everything happens :)
  */
 
 package com.mygdx.game;

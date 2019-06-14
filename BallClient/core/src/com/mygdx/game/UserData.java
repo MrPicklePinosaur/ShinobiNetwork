@@ -1,3 +1,13 @@
+/* Shinobi Network
+ __  __   ______   ______   ______       _____    ______   ______  ______
+/\ \/\ \ /\  ___\ /\  ___\ /\  == \     /\  __-. /\  __ \ /\__  _\/\  __ \
+\ \ \_\ \\ \___  \\ \  __\ \ \  __<     \ \ \/\ \\ \  __ \\/_/\ \/\ \  __ \
+ \ \_____\\/\_____\\ \_____\\ \_\ \_\    \ \____- \ \_\ \_\  \ \_\ \ \_\ \_\
+  \/_____/ \/_____/ \/_____/ \/_/ /_/     \/____/  \/_/\/_/   \/_/  \/_/\/_/
+
+    Misc data that was obtained either from server or from json
+ */
+
 package com.mygdx.game;
 
 public class UserData { //stores the info that was obtained from the database
@@ -54,3 +64,22 @@ public class UserData { //stores the info that was obtained from the database
     }
 
 }
+
+//Used for item descirptions and backpack item sorting
+class ItemData {
+    String id; //used for id with server
+    String display_name;
+    String item_type;
+    String stat_text;
+    String special_text;
+
+    public ItemData() { }
+
+    public static ItemData init_itemdata(String json_data) { return Global.json.fromJson(ItemData.class, json_data); }
+
+    public String getDisplayName() { return this.display_name; }
+    public String getItemType() { return this.item_type; }
+    public String getStatText() { return this.stat_text; }
+    public String getSpecialText() { return this.special_text; }
+}
+

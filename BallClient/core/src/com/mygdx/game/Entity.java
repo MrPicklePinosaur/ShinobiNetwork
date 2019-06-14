@@ -1,10 +1,12 @@
-/*
+/* Shinobi Network
  ______   __   __   ______  __   ______  __  __
 /\  ___\ /\ "-.\ \ /\__  _\/\ \ /\__  _\/\ \_\ \
 \ \  __\ \ \ \-.  \\/_/\ \/\ \ \\/_/\ \/\ \____ \
  \ \_____\\ \_\\"\_\  \ \_\ \ \_\  \ \_\ \/\_____\
   \/_____/ \/_/ \/_/   \/_/  \/_/   \/_/  \/_____/
 
+    Entity on the client side is just a texture and a position
+    The server tells us what to draw and we draw it
  */
 
 package com.mygdx.game;

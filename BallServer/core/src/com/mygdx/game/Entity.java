@@ -1,10 +1,12 @@
-/*
+/* Shinboi Network
  ______   __   __   ______  __   ______  __  __
 /\  ___\ /\ "-.\ \ /\__  _\/\ \ /\__  _\/\ \_\ \
 \ \  __\ \ \ \-.  \\/_/\ \/\ \ \\/_/\ \/\ \____ \
  \ \_____\\ \_\\"\_\  \ \_\ \ \_\  \ \_\ \/\_____\
   \/_____/ \/_/ \/_/   \/_/  \/_/   \/_/  \/_____/
 
+    Anything that moves and has a sprite is an entity
+    Entity has 3 subclasses, player: projectile and weapon
  */
 
 package com.mygdx.game;

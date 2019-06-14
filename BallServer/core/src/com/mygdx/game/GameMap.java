@@ -1,10 +1,11 @@
-/*
+/* Shinobi Network
  __    __   ______   ______
 /\ "-./  \ /\  __ \ /\  == \
 \ \ \-./\ \\ \  __ \\ \  _-/
  \ \_\ \ \_\\ \_\ \_\\ \_\
   \/_/  \/_/ \/_/\/_/ \/_/
 
+    Holds box2d objects that are embeded within the tiled map
  */
 
 package com.mygdx.game;

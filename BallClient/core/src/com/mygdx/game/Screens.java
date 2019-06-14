@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
+import sun.swing.plaf.GTKKeybindings;
 
 import java.util.ArrayList;
 
@@ -36,18 +37,6 @@ class MainmenuScreen implements Screen {
     private Label title;
 
     public MainmenuScreen() {
-
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-
-        //TITLE
-        title = new Label("Shinobi Network!",Global.skin);
-        title.setStyle(Global.labelStyle);
-        title.setPosition(title.getWidth()*2.5f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
-        title.setFontScale(1.5f);
-
-        //Main buttons
-        Table buttonTable = new Table();
 
         TextButton play_button = new TextButton("Play",Global.skin);
         play_button.addListener(new ClickListener() {
@@ -75,6 +64,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
+
         TextButton quit_button = new TextButton("Exit Game",Global.skin);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -83,19 +73,7 @@ class MainmenuScreen implements Screen {
             }
         });
 
-        //add the buttons to table
-        buttonTable.add(play_button).pad(10f).width(play_button.getWidth()*2).height(play_button.getHeight()*2);
-        buttonTable.row();
-        buttonTable.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
-        buttonTable.row();
-        buttonTable.add(options_button).center().pad(10f).width(options_button.getWidth()*2).height(options_button.getHeight()*2);
-        buttonTable.row();
-        buttonTable.add(quit_button).center().pad(10f).width(quit_button.getWidth()*2).height(quit_button.getHeight()*2);
-        buttonTable.center();
-
-        //Stats table
         Table stats = new Table();
-
         float kdr = Global.user_data.getTotalKills();
         if (Global.user_data.getTotalKills() != 0) { //make sure theres mp divison by zero
             kdr = Global.user_data.getTotalKills() / Global.user_data.getTotalDeaths();
@@ -110,7 +88,6 @@ class MainmenuScreen implements Screen {
         deaths.setStyle(Global.labelStyle);
         damage.setStyle(Global.labelStyle);
 
-        //add labels to table
         stats.add(kd).expandY().right().padRight(10f);
         stats.row();
         stats.add(kills).expandY().right().padRight(10f);
@@ -119,22 +96,42 @@ class MainmenuScreen implements Screen {
         stats.row();
         stats.add(damage).expandY().right().padRight(10f);
 
-        //Root table stuff
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        Table buttonTable = new Table();
+
+        this.stage = new Stage();
+        stage.addActor(play_button);
+        stage.addActor(inventory_button);
+        stage.addActor(options_button);
+        stage.addActor(quit_button);
+        stage.addActor(stats);
+        stage.addActor(rootTable);
+        stage.addActor(buttonTable);
+
         Pixmap menuPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
         menuPixmap.setColor(Color.valueOf("4c4c4c80"));
         menuPixmap.fill();
         rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(menuPixmap))));
 
+        buttonTable.add(play_button).pad(10f).width(play_button.getWidth()*2).height(play_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(options_button).center().pad(10f).width(options_button.getWidth()*2).height(options_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(quit_button).center().pad(10f).width(quit_button.getWidth()*2).height(quit_button.getHeight()*2);
+        buttonTable.center();
+
         rootTable.add(buttonTable);
         rootTable.add(stats).expandX().right().padRight(10f).fillY();
         rootTable.bottom();
 
-        //Add all the stuff to stage
-        this.stage = new Stage();
-        stage.addActor(quit_button);
-        stage.addActor(stats);
-        stage.addActor(rootTable);
-        stage.addActor(buttonTable);
+        title = new Label("Shinobi Network!",Global.skin);
+        title.setStyle(Global.labelStyle);
+        title.setPosition(title.getWidth()*2.5f,Global.SCREEN_HEIGHT/2f-title.getHeight()/2f);
+        title.setFontScale(1.5f);
+
     }
 
     @Override public void render(float delta) {
@@ -164,7 +161,8 @@ class MainmenuScreen implements Screen {
 class GameScreen implements Screen {
     //init sprites (REMOVE LATER)
     //static Sprite background = new Sprite(new Texture("mountain_temple.png"));
-    static Sprite background = new Sprite(new Texture("mt_ffa.png"));
+    static Sprite bg_bot =new Sprite(new Texture("map_bot.png"));
+    static Sprite bg_top =new Sprite(new Texture("map_top.png"));
 
     //big bois
     private Stage stage;
@@ -179,6 +177,7 @@ class GameScreen implements Screen {
     private Table pause_menu;
     private Table respawn_menu;
     private Inventory inv;
+    private Leaderboard leaderboard;
     private Options options_menu;
 
     public GameScreen() {
@@ -283,9 +282,10 @@ class GameScreen implements Screen {
     @Override public void render(float delta) {
         //simple draw calls
         batch.begin();
-        background.draw(batch);
+        bg_bot.draw(batch);
         Entity.drawAll(batch);
         Particle.draw_all(batch, Gdx.graphics.getDeltaTime());
+        bg_top.draw(batch);
         HealthTracker.drawAll(batch);
         batch.end();
 
@@ -459,6 +459,7 @@ class Inventory {
     private Table inventory_grid;
     private Table loadout_inv;
     private Table tabs;
+    private Label inv_name;
 
     //inventory pages
     private Table page;
@@ -482,6 +483,11 @@ class Inventory {
 
     public Inventory(Stage screen_stage) {
         this.stage = screen_stage;
+
+        //Add a cool label
+        this.inv_name = new Label(Global.user_data.getUsername()+"'s Inventory",Global.skin);
+        inv_name.setStyle(Global.labelStyle);
+        inv_name.setPosition(Global.SCREEN_WIDTH/8,Global.SCREEN_HEIGHT*7/8);
 
         //INVENTORY
         //some basic settings for the table
@@ -556,7 +562,7 @@ class Inventory {
         tabs.setTransform(true);
         tabs.rotateBy(90);
         tabs.bottom();
-        tabs.setDebug(true);
+        //tabs.setDebug(true);
 
         //page flipper
         this.page = new Table();
@@ -617,12 +623,17 @@ class Inventory {
         item_info.row();
         item_info.add(equip_button).pad(5);
 
+        Label blank = new Label("",Global.skin);
+        blank.setPosition(-Global.SCREEN_WIDTH,-Global.SCREEN_HEIGHT);
+        blank.setDebug(true);
         //Now add everything to the stage
         stage.addActor(inventory_grid);
         stage.addActor(loadout_inv);
         stage.addActor(tabs);
         stage.addActor(page);
         stage.addActor(item_info);
+        stage.addActor(inv_name);
+        stage.addActor(blank);
     }
 
     public void switch_page() { //flip pages
@@ -767,6 +778,7 @@ class Inventory {
         this.tabs.setVisible(true);
         this.loadout_inv.setVisible(false);
         this.page.setVisible(true);
+        this.inv_name.setVisible(true);
     }
 
     public void hide_inv() {
@@ -775,6 +787,7 @@ class Inventory {
         this.loadout_inv.setVisible(false);
         this.page.setVisible(false);
         this.item_info.setVisible(false);
+        this.inv_name.setVisible(false);
     }
 
     public void show_loadout(String filter) { refresh_loadout(filter); this.loadout_inv.setVisible(true); }

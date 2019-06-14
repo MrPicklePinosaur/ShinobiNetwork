@@ -19,6 +19,7 @@ public class BallClientMain extends Game {
 	AwaitauthScreen awaitauth_screen;
 	RetryconnectionScreen retryconnection_screen;
 	InventoryScreen inventory_screen;
+	OptionsScreen options_screen;
 	LoginScreen login_screen;
 
 	@Override
@@ -49,6 +50,7 @@ public class BallClientMain extends Game {
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
 		this.inventory_screen = new InventoryScreen();
+		this.options_screen = new OptionsScreen();
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
 		setScreen(mainmenu_screen);

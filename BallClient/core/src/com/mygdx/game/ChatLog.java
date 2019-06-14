@@ -33,7 +33,7 @@ public class ChatLog extends ApplicationAdapter {
 
         Table newTable = new Table();
         newTable.setFillParent(true);
-        newTable.setDebug(true);
+        //newTable.setDebug(true);
 
         stage.addActor(newTable);
         this.table = newTable; //this table is the UI table, so be careful when clearing children

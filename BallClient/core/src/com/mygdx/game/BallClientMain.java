@@ -31,7 +31,8 @@ public class BallClientMain extends Game {
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 		AssetManager.load_all();
 		Particle.load_particles("particle_lib.txt");
-		SoundPlayer.load_sounds("sound_lib.txt");
+		AudioPlayer.load_sounds("sounds/");
+		AudioPlayer.load_music("music/");
 
 		this.retryconnection_screen = new RetryconnectionScreen();
 		this.login_screen = new LoginScreen();
@@ -40,6 +41,7 @@ public class BallClientMain extends Game {
 		if (!Global.game.attempt_connection(Global.server_ip, Global.server_port)) { //attempt to connect to server
 			setScreen(retryconnection_screen); //if login fails, ask client if they want to try again
 		} else { //otherwise go straight to login screen
+			AudioPlayer.play_music();
 			setScreen(login_screen);
 		}
 	}

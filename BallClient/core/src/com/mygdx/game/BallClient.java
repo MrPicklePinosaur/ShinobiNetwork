@@ -14,8 +14,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BallClient {
     //heavy lifters
@@ -183,7 +181,7 @@ public class BallClient {
             //message comes in the form: name1,kills1,deaths1,damage1 name2,kills2,deaths2,damage2
             String[] entries = msg[1].split(" ");
         } else if (msg_type == MT.PLAYSOUND) {
-            SoundPlayer.play_sound(msg[1]);
+            AudioPlayer.play_sound(msg[1]);
         }
     }
 

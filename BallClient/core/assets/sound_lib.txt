@@ -1,9 +1,0 @@
-button_click
-inventory_click
-spawn_sound
-blade_shoot
-magic_shoot
-arrow_shoot
-death
-wall_hit
-hit_sound

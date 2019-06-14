@@ -37,18 +37,17 @@ Methods (that aren't setters/getters):
 public class Leaderboard {
     //Leaderboard keeps track of 4 things:
     //Kills, Deaths, Damage Dealt, and the associated Username
-    static Window leaderboard;
-    static Table table;
+    static Table table; //table that is used to logically organize data for leaderboard
     static TextureAtlas atlas;
     static Skin skin;
-    private String gamemode;
-    private Table redTable;
+    private String gamemode; //what the general update method uses to decide what to display
+    private Table redTable; //team tables that are only used during team gamemode
     private Table blueTable;
     private Label name;
     private Label kills;
     private Label deaths;
     private Label damage;
-    private Cell redTeam;
+    private Cell redTeam;   //team cells (what columns in each row of a table is) for team gamemode
     private Cell blueTeam;
     private LinkedList<Integer> numberData = new LinkedList<Integer>();
     private HashMap<String, LinkedList<Integer>> leaderboardData = new LinkedHashMap<String, LinkedList<Integer>>();
@@ -56,24 +55,22 @@ public class Leaderboard {
         atlas = new TextureAtlas("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.atlas");
         skin = new Skin(Gdx.files.internal("gdx-skins-master/clean-crispy/skin/clean-crispy-ui.json"));
         skin.addRegions(atlas);
-        leaderboard = new Window("leaderboard",skin);
         table = new Table();
         table.setPosition(Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/2f);
-        table.setDebug(true);
-        //table.setFillParent(true);
-        table.center();
+        //table.setDebug(true); - used to debug leaderboard
+        table.center(); //centers the table's contents on the screen
     }
-    public Leaderboard(String gamemode){
+    public Leaderboard(String gamemode){    //constructor that creates basic leaderboard resources based on gamemode
         this.gamemode = gamemode;
         if(this.gamemode.equals("Team")){
-            //221, 95, 116;
-            Pixmap redTitlePixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+            Pixmap redTitlePixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888); //pixel used to set color of red team leaderboard
             redTitlePixmap.setColor(Color.valueOf("db0a3180"));//hexcode with A - 80: 50% transparency
             redTitlePixmap.fill();
             Table redTeamTitle = new Table(skin);
-            redTeamTitle.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(redTitlePixmap))));
+            redTeamTitle.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(redTitlePixmap))));  //changing color of red team's leaderboard header to red
 
             /*
+            Cheatsheet:
             100% — FF
             95% — F2
             90% — E6
@@ -99,19 +96,26 @@ public class Leaderboard {
 
             //www.hexcolortool.com for color codes
 
+            //change blue team's leaderboard's header background color to blue
             Pixmap blueTitlePixmap = new Pixmap(1,1,Pixmap.Format.RGB565);
             blueTitlePixmap.setColor(Color.valueOf("084ca180"));
             blueTitlePixmap.fill();
             Table blueTeamTitle = new Table(skin);
             blueTeamTitle.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(blueTitlePixmap))));
 
-            redTeamTitle.add(new Label("Red Team",skin));
-            blueTeamTitle.add(new Label("Blue Team",skin));
+            redTeamTitle.add(new Label("Red Team",skin));   //header for red team
+            blueTeamTitle.add(new Label("Blue Team",skin)); //header for blue team
+
+            //adding headers to the team leaderboards
             table.add(redTeamTitle).right().padRight(10f);
             table.add(blueTeamTitle).left().padLeft(10f);
             table.row();
+
+            //creating the team leaderboards that will be under the team headers
             redTable = new Table(skin);
             blueTable = new Table(skin);
+
+            //set team leaderboard colours
             Pixmap redPixmap = new Pixmap(1,1,Pixmap.Format.RGB565);
             redPixmap.setColor(Color.valueOf("7a0606BF"));
             redPixmap.fill();
@@ -120,6 +124,8 @@ public class Leaderboard {
             bluePixmap.setColor(Color.valueOf("06137aBF"));
             bluePixmap.fill();
             blueTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bluePixmap))));
+
+            //adding team leaderboard beneath headers
             redTeam = table.add(redTable).width(500f).top();
             blueTeam = table.add(blueTable).width(500f).top();
 
@@ -130,14 +136,20 @@ public class Leaderboard {
         }
     }
     public void updateLeaderboard(String[] unformattedData){
-        for(String data : unformattedData){
-            String[] info = data.split(",");
+        //generic update method that takes in data
+        //and sends it to the more specific update
+        //methods in a more comprehensible way
+        for(String data : unformattedData){ //look at each individual player separately
+            String[] info = data.split(",");    //separate each player's info
+            //get their kills, deaths, and damage dealt (in that order)
             numberData.add(Integer.parseInt(info[1]));
             numberData.add(Integer.parseInt(info[2]));
             numberData.add(Integer.parseInt(info[3]));
-            leaderboardData.put(info[0],numberData);
+            leaderboardData.put(info[0],numberData);    //associate the player's name with the player's data
             numberData.clear();
         }
+
+        //call specfied gamemode's unique update method
         if(this.gamemode.equals("FFA")){
             updateFFA(leaderboardData);
         }
@@ -150,30 +162,40 @@ public class Leaderboard {
     private void updateFFA(HashMap<String, LinkedList<Integer>> leaderboardData){
         table.clearChildren();
         int i = 0;
-        LinkedList<String> sortedLeaderboard = new LinkedList<String>();
+        LinkedList<String> sortedLeaderboard = new LinkedList<String>();    //list of players for leaderboard sorted by most kills
         for(String player : leaderboardData.keySet()){
+            //for each player playing the game currently,
+            //add the kills the player has in a string along with the player's name to a list
+            //this means that we can sort the entries in the list by the number of kills,
+            //while still associating it with the player's name, without using a map
             sortedLeaderboard.add(leaderboardData.get(player).get(0)+" "+player);
         }
+        //sort the players by most kills
         Collections.sort(sortedLeaderboard,Collections.<String>reverseOrder());
-        for(String data : sortedLeaderboard){
-            String player = data.split(" ")[1];
+        for(String data : sortedLeaderboard){   //for each player, starting from the one with the most kills
+            String player = data.split(" ")[1]; //get the player's username
             i++;
             if(i%2!=0){ //alternate colouring
                 name = new Label(player,skin);
-                kills = new Label(""+leaderboardData.get(player).get(0),skin);
-                deaths = new Label(""+leaderboardData.get(player).get(1),skin);
-                damage = new Label(""+leaderboardData.get(player).get(2),skin);
+                kills = new Label(""+leaderboardData.get(player).get(0),skin);  //get how many kills the player has
+                deaths = new Label(""+leaderboardData.get(player).get(1),skin); //get how many times the player has died
+                damage = new Label(""+leaderboardData.get(player).get(2),skin); //get how much damage the player has done
             }else {
                 name = new Label(player, skin);
                 kills = new Label("" + leaderboardData.get(player).get(0), skin);
                 deaths = new Label("" + leaderboardData.get(player).get(1), skin);
                 damage = new Label("" + leaderboardData.get(player).get(2), skin);
             }
+
+            //in case the names, # of kills/deaths, or damage done
+            //gets too large to fit flush with the other players,
+            //just wrap the text in the problematic column
             name.setWrap(true);
             kills.setWrap(true);
             deaths.setWrap(true);
             damage.setWrap(true);
 
+            //add each player to the leaderboard
             table.add(name).width(100f);
             table.add(kills).width(100f);
             table.add(deaths).width(100f);
@@ -182,35 +204,46 @@ public class Leaderboard {
         }
     }
     private void updateTeam(HashMap<String, LinkedList<Integer>> leaderboardData){
+        //refresh team data
         redTable.clearChildren();
         blueTable.clearChildren();
-        //0 = red
-        //1 = blue
-        int i = 0;
+
+        int i = 0;  //later on, we plan on alternating each player's colour in the leaderboard
+        // 0 = darker colour
+        // 1 = lighter colour
+
+        //listed of usernames (+ associated kills) per team, that will be sorted by kills later
         LinkedList<String> sortedRed = new LinkedList<String>();
         LinkedList<String> sortedBlue = new LinkedList<String>();
-        int emptySlots=6;
+        int emptySlots=6;   //if we plan on changing how many max players there can be later dynamically, we would need
+                            //to keep that in mind while displaying leaderboard
         for(String player : leaderboardData.keySet()){
             if(leaderboardData.get(player).get(3)==0){ //red player
+                //since we are sorting players by kills, we first
+                //create lists where each entry starts with the number of kills,
+                //and then is followed by the username of the player with that many kills
+                //this way, when we sort these lists, we will also sort the players as well
                 sortedRed.add(leaderboardData.get(player).get(0)+" "+player);
             }else{  //blue player
                 sortedBlue.add(leaderboardData.get(player).get(0)+" "+player);
             }
         }
-        emptySlots = Math.max(6-sortedRed.size(),6-sortedBlue.size());
+        emptySlots = Math.max(6-sortedRed.size(),6-sortedBlue.size());  //for changing team size dynamically in the future
+
+        //sorting the players
         Collections.sort(sortedRed,Collections.<String>reverseOrder());
         Collections.sort(sortedBlue,Collections.<String>reverseOrder());
-        for(String data : sortedRed){
-            String player = data.split(" ")[1];
+        for(String data : sortedRed){   //for each player on the red team (descending in kills)
+            String player = data.split(" ")[1]; //get the player's username
             i++;
             if(i%2!=0){ //alternate colouring
                 name = new Label(player,skin);
                 name.setWrap(true);
-                kills = new Label(""+leaderboardData.get(player).get(0),skin);
+                kills = new Label(""+leaderboardData.get(player).get(0),skin);  //get how many people the player has killed
                 kills.setAlignment(Align.right);
-                deaths = new Label(""+leaderboardData.get(player).get(1),skin);
+                deaths = new Label(""+leaderboardData.get(player).get(1),skin); //get how many times the player has died
                 deaths.setAlignment(Align.right);
-                damage = new Label(""+leaderboardData.get(player).get(2),skin);
+                damage = new Label(""+leaderboardData.get(player).get(2),skin); //get how much damage the player has caused overall
                 damage.setAlignment(Align.right);
             }else {
                 name = new Label(player, skin);
@@ -221,11 +254,15 @@ public class Leaderboard {
                 damage = new Label("" + leaderboardData.get(player).get(2), skin);
                 damage.setAlignment(Align.right);
             }
+            //in case the names, # of kills/deaths, or damage done
+            //gets too large to fit flush with the other players,
+            //just wrap the text in the problematic column
             name.setWrap(true);
             kills.setWrap(true);
             deaths.setWrap(true);
             damage.setWrap(true);
 
+            //add each player to the red team leaderboard
             redTable.add(name).width(100f).padBottom(5f).padTop(5f);
             redTable.add(kills).width(50f);
             redTable.add(deaths).width(50f);
@@ -233,6 +270,7 @@ public class Leaderboard {
             redTable.row();
         }
         for(String data : sortedBlue){
+            //repeat the same process as above, but for the blue team
             String player = data.split(" ")[1];
             i++;
             if(i%2!=0){ //alternate colouring

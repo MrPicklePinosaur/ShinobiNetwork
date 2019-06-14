@@ -34,7 +34,7 @@ class MainmenuScreen implements Screen {
                 Global.game.setScreen(Global.game.game_screen);
                 Global.server_socket.send_msg(MT.STARTGAME,"");
                 Global.server_socket.enableGIP();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
 
@@ -42,7 +42,7 @@ class MainmenuScreen implements Screen {
         //inventory_button.setPosition(300,400);
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.setScreen(Global.game.inventory_screen);
             }
         });
@@ -50,7 +50,7 @@ class MainmenuScreen implements Screen {
         TextButton quit_button = new TextButton("Exit Game",Global.skin);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Gdx.app.exit();
             }
         });
@@ -178,7 +178,7 @@ class GameScreen implements Screen {
         TextButton resume_button = new TextButton("Resume",Global.skin);
         resume_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.game_screen.hide_menu();
             }
         });
@@ -186,7 +186,7 @@ class GameScreen implements Screen {
         inventory_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 show_inv();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton exit_button = new TextButton("Leave Game",Global.skin);
@@ -194,7 +194,7 @@ class GameScreen implements Screen {
             @Override public void clicked(InputEvent event,float x,float y) {
                 Global.server_socket.send_msg(MT.LEAVEGAME,"");
                 Global.server_socket.disableGIP();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
@@ -232,7 +232,7 @@ class GameScreen implements Screen {
                     String msg = class_list[index]+","+load_out[0]+","+load_out[1];
                     Global.server_socket.send_msg(MT.RESPAWN,msg);
                     hide_death_screen();
-                    SoundPlayer.play_sound("spawn_sound");
+                    AudioPlayer.play_sound("spawn_sound");
                 }
             });
             respawn_menu.add(choose).pad(10);
@@ -391,7 +391,7 @@ class RetryconnectionScreen implements Screen {
         retry_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 connected = Global.game.attempt_connection(Global.server_ip, Global.server_port);
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         stage.addActor(retry_button);
@@ -433,7 +433,7 @@ class InventoryScreen implements Screen {
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("back"))));
         backButton.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
@@ -525,7 +525,7 @@ class Inventory {
                 page_num = 1;
                 hide_loadout();
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton ninjaItems_button = new TextButton("Ninja",Global.skin);
@@ -535,7 +535,7 @@ class Inventory {
                 page_num = 1;
                 show_loadout("ninja");
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton archerItems_button = new TextButton("Archer",Global.skin);
@@ -545,7 +545,7 @@ class Inventory {
                 page_num = 1;
                 show_loadout("archer");
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton warriorItems_button = new TextButton("Warrior",Global.skin);
@@ -555,7 +555,7 @@ class Inventory {
                 page_num = 1;
                 show_loadout("warrior");
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton wizardItems_button = new TextButton("Wizard",Global.skin);
@@ -565,7 +565,7 @@ class Inventory {
                 page_num = 1;
                 show_loadout("wizard");
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
 
@@ -588,7 +588,7 @@ class Inventory {
             @Override public void clicked(InputEvent event,float x,float y) {
                 page_num--;
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         this.right = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("right_arrow"))));
@@ -596,7 +596,7 @@ class Inventory {
             @Override public void clicked(InputEvent event,float x,float y) {
                 page_num++;
                 switch_page();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         this.page_label = new Label(""+page_num,Global.skin);
@@ -625,7 +625,7 @@ class Inventory {
                 String item_type = AssetManager.getItemDescrip(selected_item).getItemType();
                 String filter = Global.user_data.setLoadout(selected_item,item_type);
                 refresh_loadout(filter);
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
 
@@ -713,7 +713,7 @@ class Inventory {
 
                             selected_item = item_name;
 
-                            SoundPlayer.play_sound("inventory_click");
+                            AudioPlayer.play_sound("inventory_click");
                         }
                     }
                 });
@@ -844,7 +844,7 @@ class LoginScreen implements Screen {
         login_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
                 submit_creds(username_field.getText(),password_field.getText()); //we also submit the form if the button is pressed
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
 
@@ -917,7 +917,7 @@ class LoginScreen implements Screen {
             @Override public void clicked(InputEvent event,float x,float y) {
                 String warning = register(reg_username_field.getText(),reg_email_field.getText(),reg_password_field.getText(),confirm_password_field.getText());
                 warning_text.setText(warning);
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
 
@@ -950,7 +950,7 @@ class LoginScreen implements Screen {
         username = username.replaceAll("[,$\\s]",""); //get rid of dangerous characters
         password = password.replaceAll("[,$\\s]","");
         if (username.equals("") || password.equals("")) {
-            SoundPlayer.play_sound("error");
+            AudioPlayer.play_sound("error");
             creds_declined();
             return;
         } //dont send if field(s) are empty
@@ -964,7 +964,7 @@ class LoginScreen implements Screen {
         this.password_field.setText(""); //if the creds are wrong, clear the password field
         //TODO: display a message saying creds are invalid
         this.invalid_creds.setText("Invalid username or password");
-        SoundPlayer.play_sound("error");
+        AudioPlayer.play_sound("error");
     }
     public void register_success() {
         this.warning_text.setText("Registration Successful!");
@@ -975,7 +975,7 @@ class LoginScreen implements Screen {
     }
     public void register_failed() {
         this.warning_text.setText("Username taken");
-        SoundPlayer.play_sound("error");
+        AudioPlayer.play_sound("error");
     }
 
     public String register(String username,String email,String password,String confirmpass) {

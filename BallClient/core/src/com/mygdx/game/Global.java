@@ -21,6 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.Random;
+
 class Global {
 
 	public static Skin skin = new Skin(Gdx.files.internal("gdx-skins/level-plane/skin/level-plane-ui.json"));
@@ -49,6 +51,7 @@ class Global {
 		labelStyle.fontColor = Color.valueOf("B5B5B5");
 	}
 
+	public static Random rnd = new Random();
 	public static BallClientMain game;
 	public static Json json = new Json();
 

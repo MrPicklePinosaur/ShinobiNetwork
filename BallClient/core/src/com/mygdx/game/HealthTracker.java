@@ -1,5 +1,22 @@
 package com.mygdx.game;
 
+/*
+HealthTracker class:
+This class is responsible for creating "HealthTracker" objects
+that are tracked in a master list of HealthTrackers, where
+each HealthTracker consists of a health bar and username tag
+above its respective player's name (each HealthTracker is
+instantiated per player).
+This class keeps track of the player's health, and updates it
+on the health bar accordingly.
+The 'health bar' is actually a Scene2d ProgressBar, with the max
+value being the maximum possible health (full health - 1) and the
+min value being the minimum possible health (no health - 0), with
+the value of the ProgressBar knob being the frequency of the
+current health over the player's maximum health (this may vary
+depending on the player's class)
+*/
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

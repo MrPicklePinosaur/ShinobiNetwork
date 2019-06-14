@@ -16,8 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Scaling;
-import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
 
@@ -465,6 +463,14 @@ class Inventory {
     private ImageButton right;
     private Label page_label;
 
+    private Table item_info;
+    private Label item_name;
+    private Label stat_text;
+    private Label special_text;
+    private String selected_item;
+
+    private TextButton equip_button;
+
     private int page_num;
     private static final int grid_x = 4;
     private static final int grid_y = 6;
@@ -566,10 +572,40 @@ class Inventory {
         page.add(right).pad(10);
         page.setPosition(100,100);
 
+        this.item_info = new Table();
+        this.item_name = new Label("",Global.skin);
+        item_name.setStyle(Global.labelStyle);
+        item_name.setFontScale(0.5f);
+        this.stat_text = new Label("",Global.skin);
+        stat_text.setFontScale(0.3f);
+        //TODO: change colour
+        this.special_text = new Label("",Global.skin);
+        special_text.setFontScale(0.3f);
+        //TODO: change colour
+        this.equip_button = new TextButton("Equip",Global.skin);
+        equip_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                String item_type = AssetManager.getItemDescrip(selected_item).getItemType();
+                String filter = Global.user_data.setLoadout(selected_item,item_type);
+                refresh_loadout(filter);
+            }
+        });
+
+        item_info.setBounds(Global.SCREEN_WIDTH*4/8,0,Global.SCREEN_WIDTH*4/8,Global.SCREEN_HEIGHT/4f);
+        item_info.add(item_name);
+        item_info.row();
+        item_info.add(stat_text);
+        item_info.row();
+        item_info.add(special_text);
+        item_info.row();
+        item_info.add(equip_button);
+        //item_info.setDebug(true);
+
         stage.addActor(inventory_grid);
         stage.addActor(loadout_inv);
         stage.addActor(tabs);
         stage.addActor(page);
+        stage.addActor(item_info);
     }
 
     public void switch_page() {
@@ -583,6 +619,27 @@ class Inventory {
 
         page_label.setText(""+this.page_num);
         refreshInventory(current_tab);
+        hide_item_info();
+    }
+
+    public void show_item_info(String item_name) {
+        ItemData item_data = AssetManager.getItemDescrip(item_name);
+
+        this.item_info.setVisible(true); //turn the whole table on
+
+        //UPDATE item info
+        this.item_name.setText(item_data.getDisplayName());
+        this.stat_text.setText(item_data.getStatText());
+        this.special_text.setText(item_data.getSpecialText());
+
+        if (this.current_tab.equals("")) { //dont show equp button on all items tab
+            this.equip_button.setVisible(false);
+        } else { this.equip_button.setVisible(true); }
+
+    }
+
+    public void hide_item_info() {
+        this.item_info.setVisible(false);
     }
 
     public void refreshInventory(String filter) { //filter inv by item type, if an empty string is provided, it means no filtere
@@ -612,9 +669,9 @@ class Inventory {
                             String item_name = slot.getName();
                             assert(item_name != null && !item_name.equals("")): "Slot name is empty";
 
-                            String item_type = AssetManager.getItemDescrip(item_name).getItemType();
-                            String filter = Global.user_data.setLoadout(item_name,item_type);
-                            refresh_loadout(filter);
+                            show_item_info(item_name);
+
+                            selected_item = item_name;
                         }
                     }
                 });

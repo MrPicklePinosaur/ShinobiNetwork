@@ -472,7 +472,12 @@ class InventoryScreen implements Screen {
     @Override public void resume() { }
     public Stage getStage() { return this.stage; }
 }
-
+class Options {
+    private Stage stage;
+    public Options(Stage stage){
+        this.stage = stage;
+    }
+}
 class Inventory {
 
     private Stage stage;

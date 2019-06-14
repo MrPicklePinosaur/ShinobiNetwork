@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class BallClientMain extends Game {
 
+	//screems
 	GameScreen game_screen;
 	MainmenuScreen mainmenu_screen;
 	AwaitauthScreen awaitauth_screen;
@@ -46,19 +47,22 @@ public class BallClientMain extends Game {
 		}
 	}
 
-	public void loadScreens() {
+	public void loadScreens() { //load the rest of the screens after creds has been authed
+		//init screens
 		this.mainmenu_screen = new MainmenuScreen();
 		this.game_screen = new GameScreen();
 		this.inventory_screen = new InventoryScreen();
 		this.options_screen = new OptionsScreen();
+
+		//init ui
 		Global.chatlog = new ChatLog(game_screen.getStage());
 		Global.camera = new Camera();
 		setScreen(mainmenu_screen);
 	}
 
-	public boolean attempt_connection(String ip,int port) {
+	public boolean attempt_connection(String ip,int port) { //try to connect to server
 		Global.server_socket = new BallClient(ip,port); //Init server
-		return Global.server_socket.start_connection();
+		return Global.server_socket.start_connection(); //return if connection was sucessful or not
 	}
 
 	@Override
@@ -66,7 +70,7 @@ public class BallClientMain extends Game {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		super.render();
+		super.render(); //draw whatever the current screen is
 	}
 	
 	@Override
@@ -74,6 +78,5 @@ public class BallClientMain extends Game {
 		//server_socket.close_connection(); //this line causes nullPointer on serverside for some reason
         Gdx.app.exit();
 	}
-
 
 }

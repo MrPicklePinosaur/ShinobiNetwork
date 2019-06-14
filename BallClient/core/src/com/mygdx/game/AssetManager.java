@@ -20,6 +20,7 @@ import java.io.*;
 import java.util.*;
 
 public class AssetManager {
+    //libs that hold all pre-loaded assets
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
     public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
     public static HashMap<String, ItemData> item_descrip = new HashMap<String, ItemData>();
@@ -30,7 +31,7 @@ public class AssetManager {
         load_itemdata(AssetManager.item_descrip,"json/item_descriptions.json");
     }
 
-    public static void load_itemdata(HashMap<String,ItemData> lib,String filepath) {
+    public static void load_itemdata(HashMap<String,ItemData> lib,String filepath) { //preload all json
         JsonReader json = new JsonReader();
         JsonValue raw_json = json.parse(Gdx.files.internal(filepath));
 
@@ -43,7 +44,7 @@ public class AssetManager {
         }
     }
 
-    public static void loadFromDirectory(String path,HashMap<String,Texture> target) {
+    public static void loadFromDirectory(String path,HashMap<String,Texture> target) { //go through file-dir recursively and load everything
         FileHandle root = new FileHandle(path);
         assert (root.isDirectory()): "Invalid directory"; //checks to see if input is acc a directory
 
@@ -52,16 +53,16 @@ public class AssetManager {
             else {
                 String filepath = path+file.name();
                 String name = file.name();
-                if (name.contains(".png")) {
-                    name = file.name().replaceAll("\\.png", "");
-                } else if (name.contains(".ogg")) {
-                    name = file.name().replaceAll("\\.ogg", "");
-                }
+                //strip file extensions
+                if (name.contains(".png")) { name = file.name().replaceAll("\\.png", ""); }
+                else if (name.contains(".ogg")) { name = file.name().replaceAll("\\.ogg", ""); }
                 target.put(name,new Texture(Gdx.files.internal(filepath)));
             }
         }
     }
 
+
+    //simple getters
     public static Texture getSpritesheet(String name) {
         assert (AssetManager.animation_lib.containsKey(name)): name+" not found";
         return AssetManager.animation_lib.get(name);

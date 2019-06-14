@@ -32,15 +32,17 @@ public class Particle {
         this.entity = entity;
         this.name = name;
 
+        //create particle
         this.particle = new ParticleEffect();
-        this.particle.load(Particle.behavior_lib.get(name),Particle.particle_atlas);
-        this.particle.setPosition(entity.getX(),entity.getY());
+        this.particle.load(Particle.behavior_lib.get(name),Particle.particle_atlas); //load behavior
+        this.particle.setPosition(entity.getX(),entity.getY()); //bind to entity
         this.particle.setDuration(duration);
         Particle.particle_list.add(this);
 
         this.particle.start();
     }
-    public static void load_particles(String lib_firepath) {
+
+    public static void load_particles(String lib_firepath) { //go through lib and load all partuckes
         try {
             Scanner fileReader = new Scanner(new BufferedReader(new FileReader(lib_firepath)));
             while (fileReader.hasNext()) {
@@ -58,21 +60,17 @@ public class Particle {
         } catch(FileNotFoundException ex) { System.out.println(ex); }
     }
 
-    public static void draw_all(SpriteBatch batch, float deltaTime) {
-        ArrayList<Particle> complete_list = new ArrayList<Particle>();
+    public static void draw_all(SpriteBatch batch, float deltaTime) { //go through all active particles, update them, and draw them
+        ArrayList<Particle> complete_list = new ArrayList<Particle>(); //list of particles to be removed
+
         for (Particle p : Particle.particle_list) {
-            //first. update the particles
-            //TODO: REMOVE PARTICLE IF BINDED ENTITY DIES!!!!!!
-            p.particle.setPosition(p.entity.getX(),p.entity.getY());
+            p.particle.setPosition(p.entity.getX(),p.entity.getY()); //first. update the particles
 
             p.particle.draw(batch,deltaTime);
             if (p.particle.isComplete()) { complete_list.add(p); } //if the particle effect has no more use
         }
-        for (Particle p : complete_list) { //remove all particles that arent doing anything
-            Particle.particle_list.remove(p);
-        }
+        //remove all particles that arent doing anything
+        for (Particle p : complete_list) { Particle.particle_list.remove(p); }
     }
 
-    public ParticleEffect getParticle() { return this.particle; }
-    public Entity getBindedEntity() { return this.entity; }
 }

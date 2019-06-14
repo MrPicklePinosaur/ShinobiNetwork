@@ -50,14 +50,14 @@
 		"id": "tsuinejji",
 		"display_name": "Tsuinejji, the Twin Blades",
 		"item_type": "waki",
-		"stat_text": "",
+		"stat_text": "Has a chance to inflict 'burning' and 'frostbite'",
 		"special_text": "",
 	},
 	{
 		"id": "bloodsucker_talon",
 		"display_name": "Bloodsucker Talon",
 		"item_type": "waki",
-		"stat_text": "",
+		"stat_text": "Steals life from those that are hit",
 		"special_text": "",
 	},
 	{
@@ -78,8 +78,8 @@
 		"id": "jade_wakizashi",
 		"display_name": "Jade Wakizashi",
 		"item_type": "waki",
-		"stat_text": "",
-		"special_text": "",
+		"stat_text": "Deals no damage \n Very low cooldown",
+		"special_text": "This wakizashi is most commonly wielded by those that believe in peace",
 	},
 
 	
@@ -89,14 +89,14 @@
 		"display_name": "Reinforced Bow",
 		"item_type": "bow",
 		"stat_text": "",
-		"special_text": "",
+		"special_text": "A sturdy compound bow, perfect for hunting",
 	},
 	{
 		"id": "savage_compoundbow",
 		"display_name": "Savage's Compound Bow",
 		"item_type": "bow",
-		"stat_text": "",
-		"special_text": "",
+		"stat_text": "Shoots randomly",
+		"special_text": "Wielded by the Savages of the Wild, who also happen to be blind",
 	},
 
 	//quivers
@@ -175,7 +175,7 @@
 		"id": "flamethrower_scroll",
 		"display_name": "Flamethrower Scroll",
 		"item_type": "spell",
-		"stat_text": "",
+		"stat_text": "Allows the user to breathe fire!",
 		"special_text": "",
 	},
 ]

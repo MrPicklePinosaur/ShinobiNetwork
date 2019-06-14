@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="62" nextobjectid="245">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="96" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="62" nextobjectid="333">
  <tileset firstgid="1" source="tilesets/mt8x8.tsx"/>
  <tileset firstgid="1025" source="tilesets/mt_path.tsx"/>
  <tileset firstgid="1055" source="tilesets/mt16x16.tsx"/>
@@ -703,7 +703,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="60" name="COLLISION" visible="0">
+ <objectgroup id="60" name="COLLISION">
   <object id="89" name="walk_boundry" x="2303.67" y="1568" width="128" height="64"/>
   <object id="90" name="walk_boundry" x="2272" y="1696" width="127.667" height="128"/>
   <object id="91" name="walk_boundry" x="2208" y="1887.67" width="96" height="127.667"/>
@@ -818,6 +818,74 @@
   <object id="234" name="walk_boundry" x="2431.5" y="1184.75" width="94.75" height="32.25"/>
   <object id="235" name="walk_boundry" x="2464" y="1217.5" width="95" height="30.75"/>
   <object id="236" name="walk_boundry" x="2530.5" y="1247.25" width="29" height="33"/>
+  <object id="253" x="639.375" y="1430.25" width="9.875" height="9.5"/>
+  <object id="254" x="604.125" y="1527.25" width="8.25" height="8"/>
+  <object id="255" x="633.875" y="1558.63" width="8.875" height="8"/>
+  <object id="256" x="663.625" y="1623.63" width="12" height="10.875"/>
+  <object id="257" x="640.5" y="1686.75" width="10.25" height="10.375"/>
+  <object id="258" x="726.5" y="1589" width="10.25" height="11.5"/>
+  <object id="259" x="836" y="1680.25" width="8.25" height="9.5"/>
+  <object id="260" x="716.75" y="1679" width="10.75" height="6.5"/>
+  <object id="261" x="763.5" y="1750" width="11.5" height="10.25"/>
+  <object id="262" x="697" y="1764.25" width="11" height="10"/>
+  <object id="263" x="698.5" y="1735.75" width="9.75" height="8.25"/>
+  <object id="264" x="725.75" y="1812.75" width="11.5" height="11"/>
+  <object id="265" x="664" y="1843.5" width="14.75" height="12.5"/>
+  <object id="266" x="700.75" y="1874" width="16.5" height="14.5"/>
+  <object id="267" x="636.25" y="1772.5" width="8.25" height="11.25"/>
+  <object id="268" x="634" y="1940" width="14.5" height="11"/>
+  <object id="269" x="632.25" y="2037.75" width="9.5" height="9"/>
+  <object id="270" x="696.75" y="2031.25" width="11.75" height="9.5"/>
+  <object id="271" x="691.5" y="1984" width="9.5" height="8"/>
+  <object id="272" x="699.25" y="1934.75" width="11.5" height="10.75"/>
+  <object id="273" x="723.75" y="1941" width="7.5" height="6.25"/>
+  <object id="274" x="762.5" y="1972.75" width="13.5" height="8.25"/>
+  <object id="275" x="758.5" y="2069" width="7.5" height="8.75"/>
+  <object id="276" x="764.75" y="2024.75" width="13" height="10.5"/>
+  <object id="277" x="814.75" y="2067.25" width="16.75" height="9.25"/>
+  <object id="278" x="826.75" y="2017.25" width="10.75" height="5.5"/>
+  <object id="279" x="885.75" y="2030.5" width="11.5" height="13.75"/>
+  <object id="280" x="895.75" y="1988.75" width="7.25" height="8"/>
+  <object id="281" x="923.75" y="1967.5" width="11" height="14.5"/>
+  <object id="282" x="958" y="2034.75" width="8.75" height="6"/>
+  <object id="283" x="951" y="2067.75" width="13.5" height="11"/>
+  <object id="284" x="1017.5" y="2058.25" width="11.25" height="10"/>
+  <object id="285" x="1013" y="2022.75" width="11" height="8.5"/>
+  <object id="286" x="1021.25" y="1987.25" width="9.75" height="9.75"/>
+  <object id="287" x="1085.25" y="2030" width="5" height="6.75"/>
+  <object id="288" x="1081.5" y="1994" width="10" height="8"/>
+  <object id="289" x="1026.75" y="1927.75" width="9.25" height="12"/>
+  <object id="290" x="1020" y="1813" width="9.5" height="7"/>
+  <object id="291" x="1056" y="1840" width="10.25" height="12.25"/>
+  <object id="292" x="1113" y="1937" width="11.75" height="8"/>
+  <object id="293" x="1183.5" y="1938" width="12.25" height="12.5"/>
+  <object id="294" x="1145.75" y="1988.75" width="10.25" height="13.25"/>
+  <object id="295" x="1143.25" y="2069.5" width="9.75" height="9.75"/>
+  <object id="296" x="1176.5" y="2031.5" width="10.25" height="11.5"/>
+  <object id="297" x="1243.5" y="2032.25" width="8.5" height="11.25"/>
+  <object id="298" x="1247.75" y="2098.75" width="13" height="13"/>
+  <object id="299" x="1339" y="2098.25" width="14.75" height="12.75"/>
+  <object id="300" x="1364.75" y="2162.5" width="12.25" height="11.5"/>
+  <object id="312" x="723" y="484.333" width="12" height="13.6667"/>
+  <object id="313" x="732.667" y="522" width="12.6667" height="11.6667"/>
+  <object id="314" x="726" y="588" width="12.6667" height="13.3333"/>
+  <object id="315" x="764" y="583" width="9.33333" height="10.3333"/>
+  <object id="316" x="796" y="523" width="13" height="12"/>
+  <object id="317" x="790" y="616" width="18" height="12.3333"/>
+  <object id="318" x="730.667" y="657" width="8.66667" height="9"/>
+  <object id="319" x="763.333" y="683.667" width="11.3333" height="11.3333"/>
+  <object id="320" x="730.333" y="714.667" width="13.3333" height="11.6667"/>
+  <object id="321" x="765" y="754.667" width="10.3333" height="14.3333"/>
+  <object id="322" x="733.667" y="783.333" width="11" height="7.66667"/>
+  <object id="323" x="1048.67" y="775.333" width="10.6667" height="10.3333"/>
+  <object id="324" x="1021.67" y="723.333" width="13.6667" height="6.66667"/>
+  <object id="325" x="1052.67" y="676.667" width="8.33333" height="5.66667"/>
+  <object id="326" x="1019" y="647.333" width="14.6667" height="7.66667"/>
+  <object id="327" x="1052" y="581" width="18" height="10.6667"/>
+  <object id="328" x="1016.67" y="541.667" width="10.3333" height="11"/>
+  <object id="329" x="1013.33" y="467" width="11" height="8"/>
+  <object id="330" x="1042.33" y="480" width="17" height="13.6667"/>
+  <object id="332" x="1014" y="607.5" width="9" height="11.5"/>
  </objectgroup>
  <objectgroup id="57" name="spawn_points">
   <object id="237" name="solo" x="893.5" y="353">

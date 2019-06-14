@@ -8,6 +8,8 @@ import com.mygdx.game.BallClientMain;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+		config.title = "Shinobi Network!"; //set apptitle
 		new LwjglApplication(new BallClientMain(), config);
 	}
 }

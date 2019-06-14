@@ -11,8 +11,10 @@
 
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.*;
@@ -88,7 +90,7 @@ public abstract class Entity {
 
     public void newProjectile(String name, float angle, float dmg_mult, float speed_mult, Vector2 spawn_pos) {
         Projectile p = new Projectile(name,this);
-        p.init_pos(spawn_pos.x/Global.PPM,spawn_pos.y/Global.PPM,angle- MathUtils.degreesToRadians*45); //bullet sprites are at a 45 degree angle
+        AssetManager.flagForMove(p,new Vector3(spawn_pos.x,spawn_pos.y,angle- MathUtils.degreesToRadians*45));
         p.setDamage(p.getDamage()*dmg_mult);
         p.setSpeed(p.getSpeed()*speed_mult);
 

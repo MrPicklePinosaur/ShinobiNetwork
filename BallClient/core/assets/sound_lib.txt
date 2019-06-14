@@ -6,3 +6,4 @@ magic_shoot
 arrow_shoot
 death
 wall_hit
+hit_sound

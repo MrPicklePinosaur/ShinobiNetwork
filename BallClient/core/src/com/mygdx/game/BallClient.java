@@ -135,6 +135,7 @@ public class BallClient {
         String[] msg = raw_msg.split("\\$");
         MT msg_type = MT.valueOf(msg[0].toUpperCase());
         if (msg_type == MT.UPDATEENTITY) {
+            if (msg.length < 2) { return; }
             String[] pos = msg[1].split(" ");
             for (String s : pos) {
                 Entity.update_entity(s);

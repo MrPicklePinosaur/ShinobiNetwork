@@ -29,7 +29,8 @@ public class CollisionListener implements ContactListener {
         //System.out.println(type_a.getKey()+" "+type_b.getKey());
         if (CollisionListener.fixtureMatch(type_a.getKey(),type_b.getKey(),Projectile.class, GameMap.class)) {
             Projectile b = (Projectile) CollisionListener.findFixture(type_a,type_b,Projectile.class);
-            BallClientHandler.broadcast(MT.PLAYSOUND,"wall_hit");
+            Player owner = (Player) b.getOwner();
+            owner.getServerSocket().send_msg(MT.PLAYSOUND,"wall_hit");
             b.removeProjecitle();
         }
 
@@ -49,6 +50,7 @@ public class CollisionListener implements ContactListener {
                         float damage = b.getDamage();
                         b.hit_effect(p,damage); //apply special effects, if there are any
                         owner.addDmgDealt(b.getDamage());
+                        owner.getServerSocket().send_msg(MT.PLAYSOUND,"hit_sound");
 
                         if (p.modHp(-1*damage)) { //if the bullet killed the player
                             b.kill_effect(p); //apply special effects, if there are any

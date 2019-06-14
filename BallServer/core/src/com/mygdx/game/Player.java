@@ -152,11 +152,11 @@ public class Player extends Entity {
                 //tell client to play sound
                 String weapon_type = this.weapon.stats.getWeaponType();
                 if (weapon_type.equals("sword") || weapon_type.equals("katana")) {
-                    BallClientHandler.broadcast(MT.PLAYSOUND,"blade_shoot");
+                    this.server_socket.send_msg(MT.PLAYSOUND,"blade_shoot");
                 } else if (weapon_type.equals("bow")) {
-                    BallClientHandler.broadcast(MT.PLAYSOUND,"arrow_shoot");
+                    this.server_socket.send_msg(MT.PLAYSOUND,"arrow_shoot");
                 } else if (weapon_type.equals("staff")) {
-                    BallClientHandler.broadcast(MT.PLAYSOUND,"magic_shoot");
+                    this.server_socket.send_msg(MT.PLAYSOUND,"magic_shoot");
                 }
             }
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
@@ -222,6 +222,7 @@ public class Player extends Entity {
     public float getCurrentHp() { return this.health; }
     public float getSpeed() { return this.speed; }
     public String getUserName() { return this.server_socket.getUserName(); }
+    public BallClientHandler getServerSocket() { return this.server_socket; }
 
     //setters
     public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }

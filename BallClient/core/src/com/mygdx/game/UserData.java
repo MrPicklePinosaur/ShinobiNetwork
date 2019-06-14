@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-public class UserData {
+public class UserData { //stores the info that was obtained from the database
 
     String username;
     int total_kills;
@@ -16,13 +16,15 @@ public class UserData {
 
     public static UserData init_client(String json_data) { return Global.json.fromJson(UserData.class, json_data); }
 
+    //simple getters
     public String getUsername() { return this.username; }
     public int getTotalKills() { return this.total_kills; }
     public int getTotalDeaths() { return this.total_deaths; }
     public int getTotalDamage() { return this.total_damage; }
     public String[] getInventory() { return this.inventory; }
 
-    public String[] getLoadout(String filter) {
+
+    public String[] getLoadout(String filter) { //retrieve saved loadout
         if (filter.equals("ninja")) { return this.ninja_loadout; }
         else if (filter.equals("archer")) { return this.archer_loadout; }
         else if (filter.equals("warrior")) { return this.warrior_loadout; }
@@ -30,7 +32,7 @@ public class UserData {
         return new String[]{};
     }
 
-    public String setLoadout(String item_name,String item_type) {
+    public String setLoadout(String item_name,String item_type) { //swap items of the same type
         if (item_type.equals("katana")) {
             this.ninja_loadout[0] = item_name; return "ninja";
         } else if (item_type.equals("waki")) {
@@ -50,6 +52,5 @@ public class UserData {
         }
         return "";
     }
-
 
 }

@@ -1,7 +1,8 @@
 package com.mygdx.game;
 
+//Used for item descirptions and backpack item sorting
 public class ItemData {
-    String id;
+    String id; //used for id with server
     String display_name;
     String item_type;
     String stat_text;

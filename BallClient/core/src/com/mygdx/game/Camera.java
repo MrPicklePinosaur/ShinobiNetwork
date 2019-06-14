@@ -17,8 +17,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class Camera {
-    private static final float max_cam_dist = 40;
-    private static final float cam_shift_speed = 1.5f;
 
     private OrthographicCamera cam;
     private Boolean isLocked = false;
@@ -34,35 +32,31 @@ public class Camera {
     }
 
     public void moveCam() { //make camera follow a target entity
-        float x = this.cam_bind_x;
+        float x = this.cam_bind_x; //current pos the camera is binded to
         float y = this.cam_bind_y;
 
-        if (this.isLocked == false) { //shift camera in direction of mouse
+        //this amazing camera code is from: https://stackoverflow.com/questions/24047172/libgdx-camera-smooth-translation
+        Vector3 target = new Vector3(x+MathUtils.cos(Global.m_angle)*20,y+MathUtils.sin(Global.m_angle)*20,0);
+        final float speed = 0.1f, ispeed=1.0f-speed;
 
-            //this amazing camera code is from: https://stackoverflow.com/questions/24047172/libgdx-camera-smooth-translation
-            Vector3 target = new Vector3(x+MathUtils.cos(Global.m_angle)*20,y+MathUtils.sin(Global.m_angle)*20,0);
-            final float speed = 0.1f, ispeed=1.0f-speed;
-
-            Vector3 cameraPosition = cam.position;
-            cameraPosition.scl(ispeed);
-            target.scl(speed);
-            cameraPosition.add(target);
-            cam.position.set(cameraPosition);
-        } else {
-            this.cam.position.x = x;
-            this.cam.position.y = y;
-        }
+        Vector3 cameraPosition = cam.position;
+        cameraPosition.scl(ispeed);
+        target.scl(speed);
+        cameraPosition.add(target);
+        cam.position.set(cameraPosition);
 
         this.updateCam();
 
     }
 
-    public void toggleCameraLock() { this.isLocked = !this.isLocked; }
+    //setters
     public void updateCam() { this.cam.update(); }
     public void bindPos (Vector2 pos) {
         this.cam_bind_x = pos.x;
         this.cam_bind_y = pos.y;
     }
+
+    //getters
     public OrthographicCamera getCam() { return this.cam; }
 
 }

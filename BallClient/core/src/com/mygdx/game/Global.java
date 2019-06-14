@@ -52,10 +52,12 @@ class Global {
 		labelStyle.fontColor = Color.valueOf("B5B5B5");
 	}
 
+	//helpers
 	public static Random rnd = new Random();
-	public static BallClientMain game;
 	public static Json json = new Json();
 
+	//important
+	public static BallClientMain game;
 	public static UserData user_data;
 	public static ChatLog chatlog;
 	public static Camera camera;
@@ -65,14 +67,13 @@ class Global {
 	public static String server_ip = "127.0.0.1";
 	public static int server_port = 5000;
 
+	//Graphic dimensions
 	public static final int SCREEN_WIDTH = 1200;
 	public static final int SCREEN_HEIGHT = 800;
-	public static final float RESOLUTION = (float)SCREEN_HEIGHT/SCREEN_WIDTH;
-	public static int PPM = 100;
-
 	public static final int SPRITESIZE = 40;
 	public static final float WEAPONSCALE = 0.8f;
 
+	//input
 	public static float m_x = 0;
 	public static float m_y = 0;
 	public static float m_angle = 0;
@@ -85,7 +86,7 @@ class Global {
 
 }
 
-enum MT {
+enum MT { //Message types for communication with server
 	//Message types - output
 	USIN, CHATMSG, CMD, RESPAWN,
 
@@ -97,6 +98,6 @@ enum MT {
 	CREDSACCEPTED, CREDSDENIED, REGISTERSUCCESS, REGISTERFAILED,
 }
 
-enum ET {
+enum ET { //used to identify entity
 	PLAYER, ENEMY, PROJECTILE, STATIC, WEAPON
 }

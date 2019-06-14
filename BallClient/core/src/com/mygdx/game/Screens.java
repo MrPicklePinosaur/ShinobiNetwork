@@ -14,10 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.*;
 
 import java.util.ArrayList;
 
@@ -532,10 +529,13 @@ class Options {
         this.soundLabel.setStyle(this.labelStyle);
 
         this.musicSlider = new Slider(0f,1f,0.01f,false,Global.skin);
+        musicSlider.setValue(AudioPlayer.getMusicVolume());
         this.soundSlider = new Slider(0f,1f,0.01f,false,Global.skin);
+        soundSlider.setValue(AudioPlayer.getSoundVolume());
 
-        this.table.add(soundLabel).padRight(10f).padBottom(10f);
-        this.table.add(musicLabel).padLeft(10f).padBottom(10f);
+        this.table.add(musicLabel).padRight(10f).padBottom(10f);
+        this.table.add(soundLabel).padLeft(10f).padBottom(10f);
+
         this.table.row();
         this.table.add(musicSlider).expandX();
         this.table.add(soundSlider).expandX();

@@ -6,28 +6,28 @@
 		"display_name": "Kazemonji",
 		"item_type": "katana",
 		"stat_text": "",
-		"special_text": "",
+		"special_text": "The standard blade used by shinobi",
 	},
 	{
 		"id": "brimstone_edge",
 		"display_name": "Brimstone Edge",
 		"item_type": "katana",
-		"stat_text": "",
+		"stat_text": "Has a chance to inflict 'burning'",
 		"special_text": "",
 	},
 	{
 		"id": "jade_katana",
 		"display_name": "Jade Katana",
 		"item_type": "katana",
-		"stat_text": "",
+		"stat_text": "Fire rate increases as shots are landed \n A spin move is performed upon kill",
 		"special_text": "",
 	},
 	{
 		"id": "nihiru",
 		"display_name": "Nihiru, the Demon Blade",
 		"item_type": "katana",
-		"stat_text": "",
-		"special_text": "",
+		"stat_text": "The more lives this blade claims, the stronger it gets",
+		"special_text": "This blade is forever thirsty for blood",
 	},
 
 
@@ -43,7 +43,7 @@
 		"id": "cherryblossom_twinblades",
 		"display_name": "Cherryblossom Twinblades",
 		"item_type": "waki",
-		"stat_text": "",
+		"stat_text": "Does not perform a dash \n A circle of cherryblossoms is created around the wielder",
 		"special_text": "",
 	},
 	{

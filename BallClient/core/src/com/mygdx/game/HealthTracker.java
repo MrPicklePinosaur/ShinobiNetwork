@@ -13,13 +13,15 @@ import java.util.LinkedList;
 
 public class HealthTracker {
     private static HashMap<Integer,HealthTracker> health_bars = new HashMap<Integer,HealthTracker>();
+    public static final float y_offset = 25;
+
+    static Skin skin;
+    static ProgressBar.ProgressBarStyle style;
+    static Label.LabelStyle nameStyle;
 
     private ProgressBar bar;
     private Label nameLabel;
-    static Skin skin;
-    public static final float y_offset = 25;
-    static ProgressBar.ProgressBarStyle style;
-    static Label.LabelStyle nameStyle;
+    private int id;
 
     static{
         skin = new Skin(Gdx.files.internal("gdx-skins/clean-crispy/skin/clean-crispy-ui.json"));
@@ -33,18 +35,15 @@ public class HealthTracker {
         nameStyle.fontColor = Color.BLACK;
     }
     public HealthTracker(int id) {
+        this.id = id;
         this.bar = new ProgressBar(0f,1f,0.005f,false,skin);
         this.bar.setStyle(style);
         this.bar.setWidth(this.getBarWidth()*0.5f);
         this.bar.setHeight(this.getBar().getMinHeight());
         this.bar.setValue(1f);
-        //this.bar.setColor(Color.GREEN);
+
         health_bars.put(id,this);
         Global.game.game_screen.getStage().addActor(bar);
-        //\progressBarStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
-        //tiledDrawable = skin.getTiledDrawable("progressbar-tiled").tint(skin.getColor("selection"));
-        //tiledDrawable.setMinWidth(0);
-        //progressBarStyle.knobBefore = tiledDrawable;
 
         this.nameLabel = new Label(Global.user_data.username,skin);
         this.nameLabel.setStyle(nameStyle);
@@ -52,7 +51,8 @@ public class HealthTracker {
     }
 
     public static void drawAll(SpriteBatch batch){
-        for(HealthTracker ht : HealthTracker.health_bars.values()){
+        for(HealthTracker ht : HealthTracker.health_bars.values()) {
+
             ht.getBar().act(Gdx.graphics.getDeltaTime());
             ht.getBar().draw(batch,1.0f);
             ht.nameLabel.setPosition(ht.getBar().getX()+ht.nameLabel.getPrefWidth()*ht.nameLabel.getFontScaleX(),ht.getBar().getY()+ht.getBar().getPrefHeight());
@@ -73,22 +73,15 @@ public class HealthTracker {
         }
     }
 
-   public void setHealth(float hp) {
-        /*if(hp>=0.5f){
-            this.bar.setColor(Color.GREEN);
-        }
-        if(hp<0.5f && hp>0.25f){
-            this.bar.setColor(Color.YELLOW);
-        }
-        if(hp<=0.25f){
-            this.bar.setColor(Color.RED);
-        }*/
-        this.bar.setValue(hp);
+    public void setHealth(float hp) { this.bar.setValue(hp); }
+    public void setPos(float x,float y) { this.bar.setPosition(x,y); }
+    public static void removeBar(int id) {
+        assert (HealthTracker.health_bars.containsKey(id)): "Health bar cannot be removed as it was not found";
+        HealthTracker.health_bars.remove(id);
     }
 
-    public void setPos(float x,float y) { this.bar.setPosition(x,y); }
     public float getBarWidth() { return this.bar.getWidth(); }
-
     public ProgressBar getBar() { return this.bar; }
+    public int getId() { return this.id; }
     public static HashMap<Integer,HealthTracker> getHealthBarList() { return HealthTracker.health_bars; }
 }

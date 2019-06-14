@@ -577,10 +577,12 @@ class Inventory {
         item_name.setStyle(Global.labelStyle);
         item_name.setFontScale(0.5f);
         this.stat_text = new Label("",Global.skin);
+        stat_text.setStyle(Global.labelStyle);
         stat_text.setFontScale(0.3f);
         //TODO: change colour
         this.special_text = new Label("",Global.skin);
-        special_text.setFontScale(0.3f);
+        special_text.setStyle(Global.labelStyle);
+        special_text.setFontScale(0.25f);
         //TODO: change colour
         this.equip_button = new TextButton("Equip",Global.skin);
         equip_button.addListener(new ClickListener() {
@@ -594,11 +596,11 @@ class Inventory {
         item_info.setBounds(Global.SCREEN_WIDTH*4/8,0,Global.SCREEN_WIDTH*4/8,Global.SCREEN_HEIGHT/4f);
         item_info.add(item_name);
         item_info.row();
-        item_info.add(stat_text);
+        item_info.add(stat_text).pad(5);
         item_info.row();
-        item_info.add(special_text);
+        item_info.add(special_text).pad(5);
         item_info.row();
-        item_info.add(equip_button);
+        item_info.add(equip_button).pad(5);
         //item_info.setDebug(true);
 
         stage.addActor(inventory_grid);
@@ -630,7 +632,9 @@ class Inventory {
         //UPDATE item info
         this.item_name.setText(item_data.getDisplayName());
         this.stat_text.setText(item_data.getStatText());
-        this.special_text.setText(item_data.getSpecialText());
+        String spec_text = item_data.getSpecialText();
+        if (!spec_text.equals("")) { this.special_text.setText("\'" + item_data.getSpecialText() + "\'"); }
+        else { this.special_text.setText(""); }
 
         if (this.current_tab.equals("")) { //dont show equp button on all items tab
             this.equip_button.setVisible(false);
@@ -716,6 +720,7 @@ class Inventory {
         this.tabs.setVisible(false);
         this.loadout_inv.setVisible(false);
         this.page.setVisible(false);
+        this.item_info.setVisible(false);
     }
 
     public void refresh_loadout(String filter) {
@@ -727,6 +732,7 @@ class Inventory {
         Texture empty_slot = AssetManager.getUIImage("empty_slot_up");
 
         Label class_name = new Label(filter,Global.skin);
+        class_name.setStyle(Global.labelStyle);
 
         //weapon slot
         Stack weapon_stack = new Stack();
@@ -744,6 +750,7 @@ class Inventory {
 
         if (loadout.length == 2) { ability_stack.add(new Image(AssetManager.getSpritesheet(loadout[1]))); } //if the user actually has an ability equipped
 
+        loadout_inv.add();
         loadout_inv.add(class_name);
         loadout_inv.row();
         loadout_inv.add(weapon_stack);
@@ -894,7 +901,7 @@ class LoginScreen implements Screen {
 
     @Override public void render(float delta) {
         //AUTO LOGIN FOR NOW
-        submit_creds("daniel","password");
+        //submit_creds("daniel","password");
         stage.act(delta);
         stage.draw();
     }

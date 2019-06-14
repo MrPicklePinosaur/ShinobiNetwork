@@ -42,6 +42,7 @@ class Global {
 		skin.add("buttonDownColor",new Texture(pixmap));
 		skin.add("defaultFont",new BitmapFont());
 		skin.add("PixelFont",new BitmapFont(Gdx.files.internal("fonts/PixelFont.fnt")));
+		skin.add("PixelFont_Small",new BitmapFont(Gdx.files.internal("fonts/PixelFont_Small.fnt")));
 
 		Global.labelStyle = new Label.LabelStyle();
 		BitmapFont pixelFont = Global.skin.getFont("PixelFont");

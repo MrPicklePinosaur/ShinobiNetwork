@@ -47,6 +47,15 @@ class MainmenuScreen implements Screen {
             }
         });
 
+        TextButton options_button = new TextButton("Options",Global.skin);
+        options_button.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                SoundPlayer.play_sound("button_click");
+                Global.game.setScreen(Global.game.options_screen);
+            }
+        });
+
+
         TextButton quit_button = new TextButton("Exit Game",Global.skin);
         quit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -92,6 +101,7 @@ class MainmenuScreen implements Screen {
         this.stage = new Stage();
         stage.addActor(play_button);
         stage.addActor(inventory_button);
+        stage.addActor(options_button);
         stage.addActor(quit_button);
         stage.addActor(stats);
         stage.addActor(rootTable);
@@ -107,6 +117,8 @@ class MainmenuScreen implements Screen {
         buttonTable.add(play_button).pad(10f).width(play_button.getWidth()*2).height(play_button.getHeight()*2);
         buttonTable.row();
         buttonTable.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
+        buttonTable.row();
+        buttonTable.add(options_button).center().pad(10f).width(options_button.getWidth()*2).height(options_button.getHeight()*2);
         buttonTable.row();
         buttonTable.add(quit_button).center().pad(10f).width(quit_button.getWidth()*2).height(quit_button.getHeight()*2);
         buttonTable.center();
@@ -168,6 +180,7 @@ class GameScreen implements Screen {
     private Table pause_menu;
     private Table respawn_menu;
     private Inventory inv;
+    private Options options_menu;
 
     public GameScreen() {
         this.stage = new Stage();
@@ -189,6 +202,13 @@ class GameScreen implements Screen {
                 SoundPlayer.play_sound("button_click");
             }
         });
+        TextButton options_button = new TextButton("Options",Global.skin);
+        options_button.addListener(new ClickListener(){
+            @Override public void clicked(InputEvent event,float x,float y) {
+                show_options();
+                SoundPlayer.play_sound("button_click");
+            }
+        });
         TextButton exit_button = new TextButton("Leave Game",Global.skin);
         exit_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
@@ -206,6 +226,8 @@ class GameScreen implements Screen {
         pause_menu.row();
         pause_menu.add(inventory_button).center().pad(10f).width(inventory_button.getWidth()*2).height(inventory_button.getHeight()*2);
         pause_menu.row();
+        pause_menu.add(options_button).center().pad(10f).width(options_button.getWidth()*2).height(exit_button.getHeight()*2);
+        pause_menu.row();
         pause_menu.add(exit_button).center().pad(10f).width(exit_button.getWidth()*2).height(exit_button.getHeight()*2);
         pause_menu.center();
         this.pause_menu.setVisible(false);
@@ -215,6 +237,10 @@ class GameScreen implements Screen {
         //Inventory
         this.inv = new Inventory(this.stage);
         this.inv.hide_inv();
+
+        //Pause menu
+        this.options_menu = new Options(this.stage);
+        this.options_menu.hide_options();
 
         //Choose class menu
         this.respawn_menu = new Table();
@@ -293,10 +319,15 @@ class GameScreen implements Screen {
         this.show_menu = false;
         this.pause_menu.setVisible(false);
         this.inv.hide_inv();
+        this.options_menu.hide_options();
     }
     public void show_inv() {
         this.pause_menu.setVisible(false);
         this.inv.show_inv();
+    }
+    public void show_options(){
+        this.pause_menu.setVisible(false);
+        this.options_menu.show_options();
     }
     public void show_death_screen() {
         this.hide_menu();
@@ -474,10 +505,104 @@ class InventoryScreen implements Screen {
 }
 class Options {
     private Stage stage;
+    private Table table;
+    private Label musicLabel;
+    private Label soundLabel;
+    private Label.LabelStyle labelStyle;
+    private Slider musicSlider;
+    private Slider soundSlider;
     public Options(Stage stage){
         this.stage = stage;
+        this.table = new Table();
+        this.table.setFillParent(true);
+
+        //this.table.setDebug(true);
+
+        this.labelStyle = new Label.LabelStyle();
+        BitmapFont font = Global.skin.getFont("PixelFont_Small");
+        this.labelStyle.font = font;
+        this.labelStyle.fontColor = Color.valueOf("B5B5B5");
+
+        this.musicLabel = new Label("Change Music Volume:",Global.skin);
+        this.soundLabel = new Label("Change Sound Volume:",Global.skin);
+        this.musicLabel.setStyle(this.labelStyle);
+        this.soundLabel.setStyle(this.labelStyle);
+
+        this.musicSlider = new Slider(0f,1f,0.1f,false,Global.skin);
+        this.soundSlider = new Slider(0f,1f,0.1f,false,Global.skin);
+
+        this.musicSlider.setValue(0.5f);
+        this.soundSlider.setValue(0.5f);
+
+        this.table.add(soundLabel).padRight(10f).padBottom(10f);
+        this.table.add(musicLabel).padLeft(10f).padBottom(10f);
+        this.table.row();
+        this.table.add(musicSlider).expandX();
+        this.table.add(soundSlider).expandX();
+        this.table.center();
+
+        this.stage.addActor(table);
+    }
+    public void hide_options(){
+        table.setVisible(false);
+    }
+    public void show_options(){
+        table.setVisible(true);
     }
 }
+
+class OptionsScreen implements Screen{
+    private Stage stage;
+    private Options options;
+    public OptionsScreen() {
+
+        this.stage = new Stage();
+        this.options = new Options(this.stage);
+        options.show_options();
+
+        ImageButton backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("back"))));
+        backButton.addListener(new ClickListener() {
+            @Override public void clicked(InputEvent event,float x,float y) {
+                SoundPlayer.play_sound("button_click");
+                Global.game.setScreen(Global.game.mainmenu_screen);
+            }
+        });
+
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        Pixmap menuPixmap = new Pixmap(1,1,Pixmap.Format.RGBA8888);
+        menuPixmap.setColor(Color.valueOf("4c4c4c80"));
+        menuPixmap.fill();
+        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(menuPixmap))));
+
+        this.stage.addActor(rootTable);
+        this.stage.addActor(backButton.left().pad(20));
+
+    }
+
+    @Override public void render(float delta) {
+        stage.act(delta);
+
+        stage.draw();
+    }
+
+    @Override public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override public void hide() { }
+
+    @Override public void dispose() {
+        this.stage.clear();
+        this.stage.dispose();
+    }
+
+    @Override public void resize(int width,int height) { }
+    @Override public void pause() { }
+    @Override public void resume() { }
+    public Stage getStage() { return this.stage; }
+}
+
 class Inventory {
 
     private Stage stage;

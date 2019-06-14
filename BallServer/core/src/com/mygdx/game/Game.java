@@ -28,13 +28,6 @@ public abstract class Game {
     }
     public void wipe_chat() { this.chat_log.clear(); }
 
-    public CopyOnWriteArrayList<Player> getPlayerList() { return this.player_list; }
-    public void addPlayer(Player p) { this.player_list.add(p); }
-    public void removePlayer(Player p) {
-        assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";
-        this.player_list.remove(p);
-    }
-
     public boolean checkObjective(String zonename) {
         for (Player p : this.player_list) {
             for (Map.Entry<String, Rectangle> entry : Global.map.getObjectives().entrySet()) {
@@ -48,12 +41,14 @@ public abstract class Game {
         return false;
     }
 
+    //getters
+    public CopyOnWriteArrayList<Player> getPlayerList() { return this.player_list; }
+    public abstract String getLeaderBoard();
     public boolean isInsideSpawn(Player p) {
         if ((Global.game.checkObjective("red_spawn") && p.getTeamtag() == TEAMTAG.RED) || (Global.game.checkObjective("blue_spawn") && p.getTeamtag() == TEAMTAG.BLUE)) {
             return true;
         } return false;
     }
-
     public String getAllHP() {
         String msg = "";
         for (Player p : this.player_list) {
@@ -64,7 +59,14 @@ public abstract class Game {
         return msg;
     }
 
-    public abstract String getLeaderBoard();
+    //setters
+    public void addPlayer(Player p) { this.player_list.add(p); }
+    public void removePlayer(Player p) {
+        assert (this.player_list.contains(p)): "PLayer cannot be removed as it is not found";
+        this.player_list.remove(p);
+    }
+
+
     public abstract TEAMTAG chooseTeam();
     public abstract void addKill(Player player);
 
@@ -135,7 +137,7 @@ class KOTHGame extends Game { //king of the hill
 
     }
 
-    public void insideZone(TEAMTAG teamtag) {
+    public void insideZone(TEAMTAG teamtag) { //check to see if a player is inside an objective zone
         if (teamtag == TEAMTAG.RED) {
             red_points+=POINTS_PER_TICK;
             this.checkWin();
@@ -194,14 +196,14 @@ class FFAGame extends Game { //free for all
 
     }
 
-    @Override public void addKill(Player player) {
+    @Override public void addKill(Player player) { //if a player gets a kill
         this.new_chat_msg("["+player.getUserName()+"] has obtained a KILL!");
         if (player.getKills() >= KILLS_TO_WIN) { //Player wins
             this.new_chat_msg("["+player.getUserName()+"] has emerged VICTORIOUS");
         }
     }
 
-    @Override public String getLeaderBoard() {
+    @Override public String getLeaderBoard() { //package the perofrmance stats of all players
         String leaderboard = "";
         for (Player p : this.player_list) {
              leaderboard += (" "+p.getUserName()+","+p.getKills()+","+p.getDeaths()+","+p.getDmgDealt());

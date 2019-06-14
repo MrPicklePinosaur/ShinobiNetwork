@@ -8,12 +8,10 @@ import java.util.LinkedList;
 
 public class Particle {
 
-    private static ArrayList<Particle> particle_list = new ArrayList<Particle>();
+    private static ArrayList<Particle> particle_list = new ArrayList<Particle>(); //master lib of particles
 
     private Entity entity;
     private String name;
-    private float x;
-    private float y;
     private int duration;
 
     public Particle(Entity entity,String name,int duration) {
@@ -24,12 +22,11 @@ public class Particle {
         Particle.particle_list.add(this);
     }
 
-
-    public static void send_particles() {
+    public static void send_particles() { //send updated positions of all the particles
         if (Particle.particle_list.size() == 0) { return; }
         String msg = "";
         for (Particle p : Particle.particle_list) {
-            msg += (" "+p.entity.getId()+","+p.name+","+p.duration);
+            msg += (" "+p.entity.getId()+","+p.name+","+p.duration); //we have to bind an entity to the particle
         }
         Particle.particle_list.clear();
 

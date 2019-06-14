@@ -17,16 +17,14 @@ public class Weapon extends Entity {
         this.init_stats(AssetManager.getWeaponJsonData(name));
     }
 
-
-    @Override
-    public void init_stats(String json_data) { this.stats = Global.json.fromJson(WeaponStats.class, json_data); }
+    @Override public void init_stats(String json_data) { this.stats = Global.json.fromJson(WeaponStats.class, json_data); }
 
     @Override public float getX() { return this.owner.getX(); }
     @Override public float getY() { return this.owner.getY(); }
     @Override public float getRotation() { return this.owner.getRotation(); }
 }
 
-class WeaponStats {
+class WeaponStats { //weapon stats loaded from json
     private String name;
     private String weapon_type;
     private String projectile;

@@ -35,14 +35,7 @@ class Projectile extends Entity {
         this.entity_type = ET.PROJECTILE;
         this.owner = owner;
 
-
-        //init body
-        /*
-        PolygonShape rect = new PolygonShape();
-        rect.setAsBox((float)this.spriteWidth/Global.PPM,(float)this.spriteHeight/Global.PPM);
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = rect;
-        */
+        //create porjectile body
         CircleShape circle = new CircleShape();
         circle.setRadius((this.spriteWidth/4f)/Global.PPM); //diameter of the circle is half of the width of the projecile
         FixtureDef fdef = new FixtureDef();
@@ -54,10 +47,10 @@ class Projectile extends Entity {
         fdef.isSensor = true;
         this.body = AssetManager.createBody(fdef, BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Projectile>(Projectile.class,this));
-        //this.body.setUserData(this);
 
         circle.dispose();
 
+        //init stats
         this.damage = this.stats.getDamage();
         this.speed = this.stats.getBulletSpeed();
         this.totalPenetrations = this.stats.getPenetraion();
@@ -68,20 +61,15 @@ class Projectile extends Entity {
         this.spawnX = x;
         this.spawnY = y;
     }
-
-    public void setVelocity(float angle) {
-        this.body.setLinearVelocity(this.getSpeed()* MathUtils.cos(angle),this.getSpeed()*MathUtils.sin(angle));
-    }
-
     @Override public void init_stats(String json_data) {
         this.stats = Global.json.fromJson(ProjectileStats.class, json_data);
     }
 
-    public static void updateAll() {
+    public static void updateAll() { //check to see if porpjectile is supposed to die
 
         for (Player p : Global.game.getPlayerList()) {
-            ArrayList<Projectile> remove_list = new ArrayList<Projectile>();
-            //p.getProjectileList().removeIf(b -> (Math.hypot(b.getX()-b.spawnX,b.getY()-b.spawnY)>=b.stats.getMaxDist()));
+            ArrayList<Projectile> remove_list = new ArrayList<Projectile>(); //list of projectiles to be destroyed
+
             for (Projectile b : p.getProjectileList()) {
                 //if the max distance is execeeded
                 if (Math.hypot(b.spawnX-b.getX()/Global.PPM,b.spawnY-b.getY()/Global.PPM)>=b.stats.getMaxDist()) { remove_list.add(b); }
@@ -103,21 +91,30 @@ class Projectile extends Entity {
         String name = this.stats.getName();
         Player owner = (Player) this.owner;
 
+        //katanas
         if (name.equals("brimstone_slice")) { //7% chanceto inflict burning for 3 seconds
             int chance = Global.rnd.nextInt(100);
             if (chance < 7) { target.applyActiveEffect("burning",3); }
+
         } else if (name.equals("jade_slice")) { //upon hitting a target, the fire rate increaes
 
-        } else if (name.equals("tsuinejji_fire_slash")) {
-            int chance = Global.rnd.nextInt(100);
-            if (chance < 50) { target.applyActiveEffect("burning",2); }
-        } else if (name.equals("tsuinejji_ice_slash")) {
-            int chance = Global.rnd.nextInt(100);
-            if (chance < 50) { target.applyActiveEffect("frostbite", 2); }
-        } else if (name.equals("bloodsucker_slash")) {
-            ((Player) this.owner).modHp((int)(damage/2));
         }
 
+        //waki
+        else if (name.equals("tsuinejji_fire_slash")) { //has a chance to inflict burning
+            int chance = Global.rnd.nextInt(100);
+            if (chance < 50) { target.applyActiveEffect("burning",2); }
+
+        } else if (name.equals("tsuinejji_ice_slash")) {//has a chance to inflict frostbite
+            int chance = Global.rnd.nextInt(100);
+            if (chance < 50) { target.applyActiveEffect("frostbite", 2); }
+
+        } else if (name.equals("bloodsucker_slash")) { //takes half of the damage dealt and heals self
+            owner.modHp((int)(damage/2));
+
+        }
+
+        //spells
         else if (name.equals("flamethrower_bolt")) {
             int chance = Global.rnd.nextInt(100);
             if (chance < 40) { target.applyActiveEffect("burning",1); }
@@ -132,24 +129,29 @@ class Projectile extends Entity {
 
         if (name.equals("nihiru_slice")) {
             owner.setDmgMult(owner.getDmgMult()*1.1f);
+
         } else if (name.equals("jade_slice")) {
-            owner.shoot("jade_slice",owner.getMouseAngle(),"ring",owner.getDmgMult(),1);
+            owner.shoot("jade_slice",owner.getRotation(),"ring",owner.getDmgMult(),1);
+
         }
     }
 
-
+    //setters
+    public void setVelocity(float angle) { this.body.setLinearVelocity(this.getSpeed()* MathUtils.cos(angle),this.getSpeed()*MathUtils.sin(angle)); }
+    public void setDamage(float dmg) { this.damage = dmg; }
+    public void setSpeed(float speed) { this.speed = speed; }
     public void removeProjecitle() {
         this.owner.removeProjectile(this);
     }
+
+    //getters
     public Entity getOwner() { return this.owner; }
     public float getDamage() { return this.damage; }
     public float getSpeed() { return this.speed; }
 
-    public void setDamage(float dmg) { this.damage = dmg; }
-    public void setSpeed(float speed) { this.speed = speed; }
 }
 
-class ProjectileStats {
+class ProjectileStats { //stats for projectile, loaded from json
 
     private String name;
     private float damage;

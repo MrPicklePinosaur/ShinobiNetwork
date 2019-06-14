@@ -3,8 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Ability {
@@ -114,24 +112,24 @@ class SwiftstrikeAbility extends Ability {
 
     @Override public void activate() {
         if (this.name.equals("cherryblossom_twinblades")) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+            this.player.shoot(slash_projectile,this.player.getRotation(),this.slash_pattern,1,1);
             for (int i = 0; i < 4; i ++) {
-                this.player.shoot(slash_projectile,this.player.getMouseAngle()+90*i*MathUtils.degreesToRadians,"double",1,1);
+                this.player.shoot(slash_projectile,this.player.getRotation()+90*i*MathUtils.degreesToRadians,"double",1,1);
             }
 
         }
     }
 
     @Override public void update() { //do a speed boost
-        int impX = (int) (this.dash_speed * MathUtils.cos(this.player.getMouseAngle()));
-        int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getMouseAngle()));
+        int impX = (int) (this.dash_speed * MathUtils.cos(this.player.getRotation()));
+        int impY = (int) (this.dash_speed * MathUtils.sin(this.player.getRotation()));
         this.player.getBody().applyLinearImpulse(impX, impY, 0, 0, true);
 
         if (this.name.equals("simple_wakizashi")) {
             new Particle(player,"run_dust",1);
         }
         if (this.name.equals("whirlwind_sheath") && this.ticker%2 == 0) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
+            this.player.shoot(slash_projectile,this.player.getRotation()-180*MathUtils.degreesToRadians,slash_pattern,1,1);
             new Particle(player,"run_dust",2);
         }
 
@@ -140,9 +138,9 @@ class SwiftstrikeAbility extends Ability {
 
     @Override public void deactivate() { //at the end of the dash, do a slash attack
         if (this.name.equals("simple_wakizashi")) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+            this.player.shoot(slash_projectile,this.player.getRotation(),this.slash_pattern,1,1);
         } else if (this.name.equals("shadowstep_dagger")) {
-            this.player.shoot(slash_projectile,this.player.getMouseAngle(),this.slash_pattern,1,1);
+            this.player.shoot(slash_projectile,this.player.getRotation(),this.slash_pattern,1,1);
         } else if (this.name.equals("tsuinejji")) {
             float dist1 = 0.3f*Global.PPM;
             float dist2 = 0.4f*Global.PPM;
@@ -213,9 +211,9 @@ class QuiverAbility extends Ability{
 
     @Override public void activate() {
         if (this.name.equals("simple_quiver")) {
-            this.player.shoot(quiver_projectile,player.getMouseAngle(),quiver_pattern,1,1);
+            this.player.shoot(quiver_projectile,player.getRotation(),quiver_pattern,1,1);
         } else if (this.name.equals("devastation_quiver")) {
-            this.player.shoot(quiver_projectile, player.getMouseAngle(), quiver_pattern, 1, 1);
+            this.player.shoot(quiver_projectile, player.getRotation(), quiver_pattern, 1, 1);
         }
      }
 
@@ -243,7 +241,7 @@ class SpellAbility extends Ability{
         if (this.name.equals("flamethrower_scroll") && this.ticker%4 == 0) {
             float dist = 0.15f*Global.PPM;
             for (int i = 0; i < 2; i++) {
-                float angle = player.getMouseAngle() + (-12 + Global.rnd.nextInt(24)) * MathUtils.degreesToRadians;
+                float angle = player.getRotation() + (-12 + Global.rnd.nextInt(24)) * MathUtils.degreesToRadians;
                 Vector2 pos = new Vector2(player.getX() + dist * MathUtils.cos(angle), player.getY() + dist * MathUtils.sin(angle));
                 player.newProjectile(spell_projectile, angle, 1, 1, pos);
             }

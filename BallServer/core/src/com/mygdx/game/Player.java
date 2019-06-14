@@ -25,16 +25,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Player extends Entity {
     private static CopyOnWriteArrayList<Player> shoot_cooldown_list = new CopyOnWriteArrayList<Player>();
     private static CopyOnWriteArrayList<Player> hold_list = new CopyOnWriteArrayList<Player>();
-    private ConcurrentHashMap<String,ActiveEffect> activeEffects_list = new ConcurrentHashMap<String, ActiveEffect>();
+
+    private ConcurrentHashMap<String,ActiveEffect> activeEffects_list = new ConcurrentHashMap<String, ActiveEffect>(); //list of buffs/debuffs the player has
 
     private BallClientHandler server_socket;
     public PlayerStats stats;
+    private Weapon weapon;
     private Ability ability;
+
     private float m_angle;
     private TEAMTAG teamtag;
 
-    private Weapon weapon;
-
+    //counters
     private float shoot_cooldown;
     private float hold_count;
     private float dmg_mult;
@@ -61,6 +63,7 @@ public class Player extends Entity {
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
 
+        //determine what objects the player should be able to collide with
         fdef.filter.categoryBits = Global.BIT_PLAYER;
         fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE;
         if (this.teamtag == TEAMTAG.RED) {
@@ -69,19 +72,19 @@ public class Player extends Entity {
             fdef.filter.maskBits = Global.BIT_STATIC | Global.BIT_PLAYER | Global.BIT_PROJECTILE | Global.BIT_REDSTATIC;
         }
 
+        //create th body
         this.body = AssetManager.createBody(fdef,BodyDef.BodyType.DynamicBody);
         this.body.setUserData(new Pair<Class<?>,Player>(Player.class,this));
         this.body.setLinearDamping(Global.PLAYER_DAMPING);
         circle.dispose();
 
+        //init player class, weapon and ability
         init_data(name,weapon_name,ability_name);
 
     }
 
     @Override public void init_stats(String json_data) { //should be called once, or when player respawns
         this.stats = Global.json.fromJson(PlayerStats.class,json_data);
-
-        //insert code that modifies base stats based on items equiped
         this.reset_game_stats();
         this.reset_performance_stats();
     }
@@ -97,8 +100,7 @@ public class Player extends Entity {
         this.ability = Ability.createAbility(this,this.stats.getAblType(),ability_name);
     }
 
-
-    public void reset_game_stats() {
+    public void reset_game_stats() { //called when player dies
         this.health = this.stats.getHp();
         this.speed = this.stats.getSpeed();
         this.resetShootCoolDown();
@@ -115,28 +117,30 @@ public class Player extends Entity {
     public void handleInput(String raw_inputs) { //takes in user inputs from client and does physics simulations
         String[] inputs = raw_inputs.split(",");
         this.body.setLinearVelocity(0,0); //reset velocity
+
         for (String key : inputs) {
-            if (key.contains("MOUSE_ANGLE:")) {
+
+            if (key.contains("MOUSE_ANGLE:")) { //take in mouse angle from client
                 String[] data = key.split(":");
                 this.m_angle = Float.parseFloat(data[1]);
             }
-            //if (key.equals("Key_Q")) { this.newProjectile("katanaSlash.png",this.m_angle); }
-            if (key.equals("MOUSE_LEFT_DOWN")) {
+
+            if (key.equals("MOUSE_LEFT_DOWN")) { //initiate shiit
 
                 if (this.weapon.stats.getFireType().equals("charged")) { //keep track of how long the mouse is held if its a charged weapon
                     this.resetHoldCount();
                     Player.hold_list.add(this);
                 }
 
-            } //shoot bullet
-            if (key.equals("MOUSE_LEFT_UP")) {
+            }
+
+            if (key.equals("MOUSE_LEFT_UP")) { //actually shoot a bullet when player lets go
                 if (Global.game.isInsideSpawn(this)) { continue; } //player cant shoot when inside spawn
 
                 if (this.weapon.stats.getFireType().equals("charged")) { Player.hold_list.remove(this); }
 
                 //used for charged weapons
                 float time_held = this.hold_count;
-
                 float charge_dmg_mult = this.findDmgMult(this.weapon.stats.getTimeToCharge(),time_held);
                 float charge_speed_mult = this.findSpeedMult(this.weapon.stats.getTimeToCharge(),time_held);
 
@@ -159,11 +163,14 @@ public class Player extends Entity {
                     this.server_socket.send_msg(MT.PLAYSOUND,"magic_shoot");
                 }
             }
+
+            //simple movement stuff
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
             if (key.equals("Key_A")) { this.body.setLinearVelocity(-this.stats.getSpeed(),this.body.getLinearVelocity().y); }
             if (key.equals("Key_D")) { this.body.setLinearVelocity(this.stats.getSpeed(),this.body.getLinearVelocity().y); }
-            if (key.equals("Key_SPACE")) {
+
+            if (key.equals("Key_SPACE")) { //use special ability
                 if (Global.game.isInsideSpawn(this)) { continue; } //player cant use ability when inside spawn
                 this.ability.begin();
             }
@@ -192,12 +199,11 @@ public class Player extends Entity {
             this.activeEffects_list.put(effect_name,effect);
             effect.begin();
         }
-
     }
 
-    public static void updateAll(float deltaTime) {
+    public static void updateAll(float deltaTime) { //tick all of the player tickets
         //SHOOT COOLDOWN
-        ArrayList<Player> removal_list = new ArrayList<Player>();
+        ArrayList<Player> removal_list = new ArrayList<Player>(); //list of things to be removed
         for (Player p : Player.shoot_cooldown_list) {
             p.shoot_cooldown-=deltaTime;
             if (p.shoot_cooldown <= 0) { removal_list.add(p); }
@@ -213,16 +219,16 @@ public class Player extends Entity {
     }
 
     //getters
-    @Override public float getRotation() { return this.m_angle; }
+    public BallClientHandler getServerSocket() { return this.server_socket; }
+    public ConcurrentHashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    public String getUserName() { return this.server_socket.getUserName(); }
     public TEAMTAG getTeamtag() { return this.teamtag; }
     public Weapon getWeapon() { return this.weapon; }
-    public float getMouseAngle() { return this.m_angle; }
-    public ConcurrentHashMap<String, ActiveEffect> getActiveEffectsList() { return this.activeEffects_list; }
+    @Override public float getRotation() { return this.m_angle; }
+
     public float getDmgMult() { return this.dmg_mult; }
     public float getCurrentHp() { return this.health; }
     public float getSpeed() { return this.speed; }
-    public String getUserName() { return this.server_socket.getUserName(); }
-    public BallClientHandler getServerSocket() { return this.server_socket; }
 
     //setters
     public void resetShootCoolDown() { this.shoot_cooldown = this.weapon.stats.getFireRate(); }
@@ -245,7 +251,7 @@ public class Player extends Entity {
         String hp = Global.game.getAllHP();
         if (!hp.equals("")) { BallClientHandler.broadcast(MT.UPDATEHP,hp); }
 
-        if (this.health <= 0) {
+        if (this.health <= 0) { //if player dies
             //server sided stuff
             new Particle(this,"blood_drop",1);
             BallClientHandler.broadcast(MT.PLAYSOUND,"death");
@@ -265,7 +271,6 @@ public class Player extends Entity {
         return false;
     }
 
-    public void disableGIP() { this.server_socket.disableGIP(); }
     //stat setters
     public void addKill() {
         this.kills++;
@@ -282,10 +287,9 @@ public class Player extends Entity {
     public int getKills() { return this.kills; }
     public int getDeaths() { return this.deaths; }
     public float getDmgDealt() { return this.dmg_dealt; }
-    public Vector3 getGameStats() { return new Vector3(this.kills,this.deaths,this.dmg_dealt); }
 }
 
-class PlayerStats {
+class PlayerStats { //stats depending on the class
     private String name;
     private int hp;
     private float speed;

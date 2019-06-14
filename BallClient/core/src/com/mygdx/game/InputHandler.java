@@ -38,6 +38,9 @@ public class InputHandler extends InputAdapter {
         msg = msg.substring(1); //get rid of extra comma in front
 
         Global.server_socket.send_msg(MT.USIN,msg);
+        if (Gdx.input.isKeyPressed(Input.Keys.TAB)){
+            //Leaderboard stuff
+        }
     }
 
     public void sendMouse() {

@@ -10,13 +10,13 @@ import java.util.HashMap;
 
 public class AudioPlayer {
 
-    public static HashMap<String, Sound> sound_lib = new HashMap<String, Sound>();
-    public static ArrayList<String> music_lib = new ArrayList<String>();
+    private static HashMap<String, Sound> sound_lib = new HashMap<String, Sound>();
+    private static ArrayList<String> music_lib = new ArrayList<String>();
 
-    public static Music currentMusic;
+    private static Music currentMusic;
 
-    public static float music_volume = 0.25f;
-    public static float sound_volume = 1f;
+    private static float music_volume = 0.25f;
+    private static float sound_volume = 1f;
 
     public static void play_music() {
         String music_path = AudioPlayer.music_lib.get(Global.rnd.nextInt(AudioPlayer.music_lib.size()));
@@ -45,4 +45,8 @@ public class AudioPlayer {
         }
     }
 
+    public static void setSoundVolume(float sound_volume) { AudioPlayer.sound_volume = sound_volume; }
+    public static void setMusicVolume(float music_volume) { AudioPlayer.music_volume = music_volume; }
+    public static float getSoundVolume() { return AudioPlayer.sound_volume; }
+    public static float getMusicVolume() { return AudioPlayer.music_volume; }
 }

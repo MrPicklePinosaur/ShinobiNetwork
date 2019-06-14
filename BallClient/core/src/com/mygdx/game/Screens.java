@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -50,7 +52,7 @@ class MainmenuScreen implements Screen {
         TextButton options_button = new TextButton("Options",Global.skin);
         options_button.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.setScreen(Global.game.options_screen);
             }
         });
@@ -206,7 +208,7 @@ class GameScreen implements Screen {
         options_button.addListener(new ClickListener(){
             @Override public void clicked(InputEvent event,float x,float y) {
                 show_options();
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
             }
         });
         TextButton exit_button = new TextButton("Leave Game",Global.skin);
@@ -504,6 +506,7 @@ class InventoryScreen implements Screen {
     public Stage getStage() { return this.stage; }
 }
 class Options {
+
     private Stage stage;
     private Table table;
     private Label musicLabel;
@@ -528,11 +531,8 @@ class Options {
         this.musicLabel.setStyle(this.labelStyle);
         this.soundLabel.setStyle(this.labelStyle);
 
-        this.musicSlider = new Slider(0f,1f,0.1f,false,Global.skin);
-        this.soundSlider = new Slider(0f,1f,0.1f,false,Global.skin);
-
-        this.musicSlider.setValue(0.5f);
-        this.soundSlider.setValue(0.5f);
+        this.musicSlider = new Slider(0f,1f,0.01f,false,Global.skin);
+        this.soundSlider = new Slider(0f,1f,0.01f,false,Global.skin);
 
         this.table.add(soundLabel).padRight(10f).padBottom(10f);
         this.table.add(musicLabel).padLeft(10f).padBottom(10f);
@@ -544,9 +544,13 @@ class Options {
         this.stage.addActor(table);
     }
     public void hide_options(){
+        AudioPlayer.setMusicVolume(this.musicSlider.getValue());
+        AudioPlayer.setSoundVolume(this.soundSlider.getValue());
         table.setVisible(false);
     }
     public void show_options(){
+        this.musicSlider.setValue(AudioPlayer.getMusicVolume());
+        this.soundSlider.setValue(AudioPlayer.getSoundVolume());
         table.setVisible(true);
     }
 }
@@ -558,12 +562,11 @@ class OptionsScreen implements Screen{
 
         this.stage = new Stage();
         this.options = new Options(this.stage);
-        options.show_options();
 
         ImageButton backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(AssetManager.getUIImage("back"))));
         backButton.addListener(new ClickListener() {
             @Override public void clicked(InputEvent event,float x,float y) {
-                SoundPlayer.play_sound("button_click");
+                AudioPlayer.play_sound("button_click");
                 Global.game.setScreen(Global.game.mainmenu_screen);
             }
         });
@@ -588,9 +591,12 @@ class OptionsScreen implements Screen{
 
     @Override public void show() {
         Gdx.input.setInputProcessor(stage);
+        options.show_options();
     }
 
-    @Override public void hide() { }
+    @Override public void hide() {
+        options.hide_options();
+    }
 
     @Override public void dispose() {
         this.stage.clear();

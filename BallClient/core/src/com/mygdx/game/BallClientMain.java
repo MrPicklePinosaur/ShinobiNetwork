@@ -30,6 +30,7 @@ public class BallClientMain extends Game {
 		Gdx.graphics.setWindowedMode(Global.SCREEN_WIDTH,Global.SCREEN_HEIGHT);
 		AssetManager.load_all();
 		Particle.load_particles("particle_lib.txt");
+		SoundPlayer.load_sounds("sound_lib.txt");
 
 		this.retryconnection_screen = new RetryconnectionScreen();
 		this.login_screen = new LoginScreen();

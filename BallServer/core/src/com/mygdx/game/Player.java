@@ -148,6 +148,16 @@ public class Player extends Entity {
 
                 this.resetShootCoolDown();
                 Player.shoot_cooldown_list.add(this);
+
+                //tell client to play sound
+                String weapon_type = this.weapon.stats.getWeaponType();
+                if (weapon_type.equals("sword") || weapon_type.equals("katana")) {
+                    BallClientHandler.broadcast(MT.PLAYSOUND,"blade_shoot");
+                } else if (weapon_type.equals("bow")) {
+                    BallClientHandler.broadcast(MT.PLAYSOUND,"arrow_shoot");
+                } else if (weapon_type.equals("staff")) {
+                    BallClientHandler.broadcast(MT.PLAYSOUND,"magic_shoot");
+                }
             }
             if (key.equals("Key_W")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,this.stats.getSpeed()); }
             if (key.equals("Key_S")) { this.body.setLinearVelocity(this.body.getLinearVelocity().x,-this.stats.getSpeed()); }
@@ -235,7 +245,9 @@ public class Player extends Entity {
         if (!hp.equals("")) { BallClientHandler.broadcast(MT.UPDATEHP,hp); }
 
         if (this.health <= 0) {
+            //server sided stuff
             new Particle(this,"blood_drop",1);
+            BallClientHandler.broadcast(MT.PLAYSOUND,"death");
 
             Vector2 spawn_point = Global.map.get_spawn_point(this.getTeamtag());
             AssetManager.flagForMove(this,new Vector3(spawn_point.x,spawn_point.y,this.getRotation()));

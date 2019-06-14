@@ -112,6 +112,7 @@ public class BallClient {
         if (msg_type == MT.LEAVEGAME) {
             data = msg_type+"$";
             Entity.clearEntityLib();
+            HealthTracker.clearBars();
         }
         /*
         CHECKCREDS - message is in the format: username, password
@@ -180,6 +181,8 @@ public class BallClient {
         } else if (msg_type == MT.UPDATELEADERBOARD) {
             //message comes in the form: name1,kills1,deaths1,damage1 name2,kills2,deaths2,damage2
             String[] entries = msg[1].split(" ");
+        } else if (msg_type == MT.PLAYSOUND) {
+            SoundPlayer.play_sound(msg[1]);
         }
     }
 

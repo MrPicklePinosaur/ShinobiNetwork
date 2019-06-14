@@ -10,6 +10,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonReader;
@@ -22,7 +23,6 @@ public class AssetManager {
     public static HashMap<String, Texture> animation_lib = new HashMap<String, Texture>();
     public static HashMap<String, Texture> ui_lib = new HashMap<String, Texture>();
     public static HashMap<String, ItemData> item_descrip = new HashMap<String, ItemData>();
-    public static HashMap<String,LinkedList<String>> loadout = new HashMap<String,LinkedList<String>>();
 
     public static void load_all() {
         loadFromDirectory("sprites/",AssetManager.animation_lib);
@@ -49,9 +49,14 @@ public class AssetManager {
 
         for (FileHandle file : root.list()) {
             if (file.isDirectory()) { AssetManager.loadFromDirectory(path+file.name()+"/",target); } //if we find a folder, go there
-            if (file.name().contains(".png")) {
+            else {
                 String filepath = path+file.name();
-                String name = file.name().replaceAll("\\.png","");
+                String name = file.name();
+                if (name.contains(".png")) {
+                    name = file.name().replaceAll("\\.png", "");
+                } else if (name.contains(".ogg")) {
+                    name = file.name().replaceAll("\\.ogg", "");
+                }
                 target.put(name,new Texture(Gdx.files.internal(filepath)));
             }
         }

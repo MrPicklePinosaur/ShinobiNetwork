@@ -90,7 +90,7 @@ public class BallClient {
 
     public void send_chat_msg(String msg) { //decide wether or not the message is a chat message or a command
         assert (msg != null && !msg.equals("")): "empty message";
-        System.out.println(msg.charAt(0));
+
         if (msg.charAt(0) == '/') { //if the message begains with a slash, it is a command
             send_msg(MT.CMD,msg.substring(1)); //remove the /
         } else { send_msg(MT.CHATMSG,msg); }
@@ -159,7 +159,7 @@ public class BallClient {
             Global.game.game_screen.show_death_screen();
 
         } else if (msg_type == MT.CREDSACCEPTED) { //credential accepted, you may login!!!
-            System.out.println("CREDS ACCEPTED");
+            //System.out.println("CREDS ACCEPTED");
 
             Global.user_data = UserData.init_client(msg[1]); //TODO: LINK READ USER DATA
             Global.game.login_screen.creds_accepted();
@@ -181,8 +181,8 @@ public class BallClient {
 
         } else if (msg_type == MT.UPDATELEADERBOARD) {
             //message comes in the form: name1,kills1,deaths1,damage1 name2,kills2,deaths2,damage2
-            String[] entries = msg[1].split(" ");
-            Leaderboard.update_all(entries);
+            //String[] entries = msg[1].split(" ");
+            //Leaderboard.update_all(entries);
 
         } else if (msg_type == MT.PLAYSOUND) { //server is telling us to play a specific sound
             AudioPlayer.play_sound(msg[1]);

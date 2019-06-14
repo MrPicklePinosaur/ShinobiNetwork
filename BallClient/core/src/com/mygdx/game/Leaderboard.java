@@ -14,7 +14,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.*;
+/*
+Leaderboard class:
+This class is responsible for displaying a leaderboard ranking all the players by kills,
+with a differently formatted leaderboard depending on the type of gamemode.
+Thus, there is a general update method (updateLeaderboard()), and that
+calls the appropriate update method based on the gamemode (either updateFFA()
+or updateTeam()).
 
+Methods (that aren't setters/getters):
+    updateLeaderboard:
+        This method is a general update method that takes in the necessary data relating to all players,
+        reformats it so it can be more readable/understandably sorted in the more specific update methods
+    updateFFA:
+        This method is just a simple leaderboard. There aren't any teams, so there is simply a board of
+        players and their associated data, sorted by most kills
+    updateTeam:
+        In this method, the gamemode states that there are two teams. Therefore, each leaderboard is split
+        up into two teams, and the two teams are ranked in terms of kills independently of each other. Each
+        team is also sorted by most kills
+*/
 public class Leaderboard {
     //Leaderboard keeps track of 4 things:
     //Kills, Deaths, Damage Dealt, and the associated Username
@@ -129,13 +148,6 @@ public class Leaderboard {
         }
     }
     private void updateFFA(HashMap<String, LinkedList<Integer>> leaderboardData){
-        /*Pixmap pm1 = new Pixmap(1, 1, Pixmap.Format.RGB565);
-        pm1.setColor(Color.GREEN);
-        pm1.fill();
-
-        Pixmap pm2 = new Pixmap(1, 1, Pixmap.Format.RGB565);
-        pm2.setColor(Color.RED);
-        pm2.fill();*/
         table.clearChildren();
         int i = 0;
         LinkedList<String> sortedLeaderboard = new LinkedList<String>();

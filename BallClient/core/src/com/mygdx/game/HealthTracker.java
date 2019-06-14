@@ -16,7 +16,6 @@ the value of the ProgressBar knob being the frequency of the
 current health over the player's maximum health (this may vary
 depending on the player's class)
 
-Constructor:
 Methods (that aren't setters/getters):
 drawAll:
     simply changes all HealthTrackers ProgressBars values to their respective players' health,
